@@ -9,6 +9,7 @@ df = pd.read_csv("CCES24_Common_OUTPUT_vv_topost_final.csv")
 
 # these columns are the only ones needed to recreate the analysis
 neededcols = [
+    "caseid",
     "inputstate",
     "CC24_410",
     "TS_g2024",
@@ -60,6 +61,7 @@ df["validated_voter"] = np.where(
 # create recreation dataset
 output_df = df[
     [
+        "caseid",
         "state",
         "X_trump",
         "X_harris",
