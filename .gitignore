@@ -1,3 +1,7 @@
 .venv/
 __pycache__/
 *.pyc
+# ignore large CSV data files (adjust path/glob as desired)
+data/raw/*.csv
+CCES24_Common_OUTPUT_vv_topost_final.csv
+merged_recontact_2024_vv (1).csv
