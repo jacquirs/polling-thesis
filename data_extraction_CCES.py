@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 # THIS FILE AIMS TO CREATE A DATASET FOR MENG (2018) RECREATION BASED ON 2024 CCES DATA FOR VALIDATED VOTERS
-# DATAFILE AVAILABLE FROM https://dataverse.harvard.edu/file.xhtml?fileId=13398263&version=2.0
+# DATAFILE AVAILABLE FROM https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/X11EP6
 
 # load CCES 2024 data
 df = pd.read_csv("CCES24_Common_OUTPUT_vv_topost_final.csv")
