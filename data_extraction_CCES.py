@@ -13,7 +13,8 @@ neededcols = [
     "inputstate",
     "CC24_410",
     "TS_g2024",
-    "TS_voterstatus"
+    "TS_voterstatus",
+    "CC24_363"
 ]
 
 df = df[neededcols].copy()
@@ -115,6 +116,21 @@ state_map = {
 
 df["state_name"] = df["state"].map(state_map)
 
+# identify likely voters
+likely_voter_categories = [
+    "Yes, definitely",
+    "Probably",
+    "I already voted (early or absentee)",
+    "I plan to vote before November 5th"
+]
+
+df["likely_voter"] = np.where(
+    df["CC24_363"].isna(),
+    np.nan,
+    np.where(df["CC24_363"].isin(likely_voter_categories), 1, 0)
+)
+
+
 # create recreation dataset
 output_df = df[
     [
@@ -123,6 +139,7 @@ output_df = df[
         "X_trump",
         "X_harris",
         "selfvoted_2024",
+        "likely_voter",
         "validated_voter"
     ]
 ].copy()
