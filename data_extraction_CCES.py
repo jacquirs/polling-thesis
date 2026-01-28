@@ -4,7 +4,7 @@ import numpy as np
 # THIS FILE AIMS TO CREATE A DATASET FOR MENG (2018) RECREATION BASED ON 2024 CCES DATA FOR VALIDATED VOTERS
 # DATAFILE AVAILABLE FROM https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/X11EP6
 
-# load CCES 2024 data
+# load CCES 2024 data from site
 df = pd.read_csv("CCES24_Common_OUTPUT_vv_topost_final.csv")
 
 # these columns are the only ones needed to recreate the analysis
