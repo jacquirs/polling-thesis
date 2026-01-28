@@ -1,2 +1,3 @@
+*.csv filter=lfs diff=lfs merge=lfs -text
 CCES24_Common_OUTPUT_vv_topost_final.csv filter=lfs diff=lfs merge=lfs -text
 merged_recontact_2024_vv[[:space:]](1).csv filter=lfs diff=lfs merge=lfs -text
