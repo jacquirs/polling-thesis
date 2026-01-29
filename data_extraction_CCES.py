@@ -41,7 +41,7 @@ df["X_trump"] = np.where(df["CC24_410_name"] == "Donald Trump", 1, 0)
 df["X_harris"]   = np.where(df["CC24_410_name"] == "Kamala Harris", 1, 0)
 
 # for those without a vote choice was not clear give an NA result
-df.loc[df["CC24_410_name"].isin(["Did not vote for President", "N"]), ["X_trump", "X_harris"]] = np.nan
+df.loc[df["CC24_410_name"].isin(["Did not vote for President", "N","NA",np.nan]), ["X_trump", "X_harris"]] = np.nan
 
 # indicator of self repoted voting is if they said they voted for a candidate, do not count those reporting "Did not vote for President" or "N" as having voted
 candidate_list = [
