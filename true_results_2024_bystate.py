@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-# THIS FILE CLEANS THE COMPARISON SET WITH 2024 PRESIDENTIAL RESULTS
+# THIS FILE CLEANS THE COMPARISON SET WITH TRUE OUTCOME 2024 PRESIDENTIAL RESULTS FOR USE IN MENG CALCULATIONS
 
 df = pd.read_csv("2024-president-state.csv")
 
@@ -69,5 +69,3 @@ for_meng = state_totals[
 ].copy()
 
 for_meng.to_csv("Meng_true_votes.csv", index=False)
-
-print(for_meng)
