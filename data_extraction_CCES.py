@@ -22,12 +22,26 @@ df = df[neededcols].copy()
 # rename variables for ease of use
 df["state"] = df["inputstate"]
 
+# map numeric CC24_410 codes to candidate names
+cc24_410_map = {
+    1: "Kamala Harris",
+    2: "Donald Trump",
+    3: "Robert F. Kennedy Jr.",
+    4: "Jill Stein",
+    5: "Cornel West",
+    6: "Chase Oliver",
+    7: "Other",
+    8: "Did not vote for President"
+}
+
+df["CC24_410_name"] = df["CC24_410"].map(cc24_410_map)
+
 # create binary vote indicators for trump and harris from vote choices offered
-df["X_trump"] = np.where(df["CC24_410"] == "Donald Trump", 1, 0)
-df["X_harris"]   = np.where(df["CC24_410"] == "Kamala Harris", 1, 0)
+df["X_trump"] = np.where(df["CC24_410_name"] == "Donald Trump", 1, 0)
+df["X_harris"]   = np.where(df["CC24_410_name"] == "Kamala Harris", 1, 0)
 
 # for those without a vote choice was not clear give an NA result
-df.loc[df["CC24_410"].isin(["Did not vote for President", "N"]), ["X_trump", "X_harris"]] = np.nan
+df.loc[df["CC24_410_name"].isin(["Did not vote for President", "N"]), ["X_trump", "X_harris"]] = np.nan
 
 # indicator of self repoted voting is if they said they voted for a candidate, do not count those reporting "Did not vote for President" or "N" as having voted
 candidate_list = [
@@ -41,9 +55,9 @@ candidate_list = [
 ]
 
 df["selfvoted_2024"] = np.where(
-    df["CC24_410"].isna(),
+    df["CC24_410_name"].isna(),
     np.nan,
-    np.where(df["CC24_410"].isin(candidate_list), 1, 0)
+    np.where(df["CC24_410_name"].isin(candidate_list), 1, 0)
 )
 
 # handle voter registration match (only active or empty, so we don't know about those people)
@@ -69,7 +83,7 @@ state_map = {
     8: "Colorado",
     9: "Connecticut",
     10: "Delaware",
-    11: "District of Columbia",
+    11: "District Of Columbia",
     12: "Florida",
     13: "Georgia",
     15: "Hawaii",
