@@ -69,3 +69,5 @@ for_meng = state_totals[
 ].copy()
 
 for_meng.to_csv("Meng_true_votes.csv", index=False)
+
+print(for_meng)
