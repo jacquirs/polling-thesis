@@ -130,7 +130,19 @@ state_map = {
 
 df["state_name"] = df["state"].map(state_map)
 
-# identify likely voters
+# map numbers to answers for likely voters
+cc24_363_map = {
+    1: "Yes, definitely",
+    2: "Probably",
+    3: "I already voted (early or absentee)",
+    4: "I plan to vote before November 5th",
+    5: "No",
+    6: "Undecided"
+}
+
+df["CC24_363_names"] = df["CC24_363"].map(cc24_363_map)
+
+# identify likely voters based on response
 likely_voter_categories = [
     "Yes, definitely",
     "Probably",
@@ -139,9 +151,9 @@ likely_voter_categories = [
 ]
 
 df["likely_voter"] = np.where(
-    df["CC24_363"].isna(),
+    df["CC24_363_names"].isna(),
     np.nan,
-    np.where(df["CC24_363"].isin(likely_voter_categories), 1, 0)
+    np.where(df["CC24_363_names"].isin(likely_voter_categories), 1, 0)
 )
 
 
