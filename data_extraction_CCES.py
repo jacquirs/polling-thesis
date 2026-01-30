@@ -166,7 +166,8 @@ output_df = df[
         "X_harris",
         "selfvoted_2024",
         "likely_voter",
-        "validated_voter"
+        "validated_voter",
+        "CC24_363_names" # maintained for alternative likely voter weighting scheme in figure 4
     ]
 ].copy()
 

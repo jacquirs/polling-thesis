@@ -16,13 +16,25 @@ print("Truth jurisdictions:", len(truth))
 ######################## REPLICATION OF FIGURE 4 ON PAGE 711 ###########################
 ########################################################################################
 
+###### The below first section replicates figure 4 using wald ses for likely voters and binary likely, different from Meng
 ###### State-level estimators, Meng does this for raw, likely, validated voters
 # helper to compute state-level n, p_hat, se, 95% CI
 def state_estimates(df, mask=None, value_col="X_trump"):
     """
-    Returns DataFrame with columns: state_name, n, p_hat, se, ci_lo, ci_hi
-    This corresponds to Meng's per-state sample mean \hat p_s and its Wald SE
+    Returns df with columns: state_name, n, p_hat, se, ci_lo, ci_hi
+    corresponds to Meng's per-state sample mean \hat p_s and its wald SE
+
+    Used only for the left and right panels of Figure 4
+
+    Formula for unweighted sample proportion: \hat p_s = (1/n_s) * sum_{i in s} X_i
+
+    From Meng: "Confidence intervals based on unweighted sample proportions are computed following (3.9)" 
+    This gives the wald SE formulas: SE(\hat p_s) = sqrt( \hat p_s (1 - \hat p_s) / n_s ) ;; CI = \hat p_s ± 1.96 * SE(\hat p_s)
+
+    Meng explicitly says SRS variances may be conservative under stratified designs,
+    but still do not protect against MSE inflation from nonresponse bias.
     """
+    # masks used to limit to validated voters versus just raw sample
     if mask is None:
         sub = df.copy()
     else:
@@ -42,7 +54,7 @@ def state_estimates(df, mask=None, value_col="X_trump"):
     # Meng uses unweighted Wald SE for the sample mean: SE = sqrt(p_hat * (1-p_hat) / n)
     out["se"] = np.sqrt(out["p_hat"] * (1 - out["p_hat"]) / out["n"])
 
-    # 95% Wald CIs (clamped to [0,1])
+    # 95% wald CIs kept to [0,1]
     out["ci_lo"] = (out["p_hat"] - 1.96 * out["se"]).clip(0, 1)
     out["ci_hi"] = (out["p_hat"] + 1.96 * out["se"]).clip(0, 1)
     return out
@@ -70,7 +82,7 @@ val_m["abs_bias"] = val_m["bias"].abs()
 # get validated sampling fraction f_s
 val_m["f_s"] = val_m["n"] / val_m["N_state"]
 
-# save by state tables
+# save by state tables for later use
 raw_m.to_csv("state_raw_vs_truth.csv", index=False)
 likely_m.to_csv("state_likely_vs_truth.csv", index=False)
 val_m.to_csv("state_validated_vs_truth.csv", index=False)
@@ -104,10 +116,128 @@ for ax, (title, dfm) in zip(axes, panels):
     if ax is axes[0]:
         ax.set_ylabel("Estimated Trump share (CCES)")
 
-plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump)", fontsize=14)
+plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Binary Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure4_cces2024_trump.png", dpi=300)
+plt.savefig("figure4_cces2024_trump_binarylikely.png", dpi=300)
 plt.show()
+
+###### Meng uses different process for panel 2, likely voters, but does not disclose exact formulas, so I have determined my own method from statements
+# Meng's caption for Figure 4 says the middle plot uses:
+# "estimates weighted to likely voters according to turnout intent" and
+# "the turnout adjusted estimate, which is in a ratio form, a delta-method is employed
+# to approximate its variance, which is then used to construct confidence intervals."" 
+
+# above previous middle panel used a hard subset (likely_voter == 1) and unweighted Wald SEs, counter to Meng's note
+
+# now will use the ratio estimator weighted mean within each state: \hat p^{LV}_s =  ( sum_i w_i X_i ) / ( sum_i w_i )
+# where w_i depends on turnout intent (CCES question CC24_363, how likely are you to vote, cleaned to likely_voter and mapped to a turnout propensity)
+
+# Delta-method / linearization variance for the ratio/weighted mean:
+# Var( \hat p^{LV}_s ) ≈  [ sum_i w_i^2 (X_i - \hat p^{LV}_s)^2 ] / (sum_i w_i)^2
+# SE = sqrt(Var), CI = \hat p^{LV}_s +/- 1.96*SE
+
+# turnout-intent based weight w_i, treats higher turnout intent as higher propensity to vote
+turnout_prop_map = {
+    "Yes, definitely": 0.98,
+    "Probably": 0.70,
+    "I already voted (early or absentee)": 1.00,
+    "I plan to vote before November 5th": 0.90,
+    "No": 0.05,
+    "Undecided": 0.50
+}
+
+# normalization of voter intent text
+cces["turnout_propensity"] = cces["CC24_363_names"].map(turnout_prop_map)
+
+# turnout weight used in the ratio estimator
+cces["lv_weight"] = cces["turnout_propensity"].astype(float)
+
+# state-level turnout weighted ratio estimator with delta method SE
+def state_turnout_weighted(df, weight_col="lv_weight", value_col="X_trump"):
+    """
+    Gives a df with columns as in unweighted function: state_name, n, sum_w, p_hat, se, ci_lo, ci_hi
+
+    Estimator: \hat p^{LV}_s = (Σ w_i X_i) / (Σ w_i)
+
+    Delta-method variance for the weighted mean: Var( \hat p^{LV}_s ) ≈ [ Σ w_i^2 (X_i - \hat p^{LV}_s)^2 ] / (Σ w_i)^2
+    """
+    sub = df.dropna(subset=[value_col, weight_col]).copy()
+
+    # compute weighted numerator and denominator per state
+    sub["_wx"] = sub[weight_col] * sub[value_col]
+
+    agg = sub.groupby("state_name").agg(
+        # unweighted count of observed X in the state
+        n=(value_col, "count"),
+        # Σ w_i
+        sum_w=(weight_col, "sum"),
+        # Σ w_i X_i
+        sum_wx=("_wx", "sum")
+    ).reset_index()
+
+    # ratio estimator (is a weighted mean)
+    agg["p_hat"] = agg["sum_wx"] / agg["sum_w"]
+
+    # delta-method variance term Σ w_i^2 (X_i - p_hat)^2
+    sub = sub.merge(agg[["state_name", "p_hat", "sum_w"]], on="state_name", how="left")
+    sub["_w2_dev2"] = (sub[weight_col] ** 2) * ((sub[value_col] - sub["p_hat"]) ** 2)
+
+    num = sub.groupby("state_name")["_w2_dev2"].sum().reset_index().rename(columns={"_w2_dev2": "num_for_var"})
+    agg = agg.merge(num, on="state_name", how="left")
+
+    agg["var_delta"] = agg["num_for_var"] / (agg["sum_w"] ** 2)
+    agg["se"] = np.sqrt(agg["var_delta"])
+    agg["ci_lo"] = (agg["p_hat"] - 1.96 * agg["se"]).clip(0, 1)
+    agg["ci_hi"] = (agg["p_hat"] + 1.96 * agg["se"]).clip(0, 1)
+
+    return agg
+
+# calculate the panel as above, but just for the likely, will use the panel 1 and 3 from above
+
+# different from other likely_est
+likely_est_weighted = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_trump")
+
+# merge each estimator with truth for comparison
+likely_m_weighted = likely_est_weighted.merge(truth, on="state_name", how="left")
+
+# save by state results
+likely_m_weighted.to_csv("state_likely_weighted_vs_truth.csv", index=False)  # now turnout-weighted + delta-method CIs
+
+###### plot Figure 4 three panels, with weighted for panel 2
+fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
+
+panels = [
+    ("Raw (all respondents)", raw_m),
+    ("Turnout adjusted likely voters", likely_m_weighted),
+    ("Validated voters", val_m),
+]
+
+for ax, (title, dfm) in zip(axes, panels):
+    plot_df = dfm.dropna(subset=["p_trump_true", "p_hat"]).copy()
+
+    # errorbars are the 95% CIs
+    yerr_lower = plot_df["p_hat"] - plot_df["ci_lo"]
+    yerr_upper = plot_df["ci_hi"] - plot_df["p_hat"]
+
+    ax.errorbar(plot_df["p_trump_true"], plot_df["p_hat"],
+                yerr=[yerr_lower, yerr_upper],
+                fmt="o", ms=6, alpha=0.85, ecolor="gray", capsize=3)
+
+    # add 45 degree line
+    ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+
+    # axis labels for figure 4
+    ax.set_title(title)
+    ax.set_xlabel("True Trump share (state)")
+    if ax is axes[0]:
+        ax.set_ylabel("Estimated Trump share (CCES)")
+
+plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Weighted Likely)", fontsize=14)
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figure4_cces2024_trump_weighted.png", dpi=300)
+plt.show()
+
+
 
 ###### additional values (NEED TO MAP TO PAGE)
 # summary table of bias and n for validated sample

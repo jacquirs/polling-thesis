@@ -13,3 +13,4 @@ state_raw_vs_truth.csv
 state_likely_vs_truth.csv
 state_validated_vs_truth.csv
 validated_state_bias_summary.csv
+state_likely_weighted_vs_truth.csv
