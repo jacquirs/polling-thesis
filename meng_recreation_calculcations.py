@@ -10,7 +10,7 @@ truth_raw = pd.read_csv("Meng_true_votes.csv")
 truth = truth_raw[["state_name", "p_trump_true", "N_state"]].copy()
 
 # check success for all 51 result areas 
-print("Truth jurisdictions:", len(truth))
+# print("Truth jurisdictions:", len(truth))
 
 ########################################################################################
 ######################## REPLICATION OF FIGURE 4 ON PAGE 711 ###########################
