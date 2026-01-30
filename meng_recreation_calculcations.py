@@ -59,7 +59,7 @@ def state_estimates(df, mask=None, value_col="X_trump"):
     out["ci_hi"] = (out["p_hat"] + 1.96 * out["se"]).clip(0, 1)
     return out
 
-# Compute the three estimators used in Meng's figure:
+# Compute the three estimators used in Meng's figure
 # Raw: all respondents with a reported choice
 # Likely: those flagged as likely_voter == 1 
 # Validated: those with validated_voter == 1 
@@ -87,6 +87,40 @@ raw_m.to_csv("state_raw_vs_truth.csv", index=False)
 likely_m.to_csv("state_likely_vs_truth.csv", index=False)
 val_m.to_csv("state_validated_vs_truth.csv", index=False)
 
+###### coloring for plotting of state
+# battleground states
+purple_states = ["Arizona", "Georgia", "Michigan", "Nevada", "North Carolina", "Pennsylvania", "Wisconsin"]
+
+# Trump won these in 2024 (excluding the purple battlegrounds)
+red_states = [
+    "Alabama", "Alaska", "Arkansas", "Florida", "Idaho", "Indiana", "Iowa", "Kansas",
+    "Kentucky", "Louisiana", "Mississippi", "Missouri", "Montana", "Nebraska",
+    "North Dakota", "Ohio", "Oklahoma", "South Carolina", "South Dakota", "Tennessee",
+    "Texas", "Utah", "West Virginia", "Wyoming"
+]
+
+# Harris won these in 2024 (excluding the purple battlegrounds)
+blue_states = [
+    "California", "Colorado", "Connecticut", "Delaware", "District Of Columbia",
+    "Hawaii", "Illinois", "Maine", "Maryland", "Massachusetts", "Minnesota",
+    "New Hampshire", "New Jersey", "New Mexico", "New York", "Oregon",
+    "Rhode Island", "Vermont", "Virginia", "Washington"
+]
+
+# function to match states to color
+def assign_color(state):
+    if state in purple_states:
+        return "purple"
+    elif state in red_states:
+        return "red"
+    elif state in blue_states:
+        return "blue"
+    return "black" # in case messed up states
+    
+# assign colors to each merged dataframe
+for df in [raw_m, likely_m, val_m]:
+    df["color"] = df["state_name"].apply(assign_color)
+
 ###### plot Figure 4 three panels
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
@@ -103,10 +137,17 @@ for ax, (title, dfm) in zip(axes, panels):
     yerr_lower = plot_df["p_hat"] - plot_df["ci_lo"]
     yerr_upper = plot_df["ci_hi"] - plot_df["p_hat"]
 
-    ax.errorbar(plot_df["p_trump_true"], plot_df["p_hat"],
-                yerr=[yerr_lower, yerr_upper],
-                fmt="o", ms=6, alpha=0.85, ecolor="gray", capsize=3)
-
+    # loop through each color group to apply the specific color to the markers
+    for color_val, group in plot_df.groupby("color"):
+        yerr_low = group["p_hat"] - group["ci_lo"]
+        yerr_high = group["ci_hi"] - group["p_hat"]
+        
+        ax.errorbar(group["p_trump_true"], group["p_hat"],
+                yerr=[yerr_low, yerr_high],
+                fmt="o", ms=6, alpha=0.85, 
+                color=color_val,
+                capsize=3)
+        
     # add 45 degree line
     ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
 
@@ -204,6 +245,10 @@ likely_m_weighted = likely_est_weighted.merge(truth, on="state_name", how="left"
 likely_m_weighted.to_csv("state_likely_weighted_vs_truth.csv", index=False)  # now turnout-weighted + delta-method CIs
 
 ###### plot Figure 4 three panels, with weighted for panel 2
+# assign colors to new likely weighted
+for df in [likely_m_weighted]:
+    df["color"] = df["state_name"].apply(assign_color)
+
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
 panels = [
@@ -219,9 +264,16 @@ for ax, (title, dfm) in zip(axes, panels):
     yerr_lower = plot_df["p_hat"] - plot_df["ci_lo"]
     yerr_upper = plot_df["ci_hi"] - plot_df["p_hat"]
 
-    ax.errorbar(plot_df["p_trump_true"], plot_df["p_hat"],
-                yerr=[yerr_lower, yerr_upper],
-                fmt="o", ms=6, alpha=0.85, ecolor="gray", capsize=3)
+    # loop through each color group to apply the specific color to the markers
+    for color_val, group in plot_df.groupby("color"):
+        yerr_low = group["p_hat"] - group["ci_lo"]
+        yerr_high = group["ci_hi"] - group["p_hat"]
+        
+        ax.errorbar(group["p_trump_true"], group["p_hat"],
+                yerr=[yerr_low, yerr_high],
+                fmt="o", ms=6, alpha=0.85, 
+                color=color_val,
+                capsize=3)
 
     # add 45 degree line
     ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
@@ -236,7 +288,6 @@ plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_trump_weighted.png", dpi=300)
 plt.show()
-
 
 
 ###### additional values (NEED TO MAP TO PAGE)
