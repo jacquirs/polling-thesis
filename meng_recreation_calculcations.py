@@ -289,6 +289,23 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_trump_weighted.png", dpi=300)
 plt.show()
 
+##### TO DO: COME BACK TO DO HARRIS PLOTS
+
+########################################################################################
+######################## STATE LEVEL DATA DEFECT CORRELATIONS ###########################
+########################################################################################
+
+# compute actual bias for each state s
+# convert bias to meng 4.7
+# make figure 5
+# make figure 8
+
+########################################################################################
+######################## LAW OF LARGE POPULATIONS ###########################
+########################################################################################
+
+
+
 
 ###### additional values (NEED TO MAP TO PAGE)
 # summary table of bias and n for validated sample
