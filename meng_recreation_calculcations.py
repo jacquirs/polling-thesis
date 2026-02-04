@@ -830,10 +830,85 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure6_llp_logZ_logN_trump_harris.png", dpi=300)
 plt.show()
 
-##### figure 7: 
+##### figure 7: compares to regular Z score used in SRS
+# In each state, for a bernoulli outcome with true proportion p_s and sample mean p_hat_s
+# the standard error under SRS is SE_srs = sqrt( p_hat_s (1 - p_hat_s) / n_s )
+# which gives the z score Z_n = (p_hat_s - p_s) / SE_srs
 
+# Meng’s point is that even if the confidence interval logic looks fine under SRS assumptions, |Z_n| can blow up with N
+# because bias dominates variance under nonresponse, which is his Big Data Paradox
 
+def regular_zscore_3_9(p_hat, p_true, n):
+    # Z_n,s = (p_hat_s - p_true_s) / sqrt( p_hat_s (1 - p_hat_s) / n_s )
+    p_hat = np.asarray(p_hat, dtype=float)
+    p_true = np.asarray(p_true, dtype=float)
+    n = np.asarray(n, dtype=float)
 
+    var = (p_hat * (1.0 - p_hat)) / n
+    se = np.sqrt(var)
+    return (p_hat - p_true) / se
+
+# compute z score by state
+llp_df["Z_n_s_trump"] = regular_zscore_3_9(p_hat=llp_df["p_hat_trump"], p_true=llp_df["p_trump_true"], n=llp_df["n"])
+llp_df["Z_n_s_harris"] = regular_zscore_3_9(p_hat=llp_df["p_hat_harris"], p_true=llp_df["p_harris_true"], n=llp_df["n"])
+
+# determine is miss. indidctaor if |Z_n,s| > 2
+llp_df["miss_trump"] = (np.abs(llp_df["Z_n_s_trump"]) > 2.0).astype(int)
+llp_df["miss_harris"] = (np.abs(llp_df["Z_n_s_harris"]) > 2.0).astype(int)
+
+# plotting
+fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+
+# Harris panel
+axes[0].scatter(
+    llp_df["log10_N"],
+    llp_df["Z_n_s_harris"],
+    c=llp_df["color"],
+    alpha=0.85, edgecolors="black", linewidths=0.3)
+axes[0].axhspan(-2, 2, alpha=0.15)  # the “nominal 95%” band (Meng’s visual point)
+axes[0].axhline(0, linestyle="--", linewidth=1)
+axes[0].set_title("Harris (validated voters)")
+axes[0].set_xlabel(r"$\log_{10}(N_s)$  (state turnout)")
+axes[0].set_ylabel(r"Regular Z Score $Z_{n,s}$ ")
+
+# add avg misses
+miss_rate_H = llp_df["miss_harris"].mean()
+axes[0].text(
+    0.02, 0.95,
+    f"Share with |Z_n|>2: {miss_rate_H:.2%}",
+    transform=axes[0].transAxes,
+    ha="left", va="top",
+    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
+)
+
+# Trump panel
+axes[1].scatter(
+    llp_df["log10_N"],
+    llp_df["Z_n_s_trump"],
+    c=llp_df["color"],
+    alpha=0.85, edgecolors="black", linewidths=0.3)
+axes[1].axhspan(-2, 2, alpha=0.15)
+axes[1].axhline(0, linestyle="--", linewidth=1)
+axes[1].set_title("Trump (validated voters)")
+axes[1].set_xlabel(r"$\log_{10}(N_s)$  (state turnout)")
+
+# add avg misses
+miss_rate_T = llp_df["miss_trump"].mean()
+axes[1].text(
+    0.02, 0.95,
+    f"Share with |Z_n|>2: {miss_rate_T:.2%}",
+    transform=axes[1].transAxes,
+    ha="left", va="top",
+    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
+)
+
+plt.suptitle("Law of Large Populations (Figure 7 replication): Conventional Z_n vs log N")
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figure7_LLP_Zn_vs_logN_trump_harris.png", dpi=300)
+plt.show()
+
+# save data
+llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
 
 ########################################################################################
 ######################## Effective Sample Size #########################################
@@ -843,7 +918,7 @@ plt.show()
 # get neff
 
 
-
+##### ADD SOMETHING NEW TO REPLICATION, NEW ANALYSIS TYPE OR CHANGE ASSUMPTION OR NEW OUTPUTS
 # ###### additional values (NEED TO MAP TO PAGE)
 # # summary table of bias and n for validated sample
 # val_summary = val_m[["state_name", "n", "p_hat", "p_trump_true", "bias", "abs_bias"]].sort_values("abs_bias", ascending=False)
