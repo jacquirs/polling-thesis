@@ -401,7 +401,7 @@ val_mergedtruth_TH = val_mergedtruth_T[["state_name", "n", "p_hat", "p_trump_tru
 val_mergedtruth_TH = val_mergedtruth_TH.rename(columns={"p_hat": "p_hat_trump"})
 
 val_mergedtruth_TH = val_mergedtruth_TH.merge(
-    val_mergedtruth_H[["state_name", "p_hat"]].rename(columns={"p_hat": "p_hat_harris"}),
+    val_mergedtruth_H[["state_name", "bias_harris", "p_hat"]].rename(columns={"p_hat": "p_hat_harris"}),
     on="state_name",
     how="left"
 )
@@ -409,13 +409,42 @@ val_mergedtruth_TH = val_mergedtruth_TH.merge(
 # for later use in case
 val_mergedtruth_TH.to_csv("state_validated_trump_harris_vs_truth.csv", index=False)
 
-# data-over-quantity DO_s (2.4), f_s calculated before
-# ddc["DO_s"] = (1.0 - ddc["f_s"]) / ddc["f_s"]
+# all states satisfy the domain requirements for the data defect correlation (non-missing p^s,ps\hat p_s, p_sp^​s​,ps​ and 0<ns<Ns0 < n_s < N_s0<ns​<Ns​)
+# therefore no states are excluded from the DDC analysis
 
-# compute actual bias for each state s
-# convert bias to meng 4.7
-# make figure 5
-# make figure 8
+# compute (2.4) DO_s = (1 - f_s) / f_s, data over-quantity, amplification factor that makes large N dangerous when rho not 0
+val_mergedtruth_TH["DO_s"] = (1.0 - val_mergedtruth_TH["f_s"]) / val_mergedtruth_TH["f_s"]
+
+# Compute per-state DDC estimates (4.7) 
+# Meng’s question for each state rho_hat_{N,s} = ((p_hat_s - p_s) / sigma_s) * sqrt( f_s / (1 - f_s) )
+# where sigma_s = sqrt( p_s (1 - p_s) ) is the population SD of the Bernoulli outcome
+# below computed for both trump and harris
+
+eps = 1e-12 
+
+# before continuing, I verified that bias_trump already equals p_hat_trump − p_trump_true, no recomputation needed
+
+# Let pT​ and pH​ be the true state-level vote shares for Trump and Harris, trimmed away from 0 and 1 to avoid division-by-zero
+# pT and pH are the true state-level vote shares (population probabilities)
+# for Trump and Harris; they correspond to Meng’s p_G in equations (4.6)–(4.7)
+# and are used to compute sigma_G, odds O_G, and the data defect correlation
+
+# Trump
+# pT = the true probability that a randomly chosen voter in state s voted for Trump
+pT = val_mergedtruth_TH["p_trump_true"].clip(eps, 1.0 - eps)
+val_mergedtruth_TH["sigma_trump"] = np.sqrt(pT * (1.0 - pT))
+val_mergedtruth_TH["rho_hat_trump"] = (val_mergedtruth_TH["bias_trump"] / val_mergedtruth_TH["sigma_trump"]) * np.sqrt(val_mergedtruth_TH["f_s"] / (1.0 - val_mergedtruth_TH["f_s"]))
+
+# Harris
+# pH = the true probability that a randomly chosen voter in state s voted for Harris
+pH = val_mergedtruth_TH["p_harris_true"].clip(eps, 1.0 - eps)
+val_mergedtruth_TH["sigma_harris"] = np.sqrt(pH * (1.0 - pH))
+val_mergedtruth_TH["rho_hat_harris"] = (val_mergedtruth_TH["bias_harris"] / val_mergedtruth_TH["sigma_harris"]) * np.sqrt(val_mergedtruth_TH["f_s"] / (1.0 - val_mergedtruth_TH["f_s"]))
+
+# save per-state DDC outputs
+val_mergedtruth_TH.to_csv("state_level_rho_hat_trump_harris_validated.csv", index=False)
+
+
 
 ########################################################################################
 ######################## LAW OF LARGE POPULATIONS, Figures 6 and 7 #####################
