@@ -139,7 +139,6 @@ def assign_color(state):
         return "red"
     elif state in blue_states:
         return "blue"
-    return "black" # in case messed up states
     
 # assign colors to each merged dataframe
 for df_ in [raw_mergedtruth_T, likely_mergedtruth_T, val_mergedtruth_T, raw_mergedtruth_H, likely_mergedtruth_H, val_mergedtruth_H]:
@@ -525,8 +524,191 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure5_rho_hist_harris_trump_2024.png", dpi=300)
 plt.show()
 
+###### Figure 8
+# goal of Figure 8 is to show the state level data defect correlations and overlay the theoretical feasible bounds implied by Meng’s inequality (2.9)
+
+# compute odds O_G used in Meng bound (2.9)
+# Meng defines odds for a bernoulli population outcome G O_G = p_G / (1 - p_G)
+# where p_G is the true state-level prevalence of the outcome
+
+# compute O_trump and O_harris from true state vote shares, use pT and pH from above
+val_mergedtruth_TH["O_trump"] = pT / (1.0 - pT)   # odds that a random voter is Trump vs not Trump
+val_mergedtruth_TH["O_harris"] = pH / (1.0 - pH)  # odds that a random voter is Harris vs not Harris
+
+# Meng feasible bounds for rho (Equation (2.9) provides bounds on the data defect correlation \rho_{G,R} or \rho_N in the paper’s shorthand
+# in terms of O_G (odds of the outcome G in the population) and DO = (1 - f) / f  (Meng 2.4)
+
+def meng_bounds_2_9(O_G, DO):
+    """
+    Implements Meng inequality bounds (2.9) for correlation by state
+
+    Inputs:
+    O_G : odds p/(1-p) for outcome G in the population per state
+    DO  : data over-quantity (1-f)/f (per state), Meng 2.4
+    
+    Outputs: rho_lb, rho_ub : lower and upper feasible bounds for rho in Meng 2.9
+    """
+
+    OG_DO = O_G * DO
+
+    # Upper bound: rho_ub = min(sqrt(O_G*DO), 1/sqrt(O_G*DO))
+    rho_ub = np.minimum(np.sqrt(OG_DO), 1.0 / np.sqrt(OG_DO))
+
+    # Lower bound: rho_lb = -min(sqrt(DO/O_G), sqrt(O_G/DO))
+    rho_lb = -np.minimum(np.sqrt(DO / O_G), np.sqrt(O_G / DO))
+
+    return rho_lb, rho_ub
+
+# apply bounds per state
+val_mergedtruth_TH["rho_lb_trump"], val_mergedtruth_TH["rho_ub_trump"] = meng_bounds_2_9(val_mergedtruth_TH["O_trump"], val_mergedtruth_TH["DO_s"])
+val_mergedtruth_TH["rho_lb_harris"], val_mergedtruth_TH["rho_ub_harris"] = meng_bounds_2_9(val_mergedtruth_TH["O_harris"], val_mergedtruth_TH["DO_s"])
+
+# plot Figure 8, each panel shows upper and lower bounds from 2.9 and rho_hat from 4.7
+plot_df = val_mergedtruth_TH.copy()
+plot_df["color"] = plot_df["state_name"].apply(assign_color)
+
+# match meng's x axis
+plot_df["log10_N"] = np.log10(plot_df["N_state"])
+
+# sort by log10_N so points run left-->right in increasing population (like Meng)
+plot_df = plot_df.sort_values("log10_N").reset_index(drop=True)
+
+# keep an integer index for ordering reference
+plot_df["x_order"] = np.arange(len(plot_df))
+
+# get the overall mean rho
+mean_rho_trump = np.nanmean(plot_df["rho_hat_trump"])
+mean_rho_harris = np.nanmean(plot_df["rho_hat_harris"])
 
 
+fig, axes = plt.subplots(1, 2, figsize=(16, 5), sharey=True)
+
+# matching meng design
+line_alpha = 0.6 
+point_alpha = 0.9 
+small_point_size = 30
+big_point_size = 90
+
+# Harris panel
+ax = axes[0]
+
+# draw vertical dashed line from lower bound to upper bound
+for _, row in plot_df.iterrows():
+    x = row["log10_N"]
+    lb = row["rho_lb_harris"]
+    ub = row["rho_ub_harris"]
+    # draw vertical dashed line for interval from 2.9
+    ax.vlines(
+        x,
+        ymin=lb,
+        ymax=ub,
+        colors='gray',
+        linestyles='dashed',
+        linewidth=0.9,
+        alpha=line_alpha,
+        zorder=1
+    )
+
+# plot marker for rho_hat at each state's position
+ax.scatter(
+    plot_df["log10_N"],
+    plot_df["rho_hat_harris"],
+    s=small_point_size,
+    c=plot_df["color"],
+    alpha=point_alpha,
+    edgecolor='none',
+    zorder=3,
+    label=r'$\hat\rho_N$ (empirical)'
+)
+
+ax.scatter(
+    plot_df["log10_N"],
+    plot_df["rho_hat_harris"],
+    s=big_point_size,
+    facecolors=plot_df["color"],
+    edgecolors='black',
+    linewidths=0.6,
+    alpha=0.95,
+    zorder=4
+)
+
+# horizontal references: rho=0 (no selection bias) and mean rho
+ax.axhline(0.0, color='red', linestyle='--', linewidth=1.0, label=r'$\rho=0$ (no bias)')
+ax.axhline(mean_rho_harris, color='black', linestyle='--', linewidth=1.0, label=f'mean(ρ̂)={mean_rho_harris:.4f}')
+
+# labels and formatting
+ax.set_title("Harris: $\\hat\\rho_N$ with theoretical bounds (Meng eq. (2.9))")
+ax.set_xlabel("log10 (Total voters, $N_s$)")
+ax.set_ylabel(r"$\hat\rho_N$")
+ax.grid(axis='y', linestyle=':', linewidth=0.6, alpha=0.6)
+
+ax.legend(loc='lower left', fontsize=8)
+
+# Trump panel
+ax = axes[1]
+
+# draw vertical dashed line from lower bound to upper bound
+for _, row in plot_df.iterrows():
+    x = row["log10_N"]
+    lb = row["rho_lb_trump"]
+    ub = row["rho_ub_trump"]
+    # draw vertical dashed line for interval from 2.9
+    ax.vlines(
+        x,
+        ymin=lb,
+        ymax=ub,
+        colors='gray',
+        linestyles='dashed',
+        linewidth=0.9,
+        alpha=line_alpha,
+        zorder=1
+    )
+
+# plot marker for rho_hat at each state's position
+ax.scatter(
+    plot_df["log10_N"],
+    plot_df["rho_hat_trump"],
+    s=small_point_size,
+    c=plot_df["color"],
+    alpha=point_alpha,
+    edgecolor='none',
+    zorder=3
+)
+
+ax.scatter(
+    plot_df["log10_N"],
+    plot_df["rho_hat_trump"],
+    s=big_point_size,
+    facecolors=plot_df["color"],
+    edgecolors='black',
+    linewidths=0.6,
+    alpha=0.95,
+    zorder=4
+)
+
+# horizontal references: rho=0 (no selection bias) and mean rho
+ax.axhline(0.0, color='red', linestyle='--', linewidth=1.0, label=r'$\rho=0$ (no bias)')
+ax.axhline(mean_rho_trump, color='black', linestyle='--', linewidth=1.0, label=f'mean(ρ̂)={mean_rho_trump:.4f}')
+
+# labels and formatting
+ax.set_title("Trump: $\\hat\\rho_N$ with theoretical bounds (Meng eq. (2.9))")
+ax.set_xlabel("log10 (Total voters, $N_s$)")
+ax.grid(axis='y', linestyle=':', linewidth=0.6, alpha=0.6)
+ax.legend(loc='lower left', fontsize=8)
+
+plt.suptitle("Figure 8 style: state-level $\\hat\\rho_N$ with Meng feasible bounds (2.9)")
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figure8_rho_bounds_colored_2024.png", dpi=300)
+plt.show()
+
+# save values in case needed later
+figure8_datacheck = plot_df[[
+    "state_name", "N_state", "n", "f_s", "DO_s",
+    "p_trump_true", "p_hat_trump", "bias_trump", "rho_hat_trump", "rho_lb_trump", "rho_ub_trump",
+    "p_harris_true", "p_hat_harris", "bias_harris", "rho_hat_harris", "rho_lb_harris", "rho_ub_harris"
+]].copy()
+
+figure8_datacheck.to_csv("figure8_state_bounds_and_rhohat_2024.csv", index=False)
 
 
 ########################################################################################
