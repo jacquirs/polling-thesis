@@ -72,19 +72,19 @@ likely_est_T = state_estimates(cces, mask=(cces["likely_voter"] == 1), value_col
 validated_est_T = state_estimates(cces, mask=(cces["validated_voter"] == 1), value_col="X_trump")
 
 # merge each estimator with truth for comparison
-raw_m_T = raw_est_T.merge(truth, on="state_name", how="left")
-likely_m_T = likely_est_T.merge(truth, on="state_name", how="left")
-val_m_T = validated_est_T.merge(truth, on="state_name", how="left")
+raw_mergedtruth_T = raw_est_T.merge(truth, on="state_name", how="left")
+likely_mergedtruth_T = likely_est_T.merge(truth, on="state_name", how="left")
+val_mergedtruth_T = validated_est_T.merge(truth, on="state_name", how="left")
 
 # Trump bias + abs bias + sampling fraction for validated, used later for DDC
 # bias_s = \hat p_s - p_s (signed), Meng uses this to compute data defect correlation
-val_m_T["bias_trump"] = val_m_T["p_hat"] - val_m_T["p_trump_true"]
+val_mergedtruth_T["bias_trump"] = val_mergedtruth_T["p_hat"] - val_mergedtruth_T["p_trump_true"]
 
 # absolute bias
-val_m_T["abs_bias_trump"] = val_m_T["bias_trump"].abs()
+val_mergedtruth_T["abs_bias_trump"] = val_mergedtruth_T["bias_trump"].abs()
 
 # get validated sampling fraction f_s
-val_m_T["f_s"] = val_m_T["n"] / val_m_T["N_state"]
+val_mergedtruth_T["f_s"] = val_mergedtruth_T["n"] / val_mergedtruth_T["N_state"]
 
 
 ##### Harris estimates
@@ -92,23 +92,23 @@ raw_est_H = state_estimates(cces, mask=None, value_col="X_harris")
 likely_est_H = state_estimates(cces, mask=(cces["likely_voter"] == 1), value_col="X_harris")
 validated_est_H = state_estimates(cces, mask=(cces["validated_voter"] == 1), value_col="X_harris")
 
-raw_m_H = raw_est_H.merge(truth, on="state_name", how="left")
-likely_m_H = likely_est_H.merge(truth, on="state_name", how="left")
-val_m_H = validated_est_H.merge(truth, on="state_name", how="left")
+raw_mergedtruth_H = raw_est_H.merge(truth, on="state_name", how="left")
+likely_mergedtruth_H = likely_est_H.merge(truth, on="state_name", how="left")
+val_mergedtruth_H = validated_est_H.merge(truth, on="state_name", how="left")
 
 # Harris bias + abs bias for validated
-val_m_H["bias_harris"] = val_m_H["p_hat"] - val_m_H["p_harris_true"]
-val_m_H["abs_bias_harris"] = val_m_H["bias_harris"].abs()
-val_m_H["f_s"] = val_m_H["n"] / val_m_H["N_state"]
+val_mergedtruth_H["bias_harris"] = val_mergedtruth_H["p_hat"] - val_mergedtruth_H["p_harris_true"]
+val_mergedtruth_H["abs_bias_harris"] = val_mergedtruth_H["bias_harris"].abs()
+val_mergedtruth_H["f_s"] = val_mergedtruth_H["n"] / val_mergedtruth_H["N_state"]
 
 # save by state tables for later use
-raw_m_T.to_csv("state_raw_vs_truth_trump.csv", index=False)
-likely_m_T.to_csv("state_likely_vs_truth_trump_binarylikely.csv", index=False)
-val_m_T.to_csv("state_validated_vs_truth_trump.csv", index=False)
+raw_mergedtruth_T.to_csv("state_raw_vs_truth_trump.csv", index=False)
+likely_mergedtruth_T.to_csv("state_likely_vs_truth_trump_binarylikely.csv", index=False)
+val_mergedtruth_T.to_csv("state_validated_vs_truth_trump.csv", index=False)
 
-raw_m_H.to_csv("state_raw_vs_truth_harris.csv", index=False)
-likely_m_H.to_csv("state_likely_vs_truth_harris_binarylikely.csv", index=False)
-val_m_H.to_csv("state_validated_vs_truth_harris.csv", index=False)
+raw_mergedtruth_H.to_csv("state_raw_vs_truth_harris.csv", index=False)
+likely_mergedtruth_H.to_csv("state_likely_vs_truth_harris_binarylikely.csv", index=False)
+val_mergedtruth_H.to_csv("state_validated_vs_truth_harris.csv", index=False)
 
 
 ###### coloring for plotting of state
@@ -142,16 +142,16 @@ def assign_color(state):
     return "black" # in case messed up states
     
 # assign colors to each merged dataframe
-for df_ in [raw_m_T, likely_m_T, val_m_T, raw_m_H, likely_m_H, val_m_H]:
+for df_ in [raw_mergedtruth_T, likely_mergedtruth_T, val_mergedtruth_T, raw_mergedtruth_H, likely_mergedtruth_H, val_mergedtruth_H]:
     df_["color"] = df_["state_name"].apply(assign_color)
 
 ###### plot Figure 4 three panels for trump
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
 panels_T = [
-    ("Raw (all respondents)", raw_m_T),
-    ("Likely voters (binary)", likely_m_T),
-    ("Validated voters", val_m_T),
+    ("Raw (all respondents)", raw_mergedtruth_T),
+    ("Likely voters (binary)", likely_mergedtruth_T),
+    ("Validated voters", val_mergedtruth_T),
 ]
 
 for ax, (title, dfm) in zip(axes, panels_T):
@@ -190,9 +190,9 @@ plt.show()
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
 panels_H = [
-    ("Raw (all respondents)", raw_m_H),
-    ("Likely voters (binary)", likely_m_H),
-    ("Validated voters", val_m_H),
+    ("Raw (all respondents)", raw_mergedtruth_H),
+    ("Likely voters (binary)", likely_mergedtruth_H),
+    ("Validated voters", val_mergedtruth_H),
 ]
 
 for ax, (title, dfm) in zip(axes, panels_H):
@@ -299,30 +299,30 @@ def state_turnout_weighted(df, weight_col="lv_weight", value_col="X_trump"):
 
 # Weighted likely panel for Trump 
 likely_est_weighted_T = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_trump")
-likely_m_weighted_T = likely_est_weighted_T.merge(truth, on="state_name", how="left")
-likely_m_weighted_T["color"] = likely_m_weighted_T["state_name"].apply(assign_color)
-likely_m_weighted_T.to_csv("state_likely_weighted_vs_truth_trump.csv", index=False)
+likely_mergedtruth_weighted_T = likely_est_weighted_T.merge(truth, on="state_name", how="left")
+likely_mergedtruth_weighted_T["color"] = likely_mergedtruth_weighted_T["state_name"].apply(assign_color)
+likely_mergedtruth_weighted_T.to_csv("state_likely_weighted_vs_truth_trump.csv", index=False)
 
 # Weighted likely panel for Harris
 likely_est_weighted_H = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_harris")
-likely_m_weighted_H = likely_est_weighted_H.merge(truth, on="state_name", how="left")
-likely_m_weighted_H["color"] = likely_m_weighted_H["state_name"].apply(assign_color)
-likely_m_weighted_H.to_csv("state_likely_weighted_vs_truth_harris.csv", index=False)
+likely_mergedtruth_weighted_H = likely_est_weighted_H.merge(truth, on="state_name", how="left")
+likely_mergedtruth_weighted_H["color"] = likely_mergedtruth_weighted_H["state_name"].apply(assign_color)
+likely_mergedtruth_weighted_H.to_csv("state_likely_weighted_vs_truth_harris.csv", index=False)
 
 
 ###### plot Figure 4 three panels, with weighted for panel 2
 
 # TRUMP
 # assign colors to new likely weighted
-for df in [likely_m_weighted_T, likely_m_weighted_H]:
+for df in [likely_mergedtruth_weighted_T, likely_mergedtruth_weighted_H]:
     df["color"] = df["state_name"].apply(assign_color)
 
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
 panels_wieghted_T = [
-    ("Raw (all respondents)", raw_m_T),
-    ("Turnout adjusted likely voters", likely_m_weighted_T),
-    ("Validated voters", val_m_T),
+    ("Raw (all respondents)", raw_mergedtruth_T),
+    ("Turnout adjusted likely voters", likely_mergedtruth_weighted_T),
+    ("Validated voters", val_mergedtruth_T),
 ]
 
 for ax, (title, dfm) in zip(axes, panels_wieghted_T):
@@ -361,9 +361,9 @@ plt.show()
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
 panels_weighted_H = [
-    ("Raw (all respondents)", raw_m_H),
-    ("Turnout adjusted likely voters", likely_m_weighted_H),
-    ("Validated voters", val_m_H),
+    ("Raw (all respondents)", raw_mergedtruth_H),
+    ("Turnout adjusted likely voters", likely_mergedtruth_weighted_H),
+    ("Validated voters", val_mergedtruth_H),
 ]
 
 for ax, (title, dfm) in zip(axes, panels_weighted_H):
@@ -396,21 +396,18 @@ plt.show()
 ########################################################################################
 
 # create table comabining trump and harris validated esimtates
-val_m = val_m_T[["state_name", "n", "p_hat", "p_trump_true", "p_harris_true", "N_state", "bias_trump", "abs_bias_trump", "f_s"]].copy()
+val_mergedtruth_TH = val_mergedtruth_T[["state_name", "n", "p_hat", "p_trump_true", "p_harris_true", "N_state", "bias_trump", "abs_bias_trump", "f_s"]].copy()
 
-val_m = val_m.rename(columns={"p_hat": "p_hat_trump"})
+val_mergedtruth_TH = val_mergedtruth_TH.rename(columns={"p_hat": "p_hat_trump"})
 
-val_m = val_m.merge(
-    val_m_H[["state_name", "p_hat"]].rename(columns={"p_hat": "p_hat_harris"}),
+val_mergedtruth_TH = val_mergedtruth_TH.merge(
+    val_mergedtruth_H[["state_name", "p_hat"]].rename(columns={"p_hat": "p_hat_harris"}),
     on="state_name",
     how="left"
 )
 
 # for later use in case
-val_m.to_csv("state_validated_trump_harris_vs_truth.csv", index=False)
-
-
-
+val_mergedtruth_TH.to_csv("state_validated_trump_harris_vs_truth.csv", index=False)
 
 # data-over-quantity DO_s (2.4), f_s calculated before
 # ddc["DO_s"] = (1.0 - ddc["f_s"]) / ddc["f_s"]
