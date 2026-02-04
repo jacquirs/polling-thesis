@@ -415,7 +415,7 @@ val_mergedtruth_TH.to_csv("state_validated_trump_harris_vs_truth.csv", index=Fal
 # compute (2.4) DO_s = (1 - f_s) / f_s, data over-quantity, amplification factor that makes large N dangerous when rho not 0
 val_mergedtruth_TH["DO_s"] = (1.0 - val_mergedtruth_TH["f_s"]) / val_mergedtruth_TH["f_s"]
 
-# Compute per-state DDC estimates (4.7) 
+###### Compute per-state DDC estimates (4.7) 
 # Meng’s question for each state rho_hat_{N,s} = ((p_hat_s - p_s) / sigma_s) * sqrt( f_s / (1 - f_s) )
 # where sigma_s = sqrt( p_s (1 - p_s) ) is the population SD of the Bernoulli outcome
 # below computed for both trump and harris
@@ -444,7 +444,7 @@ val_mergedtruth_TH["rho_hat_harris"] = (val_mergedtruth_TH["bias_harris"] / val_
 # save per state DDC outputs
 val_mergedtruth_TH.to_csv("state_level_rho_hat_trump_harris_validated.csv", index=False)
 
-# Figure 5 from meng: "Histograms of state-level data defect correlations assessed by using the validated voter
+###### Figure 5 from meng: "Histograms of state-level data defect correlations assessed by using the validated voter
 # data: Clinton's supporters (left) versus Trump’s supporters (right). The numbers in boxes show
 # "mean ± 2 standard error"
 
@@ -524,6 +524,10 @@ plt.suptitle("Figure 5 Replication (2024): Histograms of state-level data defect
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure5_rho_hist_harris_trump_2024.png", dpi=300)
 plt.show()
+
+
+
+
 
 ########################################################################################
 ######################## LAW OF LARGE POPULATIONS, Figures 6 and 7 #####################
