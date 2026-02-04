@@ -441,10 +441,89 @@ pH = val_mergedtruth_TH["p_harris_true"].clip(eps, 1.0 - eps)
 val_mergedtruth_TH["sigma_harris"] = np.sqrt(pH * (1.0 - pH))
 val_mergedtruth_TH["rho_hat_harris"] = (val_mergedtruth_TH["bias_harris"] / val_mergedtruth_TH["sigma_harris"]) * np.sqrt(val_mergedtruth_TH["f_s"] / (1.0 - val_mergedtruth_TH["f_s"]))
 
-# save per-state DDC outputs
+# save per state DDC outputs
 val_mergedtruth_TH.to_csv("state_level_rho_hat_trump_harris_validated.csv", index=False)
 
+# Figure 5 from meng: "Histograms of state-level data defect correlations assessed by using the validated voter
+# data: Clinton's supporters (left) versus Trump’s supporters (right). The numbers in boxes show
+# "mean ± 2 standard error"
 
+def histogram_maker_for_figure5(values):
+    """
+    Compute the mean and 2 standard errors of the mean for states
+
+    center = mean across states
+    spread indicator = +/- 2 * (SD / sqrt(number of states))
+    """
+
+    values_array = np.asarray(values)
+
+    values_array = values_array[~np.isnan(values_array)]
+
+    # Number of states/jurisdictions included in the summary
+    num_states = len(values_array)
+
+    # If there are 0 or 1 states, the standard deviation and SE are undefined
+    if num_states <= 1:
+        return (np.nan, np.nan, num_states)
+
+    # Mean of the quantity across states (e.g., mean of rho_hat_N)
+    mean_value = float(np.mean(values_array))
+
+    # sample standard deviation across states (ddof=1 = sample SD, not population SD)
+    # matches Meng's use of SD across states when forming the standard error 
+    sd_across_states = float(np.std(values_array, ddof=1))
+
+    # standard error of the mean across states: SD / sqrt(number of states)
+    se_of_mean = sd_across_states / np.sqrt(num_states)
+
+    # returns mean across states, 2 * standard error of that mean , number of states used
+    return (mean_value, 2.0 * se_of_mean, num_states)
+
+# state level data defect correlation estimate
+rhoH = val_mergedtruth_TH["rho_hat_harris"].values
+rhoT = val_mergedtruth_TH["rho_hat_trump"].values
+
+# mean_value_of_rhoT = mean of the state-level Trump data defect correlations, vertical dashed line
+
+mean_value_of_rhoH, SE_plusminus2_H, number_of_states_used_H = histogram_maker_for_figure5(rhoH)
+mean_value_of_rhoT, SE_plusminus2_T, number_of_states_used_T = histogram_maker_for_figure5(rhoT)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+
+# Harris panel (left)
+axes[0].hist(rhoH, bins=15, edgecolor="black")
+axes[0].axvline(0, linestyle="--",linewidth=1, color="red")
+axes[0].axvline(mean_value_of_rhoH, linestyle="--", linewidth=1)
+axes[0].set_title("Harris: distribution of state-level $\\hat\\rho_N$ (validated voters)")
+axes[0].set_xlabel("$\\hat\\rho_N$")
+axes[0].set_ylabel("Number of states / jurisdictions")
+axes[0].text(
+    0.98, 0.95,
+    f"mean +/- 2 s.e.\n{mean_value_of_rhoH:.4f} ± {SE_plusminus2_H:.4f}\n(S={number_of_states_used_H})",
+    transform=axes[0].transAxes,
+    ha="right", va="top",
+    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
+)
+
+# Trump panel (right)
+axes[1].hist(rhoT, bins=15, edgecolor="black")
+axes[1].axvline(0, linestyle="--",linewidth=1, color="red")
+axes[1].axvline(mean_value_of_rhoT, linestyle="--", linewidth=1)
+axes[1].set_title("Trump: distribution of state-level $\\hat\\rho_N$ (validated voters)")
+axes[1].set_xlabel("$\\hat\\rho_N$")
+axes[1].text(
+    0.98, 0.95,
+    f"mean +/- 2 s.e.\n{mean_value_of_rhoT:.4f} ± {SE_plusminus2_T:.4f}\n(S={number_of_states_used_T})",
+    transform=axes[1].transAxes,
+    ha="right", va="top",
+    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
+)
+
+plt.suptitle("Figure 5 Replication (2024): Histograms of state-level data defect correlation $\\hat\\rho_N$")
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figure5_rho_hist_harris_trump_2024.png", dpi=300)
+plt.show()
 
 ########################################################################################
 ######################## LAW OF LARGE POPULATIONS, Figures 6 and 7 #####################
