@@ -7,7 +7,7 @@ cces = pd.read_csv("cces2024_meng_replication_set.csv")
 truth_raw = pd.read_csv("Meng_true_votes.csv")
 
 # build truth table
-truth = truth_raw[["state_name", "p_trump_true", "N_state"]].copy()
+truth = truth_raw[["state_name", "p_trump_true", "p_harris_true", "N_state"]].copy()
 
 # check success for all 51 result areas 
 # print("Truth jurisdictions:", len(truth))
@@ -59,33 +59,57 @@ def state_estimates(df, mask=None, value_col="X_trump"):
     out["ci_hi"] = (out["p_hat"] + 1.96 * out["se"]).clip(0, 1)
     return out
 
-# Compute the three estimators used in Meng's figure
+# Because there are third-party voters, Harris share is not equal to (1 - Trump share) in either truth or survey; therefore I compute Harris directly from X_harris
+
+# Compute the three estimators used in Meng's figure for each candidate
 # Raw: all respondents with a reported choice
 # Likely: those flagged as likely_voter == 1 
 # Validated: those with validated_voter == 1 
-raw_est = state_estimates(cces, mask=None)
-likely_est = state_estimates(cces, mask=(cces["likely_voter"] == 1))
-validated_est = state_estimates(cces, mask=(cces["validated_voter"] == 1))
+
+##### Trump estimates
+raw_est_T = state_estimates(cces, mask=None, value_col="X_trump")
+likely_est_T = state_estimates(cces, mask=(cces["likely_voter"] == 1), value_col="X_trump")
+validated_est_T = state_estimates(cces, mask=(cces["validated_voter"] == 1), value_col="X_trump")
 
 # merge each estimator with truth for comparison
-raw_m = raw_est.merge(truth, on="state_name", how="left")
-likely_m = likely_est.merge(truth, on="state_name", how="left")
-val_m = validated_est.merge(truth, on="state_name", how="left")
+raw_m_T = raw_est_T.merge(truth, on="state_name", how="left")
+likely_m_T = likely_est_T.merge(truth, on="state_name", how="left")
+val_m_T = validated_est_T.merge(truth, on="state_name", how="left")
 
-###### compute bias per state for the validated estimator 
-# bias_s = \hat p_s - p_s (signed), Meng uses this to compute data defect correlation later
-val_m["bias"] = val_m["p_hat"] - val_m["p_trump_true"]
+# Trump bias + abs bias + sampling fraction for validated, used later for DDC
+# bias_s = \hat p_s - p_s (signed), Meng uses this to compute data defect correlation
+val_m_T["bias_trump"] = val_m_T["p_hat"] - val_m_T["p_trump_true"]
 
-# also include absolute bias
-val_m["abs_bias"] = val_m["bias"].abs()
+# absolute bias
+val_m_T["abs_bias_trump"] = val_m_T["bias_trump"].abs()
 
 # get validated sampling fraction f_s
-val_m["f_s"] = val_m["n"] / val_m["N_state"]
+val_m_T["f_s"] = val_m_T["n"] / val_m_T["N_state"]
+
+
+##### Harris estimates
+raw_est_H = state_estimates(cces, mask=None, value_col="X_harris")
+likely_est_H = state_estimates(cces, mask=(cces["likely_voter"] == 1), value_col="X_harris")
+validated_est_H = state_estimates(cces, mask=(cces["validated_voter"] == 1), value_col="X_harris")
+
+raw_m_H = raw_est_H.merge(truth, on="state_name", how="left")
+likely_m_H = likely_est_H.merge(truth, on="state_name", how="left")
+val_m_H = validated_est_H.merge(truth, on="state_name", how="left")
+
+# Harris bias + abs bias for validated
+val_m_H["bias_harris"] = val_m_H["p_hat"] - val_m_H["p_harris_true"]
+val_m_H["abs_bias_harris"] = val_m_H["bias_harris"].abs()
+val_m_H["f_s"] = val_m_H["n"] / val_m_H["N_state"]
 
 # save by state tables for later use
-raw_m.to_csv("state_raw_vs_truth.csv", index=False)
-likely_m.to_csv("state_likely_vs_truth.csv", index=False)
-val_m.to_csv("state_validated_vs_truth.csv", index=False)
+raw_m_T.to_csv("state_raw_vs_truth_trump.csv", index=False)
+likely_m_T.to_csv("state_likely_vs_truth_trump_binarylikely.csv", index=False)
+val_m_T.to_csv("state_validated_vs_truth_trump.csv", index=False)
+
+raw_m_H.to_csv("state_raw_vs_truth_harris.csv", index=False)
+likely_m_H.to_csv("state_likely_vs_truth_harris_binarylikely.csv", index=False)
+val_m_H.to_csv("state_validated_vs_truth_harris.csv", index=False)
+
 
 ###### coloring for plotting of state
 # battleground states
@@ -118,19 +142,19 @@ def assign_color(state):
     return "black" # in case messed up states
     
 # assign colors to each merged dataframe
-for df in [raw_m, likely_m, val_m]:
-    df["color"] = df["state_name"].apply(assign_color)
+for df_ in [raw_m_T, likely_m_T, val_m_T, raw_m_H, likely_m_H, val_m_H]:
+    df_["color"] = df_["state_name"].apply(assign_color)
 
-###### plot Figure 4 three panels
+###### plot Figure 4 three panels for trump
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
-panels = [
-    ("Raw (all respondents)", raw_m),
-    ("Likely voters", likely_m),
-    ("Validated voters", val_m),
+panels_T = [
+    ("Raw (all respondents)", raw_m_T),
+    ("Likely voters (binary)", likely_m_T),
+    ("Validated voters", val_m_T),
 ]
 
-for ax, (title, dfm) in zip(axes, panels):
+for ax, (title, dfm) in zip(axes, panels_T):
     plot_df = dfm.dropna(subset=["p_trump_true", "p_hat"]).copy()
 
     # errorbars are the 95% CIs
@@ -161,6 +185,41 @@ plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_trump_binarylikely.png", dpi=300)
 plt.show()
+
+###### plot Figure 4 three panels for harris, same as trump above jsut with harris var
+fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
+
+panels_H = [
+    ("Raw (all respondents)", raw_m_H),
+    ("Likely voters (binary)", likely_m_H),
+    ("Validated voters", val_m_H),
+]
+
+for ax, (title, dfm) in zip(axes, panels_H):
+    plot_df = dfm.dropna(subset=["p_harris_true", "p_hat"]).copy()
+
+    for color_val, group in plot_df.groupby("color"):
+        yerr_low = group["p_hat"] - group["ci_lo"]
+        yerr_high = group["ci_hi"] - group["p_hat"]
+
+        ax.errorbar(
+            group["p_harris_true"], group["p_hat"],
+            yerr=[yerr_low, yerr_high],
+            fmt="o", ms=6, alpha=0.85,
+            color=color_val, capsize=3
+        )
+
+    ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+    ax.set_title(title)
+    ax.set_xlabel("True Harris share (state)")
+    if ax is axes[0]:
+        ax.set_ylabel("Estimated Harris share (CCES)")
+
+plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Binary Likely)", fontsize=14)
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figure4_cces2024_harris_binarylikely.png", dpi=300)
+plt.show()
+
 
 ###### Meng uses different process for panel 2, likely voters, but does not disclose exact formulas, so I have determined my own method from statements
 # Meng's caption for Figure 4 says the middle plot uses:
@@ -201,7 +260,10 @@ def state_turnout_weighted(df, weight_col="lv_weight", value_col="X_trump"):
     Estimator: \hat p^{LV}_s = (Σ w_i X_i) / (Σ w_i)
 
     Delta-method variance for the weighted mean: Var( \hat p^{LV}_s ) ≈ [ Σ w_i^2 (X_i - \hat p^{LV}_s)^2 ] / (Σ w_i)^2
+    
+    Meng does not publish the exact mapping from turnout intent categories to weight so this mapping is an inference seeimingly consistent with his description
     """
+
     sub = df.dropna(subset=[value_col, weight_col]).copy()
 
     # compute weighted numerator and denominator per state
@@ -235,29 +297,35 @@ def state_turnout_weighted(df, weight_col="lv_weight", value_col="X_trump"):
 
 # calculate the panel as above, but just for the likely, will use the panel 1 and 3 from above
 
-# different from other likely_est
-likely_est_weighted = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_trump")
+# Weighted likely panel for Trump 
+likely_est_weighted_T = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_trump")
+likely_m_weighted_T = likely_est_weighted_T.merge(truth, on="state_name", how="left")
+likely_m_weighted_T["color"] = likely_m_weighted_T["state_name"].apply(assign_color)
+likely_m_weighted_T.to_csv("state_likely_weighted_vs_truth_trump.csv", index=False)
 
-# merge each estimator with truth for comparison
-likely_m_weighted = likely_est_weighted.merge(truth, on="state_name", how="left")
+# Weighted likely panel for Harris
+likely_est_weighted_H = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_harris")
+likely_m_weighted_H = likely_est_weighted_H.merge(truth, on="state_name", how="left")
+likely_m_weighted_H["color"] = likely_m_weighted_H["state_name"].apply(assign_color)
+likely_m_weighted_H.to_csv("state_likely_weighted_vs_truth_harris.csv", index=False)
 
-# save by state results
-likely_m_weighted.to_csv("state_likely_weighted_vs_truth.csv", index=False)  # now turnout-weighted + delta-method CIs
 
 ###### plot Figure 4 three panels, with weighted for panel 2
+
+# TRUMP
 # assign colors to new likely weighted
-for df in [likely_m_weighted]:
+for df in [likely_m_weighted_T, likely_m_weighted_H]:
     df["color"] = df["state_name"].apply(assign_color)
 
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
 
-panels = [
-    ("Raw (all respondents)", raw_m),
-    ("Turnout adjusted likely voters", likely_m_weighted),
-    ("Validated voters", val_m),
+panels_wieghted_T = [
+    ("Raw (all respondents)", raw_m_T),
+    ("Turnout adjusted likely voters", likely_m_weighted_T),
+    ("Validated voters", val_m_T),
 ]
 
-for ax, (title, dfm) in zip(axes, panels):
+for ax, (title, dfm) in zip(axes, panels_wieghted_T):
     plot_df = dfm.dropna(subset=["p_trump_true", "p_hat"]).copy()
 
     # errorbars are the 95% CIs
@@ -289,11 +357,58 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_trump_weighted.png", dpi=300)
 plt.show()
 
-##### TO DO: COME BACK TO DO HARRIS PLOTS
+# HARRIS, same as trump
+fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
+
+panels_weighted_H = [
+    ("Raw (all respondents)", raw_m_H),
+    ("Turnout adjusted likely voters", likely_m_weighted_H),
+    ("Validated voters", val_m_H),
+]
+
+for ax, (title, dfm) in zip(axes, panels_weighted_H):
+    plot_df = dfm.dropna(subset=["p_harris_true", "p_hat"]).copy()
+
+    for color_val, group in plot_df.groupby("color"):
+        yerr_low = group["p_hat"] - group["ci_lo"]
+        yerr_high = group["ci_hi"] - group["p_hat"]
+
+        ax.errorbar(
+            group["p_harris_true"], group["p_hat"],
+            yerr=[yerr_low, yerr_high],
+            fmt="o", ms=6, alpha=0.85,
+            color=color_val, capsize=3
+        )
+
+    ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+    ax.set_title(title)
+    ax.set_xlabel("True Harris share (state)")
+    if ax is axes[0]:
+        ax.set_ylabel("Estimated Harris share (CCES)")
+
+plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Weighted Likely)", fontsize=14)
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figure4_cces2024_harris_weighted.png", dpi=300)
+plt.show()
 
 ########################################################################################
 ################## STATE LEVEL DATA DEFECT CORRELATIONS, Figures 5 and 8 ###############
 ########################################################################################
+
+# create table comabining trump and harris validated esimtates
+val_m = val_m_T[["state_name", "n", "p_hat", "p_trump_true", "p_harris_true", "N_state", "bias_trump", "abs_bias_trump", "f_s"]].copy()
+
+val_m = val_m.rename(columns={"p_hat": "p_hat_trump"})
+
+val_m = val_m.merge(
+    val_m_H[["state_name", "p_hat"]].rename(columns={"p_hat": "p_hat_harris"}),
+    on="state_name",
+    how="left"
+)
+
+# for later use in case
+val_m.to_csv("state_validated_trump_harris_vs_truth.csv", index=False)
+
 
 # compute actual bias for each state s
 # convert bias to meng 4.7
