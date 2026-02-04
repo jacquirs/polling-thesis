@@ -56,16 +56,31 @@ trump_votes = (
     .sum()
 )
 
+# aggregate Harris votes per state
+harris_votes = (
+    df_pres_2024_clean[df_pres_2024_clean["candidate"] == "HARRIS, KAMALA D."]
+    .groupby("state_name")["votes"]
+    .sum()
+)
+
 state_totals["trump_votes"] = state_totals["state_name"].map(trump_votes)
+state_totals["harris_votes"] = state_totals["state_name"].map(harris_votes)
+
 
 # compute Trump share
 state_totals["p_trump_true"] = (
     state_totals["trump_votes"] / state_totals["N_state"]
 )
 
+# compute harris share
+state_totals["p_harris_true"] = (
+    state_totals["harris_votes"] / state_totals["N_state"]
+)
+
+
 # keep only needed columns
 for_meng = state_totals[
-    ["state_name", "p_trump_true", "N_state"]
+    ["state_name", "p_trump_true", "p_harris_true", "N_state"]
 ].copy()
 
 for_meng.to_csv("Meng_true_votes.csv", index=False)
