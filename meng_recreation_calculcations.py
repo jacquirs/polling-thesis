@@ -715,8 +715,66 @@ figure8_datacheck.to_csv("figure8_state_bounds_and_rhohat_2024.csv", index=False
 ######################## LAW OF LARGE POPULATIONS, Figures 6 and 7 #####################
 ########################################################################################
 
-# compute Z score (ish) for each state, equation 3.9
-# regress log Z on log N, figure 6
+# This section matches what Meng does in his section 4.2 and figures 6 adn 7
+# Figure 6 uses the "nominal Z-score" from Meng (3.1), denoted Z_{n,N}, and the log–log regression motivated by Meng 4.8 and 4.9
+# Figure 7 uses the conventional Z-score Z_n from Meng (3.9) and checks how often the usual |Z_n| <= 2 "95% CI region" contains the truth, and whether the misses grow with N
+
+# make copy of data for law of large population (LLP)
+llp_df = val_mergedtruth_TH.copy()
+
+# calculate OLS estimates 
+def ols_slope_and_se(x, y):
+    """
+    b_hat: slope estimate
+    se_b: standard error of slope 
+    a_hat: intercept
+
+    using y = a+bx form
+    """
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+
+    # matrix with intercept [1, x]
+    X = np.column_stack([np.ones_like(x), x])
+
+    # OLS coefficients (X'X)^{-1} X'y
+    beta = np.linalg.lstsq(X, y, rcond=None)[0]
+    a_hat, b_hat = beta[0], beta[1]
+
+    # residuals and residual variance, s^2 = RSS/(n-2)
+    resid = y - (a_hat + b_hat * x)
+    n_obs = len(x)
+    rss = np.sum(resid**2)
+    s2 = rss / (n_obs - 2)
+
+    # Var(beta) = s^2 (X'X)^{-1}, slope is element [1,1]
+    XtX_inv = np.linalg.inv(X.T @ X)
+    se_b = np.sqrt(s2 * XtX_inv[1, 1])
+
+    return (b_hat, se_b, a_hat)
+
+##### info needed for figure 6, log|Z_{n,N}| vs log N regression 
+# Meng 3.1: Z_{n,N} = sqrt(N - 1) * rho_{R,G}
+llp_df["Z_nN_trump"]  = np.sqrt(llp_df["N_state"] - 1.0) * llp_df["rho_hat_trump"]
+llp_df["Z_nN_harris"] = np.sqrt(llp_df["N_state"] - 1.0) * llp_df["rho_hat_harris"]
+
+# use log10 to match Meng’s plotting
+# log–log variables for Meng 4.9, log|Z_{n,N}| and log N
+llp_df["log10_N"] = np.log10(llp_df["N_state"])
+llp_df["log10_absZ_nN_trump"]  = np.log10(np.abs(llp_df["Z_nN_trump"])  + eps)
+llp_df["log10_absZ_nN_harris"] = np.log10(np.abs(llp_df["Z_nN_harris"]) + eps)
+
+# fit Meng 4.9 separately for Harris and Trump, log|Z_{n,N}| = alpha + beta log N
+beta_T, se_beta_T, alpha_T = ols_slope_and_se(llp_df["log10_N"], llp_df["log10_absZ_nN_trump"])
+beta_H, se_beta_H, alpha_H = ols_slope_and_se(llp_df["log10_N"], llp_df["log10_absZ_nN_harris"])
+
+# plot based on log10
+x_line = np.linspace(llp_df["log10_N"].min(), llp_df["log10_N"].max(), 200)
+
+##### plotting figure 6, log log plot og log|Z_{n,N}| and log N with OLS line
+
+
+
 # analyze for selection bias
 # figure 7
 
