@@ -410,6 +410,11 @@ val_m = val_m.merge(
 val_m.to_csv("state_validated_trump_harris_vs_truth.csv", index=False)
 
 
+
+
+# data-over-quantity DO_s (2.4), f_s calculated before
+# ddc["DO_s"] = (1.0 - ddc["f_s"]) / ddc["f_s"]
+
 # compute actual bias for each state s
 # convert bias to meng 4.7
 # make figure 5
@@ -433,14 +438,14 @@ val_m.to_csv("state_validated_trump_harris_vs_truth.csv", index=False)
 
 
 
-###### additional values (NEED TO MAP TO PAGE)
-# summary table of bias and n for validated sample
-val_summary = val_m[["state_name", "n", "p_hat", "p_trump_true", "bias", "abs_bias"]].sort_values("abs_bias", ascending=False)
-print("\nTop 10 states by absolute bias (validated):")
-print(val_summary.head(10).to_string(index=False))
-val_summary.to_csv("validated_state_bias_summary.csv", index=False)
+# ###### additional values (NEED TO MAP TO PAGE)
+# # summary table of bias and n for validated sample
+# val_summary = val_m[["state_name", "n", "p_hat", "p_trump_true", "bias", "abs_bias"]].sort_values("abs_bias", ascending=False)
+# print("\nTop 10 states by absolute bias (validated):")
+# print(val_summary.head(10).to_string(index=False))
+# val_summary.to_csv("validated_state_bias_summary.csv", index=False)
 
-# mean bias and RMSE
-mean_bias = val_m["bias"].mean()
-rmse = np.sqrt((val_m["bias"]**2).mean())
-print(f"\nValidated sample mean bias: {mean_bias:.4f}, RMSE: {rmse:.4f}")
+# # mean bias and RMSE
+# mean_bias = val_m["bias"].mean()
+# rmse = np.sqrt((val_m["bias"]**2).mean())
+# print(f"\nValidated sample mean bias: {mean_bias:.4f}, RMSE: {rmse:.4f}")
