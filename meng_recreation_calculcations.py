@@ -771,12 +771,69 @@ beta_H, se_beta_H, alpha_H = ols_slope_and_se(llp_df["log10_N"], llp_df["log10_a
 # plot based on log10
 x_line = np.linspace(llp_df["log10_N"].min(), llp_df["log10_N"].max(), 200)
 
-##### plotting figure 6, log log plot og log|Z_{n,N}| and log N with OLS line
+##### plotting figure 6, log log plot of log|Z_{n,N}| and log N with OLS line
+# predicted values y_hat=alpha+beta*x
+yhat_line_T = alpha_T + beta_T * x_line
+yhat_line_H = alpha_H + beta_H * x_line
+
+# colors for plotting
+llp_df["color"] = llp_df["state_name"].apply(assign_color)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+
+# Harris panel
+axes[0].scatter(
+    llp_df["log10_N"],
+    llp_df["log10_absZ_nN_harris"],
+    c=llp_df["color"],
+    alpha=0.85,
+    edgecolors="black",
+    linewidths=0.3
+)
+axes[0].plot(x_line, yhat_line_H, linestyle="--", linewidth=1)
+axes[0].set_title("Harris (validated voters)")
+axes[0].set_xlabel(r"$\log_{10}(N_s)$  (state turnout)")
+axes[0].set_ylabel(r"$\log_{10}(|Z_{n,N,s}|)$")
+
+# slope from beta
+axes[0].text(
+    0.02, 0.95,
+    f"OLS slope beta = {beta_H:.3f} (SE {se_beta_H:.3f})",
+    transform=axes[0].transAxes,
+    ha="left", va="top",
+    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
+)
+
+# Trump panel
+axes[1].scatter(
+    llp_df["log10_N"],
+    llp_df["log10_absZ_nN_trump"],
+    c=llp_df["color"],
+    alpha=0.85,
+    edgecolors="black",
+    linewidths=0.3
+)
+axes[1].plot(x_line, yhat_line_T, linestyle="--", linewidth=1)
+axes[1].set_title("Trump (validated voters)")
+axes[1].set_xlabel(r"$\log_{10}(N_s)$  (state turnout)")
+
+axes[1].text(
+    0.02, 0.95,
+    f"OLS slope beta = {beta_T:.3f} (SE {se_beta_T:.3f})",
+    transform=axes[1].transAxes,
+    ha="left", va="top",
+    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
+)
+
+plt.suptitle("Law of Large Populations (Figure 6 replication): log |Z_{n,N}| vs log N")
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figure6_llp_logZ_logN_trump_harris.png", dpi=300)
+plt.show()
+
+##### figure 7: 
 
 
 
-# analyze for selection bias
-# figure 7
 
 ########################################################################################
 ######################## Effective Sample Size #########################################
