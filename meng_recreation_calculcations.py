@@ -914,8 +914,93 @@ llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
 ######################## Effective Sample Size #########################################
 ########################################################################################
 
-# get DI and DO
-# get neff
+#
+# - Dropout Odds (DO):        DO = (1 - f) / f     (Meng (2.4))
+#
+# - Effective sample size:
+#     Define n*_eff = (DO * DI)^(-1)  (Meng defines this just before (3.5))
+#     Then the finite-population “exact” version is:
+#         n_eff = n*_eff / ( 1 + (n*_eff - 1)/(N - 1) )   (Meng (3.5))
+#
+#   Meng explicitly says: it is mathematically important to carry the N−1 term in (3.5),
+#   but for practical purposes he uses n*_eff in subsequent calculations because it is
+#   "easier algebraically and crisper conceptually" and is an "almost exact upper bound."
+#
+# Your inputs already computed earlier:
+#   val_mergedtruth_TH must contain, by state:
+#     - N_state (total turnout / population size N in your retrospective)
+#     - n       (validated sample size in state)
+#     - f_s     (n / N_state)
+#     - DO_s    ((1-f_s)/f_s)  [you already computed this earlier]
+#     - rho_hat_trump, rho_hat_harris  (Meng (4.7) style state-level rho estimates)
+#     - p_trump_true, p_harris_true (true state vote shares; used for sigma^2 = p(1-p))
+#
+# NOTE: Meng’s DI is an expectation over the R-mechanism, whereas we only have one realized
+# sample per state. In the 2016 application, Meng proceeds using the realized rho (or its
+# average) as the operative quantity. Here we mirror that per-state with DI_s ≈ (rho_hat_s)^2.
+# This is faithful in spirit/usage, but it is still an inference about how DI is operationalized.
+
+# dataset to use
+eff_samplesize_df = val_mergedtruth_TH.copy()
+
+# data defect index (DI)
+# for each state s and candidate G in {Trump, Harris}, DI_{s,G} = (rho_hat_{s,G})^2 because DI is governed by rho^2 in Meng’s effective sample size identity in 3.5
+eff_samplesize_df["DI_trump"]  = eff_samplesize_df["rho_hat_trump"]**2
+eff_samplesize_df["DI_harris"] = eff_samplesize_df["rho_hat_harris"]**2
+
+# data quantity term, 2.4: DO = (1-f)/f, already calculated as DO_s for each state
+
+# n*_eff = (DO * DI)^(-1)
+eff_samplesize_df["n_star_eff_trump"]  = 1.0 / eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_trump"]
+eff_samplesize_df["n_star_eff_harris"] = 1.0 / eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_harris"]
+
+# n_eff, from 3.5: n_eff = n*_eff / ( 1 + (n*_eff - 1)/(N - 1) )
+# under SRS, n_eff is about n, if DI=0, n_eff = N rather than infinity
+
+# compuated here but Meng later goes back to n*_eff
+eff_samplesize_df["N_minus_1"] = eff_samplesize_df["N_state"] - 1.0
+
+eff_samplesize_df["n_eff_trump"] = eff_samplesize_df["n_star_eff_trump"] / (
+    1.0 + (eff_samplesize_df["n_star_eff_trump"] - 1.0) / eff_samplesize_df["N_minus_1"]
+)
+eff_samplesize_df["n_eff_harris"] = eff_samplesize_df["n_star_eff_harris"] / (
+    1.0 + (eff_samplesize_df["n_star_eff_harris"] - 1.0) / eff_samplesize_df["N_minus_1"]
+)
+
+# 4.5: half-width of 95% CI = 2*sqrt(p(1-p)/n_s)  <= 1/sqrt(n_s)
+# If we replace n_s by n*_eff, we get an effective margin of error that reflects the selection bias implied by rho.
+# huge n can still imply an MoE comparable to a much smaller SRS once n_eff collapses
+
+# candidate- pecific sigma^2 = p(1-p) using TRUE p (same sigma used in rho_hat construction)
+eff_samplesize_df["sigma2_trump"]  = eff_samplesize_df["p_trump_true"]  * (1.0 - eff_samplesize_df["p_trump_true"])
+eff_samplesize_df["sigma2_harris"] = eff_samplesize_df["p_harris_true"] * (1.0 - eff_samplesize_df["p_harris_true"])
+
+# Meng 4.5 implied half-widths using n*_eff
+eff_samplesize_df["Me95_star_trump"]  = 2.0 * np.sqrt(eff_samplesize_df["sigma2_trump"]  / eff_samplesize_df["n_star_eff_trump"])
+eff_samplesize_df["Me95_star_harris"] = 2.0 * np.sqrt(eff_samplesize_df["sigma2_harris"] / eff_samplesize_df["n_star_eff_harris"])
+
+# Meng’s simple upper bound in 4.5, margin of error <= 1/sqrt(n_s)
+eff_samplesize_df["Me95_star_upper_trump"]  = 1.0 / np.sqrt(eff_samplesize_df["n_star_eff_trump"])
+eff_samplesize_df["Me95_star_upper_harris"] = 1.0 / np.sqrt(eff_samplesize_df["n_star_eff_harris"])
+
+# save outmputs
+effective_sample_size_outputs = eff_samplesize_df[[
+    "state_name", "N_state", "n", "f_s", "DO_s", "rho_hat_trump", "DI_trump", "n_star_eff_trump", "n_eff_trump", "Me95_star_trump", "Me95_star_upper_trump",
+    "rho_hat_harris", "DI_harris", "n_star_eff_harris", "n_eff_harris", "Me95_star_harris", "Me95_star_upper_harris",
+]].copy()
+
+effective_sample_size_outputs.to_csv("effective_sample_size_by_state_trump_harris.csv", index=False)
+
+# interesting values
+print("\nBottom 10 states by n*_eff (Trump):")
+print(effective_sample_size_outputs.sort_values("n_star_eff_trump").head(10)[
+    ["state_name", "n_star_eff_trump", "Me95_star_trump"]
+].to_string(index=False))
+
+print("\nBottom 10 states by n*_eff (Harris):")
+print(effective_sample_size_outputs.sort_values("n_star_eff_harris").head(10)[
+    ["state_name", "n_star_eff_harris", "Me95_star_harris"]
+].to_string(index=False))
 
 
 ##### ADD SOMETHING NEW TO REPLICATION, NEW ANALYSIS TYPE OR CHANGE ASSUMPTION OR NEW OUTPUTS
