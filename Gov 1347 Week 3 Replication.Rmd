@@ -21,6 +21,9 @@ library(knitr)
 library(kableExtra)
 library(plotly)
 library(lubridate)
+library(scales)
+library(ggplot2)
+library(dplyr)
 ```
 
 
@@ -33,7 +36,7 @@ library(lubridate)
 d_pollav_natl <- read_csv("data/gov1347_national_polls_1968-2024partial.csv")
 
 # Fiftypluysone polling average dataset
-d_pollav_state <- read_csv("data/presidential_2024_general")
+d_fiftyplusone <- read_csv("data/president_2024_general.csv")
 
 # pollster rating from 538
 d_pollster_ratings <- read_csv("data/gov1347_pollster-ratings-combined.csv")
@@ -49,8 +52,74 @@ d_vote$party[d_vote$party == "democrat"] <- "DEM"
 d_vote$party[d_vote$party == "republican"] <- "REP"
 ```
 
+
 ### Recent Polling Trends and the Use of Polling in Models
 Polling-- originating from Francis Galton’s 1907 [Vox populi](https://www.nature.com/articles/075450a0.pdf) on the reliability of popular judgement-- aims to gauge public sentiment but faces challenges in predicting crystallized outcomes. Thousands of polls are conducted to understand the race at a given time. But with so many complications in measuring the behavior of voters, it is extremely difficult for a poll to get the "right" answer.
 
 These difficulties of polling are highlighted in Gelman and King's ["Why are american presidential election campaign polls so variable when votes are so predictable?"](https://www-jstor-org.ezp-prod1.hul.harvard.edu/stable/194212?sid=primo) Variability in polls, as discussed in the analysis, shows that while polls fluctuate due to unforeseen events, overall outcomes remain largely predictable based on fundamental factors. While voters may appear to change their minds during the campaign, they often make final decisions based on rational, long-standing preferences. Temporary polling swings often don’t reflect lasting changes in voter intentions.
+
+For an example of this, look at variations in the 2020 election polling, with "game-changers" indicating significant events that may have influenced polling averages temporarily.
+
+
+```{r}
+####----------------------------------------------------------#
+#### Year by year polling over time
+####----------------------------------------------------------#
+
+polling_over_time_2020 <- d_pollav_natl |> 
+  filter(year == 2020) |> 
+  ggplot(aes(x = poll_date, y = poll_support, color = party, group = party)) +
+  geom_line(linewidth = 1) +
+  geom_point(aes(text = paste("Date:", poll_date, "<br>Avg Support:", round(poll_support,3), "%"))) + 
+  geom_point(size = 1.8, alpha = 0.7) +
+  scale_x_date(
+    breaks = scales::date_breaks("1 month"),
+    date_labels = "%b",
+    expand = expansion(mult = c(0.01, 0.05))
+  ) +
+  scale_y_continuous(labels = scales::label_percent(scale = 1)) +
+  scale_color_manual(values = c("dodgerblue4", "firebrick1")) +
+  labs(
+    x = NULL,
+    y = "Average poll approval",
+    title = "Polling Averages by Date, 2020",
+    subtitle = "From 538 Data",
+    color = NULL
+  ) +
+  theme_classic(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5, size = 12),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10),
+    legend.position = "top",
+    panel.grid.major.y = element_line(color = "grey85"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+polling_plot_2020_static
+
+# convert to interactive plotly
+interactive_polling_over_time_2020 <- ggplotly(polling_over_time_2020, tooltip = "text")
+interactive_polling_over_time_2020
+
+# save as a flot plot
+ggsave(
+  filename = "figures/fiftyplusoneR/polling_over_time_2020.png",
+  plot = polling_over_time_2020,
+  width = 8,
+  height = 5,
+  device = cairo_pdf
+)
+
+```
+
+
+Whether Biden's polling data can be used without adjustment as a proxy for Harris like here is an open question.
+
+### Pollster Quality Evaluation
+Different pollster methodologies and decisions impact the accuracy of polls. To account for this, FiveThirtyEight creates pollster ratings called "pollscores" which account for bias and error, and also look at transparency and percent partisan work. Variation in pollster quality can provide valuable information about the quality of the polling data my model relies on.
+
+```
 
