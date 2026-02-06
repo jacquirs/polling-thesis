@@ -24,6 +24,7 @@ library(lubridate)
 library(scales)
 library(ggplot2)
 library(dplyr)
+library(htmlwidgets)
 ```
 
 
@@ -109,9 +110,86 @@ ggsave(
   filename = "figures/fiftyplusoneR/polling_over_time_2020.png",
   plot = polling_over_time_2020,
   width = 8,
-  height = 5,
-  device = cairo_pdf
+  height = 5
 )
+
+```
+
+
+```{r}
+out_dir <- "figures/fiftyplusoneR"
+
+# repeats 2020 process for 2000-2016
+make_polling_plot <- function(data, yr) {
+  p <- data %>%
+    filter(year == yr) %>%
+    ggplot(aes(x = poll_date, y = poll_support, color = party, group = party)) +
+    geom_line(linewidth = 1) +
+    geom_point(aes(
+      text = paste("Date:", poll_date,
+                   "<br>Avg Support:", round(poll_support, 3), "%")
+    ),
+    size = 1.8, alpha = 0.7) +
+    scale_x_date(
+      breaks = scales::date_breaks("1 month"),
+      date_labels = "%b",
+      expand = expansion(mult = c(0.01, 0.05))
+    ) +
+    scale_y_continuous(labels = scales::label_percent(scale = 1)) +
+    scale_color_manual(values = c("dodgerblue4", "firebrick1")) +
+    labs(
+      x = NULL,
+      y = "Average poll approval",
+      title = paste("Polling Averages by Date,", yr),
+      subtitle = "From 538 Data",
+      color = NULL
+    ) +
+    theme_classic(base_size = 12) +
+    theme(
+      plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+      plot.subtitle = element_text(hjust = 0.5, size = 12),
+      axis.text.x = element_text(size = 10),
+      axis.text.y = element_text(size = 10),
+      legend.position = "top",
+      panel.grid.major.y = element_line(color = "grey85"),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+
+  interactive <- ggplotly(p, tooltip = "text")
+
+  list(
+    static = p,
+    interactive = interactive
+  )
+}
+
+# years to render
+years <- seq(2000, 2016, by = 4)
+
+# generate plots and save
+polling_plots <- list()
+
+for (y in years) {
+  plots <- make_polling_plot(d_pollav_natl, y)
+  polling_plots[[as.character(y)]] <- plots
+
+  # save PNG 
+  static_fname_png <- file.path(out_dir, paste0("polling_over_time_", y, ".png"))
+
+  ggsave(
+    filename = static_fname_png,
+    plot = plots$static,
+    width = 8,
+    height = 5,
+    dpi = 300
+  )
+
+  # save interactive HTML
+  interactive_fname <- file.path(out_dir, paste0("polling_over_time_", y, ".html"))
+  # convert to html widget
+  saveWidget(plots$interactive, file = interactive_fname, selfcontained = TRUE)
+}
 
 ```
 
