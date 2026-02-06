@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # data from pipeline
 cces = pd.read_csv("data/cces2024_cleaned_mengrep.csv")
-truth_raw = pd.read_csv("data/Meng_true_votes.csv")
+truth_raw = pd.read_csv("data/true_votes_by_state_mengrep.csv")
 
 # build truth table
 truth = truth_raw[["state_name", "p_trump_true", "p_harris_true", "N_state"]].copy()

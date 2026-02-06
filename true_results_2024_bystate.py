@@ -83,4 +83,4 @@ for_meng = state_totals[
     ["state_name", "p_trump_true", "p_harris_true", "N_state"]
 ].copy()
 
-for_meng.to_csv("data/Meng_true_votes.csv", index=False)
+for_meng.to_csv("data/true_votes_by_state_mengrep.csv", index=False)
