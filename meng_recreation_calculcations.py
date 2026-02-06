@@ -911,8 +911,25 @@ plt.show()
 llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
 
 ########################################################################################
-######################## Effective Sample Size #########################################
+######################## Effective Sample Size, by state ###############################
 ########################################################################################
+
+# mapping to Meng
+# state_name        → (state identifier)
+# N_state           → N (population size - actual voter turnout per state)
+# n                 → n (sample size per state)
+# f_s               → f (sampling rate = n/N)
+# DO_s              → DO (Dropout Odds = (1-f)/f) [meng 2.4]
+# p_hat_trump       → G_n (sample proportion) [meng 2.1]
+# p_trump_true      → G_N (population/true proportion)
+# p_hat_harris      → G_n (sample proportion)
+# p_harris_true     → G_N (population/true proportion)
+# bias_trump        → G_n - G_N (actual bias)
+# bias_harris       → G_n - G_N (actual bias)
+# sigma_trump       → σ_G (population std dev = sqrt(p(1-p))) [Meng 2.3]
+# sigma_harris      → σ_G (population std dev = sqrt(p(1-p)))
+# rho_hat_trump     → ρ_R,G (data defect correlation) [Meng 4.7]
+# rho_hat_harris    → ρ_R,G (data defect correlation)
 
 # dataset to use
 eff_samplesize_df = val_mergedtruth_TH.copy()
@@ -924,28 +941,31 @@ eff_samplesize_df["DI_harris"] = eff_samplesize_df["rho_hat_harris"]**2
 
 # data quantity term, 2.4: DO = (1-f)/f, already calculated as DO_s for each state
 
-# n*_eff = (DO * DI)^(-1)
+# n*_eff = (DO * DI)^(-1), equation 3.6 effective sample size
 eff_samplesize_df["n_star_eff_trump"] = 1.0 / (eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_trump"])
 eff_samplesize_df["n_star_eff_harris"] = 1.0 / (eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_harris"])
 
 # n_eff, from 3.5: n_eff = n*_eff / ( 1 + (n*_eff - 1)/(N - 1) )
 # under SRS, n_eff is about n, if DI=0, n_eff = N rather than infinity
-
-# compuated here but Meng later goes back to n*_eff
-eff_samplesize_df["N_minus_1"] = eff_samplesize_df["N_state"] - 1.0
-
+# in practice, Meng uses n*_eff but includes n_eff for completeness
 eff_samplesize_df["n_eff_trump"] = eff_samplesize_df["n_star_eff_trump"] / (
-    1.0 + (eff_samplesize_df["n_star_eff_trump"] - 1.0) / eff_samplesize_df["N_minus_1"]
-)
-eff_samplesize_df["n_eff_harris"] = eff_samplesize_df["n_star_eff_harris"] / (
-    1.0 + (eff_samplesize_df["n_star_eff_harris"] - 1.0) / eff_samplesize_df["N_minus_1"]
+    1.0 + (eff_samplesize_df["n_star_eff_trump"] - 1.0) / 
+    (eff_samplesize_df["N_state"] - 1.0)
 )
 
-# 4.5: half-width of 95% CI = 2*sqrt(p(1-p)/n_s)  <= 1/sqrt(n_s)
-# If we replace n_s by n*_eff, we get an effective margin of error that reflects the selection bias implied by rho.
+eff_samplesize_df["n_eff_harris"] = eff_samplesize_df["n_star_eff_harris"] / (
+    1.0 + (eff_samplesize_df["n_star_eff_harris"] - 1.0) / 
+    (eff_samplesize_df["N_state"] - 1.0)
+) 
+
+# 4.5: margin of error for binary outcomes 
+# half-width of 95% CI = 2*sqrt(p(1-p)/n_s)  <= 1/sqrt(n_s)
+# Me = 2 × sqrt(p(1-p)/n*_eff)
+# If we replace n_s by n*_eff, we get an effective margin of error that reflects the selection bias implied by rho
 # huge n can still imply an MoE comparable to a much smaller SRS once n_eff collapses
 
 # candidate specific sigma^2 = p(1-p) using TRUE p (same sigma used in rho_hat construction)
+# below is same as eff_samplesize_df["sigma_candidate"]**2
 eff_samplesize_df["sigma2_trump"]  = eff_samplesize_df["p_trump_true"]  * (1.0 - eff_samplesize_df["p_trump_true"])
 eff_samplesize_df["sigma2_harris"] = eff_samplesize_df["p_harris_true"] * (1.0 - eff_samplesize_df["p_harris_true"])
 
@@ -953,7 +973,7 @@ eff_samplesize_df["sigma2_harris"] = eff_samplesize_df["p_harris_true"] * (1.0 -
 eff_samplesize_df["Me95_star_trump"]  = 2.0 * np.sqrt(eff_samplesize_df["sigma2_trump"]  / eff_samplesize_df["n_star_eff_trump"])
 eff_samplesize_df["Me95_star_harris"] = 2.0 * np.sqrt(eff_samplesize_df["sigma2_harris"] / eff_samplesize_df["n_star_eff_harris"])
 
-# Meng’s simple upper bound in 4.5, margin of error <= 1/sqrt(n_s)
+# Meng’s simple upper bound in 4.5, margin of error <= 1/sqrt(n_s), Me upper bound
 eff_samplesize_df["Me95_star_upper_trump"]  = 1.0 / np.sqrt(eff_samplesize_df["n_star_eff_trump"])
 eff_samplesize_df["Me95_star_upper_harris"] = 1.0 / np.sqrt(eff_samplesize_df["n_star_eff_harris"])
 
