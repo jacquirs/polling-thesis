@@ -910,15 +910,42 @@ plt.savefig("figure7_LLP_Zn_vs_logN_trump_harris.png", dpi=300)
 # save data
 llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
 
-# should be False unless they are literally identical pointwise
-print("Z series identical?   ", np.allclose(llp_df["Z_n_s_trump"], llp_df["Z_n_s_harris"]))
-print("miss flags identical? ", (llp_df["cover_rate_T"].values == llp_df["cover_rate_H"].values).all())
+# print which states are covered and not, by how much
+def coverage_report(df, z_col, cover_col, label):
+    df2 = df[["state_name", z_col, cover_col]].copy()
+    df2 = df2.sort_values("state_name")
 
-# also check sums
-print("miss_trump sum:", llp_df["cover_rate_T"].sum())
-print("miss_harris sum:", llp_df["cover_rate_H"].sum())
-print("n states:", len(llp_df))
+    covered = df2[df2[cover_col]].sort_values(z_col, key=lambda s: np.abs(s))
+    not_covered = df2[~df2[cover_col]].copy()
+    not_covered["abs_Z"] = np.abs(not_covered[z_col])
+    not_covered["exceed_by"] = not_covered["abs_Z"] - 2.0
+    not_covered = not_covered.sort_values("exceed_by", ascending=False)
 
+    print(f"{label}: COVERED states (|Z_n| <= 2).  Count = {len(covered)}/{len(df2)}")
+    print(covered[["state_name", z_col]].to_string(index=False))
+
+    print(f"{label}: NOT covered states (|Z_n| > 2), with exceed amount (|Z_n|-2).  Count = {len(not_covered)}/{len(df2)}")
+    print(not_covered[["state_name", z_col, "abs_Z", "exceed_by"]].to_string(index=False))
+
+# Trump report
+coverage_report(llp_df, "Z_n_s_trump", "cover_rate_T", "Trump")
+
+# Harris report
+coverage_report(llp_df, "Z_n_s_harris", "cover_rate_H", "Harris")
+
+# compare sets
+covered_T = set(llp_df.loc[llp_df["cover_rate_T"], "state_name"])
+covered_H = set(llp_df.loc[llp_df["cover_rate_H"], "state_name"])
+notcovered_T = set(llp_df.loc[~llp_df["cover_rate_T"], "state_name"])
+notcovered_H = set(llp_df.loc[~llp_df["cover_rate_H"], "state_name"])
+
+print("Overlap diagnostics")
+print("Covered by both:", sorted(covered_T & covered_H))
+print("Covered only Trump:", sorted(covered_T - covered_H))
+print("Covered only Harris:", sorted(covered_H - covered_T))
+print("Not covered by both:", sorted(notcovered_T & notcovered_H))
+print("Not covered only Trump:", sorted(notcovered_T - notcovered_H))
+print("Not covered only Harris:", sorted(notcovered_H - notcovered_T))
 
 ########################################################################################
 ######################## Effective Sample Size, by state ###############################
