@@ -32,7 +32,7 @@ def state_estimates(df, mask=None, value_col="X_trump"):
     This gives the wald SE formulas: SE(\hat p_s) = sqrt( \hat p_s (1 - \hat p_s) / n_s ) ;; CI = \hat p_s ± 1.96 * SE(\hat p_s)
 
     Meng explicitly says SRS variances may be conservative under stratified designs,
-    but still do not protect against MSE inflation from nonresponse bias.
+    but still do not protect against MSE inflation from nonresponse bias
     """
     # masks used to limit to validated voters versus just raw sample
     if mask is None:
@@ -914,32 +914,6 @@ llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
 ######################## Effective Sample Size #########################################
 ########################################################################################
 
-#
-# - Dropout Odds (DO):        DO = (1 - f) / f     (Meng (2.4))
-#
-# - Effective sample size:
-#     Define n*_eff = (DO * DI)^(-1)  (Meng defines this just before (3.5))
-#     Then the finite-population “exact” version is:
-#         n_eff = n*_eff / ( 1 + (n*_eff - 1)/(N - 1) )   (Meng (3.5))
-#
-#   Meng explicitly says: it is mathematically important to carry the N−1 term in (3.5),
-#   but for practical purposes he uses n*_eff in subsequent calculations because it is
-#   "easier algebraically and crisper conceptually" and is an "almost exact upper bound."
-#
-# Your inputs already computed earlier:
-#   val_mergedtruth_TH must contain, by state:
-#     - N_state (total turnout / population size N in your retrospective)
-#     - n       (validated sample size in state)
-#     - f_s     (n / N_state)
-#     - DO_s    ((1-f_s)/f_s)  [you already computed this earlier]
-#     - rho_hat_trump, rho_hat_harris  (Meng (4.7) style state-level rho estimates)
-#     - p_trump_true, p_harris_true (true state vote shares; used for sigma^2 = p(1-p))
-#
-# NOTE: Meng’s DI is an expectation over the R-mechanism, whereas we only have one realized
-# sample per state. In the 2016 application, Meng proceeds using the realized rho (or its
-# average) as the operative quantity. Here we mirror that per-state with DI_s ≈ (rho_hat_s)^2.
-# This is faithful in spirit/usage, but it is still an inference about how DI is operationalized.
-
 # dataset to use
 eff_samplesize_df = val_mergedtruth_TH.copy()
 
@@ -951,8 +925,8 @@ eff_samplesize_df["DI_harris"] = eff_samplesize_df["rho_hat_harris"]**2
 # data quantity term, 2.4: DO = (1-f)/f, already calculated as DO_s for each state
 
 # n*_eff = (DO * DI)^(-1)
-eff_samplesize_df["n_star_eff_trump"]  = 1.0 / eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_trump"]
-eff_samplesize_df["n_star_eff_harris"] = 1.0 / eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_harris"]
+eff_samplesize_df["n_star_eff_trump"] = 1.0 / (eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_trump"])
+eff_samplesize_df["n_star_eff_harris"] = 1.0 / (eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_harris"])
 
 # n_eff, from 3.5: n_eff = n*_eff / ( 1 + (n*_eff - 1)/(N - 1) )
 # under SRS, n_eff is about n, if DI=0, n_eff = N rather than infinity
@@ -971,7 +945,7 @@ eff_samplesize_df["n_eff_harris"] = eff_samplesize_df["n_star_eff_harris"] / (
 # If we replace n_s by n*_eff, we get an effective margin of error that reflects the selection bias implied by rho.
 # huge n can still imply an MoE comparable to a much smaller SRS once n_eff collapses
 
-# candidate- pecific sigma^2 = p(1-p) using TRUE p (same sigma used in rho_hat construction)
+# candidate specific sigma^2 = p(1-p) using TRUE p (same sigma used in rho_hat construction)
 eff_samplesize_df["sigma2_trump"]  = eff_samplesize_df["p_trump_true"]  * (1.0 - eff_samplesize_df["p_trump_true"])
 eff_samplesize_df["sigma2_harris"] = eff_samplesize_df["p_harris_true"] * (1.0 - eff_samplesize_df["p_harris_true"])
 
@@ -1002,9 +976,101 @@ print(effective_sample_size_outputs.sort_values("n_star_eff_harris").head(10)[
     ["state_name", "n_star_eff_harris", "Me95_star_harris"]
 ].to_string(index=False))
 
+# national effective sample size
+neff_national_input = eff_samplesize_df[["state_name", "N_state", "n", "p_trump_true", "p_hat_trump", "p_harris_true", "p_hat_harris"]].copy()
+
+# want to combine state-level selection effects into a single national selection effect and convert that into an n* by equating it to an SRS-style error scale for the national mean
+
+def national_effective_sample_size(neff_national_input: pd.DataFrame, p_true_col: str, p_hat_col: str, n_col: str = "n",  N_col: str = "N_state"):
+    """
+    calculates national p_true, p_hat, bias, f, DO, rho, DI, n*_eff, Me95*
+
+    National values same as for states:
+        DO = (1-f)/f
+        bias = rho * sigma * sqrt(DO)
+        DI = rho^2
+        n* = 1/(DO*DI)
+
+    where:
+        p_true = Σ (N_s/N) p_s
+        p_hat  = Σ (N_s/N) p_hat_s
+        N      = Σ N_s
+        n      = Σ n_s
+        f      = n/N
+    """
+    df = neff_national_input[[p_true_col, p_hat_col, n_col, N_col]].copy()
+
+    # totals across states 
+    N_total = df[N_col].sum()
+    n_total = df[n_col].sum()
+
+    # state weights for national vote share: w_s = N_s / N
+    w = df[N_col] / N_total
+
+    # national true and estimated shares (population-weighted)
+    p_true = float((w * df[p_true_col]).sum())
+    p_hat = float((w * df[p_hat_col]).sum())
+    bias = p_hat - p_true
+
+    # national sampling fraction
+    f = float(n_total / N_total)
+    f = min(max(f, eps), 1.0 - eps)
+
+    # national DO
+    DO = (1.0 - f) / f
+
+    # national Bernoulli sigma
+    sigma = np.sqrt(p_true * (1.0 - p_true))
+
+    # national rho
+    # bias = rho * sigma * sqrt(DO)  => rho = bias / (sigma * sqrt(DO))
+    rho = float(bias/(sigma * np.sqrt(DO)))
+
+    # DI and n*eff
+    DI = rho**2
+    n_star_eff = 1.0 / (DO * DI)
+
+    # 95% CI half-width based on n*
+    Me95_star = 2.0 * np.sqrt(p_true * (1.0 - p_true) / (n_star_eff ))
+
+    return {
+        "N_total": float(N_total),
+        "n_total": float(n_total),
+        "f": float(f),
+        "DO": float(DO),
+        "p_true": float(p_true),
+        "p_hat": float(p_hat),
+        "bias": float(bias),
+        "sigma": float(sigma),
+        "rho": float(rho),
+        "DI": float(DI),
+        "n_star_eff": float(n_star_eff),
+        "Me95_star": float(Me95_star),
+    }
+
+# calculate formula both candidates
+nat_trump = national_effective_sample_size(
+    neff_national_input,
+    p_true_col="p_trump_true",
+    p_hat_col="p_hat_trump"
+)
+
+nat_harris = national_effective_sample_size(
+    neff_national_input,
+    p_true_col="p_harris_true",
+    p_hat_col="p_hat_harris"
+)
+
+print("National n*_eff (Trump) = ")
+for k, v in nat_trump.items():
+    print(f"{k:>10}: {v}")
+
+print("National n*_eff (Harris)=")
+for k, v in nat_harris.items():
+    print(f"{k:>10}: {v}")
+
 
 ##### ADD SOMETHING NEW TO REPLICATION, NEW ANALYSIS TYPE OR CHANGE ASSUMPTION OR NEW OUTPUTS
-# ###### additional values (NEED TO MAP TO PAGE)
 # # summary table of bias and n for validated sample
 # val_summary = val_m[["state_name", "n", "p_hat", "p_trump_true", "bias", "abs_bias"]].sort_values("abs_bias", ascending=False)
 # print("\nTop 10 states by absolute bias (validated):")
