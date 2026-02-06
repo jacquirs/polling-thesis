@@ -1,0 +1,56 @@
+---
+title: "Gov 1347 Replication"
+author: "Jacqui Schlesinger"
+date: "2026-02-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+
+```{r, results = 'hide'}
+# load libraries
+library(car)
+library(caret)
+library(CVXR)
+library(glmnet)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(lubridate)
+```
+
+
+```{r}
+####----------------------------------------------------------#
+#### Read, merge, and process data
+####----------------------------------------------------------#
+
+# FiveThirtyEight polling average datasets national
+d_pollav_natl <- read_csv("data/gov1347_national_polls_1968-2024partial.csv")
+
+# Fiftypluysone polling average dataset
+d_pollav_state <- read_csv("data/presidential_2024_general")
+
+# pollster rating from 538
+d_pollster_ratings <- read_csv("data/gov1347_pollster-ratings-combined.csv")
+
+# polling data from 2020
+d_poll_2020 <- read_csv("data/gov1347_president_polls_2020.csv")
+
+# polling data from 2016
+d_poll_2016 <- read_csv("data/gov1347_president_polls_2016.csv") 
+# popular vote data through 2020
+d_vote <- read_csv("data/gov1347_popvote_1948-2020.csv")
+d_vote$party[d_vote$party == "democrat"] <- "DEM"
+d_vote$party[d_vote$party == "republican"] <- "REP"
+```
+
+### Recent Polling Trends and the Use of Polling in Models
+Polling-- originating from Francis Galton’s 1907 [Vox populi](https://www.nature.com/articles/075450a0.pdf) on the reliability of popular judgement-- aims to gauge public sentiment but faces challenges in predicting crystallized outcomes. Thousands of polls are conducted to understand the race at a given time. But with so many complications in measuring the behavior of voters, it is extremely difficult for a poll to get the "right" answer.
+
+These difficulties of polling are highlighted in Gelman and King's ["Why are american presidential election campaign polls so variable when votes are so predictable?"](https://www-jstor-org.ezp-prod1.hul.harvard.edu/stable/194212?sid=primo) Variability in polls, as discussed in the analysis, shows that while polls fluctuate due to unforeseen events, overall outcomes remain largely predictable based on fundamental factors. While voters may appear to change their minds during the campaign, they often make final decisions based on rational, long-standing preferences. Temporary polling swings often don’t reflect lasting changes in voter intentions.
+
