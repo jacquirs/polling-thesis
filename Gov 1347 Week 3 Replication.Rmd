@@ -199,5 +199,7 @@ Whether Biden's polling data can be used without adjustment as a proxy for Harri
 ### Pollster Quality Evaluation
 Different pollster methodologies and decisions impact the accuracy of polls. To account for this, FiveThirtyEight creates pollster ratings called "pollscores" which account for bias and error, and also look at transparency and percent partisan work. Variation in pollster quality can provide valuable information about the quality of the polling data my model relies on.
 
+#TO DO
+
 ```
 
