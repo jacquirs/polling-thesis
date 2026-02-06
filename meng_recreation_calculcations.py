@@ -761,8 +761,8 @@ llp_df["Z_nN_harris"] = np.sqrt(llp_df["N_state"] - 1.0) * llp_df["rho_hat_harri
 # use log10 to match Meng’s plotting
 # log–log variables for Meng 4.9, log|Z_{n,N}| and log N
 llp_df["log10_N"] = np.log10(llp_df["N_state"])
-llp_df["log10_absZ_nN_trump"]  = np.log10(np.abs(llp_df["Z_nN_trump"])  + eps)
-llp_df["log10_absZ_nN_harris"] = np.log10(np.abs(llp_df["Z_nN_harris"]) + eps)
+llp_df["log10_absZ_nN_trump"]  = np.log10(np.abs(llp_df["Z_nN_trump"]))
+llp_df["log10_absZ_nN_harris"] = np.log10(np.abs(llp_df["Z_nN_harris"]))
 
 # fit Meng 4.9 separately for Harris and Trump, log|Z_{n,N}| = alpha + beta log N
 beta_T, se_beta_T, alpha_T = ols_slope_and_se(llp_df["log10_N"], llp_df["log10_absZ_nN_trump"])
@@ -852,9 +852,9 @@ def regular_zscore_3_9(p_hat, p_true, n):
 llp_df["Z_n_s_trump"] = regular_zscore_3_9(p_hat=llp_df["p_hat_trump"], p_true=llp_df["p_trump_true"], n=llp_df["n"])
 llp_df["Z_n_s_harris"] = regular_zscore_3_9(p_hat=llp_df["p_hat_harris"], p_true=llp_df["p_harris_true"], n=llp_df["n"])
 
-# determine is miss. indidctaor if |Z_n,s| > 2
-llp_df["miss_trump"] = (np.abs(llp_df["Z_n_s_trump"]) > 2.0).astype(int)
-llp_df["miss_harris"] = (np.abs(llp_df["Z_n_s_harris"]) > 2.0).astype(int)
+# determine is state covered, indidctaor if |Z_n,s| <= 2
+llp_df["cover_rate_H"] = (np.abs(llp_df["Z_n_s_harris"]) <= 2.0)
+llp_df["cover_rate_T"] = (np.abs(llp_df["Z_n_s_trump"]) <= 2.0)
 
 # plotting
 fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
@@ -871,11 +871,11 @@ axes[0].set_title("Harris (validated voters)")
 axes[0].set_xlabel(r"$\log_{10}(N_s)$  (state turnout)")
 axes[0].set_ylabel(r"Regular Z Score $Z_{n,s}$ ")
 
-# add avg misses
-miss_rate_H = llp_df["miss_harris"].mean()
+# add avg coverage
+cover_rate_mean_H = llp_df["cover_rate_H"].mean()
 axes[0].text(
     0.02, 0.95,
-    f"Share with |Z_n|>2: {miss_rate_H:.2%}",
+    f"Share with |Z_n|<=2: {cover_rate_mean_H:.2%}",
     transform=axes[0].transAxes,
     ha="left", va="top",
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
@@ -892,11 +892,11 @@ axes[1].axhline(0, linestyle="--", linewidth=1)
 axes[1].set_title("Trump (validated voters)")
 axes[1].set_xlabel(r"$\log_{10}(N_s)$  (state turnout)")
 
-# add avg misses
-miss_rate_T = llp_df["miss_trump"].mean()
+# add avg coverage
+cover_rate_mean_T = llp_df["cover_rate_T"].mean()
 axes[1].text(
     0.02, 0.95,
-    f"Share with |Z_n|>2: {miss_rate_T:.2%}",
+    f"Share with |Z_n|<=2: {cover_rate_mean_T:.2%}",
     transform=axes[1].transAxes,
     ha="left", va="top",
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
@@ -909,6 +909,16 @@ plt.savefig("figure7_LLP_Zn_vs_logN_trump_harris.png", dpi=300)
 
 # save data
 llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
+
+# should be False unless they are literally identical pointwise
+print("Z series identical?   ", np.allclose(llp_df["Z_n_s_trump"], llp_df["Z_n_s_harris"]))
+print("miss flags identical? ", (llp_df["cover_rate_T"].values == llp_df["cover_rate_H"].values).all())
+
+# also check sums
+print("miss_trump sum:", llp_df["cover_rate_T"].sum())
+print("miss_harris sum:", llp_df["cover_rate_H"].sum())
+print("n states:", len(llp_df))
+
 
 ########################################################################################
 ######################## Effective Sample Size, by state ###############################
