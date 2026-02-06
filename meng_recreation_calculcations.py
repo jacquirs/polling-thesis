@@ -306,7 +306,7 @@ likely_mergedtruth_weighted_T.to_csv("data/mengrep_fig4_state_estimates_likely_w
 likely_est_weighted_H = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_harris")
 likely_mergedtruth_weighted_H = likely_est_weighted_H.merge(truth, on="state_name", how="left")
 likely_mergedtruth_weighted_H["color"] = likely_mergedtruth_weighted_H["state_name"].apply(assign_color)
-likely_mergedtruth_weighted_H.to_csv("data/data/mengrep_fig4_state_estimates_likely_weighted_harris_vs_truth.csv", index=False)
+likely_mergedtruth_weighted_H.to_csv("data/mengrep_fig4_state_estimates_likely_weighted_harris_vs_truth.csv", index=False)
 
 
 ###### plot Figure 4 three panels, with weighted for panel 2
