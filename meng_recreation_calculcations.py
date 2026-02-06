@@ -102,13 +102,13 @@ val_mergedtruth_H["abs_bias_harris"] = val_mergedtruth_H["bias_harris"].abs()
 val_mergedtruth_H["f_s"] = val_mergedtruth_H["n"] / val_mergedtruth_H["N_state"]
 
 # save by state tables for later use
-raw_mergedtruth_T.to_csv("state_raw_vs_truth_trump.csv", index=False)
-likely_mergedtruth_T.to_csv("state_likely_vs_truth_trump_binarylikely.csv", index=False)
-val_mergedtruth_T.to_csv("state_validated_vs_truth_trump.csv", index=False)
+raw_mergedtruth_T.to_csv("data/mengrep_fig4_state_estimates_raw_trump_vs_truth.csv", index=False)
+likely_mergedtruth_T.to_csv("data/mengrep_fig4_state_estimates_likely_binary_trump_vs_truth.csv", index=False)
+val_mergedtruth_T.to_csv("data/mengrep_fig4_state_estimates_validated_trump_vs_truth.csv", index=False)
 
-raw_mergedtruth_H.to_csv("state_raw_vs_truth_harris.csv", index=False)
-likely_mergedtruth_H.to_csv("state_likely_vs_truth_harris_binarylikely.csv", index=False)
-val_mergedtruth_H.to_csv("state_validated_vs_truth_harris.csv", index=False)
+raw_mergedtruth_H.to_csv("data/mengrep_fig4_state_estimates_raw_harris_vs_truth.csv", index=False)
+likely_mergedtruth_H.to_csv("data/mengrep_fig4_state_estimates_likely_binary_harris_vs_truth", index=False)
+val_mergedtruth_H.to_csv("data/mengrep_fig4_state_estimates_validated_harris_vs_truth.csv", index=False)
 
 
 ###### coloring for plotting of state
@@ -182,7 +182,7 @@ for ax, (title, dfm) in zip(axes, panels_T):
 
 plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Binary Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure4_cces2024_trump_binarylikely.png", dpi=300)
+plt.savefig("figures/mengrep_fig4_trump_likely_binary.png", dpi=300)
 #plt.show()
 
 ###### plot Figure 4 three panels for harris, same as trump above jsut with harris var
@@ -216,7 +216,7 @@ for ax, (title, dfm) in zip(axes, panels_H):
 
 plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Binary Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure4_cces2024_harris_binarylikely.png", dpi=300)
+plt.savefig("figures/mengrep_fig4_harris_likely_binary.png", dpi=300)
 #plt.show()
 
 
@@ -300,13 +300,13 @@ def state_turnout_weighted(df, weight_col="lv_weight", value_col="X_trump"):
 likely_est_weighted_T = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_trump")
 likely_mergedtruth_weighted_T = likely_est_weighted_T.merge(truth, on="state_name", how="left")
 likely_mergedtruth_weighted_T["color"] = likely_mergedtruth_weighted_T["state_name"].apply(assign_color)
-likely_mergedtruth_weighted_T.to_csv("state_likely_weighted_vs_truth_trump.csv", index=False)
+likely_mergedtruth_weighted_T.to_csv("data/mengrep_fig4_state_estimates_likely_weighted_trump_vs_truth.csv", index=False)
 
 # Weighted likely panel for Harris
 likely_est_weighted_H = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_harris")
 likely_mergedtruth_weighted_H = likely_est_weighted_H.merge(truth, on="state_name", how="left")
 likely_mergedtruth_weighted_H["color"] = likely_mergedtruth_weighted_H["state_name"].apply(assign_color)
-likely_mergedtruth_weighted_H.to_csv("state_likely_weighted_vs_truth_harris.csv", index=False)
+likely_mergedtruth_weighted_H.to_csv("data/data/mengrep_fig4_state_estimates_likely_weighted_harris_vs_truth.csv", index=False)
 
 
 ###### plot Figure 4 three panels, with weighted for panel 2
@@ -353,7 +353,7 @@ for ax, (title, dfm) in zip(axes, panels_wieghted_T):
 
 plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Weighted Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure4_cces2024_trump_weighted.png", dpi=300)
+plt.savefig("figures/mengrep_fig4_trump_likely_weighted.png", dpi=300)
 #plt.show()
 
 # HARRIS, same as trump
@@ -387,7 +387,7 @@ for ax, (title, dfm) in zip(axes, panels_weighted_H):
 
 plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Weighted Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure4_cces2024_harris_weighted.png", dpi=300)
+plt.savefig("figures/mengrep_fig4_harris_likely_weighted.png", dpi=300)
 #plt.show()
 
 ########################################################################################
@@ -406,7 +406,7 @@ val_mergedtruth_TH = val_mergedtruth_TH.merge(
 )
 
 # for later use in case
-val_mergedtruth_TH.to_csv("state_validated_trump_harris_vs_truth.csv", index=False)
+val_mergedtruth_TH.to_csv("data/mengrep_ddc_state_validated_combined_vs_truth.csv", index=False)
 
 # all states satisfy the domain requirements for the data defect correlation (non-missing p^s,ps\hat p_s, p_sp^​s​,ps​ and 0<ns<Ns0 < n_s < N_s0<ns​<Ns​)
 # therefore no states are excluded from the DDC analysis
@@ -441,7 +441,7 @@ val_mergedtruth_TH["sigma_harris"] = np.sqrt(pH * (1.0 - pH))
 val_mergedtruth_TH["rho_hat_harris"] = (val_mergedtruth_TH["bias_harris"] / val_mergedtruth_TH["sigma_harris"]) * np.sqrt(val_mergedtruth_TH["f_s"] / (1.0 - val_mergedtruth_TH["f_s"]))
 
 # save per state DDC outputs
-val_mergedtruth_TH.to_csv("state_level_rho_hat_trump_harris_validated.csv", index=False)
+val_mergedtruth_TH.to_csv("data/mengrep_ddc_state_level_validated_vs_truth.csv", index=False)
 
 ###### Figure 5 from meng: "Histograms of state-level data defect correlations assessed by using the validated voter
 # data: Clinton's supporters (left) versus Trump’s supporters (right). The numbers in boxes show
@@ -521,7 +521,7 @@ axes[1].text(
 
 plt.suptitle("Figure 5 Replication (2024): Histograms of state-level data defect correlation $\\hat\\rho_N$")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure5_rho_hist_harris_trump_2024.png", dpi=300)
+plt.savefig("figures/mengrep_fig5_ddc_histograms.png", dpi=300)
 #plt.show()
 
 ###### Figure 8
@@ -698,7 +698,7 @@ ax.legend(loc='lower left', fontsize=8)
 
 plt.suptitle("Figure 8 style: state-level $\\hat\\rho_N$ with Meng feasible bounds (2.9)")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure8_rho_bounds_colored_2024.png", dpi=300)
+plt.savefig("figures/mengrep_fig8_ddc_bounds.png", dpi=300)
 #plt.show()
 
 # save values in case needed later
@@ -708,7 +708,7 @@ figure8_datacheck = plot_df[[
     "p_harris_true", "p_hat_harris", "bias_harris", "rho_hat_harris", "rho_lb_harris", "rho_ub_harris"
 ]].copy()
 
-figure8_datacheck.to_csv("figure8_state_bounds_and_rhohat_2024.csv", index=False)
+figure8_datacheck.to_csv("data/mengrep_fig8_ddc_bounds_and_estimates_vs_truth.csv", index=False)
 
 
 ########################################################################################
@@ -827,7 +827,7 @@ axes[1].text(
 
 plt.suptitle("Law of Large Populations (Figure 6 replication): log |Z_{n,N}| vs log N")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure6_llp_logZ_logN_trump_harris.png", dpi=300)
+plt.savefig("figures/mengrep_fig6_llp_loglog_regression.png", dpi=300)
 #plt.show()
 
 ##### figure 7: compares to regular Z score used in SRS
@@ -904,11 +904,11 @@ axes[1].text(
 
 plt.suptitle("Law of Large Populations (Figure 7 replication): Conventional Z_n vs log N")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figures/figure7_LLP_Zn_vs_logN_trump_harris.png", dpi=300)
+plt.savefig("figures/mengrep_fig7_llp_zscore_coverage.png", dpi=300)
 #plt.show()
 
 # save data
-llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
+llp_df.to_csv("data/mengrep_llp_state_level_data_vs_truth.csv", index=False)
 
 # print which states are covered and not, by how much
 def coverage_report(df, z_col, cover_col, label):
@@ -1021,7 +1021,7 @@ effective_sample_size_outputs = eff_samplesize_df[[
     "rho_hat_harris", "DI_harris", "n_star_eff_harris", "n_eff_harris", "Me95_star_harris", "Me95_star_upper_harris",
 ]].copy()
 
-effective_sample_size_outputs.to_csv("effective_sample_size_by_state_trump_harris.csv", index=False)
+effective_sample_size_outputs.to_csv("data/mengrep_effss_by_state_vs_truth.csv", index=False)
 
 # interesting values
 print("\nBottom 10 states by n*_eff (Trump):")
@@ -1188,7 +1188,7 @@ print(f"Trump: $\\rho_{{R,G}}$ = {rho_trump_total:+.6f}, $n^*_{{eff}}$ = {n_star
 print(f"Harris: $\\rho_{{R,G}}$ = {rho_harris_total:+.6f}, $n^*_{{eff}}$ = {n_star_eff_harris_total:,.0f} ({(1-n_star_eff_harris_total/n_total)*100:.1f}% reduction)")
 print(f"Meng's 2016 example had $f \\approx 0.01$, $\\rho \\approx -0.005$ -> $n^*_{{eff}} \\approx 400$ (99.98% reduction)")
 
-summary_table.to_csv("effective_sample_size_national_long.csv", index=False)
+summary_table.to_csv("data/mengrep_effss_national_long_vs_truth.csv", index=False)
 
 # wide table
 overall_results = pd.DataFrame({
@@ -1211,7 +1211,7 @@ overall_results = pd.DataFrame({
     'Me_upper': [Me_upper_trump_total, Me_upper_harris_total]
 })
 
-overall_results.to_csv("effective_sample_size_national_wide.csv", index=False)
+overall_results.to_csv("data/mengrep_effss_national_wide_vs_truth.csv", index=False)
 
 
 # In the below calculations of the same value of the national effective sample size, I compute n, f, and DO directly from individual-level data,
@@ -1286,7 +1286,7 @@ overall_results.to_csv("effective_sample_size_national_wide.csv", index=False)
 # val_summary = val_m[["state_name", "n", "p_hat", "p_trump_true", "bias", "abs_bias"]].sort_values("abs_bias", ascending=False)
 # print("\nTop 10 states by absolute bias (validated):")
 # print(val_summary.head(10).to_string(index=False))
-# val_summary.to_csv("validated_state_bias_summary.csv", index=False)
+# val_summary.to_csv("data/validated_state_bias_summary.csv", index=False)
 
 # # mean bias and RMSE
 # mean_bias = val_m["bias"].mean()
