@@ -171,6 +171,6 @@ output_df = df[
     ]
 ].copy()
 
-output_df.to_csv("data/cces2024_meng_replication_set.csv", index=False)
+output_df.to_csv("data/cces2024_cleaned_mengrep.csv", index=False)
 
 print(output_df.shape)

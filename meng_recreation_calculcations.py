@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # data from pipeline
-cces = pd.read_csv("data/cces2024_meng_replication_set.csv")
+cces = pd.read_csv("data/cces2024_cleaned_mengrep.csv")
 truth_raw = pd.read_csv("data/Meng_true_votes.csv")
 
 # build truth table
