@@ -183,7 +183,7 @@ for ax, (title, dfm) in zip(axes, panels_T):
 plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Binary Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_trump_binarylikely.png", dpi=300)
-plt.show()
+#plt.show()
 
 ###### plot Figure 4 three panels for harris, same as trump above jsut with harris var
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
@@ -217,7 +217,7 @@ for ax, (title, dfm) in zip(axes, panels_H):
 plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Binary Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_harris_binarylikely.png", dpi=300)
-plt.show()
+#plt.show()
 
 
 ###### Meng uses different process for panel 2, likely voters, but does not disclose exact formulas, so I have determined my own method from statements
@@ -354,7 +354,7 @@ for ax, (title, dfm) in zip(axes, panels_wieghted_T):
 plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Weighted Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_trump_weighted.png", dpi=300)
-plt.show()
+#plt.show()
 
 # HARRIS, same as trump
 fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
@@ -388,7 +388,7 @@ for ax, (title, dfm) in zip(axes, panels_weighted_H):
 plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Weighted Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure4_cces2024_harris_weighted.png", dpi=300)
-plt.show()
+#plt.show()
 
 ########################################################################################
 ################## STATE LEVEL DATA DEFECT CORRELATIONS, Figures 5 and 8 ###############
@@ -522,7 +522,7 @@ axes[1].text(
 plt.suptitle("Figure 5 Replication (2024): Histograms of state-level data defect correlation $\\hat\\rho_N$")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure5_rho_hist_harris_trump_2024.png", dpi=300)
-plt.show()
+#plt.show()
 
 ###### Figure 8
 # goal of Figure 8 is to show the state level data defect correlations and overlay the theoretical feasible bounds implied by Meng’s inequality (2.9)
@@ -699,7 +699,7 @@ ax.legend(loc='lower left', fontsize=8)
 plt.suptitle("Figure 8 style: state-level $\\hat\\rho_N$ with Meng feasible bounds (2.9)")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure8_rho_bounds_colored_2024.png", dpi=300)
-plt.show()
+#plt.show()
 
 # save values in case needed later
 figure8_datacheck = plot_df[[
@@ -828,7 +828,7 @@ axes[1].text(
 plt.suptitle("Law of Large Populations (Figure 6 replication): log |Z_{n,N}| vs log N")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure6_llp_logZ_logN_trump_harris.png", dpi=300)
-plt.show()
+#plt.show()
 
 ##### figure 7: compares to regular Z score used in SRS
 # In each state, for a bernoulli outcome with true proportion p_s and sample mean p_hat_s
@@ -905,7 +905,7 @@ axes[1].text(
 plt.suptitle("Law of Large Populations (Figure 7 replication): Conventional Z_n vs log N")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figure7_LLP_Zn_vs_logN_trump_harris.png", dpi=300)
-plt.show()
+#plt.show()
 
 # save data
 llp_df.to_csv("LLP_fig6_fig7_state_level_data.csv", index=False)
@@ -997,6 +997,251 @@ print(effective_sample_size_outputs.sort_values("n_star_eff_harris").head(10)[
     ["state_name", "n_star_eff_harris", "Me95_star_harris"]
 ].to_string(index=False))
 
+########################################################################################
+################### Overall Effective Sample Size Pooled Across States #################
+########################################################################################
+
+# Meng Section 4.1 combines all polls to get overall n*_eff
+
+# aggregate state-level data to get overall quantities
+# total sample size across all states
+n_total = eff_samplesize_df["n"].sum()
+
+# total actual voter population across all states 
+N_total = eff_samplesize_df["N_state"].sum()
+
+# overall sampling rate
+f_total = n_total / N_total
+
+# overall dropout odds
+DO_total = (1.0 - f_total) / f_total
+
+# overall sample proportions, weighted by state sample size, proportion from pooling all state samples
+p_hat_trump_total = (eff_samplesize_df["p_hat_trump"] * eff_samplesize_df["n"]).sum() / n_total
+p_hat_harris_total = (eff_samplesize_df["p_hat_harris"] * eff_samplesize_df["n"]).sum() / n_total
+
+# overall true proportions, weighted by state population, true national proportion
+p_trump_true_total = (eff_samplesize_df["p_trump_true"] * eff_samplesize_df["N_state"]).sum() / N_total
+p_harris_true_total = (eff_samplesize_df["p_harris_true"] * eff_samplesize_df["N_state"]).sum() / N_total
+
+# overall bias, Meng's G_n - G_N
+bias_trump_total = p_hat_trump_total - p_trump_true_total
+bias_harris_total = p_hat_harris_total - p_harris_true_total
+
+# overall sigma_G = sqrt(p(1-p)) using true national proportion, σ_G from Meng 2.3
+sigma_trump_total = np.sqrt(p_trump_true_total * (1.0 - p_trump_true_total))
+sigma_harris_total = np.sqrt(p_harris_true_total * (1.0 - p_harris_true_total))
+
+# overall rho using Meng 4.7, ρ_R,G = (G_n - G_N) / (σ_G x sqrt((1-f)/f)) = bias / (sigma x sqrt(DO)) = (bias / sigma) × sqrt(f / (1-f))
+rho_trump_total = (bias_trump_total / sigma_trump_total) * np.sqrt(f_total / (1.0 - f_total))
+rho_harris_total = (bias_harris_total / sigma_harris_total) * np.sqrt(f_total / (1.0 - f_total))
+
+# overall DI Meng 2.4, DI = ρ²_R,G
+DI_trump_total = rho_trump_total**2
+DI_harris_total = rho_harris_total**2
+
+# overall n*_eff, Meng  3.6, n*_eff = 1/(DO x DI
+n_star_eff_trump_total = 1.0 / (DO_total * DI_trump_total)
+n_star_eff_harris_total = 1.0 / (DO_total * DI_harris_total)
+
+# overall n_eff, Meng 3.5, n_eff = n*_eff / (1 + (n*_eff - 1)/(N-1))
+n_eff_trump_total = n_star_eff_trump_total / (1.0 + (n_star_eff_trump_total - 1.0) / (N_total - 1.0))
+n_eff_harris_total = n_star_eff_harris_total / (1.0 + (n_star_eff_harris_total - 1.0) / (N_total - 1.0))
+
+# overall margin of error, Meng equation 4.5, Me = 2 × sqrt(σ²_G / n*_eff)
+Me_trump_total = 2.0 * np.sqrt((sigma_trump_total**2) / n_star_eff_trump_total)
+Me_harris_total = 2.0 * np.sqrt((sigma_harris_total**2) / n_star_eff_harris_total)
+
+# upper bound on Me ≤ 1/sqrt(n*_eff)
+Me_upper_trump_total = 1.0 / np.sqrt(n_star_eff_trump_total)
+Me_upper_harris_total = 1.0 / np.sqrt(n_star_eff_harris_total)
+
+# output tables
+# create long table
+summary_table = pd.DataFrame({
+    'Metric': [
+        'Population ($N$)',
+        'Sample size ($n$)',
+        'Sampling rate ($f$)',
+        'Dropout odds ($DO$)',
+        '', 
+        r'Sample proportion ($\hat{p}$)',
+        'True proportion ($p$)',
+        r'Bias ($\hat{p} - p$)',
+        r'Std deviation ($\sigma_G$)',
+        '',
+        r'Data defect correlation ($\rho_{R,G}$)',
+        r'Data defect index ($DI = \rho^2$)',
+        '', 
+        r'Effective sample size ($n^*_{eff}$)',
+        r'Effective sample size ($n_{eff}$)',
+        'Sample reduction (%)',
+        '',  
+        'Margin of error ($Me$)',
+        'Me upper bound',
+    ],
+    'Equation': [
+        '',
+        '',
+        '$n/N$',
+        '$(1-f)/f$',
+        '',
+        'Eq 2.1',
+        '',
+        r'$\hat{p} - p$',
+        'Eq 2.3',
+        '',
+        'Eq 4.7',
+        'Eq 2.4',
+        '',
+        'Eq 3.6',
+        'Eq 3.5',
+        '$(n-n^*)/n$',
+        '',
+        'Eq 4.5',
+        'Eq 4.5',
+    ],
+    'Trump': [
+        f'{N_total:,.0f}',
+        f'{n_total:,.0f}',
+        f'{f_total:.4f}',
+        f'{DO_total:.2f}',
+        '',
+        f'{p_hat_trump_total:.4f}',
+        f'{p_trump_true_total:.4f}',
+        f'{bias_trump_total:+.4f}',
+        f'{sigma_trump_total:.4f}',
+        '',
+        f'{rho_trump_total:+.6f}',
+        f'{DI_trump_total:.8f}',
+        '',
+        f'{n_star_eff_trump_total:,.0f}',
+        f'{n_eff_trump_total:,.0f}',
+        f'{(1 - n_star_eff_trump_total/n_total)*100:.2f}%',
+        '',
+        f'{Me_trump_total:.4f}',
+        f'{Me_upper_trump_total:.4f}',
+    ],
+    'Harris': [
+        f'{N_total:,.0f}',
+        f'{n_total:,.0f}',
+        f'{f_total:.4f}',
+        f'{DO_total:.2f}',
+        '',
+        f'{p_hat_harris_total:.4f}',
+        f'{p_harris_true_total:.4f}',
+        f'{bias_harris_total:+.4f}',
+        f'{sigma_harris_total:.4f}',
+        '',
+        f'{rho_harris_total:+.6f}',
+        f'{DI_harris_total:.8f}',
+        '',
+        f'{n_star_eff_harris_total:,.0f}',
+        f'{n_eff_harris_total:,.0f}',
+        f'{(1 - n_star_eff_harris_total/n_total)*100:.2f}%',
+        '',
+        f'{Me_harris_total:.4f}',
+        f'{Me_upper_harris_total:.4f}',
+    ]
+})
+
+print("\n" + summary_table.to_string(index=False))
+
+print(f"Trump: $\\rho_{{R,G}}$ = {rho_trump_total:+.6f}, $n^*_{{eff}}$ = {n_star_eff_trump_total:,.0f} ({(1-n_star_eff_trump_total/n_total)*100:.1f}% reduction)")
+print(f"Harris: $\\rho_{{R,G}}$ = {rho_harris_total:+.6f}, $n^*_{{eff}}$ = {n_star_eff_harris_total:,.0f} ({(1-n_star_eff_harris_total/n_total)*100:.1f}% reduction)")
+print(f"Meng's 2016 example had $f \\approx 0.01$, $\\rho \\approx -0.005$ -> $n^*_{{eff}} \\approx 400$ (99.98% reduction)")
+
+summary_table.to_csv("effective_sample_size_national_long.csv", index=False)
+
+# wide table
+overall_results = pd.DataFrame({
+    'candidate': ['Trump', 'Harris'],
+    'N': [N_total, N_total],
+    'n': [n_total, n_total],
+    'f': [f_total, f_total],
+    'DO': [DO_total, DO_total],
+    'p_hat': [p_hat_trump_total, p_hat_harris_total],
+    'p_true': [p_trump_true_total, p_harris_true_total],
+    'bias': [bias_trump_total, bias_harris_total],
+    'sigma_G': [sigma_trump_total, sigma_harris_total],
+    'rho_R_G': [rho_trump_total, rho_harris_total],
+    'DI': [DI_trump_total, DI_harris_total],
+    'n_star_eff': [n_star_eff_trump_total, n_star_eff_harris_total],
+    'n_eff': [n_eff_trump_total, n_eff_harris_total],
+    'reduction_pct': [(1-n_star_eff_trump_total/n_total)*100, 
+                      (1-n_star_eff_harris_total/n_total)*100],
+    'Me': [Me_trump_total, Me_harris_total],
+    'Me_upper': [Me_upper_trump_total, Me_upper_harris_total]
+})
+
+overall_results.to_csv("effective_sample_size_national_wide.csv", index=False)
+
+
+# In the below calculations of the same value of the national effective sample size, I compute n, f, and DO directly from individual-level data,
+# defining the observed sample per candidate as validated_voter == 1 and outcome observed
+# the two coincide here because the denominators and weighting align, but the below was used to confirm
+
+# # national truth, repreated from above but with different origin
+# p_trump_true_total  = (truth["p_trump_true"]  * truth["N_state"]).sum() / N_total
+# p_harris_true_total = (truth["p_harris_true"] * truth["N_state"]).sum() / N_total
+
+# # Meng 4.7 -> DI -> n*_eff, computed on the candidate specific observed sample
+# def meng_per_candidate(cces, truth_p, x_col):
+#     # observed sample for this candidate: validated voters with non-missing x_col
+#     d = cces.loc[(cces["validated_voter"] == 1) & (cces[x_col].notna())].copy()
+#     n = len(d)
+
+#     # unweighted sample mean Gn
+#     Gn = d[x_col].mean()
+
+#     # benchmark GN
+#     GN = truth_p
+
+#     # sampling rate and dropout odds
+#     f = n / N_total
+#     DO = (1.0 - f) / f
+
+#     # sigma_G
+#     sigma = np.sqrt(GN * (1.0 - GN))
+
+#     # 4.7: rho = (Gn - GN) / (sigma * sqrt((1-f)/f))
+#     bias = Gn - GN
+#     rho = bias / (sigma * np.sqrt((1.0 - f) / f))
+
+#     # DI and effective sample sizes
+#     DI = rho**2
+#     n_star_eff = 1.0 / (DO * DI)
+#     n_eff = n_star_eff / (1.0 + (n_star_eff - 1.0) / (N_total - 1.0))
+
+#     # 4.5: Me and upper bound
+#     ME = 2.0 * np.sqrt((sigma**2) / n_star_eff)
+#     ME_upper = 1.0 / np.sqrt(n_star_eff)
+
+#     return {
+#         "n_used": n,
+#         "f": f,
+#         "DO": DO,
+#         "Gn_hat": Gn,
+#         "GN_true": GN,
+#         "bias": bias,
+#         "sigma_G": sigma,
+#         "rho": rho,
+#         "DI": DI,
+#         "n_star_eff": n_star_eff,
+#         "n_eff": n_eff,
+#         "ME": ME,
+#         "ME_upper": ME_upper,
+#     }
+
+# # plug in candidates
+# checker_results = {
+#     "N_total": N_total,
+#     "Trump":  meng_per_candidate(cces, p_trump_true_total,  "X_trump"),
+#     "Harris": meng_per_candidate(cces, p_harris_true_total, "X_harris"),
+# }
+
+# print(checker_results)
+
 
 
 ##### ADD SOMETHING NEW TO REPLICATION, NEW ANALYSIS TYPE OR CHANGE ASSUMPTION OR NEW OUTPUTS
@@ -1010,3 +1255,60 @@ print(effective_sample_size_outputs.sort_values("n_star_eff_harris").head(10)[
 # mean_bias = val_m["bias"].mean()
 # rmse = np.sqrt((val_m["bias"]**2).mean())
 # print(f"\nValidated sample mean bias: {mean_bias:.4f}, RMSE: {rmse:.4f}")
+
+
+##### handling NAs so we know how many are being dropped
+mask = (cces["validated_voter"] == 1)
+
+n_validated_all = mask.sum()
+n_validated_trump_nonmissing = (mask & cces["X_trump"].notna()).sum()
+n_validated_harris_nonmissing = (mask & cces["X_harris"].notna()).sum()
+
+truth_states = set(truth["state_name"])
+n_validated_in_truth_states = (mask & cces["state_name"].isin(truth_states)).sum()
+n_validated_trump_nonmissing_in_truth_states = (mask & cces["state_name"].isin(truth_states) & cces["X_trump"].notna()).sum()
+n_validated_harris_nonmissing_in_truth_states = (mask & cces["state_name"].isin(truth_states) & cces["X_harris"].notna()).sum()
+
+n_table_total = eff_samplesize_df["n"].sum()
+
+print("Microdata: validated (all)                         =", n_validated_all)
+print("Microdata: validated & X_trump notna               =", n_validated_trump_nonmissing)
+print("Microdata: validated & X_harris notna              =", n_validated_harris_nonmissing)
+print("Microdata: validated & state in truth              =", n_validated_in_truth_states)
+print("Microdata: validated & state in truth & trump notna=", n_validated_trump_nonmissing_in_truth_states)
+print("Microdata: validated & state in truth & harris notna=", n_validated_harris_nonmissing_in_truth_states)
+print("Table: sum eff_samplesize_df['n']                  =", n_table_total)
+
+###### which states have NAs
+# state-level counts from CCES microdata (validated only)
+cces_state_counts = (
+    cces.loc[cces["validated_voter"] == 1]
+        .groupby("state_name")
+        .size()
+        .reset_index(name="n_cces_validated")
+)
+
+# state-level counts from eff_samplesize_df
+eff_state_counts = (
+    eff_samplesize_df[["state_name", "n"]]
+        .rename(columns={"n": "n_eff_table"})
+)
+
+# compute differences
+state_count_diff = (
+    cces_state_counts
+        .merge(eff_state_counts, on="state_name", how="outer")
+        .fillna(0)
+)
+
+state_count_diff["difference"] = (
+    state_count_diff["n_cces_validated"]
+    - state_count_diff["n_eff_table"]
+)
+
+# print only states where counts differ
+print(
+    state_count_diff.loc[state_count_diff["difference"] != 0]
+        .sort_values("difference", ascending=False)
+        .to_string(index=False)
+)
