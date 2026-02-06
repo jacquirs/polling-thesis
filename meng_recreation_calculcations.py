@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # data from pipeline
-cces = pd.read_csv("cces2024_meng_replication_set.csv")
-truth_raw = pd.read_csv("Meng_true_votes.csv")
+cces = pd.read_csv("data/cces2024_meng_replication_set.csv")
+truth_raw = pd.read_csv("data/Meng_true_votes.csv")
 
 # build truth table
 truth = truth_raw[["state_name", "p_trump_true", "p_harris_true", "N_state"]].copy()
@@ -353,7 +353,7 @@ for ax, (title, dfm) in zip(axes, panels_wieghted_T):
 
 plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Weighted Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure4_cces2024_trump_weighted.png", dpi=300)
+plt.savefig("figures/figure4_cces2024_trump_weighted.png", dpi=300)
 #plt.show()
 
 # HARRIS, same as trump
@@ -521,7 +521,7 @@ axes[1].text(
 
 plt.suptitle("Figure 5 Replication (2024): Histograms of state-level data defect correlation $\\hat\\rho_N$")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure5_rho_hist_harris_trump_2024.png", dpi=300)
+plt.savefig("figures/figure5_rho_hist_harris_trump_2024.png", dpi=300)
 #plt.show()
 
 ###### Figure 8
@@ -698,7 +698,7 @@ ax.legend(loc='lower left', fontsize=8)
 
 plt.suptitle("Figure 8 style: state-level $\\hat\\rho_N$ with Meng feasible bounds (2.9)")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure8_rho_bounds_colored_2024.png", dpi=300)
+plt.savefig("figures/figure8_rho_bounds_colored_2024.png", dpi=300)
 #plt.show()
 
 # save values in case needed later
@@ -827,7 +827,7 @@ axes[1].text(
 
 plt.suptitle("Law of Large Populations (Figure 6 replication): log |Z_{n,N}| vs log N")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure6_llp_logZ_logN_trump_harris.png", dpi=300)
+plt.savefig("figures/figure6_llp_logZ_logN_trump_harris.png", dpi=300)
 #plt.show()
 
 ##### figure 7: compares to regular Z score used in SRS
@@ -904,7 +904,7 @@ axes[1].text(
 
 plt.suptitle("Law of Large Populations (Figure 7 replication): Conventional Z_n vs log N")
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure7_LLP_Zn_vs_logN_trump_harris.png", dpi=300)
+plt.savefig("figures/figure7_LLP_Zn_vs_logN_trump_harris.png", dpi=300)
 #plt.show()
 
 # save data

@@ -3,7 +3,7 @@ import numpy as np
 
 # THIS FILE CLEANS THE COMPARISON SET WITH TRUE OUTCOME 2024 PRESIDENTIAL RESULTS FOR USE IN MENG CALCULATIONS
 
-df = pd.read_csv("2024-president-state.csv")
+df = pd.read_csv("data/2024-president-state.csv")
 
 # sort for 2024 presidential results
 df_pres_2024 = df[
@@ -83,4 +83,4 @@ for_meng = state_totals[
     ["state_name", "p_trump_true", "p_harris_true", "N_state"]
 ].copy()
 
-for_meng.to_csv("Meng_true_votes.csv", index=False)
+for_meng.to_csv("data/Meng_true_votes.csv", index=False)

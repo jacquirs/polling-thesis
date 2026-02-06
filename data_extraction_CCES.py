@@ -5,7 +5,7 @@ import numpy as np
 # DATAFILE AVAILABLE FROM https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/X11EP6
 
 # load CCES 2024 data from site
-df = pd.read_csv("CCES24_Common_OUTPUT_vv_topost_final.csv")
+df = pd.read_csv("data/CCES24_Common_OUTPUT_vv_topost_final.csv")
 
 # these columns are the only ones needed to recreate the analysis
 neededcols = [
@@ -171,6 +171,6 @@ output_df = df[
     ]
 ].copy()
 
-output_df.to_csv("cces2024_meng_replication_set.csv", index=False)
+output_df.to_csv("data/cces2024_meng_replication_set.csv", index=False)
 
 print(output_df.shape)
