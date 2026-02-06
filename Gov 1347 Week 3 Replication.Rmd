@@ -63,7 +63,7 @@ For an example of this, look at variations in the 2020 election polling, with "g
 
 ```{r}
 ####----------------------------------------------------------#
-#### Year by year polling over time
+#### Year by year polling over time, test with 2020
 ####----------------------------------------------------------#
 
 polling_over_time_2020 <- d_pollav_natl |> 
