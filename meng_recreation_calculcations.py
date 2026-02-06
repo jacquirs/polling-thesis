@@ -182,7 +182,7 @@ for ax, (title, dfm) in zip(axes, panels_T):
 
 plt.suptitle("Figure 4 Replication: State-level CCES estimates vs Official 2024 Results (Trump, Binary Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure4_cces2024_trump_binarylikely.png", dpi=300)
+plt.savefig("figures/figure4_cces2024_trump_binarylikely.png", dpi=300)
 #plt.show()
 
 ###### plot Figure 4 three panels for harris, same as trump above jsut with harris var
@@ -216,7 +216,7 @@ for ax, (title, dfm) in zip(axes, panels_H):
 
 plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Binary Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure4_cces2024_harris_binarylikely.png", dpi=300)
+plt.savefig("figures/figure4_cces2024_harris_binarylikely.png", dpi=300)
 #plt.show()
 
 
@@ -387,7 +387,7 @@ for ax, (title, dfm) in zip(axes, panels_weighted_H):
 
 plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results (Harris, Weighted Likely)", fontsize=14)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-plt.savefig("figure4_cces2024_harris_weighted.png", dpi=300)
+plt.savefig("figures/figure4_cces2024_harris_weighted.png", dpi=300)
 #plt.show()
 
 ########################################################################################
