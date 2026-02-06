@@ -941,7 +941,8 @@ eff_samplesize_df["DI_harris"] = eff_samplesize_df["rho_hat_harris"]**2
 
 # data quantity term, 2.4: DO = (1-f)/f, already calculated as DO_s for each state
 
-# n*_eff = (DO * DI)^(-1), equation 3.6 effective sample size
+# n*_eff = (DO * DI)^(-1), from inequality 3.6 effective sample size
+# this is the upper bound version Meng uses in practice, 3.2
 eff_samplesize_df["n_star_eff_trump"] = 1.0 / (eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_trump"])
 eff_samplesize_df["n_star_eff_harris"] = 1.0 / (eff_samplesize_df["DO_s"] * eff_samplesize_df["DI_harris"])
 
@@ -995,6 +996,8 @@ print("\nBottom 10 states by n*_eff (Harris):")
 print(effective_sample_size_outputs.sort_values("n_star_eff_harris").head(10)[
     ["state_name", "n_star_eff_harris", "Me95_star_harris"]
 ].to_string(index=False))
+
+
 
 ##### ADD SOMETHING NEW TO REPLICATION, NEW ANALYSIS TYPE OR CHANGE ASSUMPTION OR NEW OUTPUTS
 # # summary table of bias and n for validated sample
