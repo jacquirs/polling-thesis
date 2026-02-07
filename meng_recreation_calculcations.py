@@ -955,11 +955,11 @@ print("Not covered only Harris:", sorted(notcovered_H - notcovered_T))
 # SRS variance for comparison
 
 # calculate S^2_G, finite-population corrected variance
-# Meng 2.5: S^2_G = [N/(N-1)] x σ^2_G
-#   σ^2_G = p(1-p) is the population variance
+# Meng 2.5: S^2_G = [N/(N-1)] x sigma^2_G
+#   sigma^2_G = p(1-p) is the population variance
 #   the factor N/(N-1) is the finite population correction
 #   S^2_G is the unbiased population variance used in SRS formulas
-#   for large N, S^2_G approx σ^2_G
+#   for large N, S^2_G approx sigma^2_G
 #   in finite population sampling, we need to account for sampling without replacement
 #   so this adjustment ensures unbiased variance estimation when sample size is non trivial
 #   relative to population size
@@ -972,13 +972,13 @@ val_mergedtruth_TH["S2_harris"] = (
     * val_mergedtruth_TH["sigma_harris"]**2
 )
 
-# calculate SRS variance, 2.5: Var_SRS(G_n) = [(1-f)/n] × S^2_G
+# calculate SRS variance, 2.5: Var_SRS(G_n) = [(1-f)/n] x S^2_G
 # what variance would be under perfect random sampling
 #   is the variance of the sample mean under SRS
 #   (1-f) is the finite population correction
-#   when f -> 0 (tiny sample), FPC -> 1, so Var approx σ^2/n 
+#   when f -> 0 (tiny sample), FPC -> 1, so Var approx sigma^2/n 
 #   when f -> 1 (census), FPC _> 0, so Var -> 0, no sampling error
-#   σ²_G/n is the variance of sample mean from 110
+#   sigma²_G/n is the variance of sample mean from 110
 #   serves as benchmark, how good would it be with perfect random sampling
 #   compare actual MSE to this benchmark to see how much damage the biased R-mechanism (selection bias) causes
 #   if MSE >> Var_SRS, we have a serious problem
@@ -998,9 +998,9 @@ val_mergedtruth_TH["SE_SRS_trump"] = np.sqrt(val_mergedtruth_TH["Var_SRS_trump"]
 val_mergedtruth_TH["SE_SRS_harris"] = np.sqrt(val_mergedtruth_TH["Var_SRS_harris"])
 
 # calculate DU, degree of Uncertainty = population variance, problem difficulty
-# part of 2.4: DU = σ^2_G
+# part of 2.4: DU = sigma^2_G
 #   DU measures how difficult the estimation problem is
-#   for binary outcome, σ^2_G = p(1-p), maximized at p=0.5
+#   for binary outcome, sigma^2_G = p(1-p), maximized at p=0.5
 #   higher variance means harder to estimate accurately
 #   only factor determined by the population, not by sampling design
 #   cannot control DU through better sampling, but we can reduce it with stratification or covariate adjustment (5.1)
@@ -1009,7 +1009,7 @@ val_mergedtruth_TH["DU_trump"] = val_mergedtruth_TH["sigma_trump"]**2
 val_mergedtruth_TH["DU_harris"] = val_mergedtruth_TH["sigma_harris"]**2
 
 # calculate actual MSE, from 2.4 MSE = DI x DO x DU
-# where DI = ρ²_{R,G}, DO = (1-f)/f, DU = σ²_G
+# where DI = rho^2_{R,G}, DO = (1-f)/f, DU = sigma^2_G
 
 val_mergedtruth_TH["MSE_trump"] = (
     val_mergedtruth_TH["rho_hat_trump"]**2 # DI
@@ -1135,8 +1135,8 @@ print(
 # p_harris_true     → G_N (population/true proportion)
 # bias_trump        → G_n - G_N (actual bias)
 # bias_harris       → G_n - G_N (actual bias)
-# sigma_trump       → σ_G (population std dev = sqrt(p(1-p))) [Meng 2.3]
-# sigma_harris      → σ_G (population std dev = sqrt(p(1-p)))
+# sigma_trump       → sigma_G (population std dev = sqrt(p(1-p))) [Meng 2.3]
+# sigma_harris      → sigma_G (population std dev = sqrt(p(1-p)))
 # rho_hat_trump     → ρ_R,G (data defect correlation) [Meng 4.7]
 # rho_hat_harris    → ρ_R,G (data defect correlation)
 
@@ -1170,7 +1170,7 @@ eff_samplesize_df["n_eff_harris"] = eff_samplesize_df["n_star_eff_harris"] / (
 
 # 4.5: margin of error for binary outcomes 
 # half-width of 95% CI = 2*sqrt(p(1-p)/n_s)  <= 1/sqrt(n_s)
-# Me = 2 × sqrt(p(1-p)/n*_eff)
+# Me = 2 x sqrt(p(1-p)/n*_eff)
 # If we replace n_s by n*_eff, we get an effective margin of error that reflects the selection bias implied by rho
 # huge n can still imply an MoE comparable to a much smaller SRS once n_eff collapses
 
@@ -1206,6 +1206,16 @@ print(effective_sample_size_outputs.sort_values("n_star_eff_harris").head(10)[
     ["state_name", "n_star_eff_harris", "Me95_star_harris"]
 ].to_string(index=False))
 
+# get columns from eff_samplesize_df that aren't already in val_mergedtruth_TH
+new_cols = [col for col in eff_samplesize_df.columns if col not in val_mergedtruth_TH.columns]
+
+# add them to val_mergedtruth_TH
+for col in new_cols:
+    val_mergedtruth_TH[col] = eff_samplesize_df[col]
+
+# save comprehensive state level dataset with all calculations
+val_mergedtruth_TH.to_csv("data/mengrep_all_vals_state_level.csv", index=False)
+
 ########################################################################################
 ####### Overall Effective Sample Size Pooled Across States, and additional values ######
 ########################################################################################
@@ -1237,11 +1247,11 @@ p_harris_true_total = (eff_samplesize_df["p_harris_true"] * eff_samplesize_df["N
 bias_trump_total = p_hat_trump_total - p_trump_true_total
 bias_harris_total = p_hat_harris_total - p_harris_true_total
 
-# overall sigma_G = sqrt(p(1-p)) using true national proportion, σ_G from Meng 2.3, national sd, 0.5 max uncertainty
+# overall sigma_G = sqrt(p(1-p)) using true national proportion, sigma_G from Meng 2.3, national sd, 0.5 max uncertainty
 sigma_trump_total = np.sqrt(p_trump_true_total * (1.0 - p_trump_true_total))
 sigma_harris_total = np.sqrt(p_harris_true_total * (1.0 - p_harris_true_total))
 
-# overall rho using Meng 4.7, ρ_R,G = (G_n - G_N) / (σ_G x sqrt((1-f)/f)) = bias / (sigma x sqrt(DO)) = (bias / sigma) × sqrt(f / (1-f)), higher more selection bias, corr between response propensity and outcome, if >0 people voting for candidate more likely to respond
+# overall rho using Meng 4.7, ρ_R,G = (G_n - G_N) / (sigma_G x sqrt((1-f)/f)) = bias / (sigma x sqrt(DO)) = (bias / sigma) x sqrt(f / (1-f)), higher more selection bias, corr between response propensity and outcome, if >0 people voting for candidate more likely to respond
 rho_trump_total = (bias_trump_total / sigma_trump_total) * np.sqrt(f_total / (1.0 - f_total))
 rho_harris_total = (bias_harris_total / sigma_harris_total) * np.sqrt(f_total / (1.0 - f_total))
 
@@ -1257,7 +1267,7 @@ n_star_eff_harris_total = 1.0 / (DO_total * DI_harris_total)
 n_eff_trump_total = n_star_eff_trump_total / (1.0 + (n_star_eff_trump_total - 1.0) / (N_total - 1.0))
 n_eff_harris_total = n_star_eff_harris_total / (1.0 + (n_star_eff_harris_total - 1.0) / (N_total - 1.0))
 
-# overall margin of error, Meng equation 4.5, Me = 2x sqrt(σ^2_G / n*_eff), Me is half-width of 95% confidence interval, Me = 0.05 means estimate +/- 5 percentage points
+# overall margin of error, Meng equation 4.5, Me = 2x sqrt(sigma^2_G / n*_eff), Me is half-width of 95% confidence interval, Me = 0.05 means estimate +/- 5 percentage points
 # maybe to add Me_actual / Me_naive_SRS = sqrt(n / n*_eff) = sqrt(Deff)
 Me_trump_total = 2.0 * np.sqrt((sigma_trump_total**2) / n_star_eff_trump_total)
 Me_harris_total = 2.0 * np.sqrt((sigma_harris_total**2) / n_star_eff_harris_total)
@@ -1410,7 +1420,7 @@ national_long_table = pd.DataFrame({
         f'{Me_trump_total*100:.4f}',
         f'{Me_upper_trump_total:.6f}',
         f'{Me_upper_trump_total*100:.4f}',
-        f'{Me_trump_total/(SE_SRS_trump_national*2):.4f}×',
+        f'{Me_trump_total/(SE_SRS_trump_national*2):.4f}x',
         '',
     ],
     
@@ -1474,7 +1484,7 @@ national_long_table = pd.DataFrame({
         f'{Me_harris_total*100:.4f}',
         f'{Me_upper_harris_total:.6f}',
         f'{Me_upper_harris_total*100:.4f}',
-        f'{Me_harris_total/(SE_SRS_harris_national*2):.4f}×',
+        f'{Me_harris_total/(SE_SRS_harris_national*2):.4f}x',
         '',
     ]
 })
