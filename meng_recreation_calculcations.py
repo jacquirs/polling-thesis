@@ -950,12 +950,19 @@ print("Not covered only Harris:", sorted(notcovered_H - notcovered_T))
 ########################################################################################
 ################## MSE, Design Effect, and SRS Values ##################################
 ########################################################################################
-# 1. SRS variance
-# 2. MSE calculations (2.4)
-# 3. Design effect (3.2)
+# MSE calculations (2.4)
+# Design effect (3.2)
+# SRS variance for comparison
 
-# Calculate S^2_G, finite-population corrected variance
+# calculate S^2_G, finite-population corrected variance
 # Meng 2.5: S^2_G = [N/(N-1)] x σ^2_G
+#   σ^2_G = p(1-p) is the population variance
+#   the factor N/(N-1) is the finite population correction
+#   S^2_G is the unbiased population variance used in SRS formulas
+#   for large N, S^2_G approx σ^2_G
+#   in finite population sampling, we need to account for sampling without replacement
+#   so this adjustment ensures unbiased variance estimation when sample size is non trivial
+#   relative to population size
 val_mergedtruth_TH["S2_trump"] = (
     val_mergedtruth_TH["N_state"] / (val_mergedtruth_TH["N_state"] - 1)
     * val_mergedtruth_TH["sigma_trump"]**2
@@ -967,6 +974,14 @@ val_mergedtruth_TH["S2_harris"] = (
 
 # calculate SRS variance, 2.5: Var_SRS(G_n) = [(1-f)/n] × S^2_G
 # what variance would be under perfect random sampling
+#   is the variance of the sample mean under SRS
+#   (1-f) is the finite population correction
+#   when f -> 0 (tiny sample), FPC -> 1, so Var approx σ^2/n 
+#   when f -> 1 (census), FPC _> 0, so Var -> 0, no sampling error
+#   σ²_G/n is the variance of sample mean from 110
+#   serves as benchmark, how good would it be with perfect random sampling
+#   compare actual MSE to this benchmark to see how much damage the biased R-mechanism (selection bias) causes
+#   if MSE >> Var_SRS, we have a serious problem
 val_mergedtruth_TH["Var_SRS_trump"] = (
     (1 - val_mergedtruth_TH["f_s"]) / val_mergedtruth_TH["n"]
     * val_mergedtruth_TH["S2_trump"]
@@ -976,20 +991,30 @@ val_mergedtruth_TH["Var_SRS_harris"] = (
     * val_mergedtruth_TH["S2_harris"]
 )
 
+# standard error, square root of variance
+# margin of error if SRS
+# SE_SRS = 0.01 means estimate would typically be within +/-1% of truth
 val_mergedtruth_TH["SE_SRS_trump"] = np.sqrt(val_mergedtruth_TH["Var_SRS_trump"])
 val_mergedtruth_TH["SE_SRS_harris"] = np.sqrt(val_mergedtruth_TH["Var_SRS_harris"])
 
-# calculate DU (Degree of Uncertainty = population variance)
+# calculate DU, degree of Uncertainty = population variance, problem difficulty
 # part of 2.4: DU = σ^2_G
+#   DU measures how difficult the estimation problem is
+#   for binary outcome, σ^2_G = p(1-p), maximized at p=0.5
+#   higher variance means harder to estimate accurately
+#   only factor determined by the population, not by sampling design
+#   cannot control DU through better sampling, but we can reduce it with stratification or covariate adjustment (5.1)
+#   lower DU means easier problem, 50/50 race is max difficulty and would get 0.25
 val_mergedtruth_TH["DU_trump"] = val_mergedtruth_TH["sigma_trump"]**2
 val_mergedtruth_TH["DU_harris"] = val_mergedtruth_TH["sigma_harris"]**2
 
 # calculate actual MSE, from 2.4 MSE = DI x DO x DU
 # where DI = ρ²_{R,G}, DO = (1-f)/f, DU = σ²_G
+
 val_mergedtruth_TH["MSE_trump"] = (
-    val_mergedtruth_TH["rho_hat_trump"]**2  # DI (data defect index)
-    * val_mergedtruth_TH["DO_s"]             # DO (dropout odds)
-    * val_mergedtruth_TH["DU_trump"]         # DU (degree of uncertainty)
+    val_mergedtruth_TH["rho_hat_trump"]**2 # DI
+    * val_mergedtruth_TH["DO_s"] # DO
+    * val_mergedtruth_TH["DU_trump"] # DU
 )
 val_mergedtruth_TH["MSE_harris"] = (
     val_mergedtruth_TH["rho_hat_harris"]**2
@@ -997,13 +1022,15 @@ val_mergedtruth_TH["MSE_harris"] = (
     * val_mergedtruth_TH["DU_harris"]
 )
 
-# RMSE
+# RMSE, typical error in our estimate 
 val_mergedtruth_TH["RMSE_trump"] = np.sqrt(val_mergedtruth_TH["MSE_trump"])
 val_mergedtruth_TH["RMSE_harris"] = np.sqrt(val_mergedtruth_TH["MSE_harris"])
 
-# calculate Design Effect
+# calculate design effect
 # 3.2: Deff = MSE / Var_SRS = (N-1) x DI
-# how many times worse the sampling is vs perfect SRS
+# how many times worse the actual sampling is vs perfect SRS
+# need deff times the sample size to match SRS precision
+# if rho doesn't shrink with N, the deff grows with N
 val_mergedtruth_TH["Deff_trump"] = (
     (val_mergedtruth_TH["N_state"] - 1) * val_mergedtruth_TH["rho_hat_trump"]**2
 )
@@ -1011,67 +1038,86 @@ val_mergedtruth_TH["Deff_harris"] = (
     (val_mergedtruth_TH["N_state"] - 1) * val_mergedtruth_TH["rho_hat_harris"]**2
 )
 
-# ============================================================================
-# STEP 6: Calculate MSE inflation ratio (verification)
-# This should equal Deff - serves as a check of our formulas
-# ============================================================================
-val_mergedtruth_TH["MSE_ratio_trump"] = (
-    val_mergedtruth_TH["MSE_trump"] / val_mergedtruth_TH["Var_SRS_trump"]
-)
-val_mergedtruth_TH["MSE_ratio_harris"] = (
-    val_mergedtruth_TH["MSE_harris"] / val_mergedtruth_TH["Var_SRS_harris"]
-)
-
-# ============================================================================
-# STEP 7: Verification of Z_{n,N} formula
-# Meng equation (3.1): Z_{n,N} = (bias / SE_SRS) = sqrt(N-1) × ρ
-# We already calculated Z_nN via sqrt(N-1) × ρ earlier
-# Now verify it matches (bias / SE_SRS)
-# ============================================================================
-val_mergedtruth_TH["Z_nN_check_trump"] = (
-    val_mergedtruth_TH["bias_trump"] / val_mergedtruth_TH["SE_SRS_trump"]
-)
-val_mergedtruth_TH["Z_nN_check_harris"] = (
-    val_mergedtruth_TH["bias_harris"] / val_mergedtruth_TH["SE_SRS_harris"]
-)
-
 # summary statistics
 print("TRUMP:")
-print(f"  Mean DI (data defect index):   {val_mergedtruth_TH['rho_hat_trump'].pow(2).mean():.8f}")
-print(f"  Mean DO (dropout odds):        {val_mergedtruth_TH['DO_s'].mean():.2f}")
-print(f"  Mean DU (degree uncertainty):  {val_mergedtruth_TH['DU_trump'].mean():.6f}")
-print(f"  Mean MSE:                      {val_mergedtruth_TH['MSE_trump'].mean():.8f}")
-print(f"  Mean RMSE:                     {val_mergedtruth_TH['RMSE_trump'].mean():.4f} ({val_mergedtruth_TH['RMSE_trump'].mean()*100:.2f} pp)")
-print(f"  Mean Var_SRS (benchmark):      {val_mergedtruth_TH['Var_SRS_trump'].mean():.8f}")
-print(f"  Mean SE_SRS (benchmark):       {val_mergedtruth_TH['SE_SRS_trump'].mean():.4f} ({val_mergedtruth_TH['SE_SRS_trump'].mean()*100:.2f} pp)")
-print(f"  Mean Design Effect (Deff):     {val_mergedtruth_TH['Deff_trump'].mean():.2f}")
+print(f"Mean DI (data defect index):   {val_mergedtruth_TH['rho_hat_trump'].pow(2).mean():.8f}")
+print(f"Mean DO (dropout odds):        {val_mergedtruth_TH['DO_s'].mean():.2f}")
+print(f"Mean DU (degree uncertainty):  {val_mergedtruth_TH['DU_trump'].mean():.6f}")
+print(f"Mean MSE:                      {val_mergedtruth_TH['MSE_trump'].mean():.8f}")
+print(f"Mean RMSE:                     {val_mergedtruth_TH['RMSE_trump'].mean():.4f} ({val_mergedtruth_TH['RMSE_trump'].mean()*100:.2f} pp)")
+print(f"Mean Var_SRS (benchmark):      {val_mergedtruth_TH['Var_SRS_trump'].mean():.8f}")
+print(f"Mean SE_SRS (benchmark):       {val_mergedtruth_TH['SE_SRS_trump'].mean():.4f} ({val_mergedtruth_TH['SE_SRS_trump'].mean()*100:.2f} pp)")
+print(f"Mean Design Effect (Deff):     {val_mergedtruth_TH['Deff_trump'].mean():.2f}")
 
 print("\nHARRIS:")
-print(f"  Mean DI (data defect index):   {val_mergedtruth_TH['rho_hat_harris'].pow(2).mean():.8f}")
-print(f"  Mean DO (dropout odds):        {val_mergedtruth_TH['DO_s'].mean():.2f}")
-print(f"  Mean DU (degree uncertainty):  {val_mergedtruth_TH['DU_harris'].mean():.6f}")
-print(f"  Mean MSE:                      {val_mergedtruth_TH['MSE_harris'].mean():.8f}")
-print(f"  Mean RMSE:                     {val_mergedtruth_TH['RMSE_harris'].mean():.4f} ({val_mergedtruth_TH['RMSE_harris'].mean()*100:.2f} pp)")
-print(f"  Mean Var_SRS (benchmark):      {val_mergedtruth_TH['Var_SRS_harris'].mean():.8f}")
-print(f"  Mean SE_SRS (benchmark):       {val_mergedtruth_TH['SE_SRS_harris'].mean():.4f} ({val_mergedtruth_TH['SE_SRS_harris'].mean()*100:.2f} pp)")
-print(f"  Mean Design Effect (Deff):     {val_mergedtruth_TH['Deff_harris'].mean():.2f}")
+print(f"Mean DI (data defect index):   {val_mergedtruth_TH['rho_hat_harris'].pow(2).mean():.8f}")
+print(f"Mean DO (dropout odds):        {val_mergedtruth_TH['DO_s'].mean():.2f}")
+print(f"Mean DU (degree uncertainty):  {val_mergedtruth_TH['DU_harris'].mean():.6f}")
+print(f"Mean MSE:                      {val_mergedtruth_TH['MSE_harris'].mean():.8f}")
+print(f"Mean RMSE:                     {val_mergedtruth_TH['RMSE_harris'].mean():.4f} ({val_mergedtruth_TH['RMSE_harris'].mean()*100:.2f} pp)")
+print(f"Mean Var_SRS (benchmark):      {val_mergedtruth_TH['Var_SRS_harris'].mean():.8f}")
+print(f"Mean SE_SRS (benchmark):       {val_mergedtruth_TH['SE_SRS_harris'].mean():.4f} ({val_mergedtruth_TH['SE_SRS_harris'].mean()*100:.2f} pp)")
+print(f"Mean Design Effect (Deff):     {val_mergedtruth_TH['Deff_harris'].mean():.2f}")
 
 # worst states by design effect
-print("\n--- top five by design effect (worst precision loss) ---\n")
+print("\nTop five by design effect, worst precision loss\n")
 print("TRUMP:")
-top5_trump = val_mergedtruth_TH.nlargest(5, 'Deff_trump')[
-    ['state_name', 'N_state', 'rho_hat_trump', 'Deff_trump', 'RMSE_trump']
+top5_trump = val_mergedtruth_TH.nlargest(5, "Deff_trump")[
+    ["state_name", "N_state", "rho_hat_trump", "Deff_trump", "RMSE_trump"]
 ].copy()
-top5_trump['RMSE_pct'] = top5_trump['RMSE_trump'] * 100
-print(top5_trump[['state_name', 'N_state', 'rho_hat_trump', 'Deff_trump', 'RMSE_pct']].to_string(index=False))
+top5_trump["RMSE_pct"] = top5_trump["RMSE_trump"] * 100
+print(
+    top5_trump[
+        ["state_name", "N_state", "rho_hat_trump", "Deff_trump", "RMSE_pct"]
+    ].to_string(index=False)
+)
 
 print("\nHARRIS:")
-top5_harris = val_mergedtruth_TH.nlargest(5, 'Deff_harris')[
-    ['state_name', 'N_state', 'rho_hat_harris', 'Deff_harris', 'RMSE_harris']
+top5_harris = val_mergedtruth_TH.nlargest(5, "Deff_harris")[
+    ["state_name", "N_state", "rho_hat_harris", "Deff_harris", "RMSE_harris"]
 ].copy()
-top5_harris['RMSE_pct'] = top5_harris['RMSE_harris'] * 100
-print(top5_harris[['state_name', 'N_state', 'rho_hat_harris', 'Deff_harris', 'RMSE_pct']].to_string(index=False))
+top5_harris["RMSE_pct"] = top5_harris["RMSE_harris"] * 100
+print(
+    top5_harris[
+        ["state_name", "N_state", "rho_hat_harris", "Deff_harris", "RMSE_pct"]
+    ].to_string(index=False)
+)
 
+# trump worst MSE
+print("Trump states with largest MSE")
+
+worst_mse_trump = val_mergedtruth_TH.nlargest(5, "MSE_trump")[["state_name", "MSE_trump", "rho_hat_trump", "f_s", "sigma_trump"]]
+
+print(worst_mse_trump
+    .assign(sigma2=lambda df: df["sigma_trump"] ** 2)
+    .rename(columns={
+        "state_name": "State",
+        "MSE_trump": r"$\mathrm{MSE}$",
+        "rho_hat_trump": r"$\rho$",
+        "f_s": r"$f$",
+        "sigma2": r"$\sigma^2$",
+    }).to_string(index=False))
+
+print("\nInterpretation guide:")
+print(r"High $|\rho| \;\to\;$ strong selection bias")
+print(r"Low $f \;\to\;$ low response rate")
+print(r"High $\sigma^2 \;\to\;$ close race ($p \approx 0.5$)")
+
+# harris worst MSE
+print("\nHarris states with largest MSE")
+
+worst_mse_harris = val_mergedtruth_TH.nlargest(5, "MSE_harris")[["state_name", "MSE_harris", "rho_hat_harris", "f_s", "sigma_harris"]]
+
+print(
+    worst_mse_harris
+    .assign(sigma2=lambda df: df["sigma_harris"] ** 2)
+    .rename(columns={
+        "state_name": "State",
+        "MSE_harris": r"$\mathrm{MSE}$",
+        "rho_hat_harris": r"$\rho$",
+        "f_s": r"$f$",
+        "sigma2": r"$\sigma^2$",
+    }).to_string(index=False))
 
 ########################################################################################
 ######################## Effective Sample Size, by state ###############################
