@@ -1207,7 +1207,7 @@ print(effective_sample_size_outputs.sort_values("n_star_eff_harris").head(10)[
 ].to_string(index=False))
 
 ########################################################################################
-################### Overall Effective Sample Size Pooled Across States #################
+####### Overall Effective Sample Size Pooled Across States, and additional values ######
 ########################################################################################
 
 # Meng Section 4.1 combines all polls to get overall n*_eff
@@ -1266,126 +1266,279 @@ Me_harris_total = 2.0 * np.sqrt((sigma_harris_total**2) / n_star_eff_harris_tota
 Me_upper_trump_total = 1.0 / np.sqrt(n_star_eff_trump_total)
 Me_upper_harris_total = 1.0 / np.sqrt(n_star_eff_harris_total)
 
-# output tables
-# create long table
-summary_table = pd.DataFrame({
+# finite-population corrected variance S^2
+sigma2_trump_national = p_trump_true_total * (1.0 - p_trump_true_total)
+sigma2_harris_national = p_harris_true_total * (1.0 - p_harris_true_total)
+
+S2_trump_national = (N_total / (N_total - 1)) * sigma2_trump_national
+S2_harris_national = (N_total / (N_total - 1)) * sigma2_harris_national
+
+# what variance would be under perfect random sampling
+Var_SRS_trump_national = ((1 - f_total) / n_total) * S2_trump_national
+Var_SRS_harris_national = ((1 - f_total) / n_total) * S2_harris_national
+
+# SRS standard error
+SE_SRS_trump_national = np.sqrt(Var_SRS_trump_national)
+SE_SRS_harris_national = np.sqrt(Var_SRS_harris_national)
+
+# national MSE, 2.4: MSE = DI x DO x DU
+MSE_trump_national = DI_trump_total * DO_total * sigma2_trump_national
+MSE_harris_national = DI_harris_total * DO_total * sigma2_harris_national
+
+RMSE_trump_national = np.sqrt(MSE_trump_national)
+RMSE_harris_national = np.sqrt(MSE_harris_national)
+
+# national design effect, 3.2: Deff = (N-1) xDI
+Deff_trump_national = (N_total - 1) * DI_trump_total
+Deff_harris_national = (N_total - 1) * DI_harris_total
+
+# national long tale
+national_long_table = pd.DataFrame({
     'Metric': [
+        '=== population and sample value ===',
         'Population ($N$)',
         'Sample size ($n$)',
         'Sampling rate ($f$)',
         'Dropout odds ($DO$)',
-        '', 
+        '',
+        
+        '=== estimates vs truth ===',
         r'Sample proportion ($\hat{p}$)',
         'True proportion ($p$)',
         r'Bias ($\hat{p} - p$)',
-        r'Std deviation ($\sigma_G$)',
+        r'Absolute bias ($|\hat{p} - p|$)',
+        r'Standard deviation ($\sigma_G$)',
+        r'Variance ($\sigma^2_G = DU$)',
         '',
+        
+        '=== data quality ===',
         r'Data defect correlation ($\rho_{R,G}$)',
         r'Data defect index ($DI = \rho^2$)',
-        '', 
-        r'Effective sample size ($n^*_{eff}$)',
-        r'Effective sample size ($n_{eff}$)',
+        '',
+        
+        '=== SRS benchmark ===',
+        r'Finite-corrected variance ($S^2_G$)',
+        r'SRS variance ($Var_{SRS}$)',
+        r'SRS standard error ($SE_{SRS}$)',
+        r'SRS margin of error (95% CI)',
+        '',
+        
+        '=== actual MSE ===',
+        'Mean Squared Error (MSE)',
+        'Root MSE (RMSE)',
+        'RMSE (percentage points)',
+        '',
+        
+        '=== design effect ===',
+        'Design Effect (Deff)',
+        'Deff interpretation',
+        '',
+        
+        '=== effective sample size ===',
+        r'$n^*_{eff}$ (upper bound)',
+        r'$n_{eff}$ (finite-corrected)',
         'Sample reduction (%)',
-        '',  
-        'Margin of error ($Me$)',
+        'Sample reduction (count)',
+        '',
+        
+        '=== margin of error ===',
+        'Margin of error (Me)',
+        'Me (percentage points)',
         'Me upper bound',
+        'Me upper bound (pp)',
+        'Me inflation vs SRS',
+        '',
     ],
-    'Equation': [
-        '',
-        '',
-        '$n/N$',
-        '$(1-f)/f$',
-        '',
-        'Eq 2.1',
-        '',
-        r'$\hat{p} - p$',
-        'Eq 2.3',
-        '',
-        'Eq 4.7',
-        'Eq 2.4',
-        '',
-        'Eq 3.6',
-        'Eq 3.5',
-        '$(n-n^*)/n$',
-        '',
-        'Eq 4.5',
-        'Eq 4.5',
-    ],
+    
     'Trump': [
+        # population and sample values
+        '',
         f'{N_total:,.0f}',
         f'{n_total:,.0f}',
-        f'{f_total:.4f}',
-        f'{DO_total:.2f}',
+        f'{f_total:.6f}',
+        f'{DO_total:.4f}',
         '',
-        f'{p_hat_trump_total:.4f}',
-        f'{p_trump_true_total:.4f}',
-        f'{bias_trump_total:+.4f}',
-        f'{sigma_trump_total:.4f}',
+        
+        # estimates vs truth
         '',
-        f'{rho_trump_total:+.6f}',
-        f'{DI_trump_total:.8f}',
+        f'{p_hat_trump_total:.6f}',
+        f'{p_trump_true_total:.6f}',
+        f'{bias_trump_total:+.6f}',
+        f'{abs(bias_trump_total):.6f}',
+        f'{sigma_trump_total:.6f}',
+        f'{sigma_trump_total**2:.8f}',
+        '',
+        
+        # data quality
+        '',
+        f'{rho_trump_total:+.8f}',
+        f'{DI_trump_total:.10f}',
+        '',
+        
+        # SRS benchmark
+        '',
+        f'{S2_trump_national:.8f}',
+        f'{Var_SRS_trump_national:.10f}',
+        f'{SE_SRS_trump_national:.6f}',
+        f'{SE_SRS_trump_national*2:.6f}',
+        '',
+        
+        # actual MSE
+        '',
+        f'{MSE_trump_national:.10f}',
+        f'{RMSE_trump_national:.6f}',
+        f'{RMSE_trump_national*100:.4f}',
+        '',
+        
+        # design effect
+        '',
+        f'{Deff_trump_national:.4f}',
+        f'{Deff_trump_national:.1f}x worse than SRS',
+        '',
+        
+        # effective sample size
         '',
         f'{n_star_eff_trump_total:,.0f}',
         f'{n_eff_trump_total:,.0f}',
-        f'{(1 - n_star_eff_trump_total/n_total)*100:.2f}%',
+        f'{(1 - n_star_eff_trump_total/n_total)*100:.4f}%',
+        f'{n_total - n_star_eff_trump_total:,.0f}',
         '',
-        f'{Me_trump_total:.4f}',
-        f'{Me_upper_trump_total:.4f}',
+        
+        # margun of error
+        '',
+        f'{Me_trump_total:.6f}',
+        f'{Me_trump_total*100:.4f}',
+        f'{Me_upper_trump_total:.6f}',
+        f'{Me_upper_trump_total*100:.4f}',
+        f'{Me_trump_total/(SE_SRS_trump_national*2):.4f}×',
+        '',
     ],
+    
     'Harris': [
+        # population and sample values
+        '',
         f'{N_total:,.0f}',
         f'{n_total:,.0f}',
-        f'{f_total:.4f}',
-        f'{DO_total:.2f}',
+        f'{f_total:.6f}',
+        f'{DO_total:.4f}',
         '',
-        f'{p_hat_harris_total:.4f}',
-        f'{p_harris_true_total:.4f}',
-        f'{bias_harris_total:+.4f}',
-        f'{sigma_harris_total:.4f}',
+        
+        # estimates vs truth
         '',
-        f'{rho_harris_total:+.6f}',
-        f'{DI_harris_total:.8f}',
+        f'{p_hat_harris_total:.6f}',
+        f'{p_harris_true_total:.6f}',
+        f'{bias_harris_total:+.6f}',
+        f'{abs(bias_harris_total):.6f}',
+        f'{sigma_harris_total:.6f}',
+        f'{sigma_harris_total**2:.8f}',
+        '',
+        
+        # data quality
+        '',
+        f'{rho_harris_total:+.8f}',
+        f'{DI_harris_total:.10f}',
+        '',
+        
+        # SRS benchmark
+        '',
+        f'{S2_harris_national:.8f}',
+        f'{Var_SRS_harris_national:.10f}',
+        f'{SE_SRS_harris_national:.6f}',
+        f'{SE_SRS_harris_national*2:.6f}',
+        '',
+        
+        # actual MSE
+        '',
+        f'{MSE_harris_national:.10f}',
+        f'{RMSE_harris_national:.6f}',
+        f'{RMSE_harris_national*100:.4f}',
+        '',
+        
+        # design effect
+        '',
+        f'{Deff_harris_national:.4f}',
+        f'{Deff_harris_national:.1f}x worse than srs',
+        '',
+        
+        # effective sample size
         '',
         f'{n_star_eff_harris_total:,.0f}',
         f'{n_eff_harris_total:,.0f}',
-        f'{(1 - n_star_eff_harris_total/n_total)*100:.2f}%',
+        f'{(1 - n_star_eff_harris_total/n_total)*100:.4f}%',
+        f'{n_total - n_star_eff_harris_total:,.0f}',
         '',
-        f'{Me_harris_total:.4f}',
-        f'{Me_upper_harris_total:.4f}',
+        
+        # mmargin of error
+        '',
+        f'{Me_harris_total:.6f}',
+        f'{Me_harris_total*100:.4f}',
+        f'{Me_upper_harris_total:.6f}',
+        f'{Me_upper_harris_total*100:.4f}',
+        f'{Me_harris_total/(SE_SRS_harris_national*2):.4f}×',
+        '',
     ]
 })
 
-print("\n" + summary_table.to_string(index=False))
-
-print(f"Trump: $\\rho_{{R,G}}$ = {rho_trump_total:+.6f}, $n^*_{{eff}}$ = {n_star_eff_trump_total:,.0f} ({(1-n_star_eff_trump_total/n_total)*100:.1f}% reduction)")
-print(f"Harris: $\\rho_{{R,G}}$ = {rho_harris_total:+.6f}, $n^*_{{eff}}$ = {n_star_eff_harris_total:,.0f} ({(1-n_star_eff_harris_total/n_total)*100:.1f}% reduction)")
-print(f"Meng's 2016 example had $f \\approx 0.01$, $\\rho \\approx -0.005$ -> $n^*_{{eff}} \\approx 400$ (99.98% reduction)")
-
-summary_table.to_csv("data/mengrep_effss_national_long_vs_truth.csv", index=False)
-
-# wide table
-overall_results = pd.DataFrame({
+# national wide table
+national_wide_table = pd.DataFrame({
+    # candidate
     'candidate': ['Trump', 'Harris'],
+    
+    # population and sample values
     'N': [N_total, N_total],
     'n': [n_total, n_total],
     'f': [f_total, f_total],
     'DO': [DO_total, DO_total],
+    
+    # estimate values vs true
     'p_hat': [p_hat_trump_total, p_hat_harris_total],
     'p_true': [p_trump_true_total, p_harris_true_total],
     'bias': [bias_trump_total, bias_harris_total],
+    'abs_bias': [abs(bias_trump_total), abs(bias_harris_total)],
     'sigma_G': [sigma_trump_total, sigma_harris_total],
+    'sigma2_G': [sigma_trump_total**2, sigma_harris_total**2],
+    
+    # data quality
     'rho_R_G': [rho_trump_total, rho_harris_total],
     'DI': [DI_trump_total, DI_harris_total],
+    
+    # SRS benchmarks
+    'S2_G': [S2_trump_national, S2_harris_national],
+    'Var_SRS': [Var_SRS_trump_national, Var_SRS_harris_national],
+    'SE_SRS': [SE_SRS_trump_national, SE_SRS_harris_national],
+    'Me_SRS': [SE_SRS_trump_national*2, SE_SRS_harris_national*2],
+    
+    # actual MSE
+    'MSE': [MSE_trump_national, MSE_harris_national],
+    'RMSE': [RMSE_trump_national, RMSE_harris_national],
+    'RMSE_pp': [RMSE_trump_national*100, RMSE_harris_national*100],
+    
+    # design effect
+    'Deff': [Deff_trump_national, Deff_harris_national],
+    
+    # effective sample size
     'n_star_eff': [n_star_eff_trump_total, n_star_eff_harris_total],
     'n_eff': [n_eff_trump_total, n_eff_harris_total],
     'reduction_pct': [(1-n_star_eff_trump_total/n_total)*100, 
                       (1-n_star_eff_harris_total/n_total)*100],
+    'reduction_count': [n_total - n_star_eff_trump_total, 
+                        n_total - n_star_eff_harris_total],
+    
+    # margin of error
     'Me': [Me_trump_total, Me_harris_total],
-    'Me_upper': [Me_upper_trump_total, Me_upper_harris_total]
+    'Me_pp': [Me_trump_total*100, Me_harris_total*100],
+    'Me_upper': [Me_upper_trump_total, Me_upper_harris_total],
+    'Me_upper_pp': [Me_upper_trump_total*100, Me_upper_harris_total*100],
+    'Me_inflation': [Me_trump_total/(SE_SRS_trump_national*2),
+                     Me_harris_total/(SE_SRS_harris_national*2)],
 })
 
-overall_results.to_csv("data/mengrep_effss_national_wide_vs_truth.csv", index=False)
+# save national long table
+national_long_table.to_csv("data/mengrep_national_long.csv", index=False)
+print("\n" + comprehensive_long_table.to_string(index=False))
 
+# save national wide table
+national_wide_table.to_csv("data/mengrep_national_wide.csv", index=False)
 
 # In the below calculations of the same value of the national effective sample size, I compute n, f, and DO directly from individual-level data,
 # defining the observed sample per candidate as validated_voter == 1 and outcome observed
@@ -1451,121 +1604,6 @@ overall_results.to_csv("data/mengrep_effss_national_wide_vs_truth.csv", index=Fa
 # }
 
 # print(checker_results)
-
-
-########################################################################################
-################### NATIONAL LEVEL MSE AND DESIGN EFFECT ###############################
-########################################################################################
-
-# national variance components
-sigma2_trump_national = p_trump_true_total * (1.0 - p_trump_true_total)
-sigma2_harris_national = p_harris_true_total * (1.0 - p_harris_true_total)
-
-S2_trump_national = (N_total / (N_total - 1)) * sigma2_trump_national
-S2_harris_national = (N_total / (N_total - 1)) * sigma2_harris_national
-
-Var_SRS_trump_national = ((1 - f_total) / n_total) * S2_trump_national
-Var_SRS_harris_national = ((1 - f_total) / n_total) * S2_harris_national
-
-SE_SRS_trump_national = np.sqrt(Var_SRS_trump_national)
-SE_SRS_harris_national = np.sqrt(Var_SRS_harris_national)
-
-# national MSE, 2.4: MSE = DI x DO x DU
-MSE_trump_national = DI_trump_total * DO_total * sigma2_trump_national
-MSE_harris_national = DI_harris_total * DO_total * sigma2_harris_national
-
-RMSE_trump_national = np.sqrt(MSE_trump_national)
-RMSE_harris_national = np.sqrt(MSE_harris_national)
-
-# national design effect, 3.2: Deff = (N-1) xDI
-Deff_trump_national = (N_total - 1) * DI_trump_total
-Deff_harris_national = (N_total - 1) * DI_harris_total
-
-# MSE inflation ratio (verification)
-MSE_ratio_trump_national = MSE_trump_national / Var_SRS_trump_national
-MSE_ratio_harris_national = MSE_harris_national / Var_SRS_harris_national
-
-# national output print
-print("TRUMP:")
-print(f"  SRS variance (benchmark):      {Var_SRS_trump_national:.8f}")
-print(f"  SRS standard error:            {SE_SRS_trump_national:.4f} ({SE_SRS_trump_national*100:.2f} pp)")
-print(f"  Actual MSE:                    {MSE_trump_national:.8f}")
-print(f"  Actual RMSE:                   {RMSE_trump_national:.4f} ({RMSE_trump_national*100:.2f} pp)")
-print(f"  Design Effect:                 {Deff_trump_national:.2f}")
-print(f"\n  Interpretation: Actual error is {Deff_trump_national:.1f}x larger than SRS benchmark")
-print(f"  Typical error: {RMSE_trump_national*100:.2f} pp vs {SE_SRS_trump_national*100:.2f} pp under SRS")
-
-print("\nHARRIS:")
-print(f"  SRS variance (benchmark):      {Var_SRS_harris_national:.8f}")
-print(f"  SRS standard error:            {SE_SRS_harris_national:.4f} ({SE_SRS_harris_national*100:.2f} pp)")
-print(f"  Actual MSE:                    {MSE_harris_national:.8f}")
-print(f"  Actual RMSE:                   {RMSE_harris_national:.4f} ({RMSE_harris_national*100:.2f} pp)")
-print(f"  Design Effect:                 {Deff_harris_national:.2f}")
-print(f"\n  Interpretation: Actual error is {Deff_harris_national:.1f}x larger than SRS benchmark")
-print(f"  Typical error: {RMSE_harris_national*100:.2f} pp vs {SE_SRS_harris_national*100:.2f} pp under SRS")
-
-# add to earlier table
-additional_mse_rows = pd.DataFrame({
-    'Metric': [
-        '',
-        '=== SRS BENCHMARK ===',
-        'SRS variance',
-        'SRS standard error',
-        '',
-        '=== ACTUAL MSE ===',
-        'Mean Squared Error',
-        'Root MSE',
-        'Design Effect (Deff)',
-    ],
-    'Equation': [
-        '',
-        '',
-        'Eq 2.5',
-        '',
-        '',
-        '',
-        'Eq 2.4',
-        '',
-        'Eq 3.2',
-    ],
-    'Trump': [
-        '',
-        '',
-        f'{Var_SRS_trump_national:.8f}',
-        f'{SE_SRS_trump_national:.4f}',
-        '',
-        '',
-        f'{MSE_trump_national:.8f}',
-        f'{RMSE_trump_national:.4f}',
-        f'{Deff_trump_national:.2f}',
-    ],
-    'Harris': [
-        '',
-        '',
-        f'{Var_SRS_harris_national:.8f}',
-        f'{SE_SRS_harris_national:.4f}',
-        '',
-        '',
-        f'{MSE_harris_national:.8f}',
-        f'{RMSE_harris_national:.4f}',
-        f'{Deff_harris_national:.2f}',
-    ]
-})
-
-# Concatenate with existing summary_table
-summary_table = pd.concat([summary_table, additional_mse_rows], ignore_index=True)
-
-overall_results['Var_SRS'] = [Var_SRS_trump_national, Var_SRS_harris_national]
-overall_results['SE_SRS'] = [SE_SRS_trump_national, SE_SRS_harris_national]
-overall_results['MSE'] = [MSE_trump_national, MSE_harris_national]
-overall_results['RMSE'] = [RMSE_trump_national, RMSE_harris_national]
-overall_results['Deff'] = [Deff_trump_national, Deff_harris_national]
-overall_results['MSE_ratio'] = [MSE_ratio_trump_national, MSE_ratio_harris_national]
-
-# updated results
-overall_results.to_csv("data/mengrep_national_mse_deff_complete.csv", index=False)
-summary_table.to_csv("data/mengrep_national_summary_table_with_mse.csv", index=False)
-
 
 ##### ADD SOMETHING NEW TO REPLICATION, NEW ANALYSIS TYPE OR CHANGE ASSUMPTION OR NEW OUTPUTS
 # # summary table of bias and n for validated sample
