@@ -1219,33 +1219,33 @@ n_total = eff_samplesize_df["n"].sum()
 # total actual voter population across all states 
 N_total = eff_samplesize_df["N_state"].sum()
 
-# overall sampling rate
+# overall sampling rate, Meng assumed this was 0.01
 f_total = n_total / N_total
 
-# overall dropout odds
+# overall dropout odds, 2.4
 DO_total = (1.0 - f_total) / f_total
 
-# overall sample proportions, weighted by state sample size, proportion from pooling all state samples
+# overall sample proportions, weighted by state sample size, proportion from pooling all state samples, 2.1 aggregated by state
 p_hat_trump_total = (eff_samplesize_df["p_hat_trump"] * eff_samplesize_df["n"]).sum() / n_total
 p_hat_harris_total = (eff_samplesize_df["p_hat_harris"] * eff_samplesize_df["n"]).sum() / n_total
 
-# overall true proportions, weighted by state population, true national proportion
+# overall popular vote, weighted by state population, true national proportion of votes
 p_trump_true_total = (eff_samplesize_df["p_trump_true"] * eff_samplesize_df["N_state"]).sum() / N_total
 p_harris_true_total = (eff_samplesize_df["p_harris_true"] * eff_samplesize_df["N_state"]).sum() / N_total
 
-# overall bias, Meng's G_n - G_N
+# overall bias, Meng's G_n - G_N, bias of 0.01 overesimtate by 1 percentage point
 bias_trump_total = p_hat_trump_total - p_trump_true_total
 bias_harris_total = p_hat_harris_total - p_harris_true_total
 
-# overall sigma_G = sqrt(p(1-p)) using true national proportion, σ_G from Meng 2.3
+# overall sigma_G = sqrt(p(1-p)) using true national proportion, σ_G from Meng 2.3, national sd, 0.5 max uncertainty
 sigma_trump_total = np.sqrt(p_trump_true_total * (1.0 - p_trump_true_total))
 sigma_harris_total = np.sqrt(p_harris_true_total * (1.0 - p_harris_true_total))
 
-# overall rho using Meng 4.7, ρ_R,G = (G_n - G_N) / (σ_G x sqrt((1-f)/f)) = bias / (sigma x sqrt(DO)) = (bias / sigma) × sqrt(f / (1-f))
+# overall rho using Meng 4.7, ρ_R,G = (G_n - G_N) / (σ_G x sqrt((1-f)/f)) = bias / (sigma x sqrt(DO)) = (bias / sigma) × sqrt(f / (1-f)), higher more selection bias, corr between response propensity and outcome, if >0 people voting for candidate more likely to respond
 rho_trump_total = (bias_trump_total / sigma_trump_total) * np.sqrt(f_total / (1.0 - f_total))
 rho_harris_total = (bias_harris_total / sigma_harris_total) * np.sqrt(f_total / (1.0 - f_total))
 
-# overall DI Meng 2.4, DI = ρ²_R,G
+# overall DI Meng 2.4, DI = rho^2_R,G, smaller means better quality
 DI_trump_total = rho_trump_total**2
 DI_harris_total = rho_harris_total**2
 
@@ -1257,11 +1257,12 @@ n_star_eff_harris_total = 1.0 / (DO_total * DI_harris_total)
 n_eff_trump_total = n_star_eff_trump_total / (1.0 + (n_star_eff_trump_total - 1.0) / (N_total - 1.0))
 n_eff_harris_total = n_star_eff_harris_total / (1.0 + (n_star_eff_harris_total - 1.0) / (N_total - 1.0))
 
-# overall margin of error, Meng equation 4.5, Me = 2 × sqrt(σ²_G / n*_eff)
+# overall margin of error, Meng equation 4.5, Me = 2x sqrt(σ^2_G / n*_eff), Me is half-width of 95% confidence interval, Me = 0.05 means estimate +/- 5 percentage points
+# maybe to add Me_actual / Me_naive_SRS = sqrt(n / n*_eff) = sqrt(Deff)
 Me_trump_total = 2.0 * np.sqrt((sigma_trump_total**2) / n_star_eff_trump_total)
 Me_harris_total = 2.0 * np.sqrt((sigma_harris_total**2) / n_star_eff_harris_total)
 
-# upper bound on Me ≤ 1/sqrt(n*_eff)
+# upper bound on Me ≤ 1/sqrt(n*_eff), get when rho = 0.5, when close race is near actual Me
 Me_upper_trump_total = 1.0 / np.sqrt(n_star_eff_trump_total)
 Me_upper_harris_total = 1.0 / np.sqrt(n_star_eff_harris_total)
 
