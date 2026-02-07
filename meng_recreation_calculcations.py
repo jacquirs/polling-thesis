@@ -1535,7 +1535,7 @@ national_wide_table = pd.DataFrame({
 
 # save national long table
 national_long_table.to_csv("data/mengrep_national_long.csv", index=False)
-print("\n" + comprehensive_long_table.to_string(index=False))
+print("\n" + national_long_table.to_string(index=False))
 
 # save national wide table
 national_wide_table.to_csv("data/mengrep_national_wide.csv", index=False)

@@ -1,0 +1,47 @@
+Metric,Trump,Harris
+=== population and sample value ===,,
+Population ($N$),"155,193,358","155,193,358"
+Sample size ($n$),"32,533","32,533"
+Sampling rate ($f$),0.000210,0.000210
+Dropout odds ($DO$),4769.3365,4769.3365
+,,
+=== estimates vs truth ===,,
+Sample proportion ($\hat{p}$),0.420988,0.557526
+True proportion ($p$),0.498105,0.483382
+Bias ($\hat{p} - p$),-0.077117,+0.074145
+Absolute bias ($|\hat{p} - p|$),0.077117,0.074145
+Standard deviation ($\sigma_G$),0.499996,0.499724
+Variance ($\sigma^2_G = DU$),0.24999641,0.24972383
+,,
+=== data quality ===,,
+"Data defect correlation ($\rho_{R,G}$)",-0.00223334,+0.00214843
+Data defect index ($DI = \rho^2$),0.0000049878,0.0000046157
+,,
+=== SRS benchmark ===,,
+Finite-corrected variance ($S^2_G$),0.24999641,0.24972383
+SRS variance ($Var_{SRS}$),0.0000076828,0.0000076744
+SRS standard error ($SE_{SRS}$),0.002772,0.002770
+SRS margin of error (95% CI),0.005544,0.005541
+,,
+=== actual MSE ===,,
+Mean Squared Error (MSE),0.0059470365,0.0054974230
+Root MSE (RMSE),0.077117,0.074145
+RMSE (percentage points),7.7117,7.4145
+,,
+=== design effect ===,,
+Design Effect (Deff),774.0731,716.3320
+Deff interpretation,774.1x worse than SRS,716.3x worse than srs
+,,
+=== effective sample size ===,,
+$n^*_{eff}$ (upper bound),42,45
+$n_{eff}$ (finite-corrected),42,45
+Sample reduction (%),99.8708%,99.8604%
+Sample reduction (count),"32,491","32,488"
+,,
+=== margin of error ===,,
+Margin of error (Me),0.154234,0.148289
+Me (percentage points),15.4234,14.8289
+Me upper bound,0.154235,0.148371
+Me upper bound (pp),15.4235,14.8371
+Me inflation vs SRS,27.8222×,26.7644×
+,,
