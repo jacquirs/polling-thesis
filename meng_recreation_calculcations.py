@@ -1072,10 +1072,6 @@ top5_harris = val_mergedtruth_TH.nlargest(5, 'Deff_harris')[
 top5_harris['RMSE_pct'] = top5_harris['RMSE_harris'] * 100
 print(top5_harris[['state_name', 'N_state', 'rho_hat_harris', 'Deff_harris', 'RMSE_pct']].to_string(index=False))
 
-########################################################################################
-################### NATIONAL-LEVEL MSE AND DESIGN EFFECT ###############################
-########################################################################################
-
 
 ########################################################################################
 ######################## Effective Sample Size, by state ###############################
@@ -1409,6 +1405,119 @@ overall_results.to_csv("data/mengrep_effss_national_wide_vs_truth.csv", index=Fa
 
 # print(checker_results)
 
+
+########################################################################################
+################### NATIONAL LEVEL MSE AND DESIGN EFFECT ###############################
+########################################################################################
+
+# national variance components
+sigma2_trump_national = p_trump_true_total * (1.0 - p_trump_true_total)
+sigma2_harris_national = p_harris_true_total * (1.0 - p_harris_true_total)
+
+S2_trump_national = (N_total / (N_total - 1)) * sigma2_trump_national
+S2_harris_national = (N_total / (N_total - 1)) * sigma2_harris_national
+
+Var_SRS_trump_national = ((1 - f_total) / n_total) * S2_trump_national
+Var_SRS_harris_national = ((1 - f_total) / n_total) * S2_harris_national
+
+SE_SRS_trump_national = np.sqrt(Var_SRS_trump_national)
+SE_SRS_harris_national = np.sqrt(Var_SRS_harris_national)
+
+# national MSE, 2.4: MSE = DI x DO x DU
+MSE_trump_national = DI_trump_total * DO_total * sigma2_trump_national
+MSE_harris_national = DI_harris_total * DO_total * sigma2_harris_national
+
+RMSE_trump_national = np.sqrt(MSE_trump_national)
+RMSE_harris_national = np.sqrt(MSE_harris_national)
+
+# national design effect, 3.2: Deff = (N-1) xDI
+Deff_trump_national = (N_total - 1) * DI_trump_total
+Deff_harris_national = (N_total - 1) * DI_harris_total
+
+# MSE inflation ratio (verification)
+MSE_ratio_trump_national = MSE_trump_national / Var_SRS_trump_national
+MSE_ratio_harris_national = MSE_harris_national / Var_SRS_harris_national
+
+# national output print
+print("TRUMP:")
+print(f"  SRS variance (benchmark):      {Var_SRS_trump_national:.8f}")
+print(f"  SRS standard error:            {SE_SRS_trump_national:.4f} ({SE_SRS_trump_national*100:.2f} pp)")
+print(f"  Actual MSE:                    {MSE_trump_national:.8f}")
+print(f"  Actual RMSE:                   {RMSE_trump_national:.4f} ({RMSE_trump_national*100:.2f} pp)")
+print(f"  Design Effect:                 {Deff_trump_national:.2f}")
+print(f"\n  Interpretation: Actual error is {Deff_trump_national:.1f}x larger than SRS benchmark")
+print(f"  Typical error: {RMSE_trump_national*100:.2f} pp vs {SE_SRS_trump_national*100:.2f} pp under SRS")
+
+print("\nHARRIS:")
+print(f"  SRS variance (benchmark):      {Var_SRS_harris_national:.8f}")
+print(f"  SRS standard error:            {SE_SRS_harris_national:.4f} ({SE_SRS_harris_national*100:.2f} pp)")
+print(f"  Actual MSE:                    {MSE_harris_national:.8f}")
+print(f"  Actual RMSE:                   {RMSE_harris_national:.4f} ({RMSE_harris_national*100:.2f} pp)")
+print(f"  Design Effect:                 {Deff_harris_national:.2f}")
+print(f"\n  Interpretation: Actual error is {Deff_harris_national:.1f}x larger than SRS benchmark")
+print(f"  Typical error: {RMSE_harris_national*100:.2f} pp vs {SE_SRS_harris_national*100:.2f} pp under SRS")
+
+# add to earlier table
+additional_mse_rows = pd.DataFrame({
+    'Metric': [
+        '',
+        '=== SRS BENCHMARK ===',
+        'SRS variance',
+        'SRS standard error',
+        '',
+        '=== ACTUAL MSE ===',
+        'Mean Squared Error',
+        'Root MSE',
+        'Design Effect (Deff)',
+    ],
+    'Equation': [
+        '',
+        '',
+        'Eq 2.5',
+        '',
+        '',
+        '',
+        'Eq 2.4',
+        '',
+        'Eq 3.2',
+    ],
+    'Trump': [
+        '',
+        '',
+        f'{Var_SRS_trump_national:.8f}',
+        f'{SE_SRS_trump_national:.4f}',
+        '',
+        '',
+        f'{MSE_trump_national:.8f}',
+        f'{RMSE_trump_national:.4f}',
+        f'{Deff_trump_national:.2f}',
+    ],
+    'Harris': [
+        '',
+        '',
+        f'{Var_SRS_harris_national:.8f}',
+        f'{SE_SRS_harris_national:.4f}',
+        '',
+        '',
+        f'{MSE_harris_national:.8f}',
+        f'{RMSE_harris_national:.4f}',
+        f'{Deff_harris_national:.2f}',
+    ]
+})
+
+# Concatenate with existing summary_table
+summary_table = pd.concat([summary_table, additional_mse_rows], ignore_index=True)
+
+overall_results['Var_SRS'] = [Var_SRS_trump_national, Var_SRS_harris_national]
+overall_results['SE_SRS'] = [SE_SRS_trump_national, SE_SRS_harris_national]
+overall_results['MSE'] = [MSE_trump_national, MSE_harris_national]
+overall_results['RMSE'] = [RMSE_trump_national, RMSE_harris_national]
+overall_results['Deff'] = [Deff_trump_national, Deff_harris_national]
+overall_results['MSE_ratio'] = [MSE_ratio_trump_national, MSE_ratio_harris_national]
+
+# updated results
+overall_results.to_csv("data/mengrep_national_mse_deff_complete.csv", index=False)
+summary_table.to_csv("data/mengrep_national_summary_table_with_mse.csv", index=False)
 
 
 ##### ADD SOMETHING NEW TO REPLICATION, NEW ANALYSIS TYPE OR CHANGE ASSUMPTION OR NEW OUTPUTS

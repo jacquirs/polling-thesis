@@ -1,0 +1,29 @@
+Metric,Equation,Trump,Harris
+Population ($N$),,"155,193,358","155,193,358"
+Sample size ($n$),,"32,533","32,533"
+Sampling rate ($f$),$n/N$,0.0002,0.0002
+Dropout odds ($DO$),$(1-f)/f$,4769.34,4769.34
+,,,
+Sample proportion ($\hat{p}$),Eq 2.1,0.4210,0.5575
+True proportion ($p$),,0.4981,0.4834
+Bias ($\hat{p} - p$),$\hat{p} - p$,-0.0771,+0.0741
+Std deviation ($\sigma_G$),Eq 2.3,0.5000,0.4997
+,,,
+"Data defect correlation ($\rho_{R,G}$)",Eq 4.7,-0.002233,+0.002148
+Data defect index ($DI = \rho^2$),Eq 2.4,0.00000499,0.00000462
+,,,
+Effective sample size ($n^*_{eff}$),Eq 3.6,42,45
+Effective sample size ($n_{eff}$),Eq 3.5,42,45
+Sample reduction (%),$(n-n^*)/n$,99.87%,99.86%
+,,,
+Margin of error ($Me$),Eq 4.5,0.1542,0.1483
+Me upper bound,Eq 4.5,0.1542,0.1484
+,,,
+=== SRS BENCHMARK ===,,,
+SRS variance,Eq 2.5,0.00000768,0.00000767
+SRS standard error,,0.0028,0.0028
+,,,
+=== ACTUAL MSE ===,,,
+Mean Squared Error,Eq 2.4,0.00594704,0.00549742
+Root MSE,,0.0771,0.0741
+Design Effect (Deff),Eq 3.2,774.07,716.33
