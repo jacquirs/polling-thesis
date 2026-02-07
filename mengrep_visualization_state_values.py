@@ -48,8 +48,8 @@ fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 ax = axes[0]
 ax.scatter(df["Var_SRS_trump"], df["MSE_trump"], 
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.plot([0, df["Var_SRS_trump"].max()], [0, df["Var_SRS_trump"].max()], 
-        'k--', linewidth=1, label='MSE = Var_SRS (unbiased SRS benchmark)') # diagonal line represents unbiased SRS
+ax.axline((0, 0), slope=1, linestyle='--', color='k',
+          linewidth=1, label='MSE = Var_SRS (unbiased SRS benchmark)') # diagonal line represents unbiased SRS
 ax.set_xlabel(r"SRS variance ($Var_{SRS}$, benchmark)")
 ax.set_ylabel(r"actual MSE")
 ax.set_title(r"Trump: actual MSE vs SRS benchmark" + "\n" + 
@@ -61,8 +61,8 @@ ax.grid(alpha=0.3)
 ax = axes[1]
 ax.scatter(df["Var_SRS_harris"], df["MSE_harris"], 
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.plot([0, df["Var_SRS_harris"].max()], [0, df["Var_SRS_harris"].max()], 
-        'k--', linewidth=1, label='MSE = Var_SRS (unbiased SRS benchmark)') # diagonal line represents unbiased SRS
+ax.axline((0, 0), slope=1, linestyle='--', color='k',
+          linewidth=1, label='MSE = Var_SRS (unbiased SRS benchmark)') # diagonal line represents unbiased SRS
 ax.set_xlabel(r"SRS variance ($Var_{SRS}$, benchmark)")
 ax.set_ylabel(r"actual MSE")
 ax.set_title(r"Harris: actual MSE vs SRS benchmark" + "\n" + 
