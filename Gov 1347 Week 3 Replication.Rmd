@@ -311,6 +311,15 @@ kable(ci_data) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 ```
 
+These summary statistics for pollster quality reveal the limits of polling data. The current number one ranked pollster (The New York Times/Siena College) has a pollscore of -1.5, the best possible, no partisan work, and 8.7/10 transparency score. It is worth noting that the Predictive Plus-Minus for pollster's absolute error, or error_ppm, is calculated as 
 
-```
+$$predictive\ error = adjusted\ error * (n / (n + n_{shrinkage})) + (group\ error\ prior) * (n_{shrinkage} / (n + n_{shrinkage}))$$
+
+, and	Predictive Plus-Minus for pollster bias, or bias_ppm, is calculated as 
+
+$$predictive\ bias = adjusted\ bias * (n / (n + n_{shrinkage})) + (group\ error\ prior) * (n_{shrinkage} / (n + n_{shrinkage}))$$
+
+, per [538 methodology](https://abcnews.go.com/538/538s-pollster-ratings-work/story?id=105398138), where n is the time-weighted number of polls the pollster has released and n_shrinkage is an integer that represents the effective number of polls' worth of weight to put on the prior.
+
+Through these complicated formulas, it is clear that pollster ratings are not particularly inspiring in accuracy of their poll results, at least according to these ratings. It is worth noting that transparency, which is a part of 538's model, is not necessarily a direct correlate with accuracy of results, though this is difficult to test on a poll by poll basis given the lack of true comparison values.
 
