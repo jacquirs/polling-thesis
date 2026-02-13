@@ -93,9 +93,9 @@ print(trump_harris_counts.to_string(index=False))
 # results were
 # trump_harris_classification  before_dropout  after_dropout  total
 #     Trump only (no Harris)            3412             16   3428
-#      both Trump and Harris             277           2337   2614
+#      both Trump and Harris             276           2337   2613
 #   neither Trump nor Harris             712              0    712
-#     Harris only (no Trump)              48              4     52
+#     Harris only (no Trump)              49              4     53
 # should at least drop all of the polls with neither from the final dataset
 # likely need to also drop the single candidate polls, at least for Harris, but can we impute the biden levels pre dropout for harris? perhaps as overall democrat
 # these are all general election so having harris and biden would likely be a problem, but maybe we use biden x trump pre groupout?
@@ -144,3 +144,14 @@ biden_harris_trump_counts = (
 
 print(f"\nBiden/Harris/Trump classification:\n")
 print(biden_harris_trump_counts.to_string(index=False))
+
+# results
+# biden_harris_trump_classification  before_dropout  after_dropout  total
+#           Biden + Harris + Trump               0              0      0
+#                   Biden + Harris               0              0      0
+#                    Biden + Trump            3232              6   3238
+#                   Harris + Trump             276           2337   2613
+#                            Biden             700              0    700
+#                           Harris              49              4     53
+#                            Trump             180             10    190
+#       none of Biden/Harris/Trump              12              0     12
