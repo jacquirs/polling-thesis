@@ -145,6 +145,10 @@ biden_harris_trump_counts = (
 print(f"\nBiden/Harris/Trump classification:\n")
 print(biden_harris_trump_counts.to_string(index=False))
 
+# propagate classification back to before/after slices
+before_dropout = question_answer_sets[question_answer_sets['start_date'] <  dropout_cutoff]
+after_dropout  = question_answer_sets[question_answer_sets['start_date'] >= dropout_cutoff]
+
 # results
 # biden_harris_trump_classification  before_dropout  after_dropout  total
 #           Biden + Harris + Trump               0              0      0
@@ -155,3 +159,33 @@ print(biden_harris_trump_counts.to_string(index=False))
 #                           Harris              49              4     53
 #                            Trump             180             10    190
 #       none of Biden/Harris/Trump              12              0     12
+
+# polls that include harris and trump but not biden, want to know if there are other democrats in the ones before (and after) the dropout
+
+######## unique answer sets in polls with Harris + Trump but not Biden
+
+harris_trump_no_biden = question_answer_sets[
+    question_answer_sets['biden_harris_trump_classification'] == 'Harris + Trump'
+]
+
+harris_trump_no_biden_counts = (
+    pd.DataFrame({
+        'before_dropout': before_dropout[before_dropout['biden_harris_trump_classification'] == 'Harris + Trump']
+                          .groupby('answer_set')['answer_set'].count(),
+        'after_dropout':  after_dropout[after_dropout['biden_harris_trump_classification']  == 'Harris + Trump']
+                          .groupby('answer_set')['answer_set'].count(),
+    })
+    .fillna(0)
+    .astype(int)
+    .assign(total=lambda x: x['before_dropout'] + x['after_dropout'])
+    .sort_values('total', ascending=False)
+    .reset_index()
+)
+
+print(f"\nUnique answer sets in Harris + Trump (no Biden) polls:\n")
+for _, row in harris_trump_no_biden_counts.iterrows():
+    print(f"Before: {row['before_dropout']} | After: {row['after_dropout']} | Total: {row['total']} | {sorted(row['answer_set'])}")
+
+# important results include
+# Before: 239 | After: 1412 | Total: 1651 | ['Harris', 'Trump']
+# there are also many others with additional candidates, some with as many as 327 uses and other with as little as 1
