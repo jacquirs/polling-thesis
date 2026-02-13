@@ -18,57 +18,71 @@ df = pd.read_csv("data/president_2024_general.csv")
 ##################################### Unique Answer Sets ###############################
 ########################################################################################
 
-######## find unique sets of answers and the number of times they occur
-
-# group answers by (question_id, poll_id) and collect the set of answer names
-answer_sets = (
-    df.groupby(['question_id', 'poll_id'])['answer']
-    .apply(lambda x: frozenset(x.dropna()))
-)
-
-# count occurrences of each unique answer-set combination
-answer_set_counts = answer_sets.value_counts().reset_index()
-answer_set_counts.columns = ['answer_set', 'count']
-
-print(f"Found {len(answer_set_counts)} unique answer set(s):\n")
-for _, row in answer_set_counts.iterrows():
-    print(f"Count: {row['count']} | {sorted(row['answer_set'])}")
-
-######## find unique sets of answers and the number of times they occur
-# split based on start date before or after dropout
-
-# Group answers by (question_id, poll_id) and collect the set of answer names + min start_date
-answer_sets = (
+# group answers by (question_id, poll_id), collect answer sets and min start_date
+question_answer_sets = (
     df.groupby(['question_id', 'poll_id'])
-    .agg(answer=('answer', lambda x: frozenset(x.dropna())),
-         start_date=('start_date', 'min'))
+    .agg(
+        answer_set=('answer', lambda x: frozenset(x.dropna())),
+        start_date=('start_date', 'min')
+    )
     .reset_index()
 )
 
-# convert start_date to datetime
-answer_sets['start_date'] = pd.to_datetime(answer_sets['start_date'])
+# convert start_date to datetime and verify
+question_answer_sets['start_date'] = pd.to_datetime(question_answer_sets['start_date'])
+print("NaT count:", question_answer_sets['start_date'].isna().sum())
 
-# check everything converted correctly
-print("NaT count:", answer_sets['start_date'].isna().sum())
+# define cutoff date (Biden dropout)
+dropout_cutoff = pd.Timestamp('2024-07-21')
 
-# define cutoff date
-cutoff = pd.Timestamp('2024-07-21')
+######## count of each unique answer set, split before/after dropout
 
-# count occurrences split by date
-before = answer_sets[answer_sets['start_date'] < cutoff].groupby('answer')['answer'].count()
-after  = answer_sets[answer_sets['start_date'] >= cutoff].groupby('answer')['answer'].count()
+before_dropout = question_answer_sets[question_answer_sets['start_date'] <  dropout_cutoff]
+after_dropout  = question_answer_sets[question_answer_sets['start_date'] >= dropout_cutoff]
 
-# combine into a summary df
-summary = (
-    pd.DataFrame({'before_7_21': before, 'after_7_21': after})
+answer_set_counts = (
+    pd.DataFrame({
+        'before_dropout': before_dropout.groupby('answer_set')['answer_set'].count(),
+        'after_dropout':  after_dropout.groupby('answer_set')['answer_set'].count(),
+    })
     .fillna(0)
     .astype(int)
-    .assign(total=lambda x: x['before_7_21'] + x['after_7_21'])
+    .assign(total=lambda x: x['before_dropout'] + x['after_dropout'])
     .sort_values('total', ascending=False)
     .reset_index()
 )
-summary.columns = ['answer_set', 'before_7_21', 'after_7_21', 'total']
 
-print(f"Found {len(summary)} unique answer set(s):\n")
-for _, row in summary.iterrows():
-    print(f"Before: {row['before_7_21']} | After: {row['after_7_21']} | Total: {row['total']} | {sorted(row['answer_set'])}")
+print(f"\nFound {len(answer_set_counts)} unique answer set(s):\n")
+for _, row in answer_set_counts.iterrows():
+    print(f"Before: {row['before_dropout']} | After: {row['after_dropout']} | Total: {row['total']} | {sorted(row['answer_set'])}")
+
+######## count of unique answer sets by trump/harris inclusion, split before/after dropout
+
+def classify_trump_harris(answer_set):
+    names = {a.lower() for a in answer_set}
+    has_trump  = any('trump'  in a for a in names)
+    has_harris = any('harris' in a for a in names)
+    if has_trump and has_harris:
+        return 'both Trump and Harris'
+    elif has_trump:
+        return 'Trump only (no Harris)'
+    elif has_harris:
+        return 'Harris only (no Trump)'
+    else:
+        return 'neither Trump nor Harris'
+
+question_answer_sets['trump_harris_classification'] = question_answer_sets['answer_set'].apply(classify_trump_harris)
+
+trump_harris_counts = (
+    question_answer_sets.groupby('trump_harris_classification')
+    .apply(lambda x: pd.Series({
+        'before_dropout': (x['start_date'] <  dropout_cutoff).sum(),
+        'after_dropout':  (x['start_date'] >= dropout_cutoff).sum(),
+        'total':          len(x)
+    }))
+    .sort_values('total', ascending=False)
+    .reset_index()
+)
+
+print(f"\nTrump/Harris classification:\n")
+print(trump_harris_counts.to_string(index=False))
