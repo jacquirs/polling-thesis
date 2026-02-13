@@ -199,7 +199,118 @@ Whether Biden's polling data can be used without adjustment as a proxy for Harri
 ### Pollster Quality Evaluation
 Different pollster methodologies and decisions impact the accuracy of polls. To account for this, FiveThirtyEight creates pollster ratings called "pollscores" which account for bias and error, and also look at transparency and percent partisan work. Variation in pollster quality can provide valuable information about the quality of the polling data my model relies on.
 
-#TO DO
+```{r}
+####----------------------------------------------------------#
+#### Understand what's in the dataset of pollster ratings
+####----------------------------------------------------------#
+
+data_dict <- tibble(
+  column = names(d_pollster_ratings),
+  class = sapply(d_pollster_ratings, \(x) paste(class(x), collapse = ", ")),
+  n_missing = sapply(d_pollster_ratings, \(x) sum(is.na(x))),
+  pct_missing = round(100 * n_missing / nrow(d_pollster_ratings), 1),
+  n_unique = sapply(d_pollster_ratings, \(x) dplyr::n_distinct(x, na.rm = TRUE)),
+  example_values = sapply(d_pollster_ratings, \(x) {
+    vals <- unique(x[!is.na(x)])
+    vals <- head(vals, 3)
+    paste(vals, collapse = ", ")
+  })
+) %>% arrange(desc(pct_missing))
+
+kable(data_dict) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+```{r}
+####----------------------------------------------------------#
+#### Table of mean, median ,sd, and percentiels of all numeric cols
+####----------------------------------------------------------#
+
+num_summary <- d_pollster_ratings %>%
+  summarise(across(where(is.numeric),
+                   list(
+                     n = ~sum(!is.na(.)),
+                     mean = ~mean(., na.rm = TRUE),
+                     sd = ~sd(., na.rm = TRUE),
+                     min = ~min(., na.rm = TRUE),
+                     p25 = ~quantile(., 0.25, na.rm = TRUE),
+                     median = ~median(., na.rm = TRUE),
+                     p75 = ~quantile(., 0.75, na.rm = TRUE),
+                     max = ~max(., na.rm = TRUE)
+                   ),
+                   .names = "{.col}__{.fn}")) %>%
+  pivot_longer(everything(),
+               names_to = c("Variable", ".value"),
+               names_sep = "__")
+
+kable(num_summary, digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+```
+
+```{r}
+####----------------------------------------------------------#
+#### Basic histrograms to understand values
+####----------------------------------------------------------#
+ggplot(d_pollster_ratings, aes(bias_ppm)) + geom_histogram(bins = 30)
+
+ggplot(d_pollster_ratings, aes(error_ppm)) + geom_histogram(bins = 30)
+
+ggplot(d_pollster_ratings, aes(POLLSCORE)) + geom_histogram(bins = 30)
+
+```
+
+
+```{r}
+####----------------------------------------------------------#
+#### Pollster rating variance calcs
+####----------------------------------------------------------#
+
+# mean and 95% CI functions
+mean_ci <- function(x, conf = 0.95) {
+  x <- x[!is.na(x)]
+  n <- length(x)
+  mean_x <- mean(x)
+  se <- sd(x) / sqrt(n)
+  alpha <- 1 - conf
+  tcrit <- qt(1 - alpha/2, df = n - 1)
+  moe <- tcrit * se
+  c(mean = mean_x, lower = mean_x - moe, upper = mean_x + moe, n = n)
+}
+
+# get CI for variety of variables on pollsters
+bias_ci <- mean_ci(d_pollster_ratings$bias_ppm)
+error_ci <- mean_ci(d_pollster_ratings$error_ppm)
+pollscore_ci <- mean_ci(d_pollster_ratings$POLLSCORE)
+numeric_grade_ci <- mean_ci(d_pollster_ratings$numeric_grade)
+wtd_avg_transparency_ci <- mean_ci(d_pollster_ratings$wtd_avg_transparency)
+percent_partisan_work_ci <- mean_ci(d_pollster_ratings$percent_partisan_work)
+
+# get min and max values for comparison column (ended up not using)
+bias_min <- min(d_pollster_ratings$bias_ppm, na.rm = TRUE)
+error_min <- min(d_pollster_ratings$error_ppm, na.rm = TRUE)
+pollscore_min <- min(d_pollster_ratings$POLLSCORE, na.rm = TRUE)
+partisan_work_min <- min(d_pollster_ratings$percent_partisan_work, na.rm = TRUE)
+numeric_grade_max <- max(d_pollster_ratings$numeric_grade, na.rm = TRUE)
+wtd_avg_transparency_max <- max(d_pollster_ratings$wtd_avg_transparency, na.rm = TRUE)
+
+# put together for table
+ci_data <- data.frame(
+  Metric = c("Bias PPM", "Error PPM", "Pollscore", "Numeric Grade", "Weighted Avg Transparency", "Percent Partisan Work"),
+  
+  Mean = c(round(bias_ci["mean"], 3), round(error_ci["mean"], 3), round(pollscore_ci["mean"], 3), paste0(round(numeric_grade_ci["mean"], 3), "/3"), paste0(round(wtd_avg_transparency_ci["mean"], 3), "/10"), paste0(round(percent_partisan_work_ci["mean"] * 100, 2), "%")),
+  
+  Lower_CI = c(round(bias_ci["lower"], 3), round(error_ci["lower"], 3), round(pollscore_ci["lower"], 3), paste0(round(numeric_grade_ci["lower"], 3), "/3"), paste0(round(wtd_avg_transparency_ci["lower"], 3), "/10"), paste0(round(percent_partisan_work_ci["lower"] * 100, 2), "%")),
+  
+  Upper_CI = c(round(bias_ci["upper"], 3), round(error_ci["upper"], 3), round(pollscore_ci["upper"], 3), paste0(round(numeric_grade_ci["upper"], 3), "/3"), paste0(round(wtd_avg_transparency_ci["upper"], 3), "/10"), paste0(round(percent_partisan_work_ci["upper"] * 100, 2), "%"))
+)
+
+# table styling
+kable(ci_data) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
 
 ```
 
