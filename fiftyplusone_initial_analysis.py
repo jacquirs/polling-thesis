@@ -14,6 +14,9 @@ df = pd.read_csv("data/president_2024_general.csv")
 # the answers to a question can be accessed through a shared question_id x poll_id
 # the answers are in answer
 
+########################################################################################
+##################################### Unique Answer Sets ###############################
+########################################################################################
 
 ######## find unique sets of answers and the number of times they occur
 
@@ -30,3 +33,4 @@ answer_set_counts.columns = ['answer_set', 'count']
 print(f"Found {len(answer_set_counts)} unique answer set(s):\n")
 for _, row in answer_set_counts.iterrows():
     print(f"Count: {row['count']} | {sorted(row['answer_set'])}")
+
