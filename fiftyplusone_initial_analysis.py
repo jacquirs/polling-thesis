@@ -1,5 +1,11 @@
 import pandas as pd
 import numpy as np
+import sys
+
+# redirect all print output to a log file
+log_file = open('output/analysis_log.txt', 'w')
+sys.stdout = log_file
+
 
 # THIS FILE ANALYZES 50+1 data provided generously for 2024 polling
 
@@ -216,3 +222,66 @@ for var in metadata_vars:
     print(counts.to_string(index=False))
     if na_poll_count > 0:
         print(f"  (+ {na_poll_count} polls with null/empty {var})")
+
+######## for polls with Harris + Trump (no Biden) questions only, counted at question level
+
+# get poll_ids that have at least one Harris + Trump question
+harris_trump_poll_ids = question_answer_sets[
+    question_answer_sets['biden_harris_trump_classification'] == 'Harris + Trump'
+]['poll_id']
+
+# filter original df to only rows belonging to those polls and questions
+harris_trump_questions = question_answer_sets[
+    question_answer_sets['biden_harris_trump_classification'] == 'Harris + Trump'
+][['question_id', 'poll_id']].drop_duplicates()
+
+# count how many Harris + Trump questions each poll has
+questions_per_poll = (
+    harris_trump_questions.groupby('poll_id')['question_id']
+    .nunique()
+    .reset_index()
+    .rename(columns={'question_id': 'num_harris_trump_questions'})
+    .sort_values('num_harris_trump_questions', ascending=False)
+)
+
+multi_question_polls = questions_per_poll[questions_per_poll['num_harris_trump_questions'] > 1]
+
+print(f"\nPolls with multiple Harris + Trump questions:")
+print(f"  {len(multi_question_polls)} polls had more than one Harris + Trump question")
+print(f"  {len(questions_per_poll) - len(multi_question_polls)} polls had exactly one Harris + Trump question")
+print(f"\nDistribution of Harris + Trump question counts per poll:")
+print(questions_per_poll['num_harris_trump_questions'].value_counts().sort_index().to_string())
+
+# merge metadata back from df onto the harris+trump questions
+harris_trump_df = harris_trump_questions.merge(
+    df[['poll_id', 'question_id'] + metadata_vars].drop_duplicates(),
+    on=['poll_id', 'question_id'],
+    how='left'
+)
+
+for var in metadata_vars:
+    # count unique questions per category (excluding NaN)
+    counts = (
+        harris_trump_df.groupby(var, dropna=True)['question_id']
+        .nunique()
+        .reset_index()
+        .rename(columns={'question_id': 'unique_questions'})
+        .sort_values('unique_questions', ascending=False)
+        .reset_index(drop=True)
+    )
+
+    # count unique questions where this variable is null/empty
+    na_question_count = harris_trump_df[
+        harris_trump_df[var].isna() | (harris_trump_df[var].astype(str).str.strip() == '')
+    ]['question_id'].nunique()
+
+    print(f"\n{var.upper()} (Harris+Trump questions) — {len(counts)} unique values, {counts['unique_questions'].sum()} total questions, {na_question_count} questions with no value:\n")
+    print(counts.to_string(index=False))
+    if na_question_count > 0:
+        print(f"  (+ {na_question_count} questions with null/empty {var})")
+
+
+# close log file and restore terminal output
+log_file.close()
+sys.stdout = sys.__stdout__
+print("Analysis complete — see output/analysis_log.txt")

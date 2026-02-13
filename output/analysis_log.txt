@@ -1,0 +1,1386 @@
+NaT count: 0
+
+Found 140 unique answer set(s):
+
+Before: 2349 | After: 3 | Total: 2352 | ['Biden', 'Trump']
+Before: 239 | After: 1412 | Total: 1651 | ['Harris', 'Trump']
+Before: 402 | After: 0 | Total: 402 | ['Biden', 'DeSantis']
+Before: 0 | After: 327 | Total: 327 | ['Harris', 'Oliver', 'Stein', 'Trump']
+Before: 296 | After: 0 | Total: 296 | ['Biden', 'Kennedy', 'Stein', 'Trump', 'West']
+Before: 242 | After: 0 | Total: 242 | ['Biden', 'Kennedy', 'Trump']
+Before: 9 | After: 124 | Total: 133 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump', 'West']
+Before: 122 | After: 0 | Total: 122 | ['Biden', 'Haley']
+Before: 0 | After: 97 | Total: 97 | ['Harris', 'Oliver', 'Stein', 'Trump', 'West']
+Before: 0 | After: 89 | Total: 89 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump']
+Before: 0 | After: 79 | Total: 79 | ['Harris', 'Stein', 'Trump', 'West']
+Before: 15 | After: 56 | Total: 71 | ['Harris', 'Kennedy', 'Trump']
+Before: 65 | After: 0 | Total: 65 | ['Biden', 'Kennedy', 'Oliver', 'Stein', 'Trump', 'West']
+Before: 63 | After: 0 | Total: 63 | ['Biden', 'Kennedy', 'Trump', 'West']
+Before: 6 | After: 55 | Total: 61 | ['Harris', 'Kennedy', 'Stein', 'Trump', 'West']
+Before: 52 | After: 0 | Total: 52 | ['Kennedy', 'Trump']
+Before: 51 | After: 0 | Total: 51 | ['Biden', 'Kennedy']
+Before: 42 | After: 0 | Total: 42 | ['Biden', 'Kennedy', 'Mapstead', 'Stein', 'Trump', 'West']
+Before: 35 | After: 0 | Total: 35 | ['DeSantis', 'Harris']
+Before: 35 | After: 0 | Total: 35 | ['Newsom', 'Trump']
+Before: 31 | After: 0 | Total: 31 | ['Biden', 'Kennedy', 'Oliver', 'Stein', 'Trump']
+Before: 24 | After: 4 | Total: 28 | ['Trump', 'Whitmer']
+Before: 26 | After: 0 | Total: 26 | ['Biden', 'Kennedy', 'Stein', 'Trump']
+Before: 24 | After: 0 | Total: 24 | ['Biden', 'Pence']
+Before: 21 | After: 0 | Total: 21 | ['Biden', 'Trump', 'West']
+Before: 19 | After: 0 | Total: 19 | ['Biden', 'Scott']
+Before: 17 | After: 0 | Total: 17 | ['Biden', 'Ramaswamy']
+Before: 4 | After: 10 | Total: 14 | ['Harris', 'Kennedy', 'Stein', 'Trump']
+Before: 0 | After: 13 | Total: 13 | ['Harris', 'Oliver', 'Trump']
+Before: 9 | After: 4 | Total: 13 | ['Shapiro', 'Trump']
+Before: 12 | After: 0 | Total: 12 | ['Buttigieg', 'Trump']
+Before: 11 | After: 0 | Total: 11 | ['Biden', 'Haley', 'Kennedy', 'Stein', 'West']
+Before: 0 | After: 11 | Total: 11 | ['Harris', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 10 | After: 0 | Total: 10 | ['Biden', 'Mapstead', 'Stein', 'Trump']
+Before: 9 | After: 0 | Total: 9 | ['Biden', 'DeSantis', 'Trump']
+Before: 8 | After: 0 | Total: 8 | ['Pritzker', 'Trump']
+Before: 8 | After: 0 | Total: 8 | ['Biden', 'Cheney', 'Trump']
+Before: 8 | After: 0 | Total: 8 | ['DeSantis', 'Newsom']
+Before: 0 | After: 8 | Total: 8 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 8 | After: 0 | Total: 8 | ['Clinton', 'Trump']
+Before: 7 | After: 0 | Total: 7 | ['Obama', 'Trump']
+Before: 7 | After: 0 | Total: 7 | ['Biden', 'Christie']
+Before: 7 | After: 0 | Total: 7 | ['Biden', 'Manchin', 'Trump', 'West']
+Before: 0 | After: 7 | Total: 7 | ['Harris', 'Stein', 'Trump']
+Before: 7 | After: 0 | Total: 7 | ['Sanders', 'Trump']
+Before: 7 | After: 0 | Total: 7 | ['Biden', 'Kennedy', 'Manchin', 'Stein', 'Trump', 'West']
+Before: 7 | After: 0 | Total: 7 | ['Biden', 'Kennedy', 'Oliver', 'Trump']
+Before: 6 | After: 0 | Total: 6 | ['Haley', 'Harris']
+Before: 0 | After: 6 | Total: 6 | ['De la Cruz', 'Harris', 'Oliver', 'Stein', 'Trump', 'West']
+Before: 2 | After: 4 | Total: 6 | ['De la Cruz', 'Harris', 'Kennedy', 'Stein', 'Trump', 'West']
+Before: 6 | After: 0 | Total: 6 | ['Biden', 'Haley', 'Kennedy']
+Before: 6 | After: 0 | Total: 6 | ['Biden', 'DeSantis', 'Kennedy']
+Before: 5 | After: 0 | Total: 5 | ['Biden', 'Romney']
+Before: 0 | After: 5 | Total: 5 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump']
+Before: 0 | After: 5 | Total: 5 | ['Harris', 'Kennedy', 'Kishore', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 5 | After: 0 | Total: 5 | ['Biden', 'Stein', 'Trump']
+Before: 2 | After: 3 | Total: 5 | ['Biden', 'De la Cruz', 'Kennedy', 'Stein', 'Trump', 'West']
+Before: 0 | After: 5 | Total: 5 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 5 | After: 0 | Total: 5 | ['Biden', 'Manchin', 'Trump']
+Before: 5 | After: 0 | Total: 5 | ['Biden', 'Youngkin']
+Before: 0 | After: 4 | Total: 4 | ['Harris', 'Vance']
+Before: 4 | After: 0 | Total: 4 | ['Biden', 'Kennedy', 'Manchin', 'Mapstead', 'Stein', 'Trump', 'West']
+Before: 1 | After: 3 | Total: 4 | ['Harris', 'Kennedy', 'Oliver', 'Trump']
+Before: 4 | After: 0 | Total: 4 | ['Biden', 'Cheney']
+Before: 4 | After: 0 | Total: 4 | ['Biden', 'McConaughey', 'Trump']
+Before: 3 | After: 0 | Total: 3 | ['Trump', 'Warren']
+Before: 3 | After: 0 | Total: 3 | ['Biden', 'Trump', 'Yang']
+Before: 3 | After: 0 | Total: 3 | ['Biden', 'Cruz']
+Before: 3 | After: 0 | Total: 3 | ['Biden', 'Oliver', 'Stein', 'Trump']
+Before: 0 | After: 3 | Total: 3 | ['De la Cruz', 'Harris', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 3 | After: 0 | Total: 3 | ['Biden', 'Sununu']
+Before: 3 | After: 0 | Total: 3 | ['Biden', 'DeSantis', 'West']
+Before: 2 | After: 0 | Total: 2 | ['Biden', 'DeSantis', 'Manchin']
+Before: 2 | After: 0 | Total: 2 | ['Biden', 'Swift', 'Trump']
+Before: 2 | After: 0 | Total: 2 | ['Harris', 'Pence']
+Before: 2 | After: 0 | Total: 2 | ['Biden', 'Mapstead', 'Trump', 'West']
+Before: 2 | After: 0 | Total: 2 | ['Biden', 'Kennedy', 'Phillips', 'Trump']
+Before: 2 | After: 0 | Total: 2 | ['Biden', 'Kennedy', 'Manchin', 'Stein', 'Trump']
+Before: 2 | After: 0 | Total: 2 | ['Harris', 'Scott']
+Before: 0 | After: 2 | Total: 2 | ['Harris', 'Oliver', 'Skousen', 'Trump']
+Before: 2 | After: 0 | Total: 2 | ['Beshear', 'Trump']
+Before: 2 | After: 0 | Total: 2 | ['Biden', 'Haley', 'Kennedy', 'Trump']
+Before: 2 | After: 0 | Total: 2 | ['Biden', 'Haley', 'Trump']
+Before: 2 | After: 0 | Total: 2 | ['Harris', 'Ramaswamy']
+Before: 0 | After: 2 | Total: 2 | ['Harris', 'Oliver', 'Skousen', 'Stein', 'Trump', 'West']
+Before: 0 | After: 2 | Total: 2 | ['Ayyadurai', 'De la Cruz', 'Harris', 'Oliver', 'Stein', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['DeSantis', 'Kennedy']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Pompeo']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Manchin', 'Scott']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Hogan', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Rubio']
+Before: 1 | After: 0 | Total: 1 | ['Trump', 'Warnock']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Trump', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Noem']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Hawley']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Ramaswamy', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['Kennedy', 'Newsom', 'Oliver', 'Stein', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Kennedy', 'Scott']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Hogan']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Cohen', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Cotton']
+Before: 0 | After: 1 | Total: 1 | ['Kennedy', 'Oliver', 'Stein', 'Trump', 'Whitmer']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Terry', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Oliver', 'Skousen', 'Stein', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Oliver', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Kishore', 'Stein', 'Terry', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump', 'Wells']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Oliver', 'Trump', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Kennedy', 'Obama', 'Trump', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Haley', 'Kennedy', 'Manchin', 'Stein']
+Before: 1 | After: 0 | Total: 1 | ['Cooper', 'Kennedy', 'Stein', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Kelly', 'Kennedy', 'Stein', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Kennedy', 'Stein', 'Trump', 'Whitmer']
+Before: 1 | After: 0 | Total: 1 | ['Harris', 'Pompeo']
+Before: 0 | After: 1 | Total: 1 | ['Ayyadurai', 'Harris', 'Kennedy', 'Kishore', 'Oliver', 'Stein', 'Terry', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Oliver', 'Stein', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Oliver', 'Sonski', 'Stein', 'Terry', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['Garrity', 'Harris', 'Oliver', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Haley', 'Kennedy', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Manchin', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Kennedy', 'Shapiro', 'Stein', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Kennedy', 'Manchin', 'Trump', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Haley', 'Kennedy', 'Trump', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Kennedy', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Gore', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Cheney', 'Mapstead', 'Stein', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Cuban', 'Kennedy', 'Stein', 'Trump', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Hogan', 'Trump', 'West']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Kennedy', 'Manchin', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Cuban', 'Musk']
+Before: 1 | After: 0 | Total: 1 | ['Clinton', 'DeSantis']
+Before: 1 | After: 0 | Total: 1 | ['Murphy', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Harris', 'Trump Jr.']
+Before: 1 | After: 0 | Total: 1 | ['Segal', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Kennedy', 'Swift', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Biden', 'Kennedy', 'Oliver', 'Stein', 'Terry', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Klobuchar', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Ballay', 'Biden', 'Kennedy', 'Stein', 'Trump']
+Before: 1 | After: 0 | Total: 1 | ['Booker', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Trump', 'West']
+
+Trump/Harris classification:
+
+trump_harris_classification  before_dropout  after_dropout  total
+     Trump only (no Harris)            3412             16   3428
+      both Trump and Harris             276           2337   2613
+   neither Trump nor Harris             712              0    712
+     Harris only (no Trump)              49              4     53
+
+Biden/Harris/Trump classification:
+
+biden_harris_trump_classification  before_dropout  after_dropout  total
+           Biden + Harris + Trump               0              0      0
+                   Biden + Harris               0              0      0
+                    Biden + Trump            3232              6   3238
+                   Harris + Trump             276           2337   2613
+                            Biden             700              0    700
+                           Harris              49              4     53
+                            Trump             180             10    190
+       none of Biden/Harris/Trump              12              0     12
+
+Unique answer sets in Harris + Trump (no Biden) polls:
+
+Before: 239 | After: 1412 | Total: 1651 | ['Harris', 'Trump']
+Before: 0 | After: 327 | Total: 327 | ['Harris', 'Oliver', 'Stein', 'Trump']
+Before: 9 | After: 124 | Total: 133 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump', 'West']
+Before: 0 | After: 97 | Total: 97 | ['Harris', 'Oliver', 'Stein', 'Trump', 'West']
+Before: 0 | After: 89 | Total: 89 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump']
+Before: 0 | After: 79 | Total: 79 | ['Harris', 'Stein', 'Trump', 'West']
+Before: 15 | After: 56 | Total: 71 | ['Harris', 'Kennedy', 'Trump']
+Before: 6 | After: 55 | Total: 61 | ['Harris', 'Kennedy', 'Stein', 'Trump', 'West']
+Before: 4 | After: 10 | Total: 14 | ['Harris', 'Kennedy', 'Stein', 'Trump']
+Before: 0 | After: 13 | Total: 13 | ['Harris', 'Oliver', 'Trump']
+Before: 0 | After: 11 | Total: 11 | ['Harris', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 0 | After: 8 | Total: 8 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 0 | After: 7 | Total: 7 | ['Harris', 'Stein', 'Trump']
+Before: 2 | After: 4 | Total: 6 | ['De la Cruz', 'Harris', 'Kennedy', 'Stein', 'Trump', 'West']
+Before: 0 | After: 6 | Total: 6 | ['De la Cruz', 'Harris', 'Oliver', 'Stein', 'Trump', 'West']
+Before: 0 | After: 5 | Total: 5 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 0 | After: 5 | Total: 5 | ['Harris', 'Kennedy', 'Kishore', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 0 | After: 5 | Total: 5 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump']
+Before: 1 | After: 3 | Total: 4 | ['Harris', 'Kennedy', 'Oliver', 'Trump']
+Before: 0 | After: 3 | Total: 3 | ['De la Cruz', 'Harris', 'Oliver', 'Stein', 'Terry', 'Trump', 'West']
+Before: 0 | After: 2 | Total: 2 | ['Ayyadurai', 'De la Cruz', 'Harris', 'Oliver', 'Stein', 'Trump']
+Before: 0 | After: 2 | Total: 2 | ['Harris', 'Oliver', 'Skousen', 'Stein', 'Trump', 'West']
+Before: 0 | After: 2 | Total: 2 | ['Harris', 'Oliver', 'Skousen', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Oliver', 'Stein', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Oliver', 'Stein', 'Terry', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Oliver', 'Skousen', 'Stein', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Oliver', 'Sonski', 'Stein', 'Terry', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Oliver', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Stein', 'Trump', 'Wells']
+Before: 0 | After: 1 | Total: 1 | ['Ayyadurai', 'Harris', 'Kennedy', 'Kishore', 'Oliver', 'Stein', 'Terry', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Oliver', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Kishore', 'Stein', 'Terry', 'Trump', 'West']
+Before: 0 | After: 1 | Total: 1 | ['Garrity', 'Harris', 'Oliver', 'Trump']
+Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Trump', 'West']
+
+POLLSTER   247 unique values, 3742 total polls, 0 polls with no value:
+
+                                                       pollster  unique_polls
+                                                Morning Consult           844
+                                                        Emerson           261
+                                   Redfield & Wilton Strategies           226
+                                                         YouGov           181
+                                                       ActiVote            92
+                                               Echelon Insights            73
+                                                      Siena/NYT            58
+                                          John Zogby Strategies            57
+                                                     AtlasIntel            57
+                                                         Cygnal            52
+                                                     McLaughlin            51
+                                                           TIPP            46
+                Florida Atlantic University/Mainstreet Research            43
+                                                     Quinnipiac            43
+                                                          Ipsos            43
+                                                    Beacon/Shaw            42
+                                                            PPP            40
+                                                      SurveyUSA            40
+                                                        HarrisX            40
+                                               InsiderAdvantage            39
+                                                 Marist College            38
+                                                   RMG Research            36
+                                                Trafalgar Group            36
+                                                      Focaldata            30
+                                      Public Opinion Strategies            28
+                                                      Bullfinch            28
+                                                       CNN/SSRS            27
+                                                        Suffolk            27
+                                                      Rasmussen            27
+                                           Marquette Law School            26
+                                            HarrisX/Harris Poll            26
+                                                        Premise            25
+                                                    Big Village            25
+                                               U. New Hampshire            24
+                                                Change Research            22
+                                                Patriot Polling            21
+                                                Fabrizio/Impact            21
+                      Benenson Strategy Group/GS Strategy Group            21
+                                                  Fabrizio/GBAO            21
+                                                  J.L. Partners            20
+                                                    Susquehanna            19
+                                                      Remington            18
+                                      Noble Predictive Insights            18
+                                                  Big Data Poll            17
+                                                    Prime Group            16
+                                                        Clarity            16
+                                                          Leger            16
+                                                   Research Co.            16
+                                              Data for Progress            15
+                                                          Siena            14
+                                               SoCal Strategies            14
+                                                   CES / YouGov            14
+                                                       Hart/POS            14
+                                              Blueprint Polling            12
+                                       East Carolina University            12
+                                         Targoz Market Research            12
+                                                           PPIC            11
+                                                 OnMessage Inc.            11
+                                                       EPIC-MRA            10
+                                                       Mitchell            10
+                                    North Star Opinion Research            10
+                      University of Massachusetts Lowell/YouGov            10
+                                                    P2 Insights            10
+                                                 SoCal Research             9
+                        Washington Post/George Mason University             9
+                                              Kaplan Strategies             9
+                                                Spry Strategies             9
+                                                     St. Anselm             9
+                                                   co/efficient             9
+                                  Franklin and Marshall College             8
+                                                         Civiqs             8
+                                                    UC Berkeley             8
+                                                       Fabrizio             8
+                                                         Selzer             8
+                                                Roanoke College             8
+                                                    Harris Poll             7
+                                                    Mason-Dixon             7
+                                                      Navigator             7
+                                               Quantus Insights             7
+                                               Victory Insights             7
+                                           UMass Amherst/YouGov             7
+                                                U. Texas/YouGov             7
+                                                           WPAi             7
+                                         Quantus Polls and News             7
+                                     PEM Management Corporation             7
+              Global Strategy Group/North Star Opinion Research             7
+                                            Fabrizio/McLaughlin             7
+                                          MassINC Polling Group             7
+                                               Digital Research             7
+                                                U. Georgia SPIA             6
+                                    OnMessage Public Strategies             6
+                                         Alaska Survey Research             6
+                                            ABC/Washington Post             6
+                                                Embold Research             6
+                                            Lord Ashcroft Polls             6
+                                                 Capitol Weekly             6
+                                                 American Pulse             6
+                                                 ABC News/Ipsos             6
+                                           Outward Intelligence             6
+                                          Pan Atlantic Research             6
+                                        National Public Affairs             5
+                                                    YouGov Blue             5
+                                            The Washington Post             5
+                                                            Pew             5
+                                       Virginia Commonwealth U.             5
+                                      U. Massachusetts - Lowell             5
+                                                     Angus Reid             5
+                                       Kaiser Family Foundation             5
+                                          Glengariff Group Inc.             5
+                                                          Elway             4
+                                               U. North Florida             4
+                                               Meredith College             4
+                                 MRG (Marketing Resource Group)             4
+                                                            GQR             4
+                                          Cherry Communications             4
+                             Gonzales Research & Media Services             4
+                                          Global Strategy Group             4
+                                                  Axis Research             4
+                                               Chism Strategies             4
+                                                       Monmouth             4
+                                            Praecones Analytica             4
+                                                           SSRS             4
+                                                     Muhlenberg             4
+                                          Torchlight Strategies             4
+                                                           Wick             3
+Ohio Northern University Institute for Civics and Public Policy             3
+                                                           PRRI             3
+                                               Research America             3
+                                   University of Texas at Tyler             3
+                                                Z to A Research             3
+                               Texas Hispanic Policy Foundation             3
+                                                The Tyson Group             3
+                                                  RABA Research             3
+                                                    3W Insights             3
+                                                   CWS Research             3
+                            Institute for Global Affairs/YouGov             3
+                                                     Iron Light             3
+                                                  Lake Research             3
+                                          High Point University             3
+                                               KAConsulting LLC             3
+                                                      1983 Labs             3
+                                                   Data Orbital             3
+                                                  Fabrizio Ward             3
+                                                     HighGround             3
+                                                       Tarrance             3
+                                                    The Citadel             3
+                                                 St. Pete Polls             3
+                                 Survey Center on American Life             3
+                                                   SurveyMonkey             3
+                                                  RG Strategies             3
+                                               Schoen Cooperman             3
+                                                   PureSpectrum             2
+                                             Research & Polling             2
+                                           Slingshot Strategies             2
+                                                 SoonerPoll.com             2
+                                  OH Predictive Insights / MBQF             2
+                                                          Zogby             2
+                                                  Hunt Research             2
+                                            Manhattan Institute             2
+                                                Beacon Research             2
+                          Bowling Green State University/YouGov             2
+                                                 Dartmouth Poll             2
+                                Bendixen & Amandi International             2
+                                               Keating Research             2
+                                            Fairleigh Dickinson             2
+                University of Houston/Texas Southern University             2
+                         University of Maryland/Washington Post             2
+                                             U. Arizona/TrueDot             2
+                                                     U. Houston             2
+                                                 Strategies 360             2
+                                                    Sachs Media             2
+                                                    Winthrop U.             2
+                    USC Dornsife/CSU Long Beach/Cal Poly Pomona             2
+                                                 ARW Strategies             1
+                                                   1892 Polling             1
+                                                       Benenson             1
+                                                  BK Strategies             1
+                                                   Arc Insights             1
+                                                    Abacus Data             1
+                                                      Deltapoll             1
+                                                Differentiators             1
+                                          Echelon Insights/GBAO             1
+                               El Nuevo D a/The Research Office             1
+                                        Meeting Street Insights             1
+                                    McCourtney Institute/YouGov             1
+                              Let's Preserve the American Dream             1
+                                                 MSU - Billings             1
+                                        Landmark Communications             1
+                                      Innovative Research Group             1
+                                               Hoffman Research             1
+                                                 IZQ Strategies             1
+                                                Impact Research             1
+                                    Florida Atlantic University             1
+                                            Faucheux Strategies             1
+                                   Gateway Political Strategies             1
+                                              GS Strategy Group             1
+                                   Gravis Marketing (post 2020)             1
+                                       Hart Research Associates             1
+                                                Hendrix College             1
+                                     Fort Hays State University             1
+                                           Fleming & Associates             1
+                                 Fabrizio/David Binder Research             1
+                                                 Cor Strategies             1
+                                             Causeway Solutions             1
+                                             Cor Services, Inc.             1
+                                             Claflin University             1
+                                         Christopher Newport U.             1
+                                                 Data Viewpoint             1
+                                        Cygnal/Aspect Strategic             1
+                                                   DHM Research             1
+                                                      Dan Jones             1
+                                                       Paradigm             1
+                                            Opinion Diagnostics             1
+                                                  Peak Insights             1
+                                              National Research             1
+                                                   Split Ticket             1
+                                               Rutgers-Eagleton             1
+                                              Project Home Fire             1
+                                             Probolsky Research             1
+                               Michigan State University/YouGov             1
+                                        Miami University (Ohio)             1
+                                          Metropolitan Research             1
+                                     Murphy Nasica & Associates             1
+                           New Bridge Strategy/Aspect Strategic             1
+                                    NewsNation/Decision Desk HQ             1
+                                                           NORC             1
+                                                      Survation             1
+                        The Political Matrix/The Listener Group             1
+          Stetson University Center for Public Opinion Research             1
+                                 Split Ticket/Data for Progress             1
+                                                 Target Insyght             1
+                                                          Tufts             1
+                               Trafalgar Group/InsiderAdvantage             1
+                                               Tulchin Research             1
+                                                   Texas Lyceum             1
+                                                           UMBC             1
+                                                U. Rhode Island             1
+                                            University of Akron             1
+                                  University of Maryland/YouGov             1
+                                             UpOne Insights/BSG             1
+                                          University of Wyoming             1
+                                         University of Delaware             1
+                                                        VoteTXT             1
+                                                     VCreek/AMG             1
+                                                Yale Youth Poll             1
+                       YouGov/Center for Working Class Politics             1
+                                               YouGov/SNF Agora             1
+
+SPONSORS   277 unique values, 1514 total polls, 2228 polls with no value:
+
+                                                                                                                                                                                                 sponsors  unique_polls
+                                                                                                                                                                                            The Telegraph           158
+                                                                                                                                                                                                Bloomberg            91
+                                                                                                                                                                                            The Economist            70
+                                                                                                                                                                                               Yahoo News            50
+                                                                                                                                                                                                 Fox News            42
+                                                                                                                                                                                                 The Hill            39
+                                                                                                                                                                                        The Hill, Nexstar            39
+                                                                                                                                                                                                  Reuters            34
+                                                                                                                                                 Harvard University Center for American Political Studies            33
+                                                                                                                                                                                  The Wall Street Journal            27
+                                                                                                                                                                                      Napolitan Institute            26
+                                                                                                                                                                                                 CBS News            25
+                                                                                                                                                                                                NetChoice            23
+                                                                                                                                                                                                USA Today            22
+                                                                                                                                                                                The Cook Political Report            21
+                                                                                                                                                            Democrats for the Next Generation (super PAC)            21
+                                                                                                                                                                                                     AARP            16
+                                                                                                                                                                Citizens to Save Our Republic (super PAC)            16
+                                                                                                                                                                                       American Greatness            16
+                                                                                                                                                                                   Public Polling Project            16
+                                                                                                                                                                                            The Messenger            15
+                                                                                                                                                                                   The Independent Center            15
+                                                                                                                                                                    On Point Politics, Red Eagle Politics            14
+                                                                                                                                                                                Citizen Awareness Project            14
+                                                                                                                                                                                            DailyMail.com            13
+                                                                                                                                                                                        Issues & Insights            13
+                                                                                                                                                                                                   Forbes            12
+                                                                                                                                                                                         TrendingPolitics            12
+                                                                                                                                                              American Fuel & Petrochemical Manufacturers            12
+                                                                                                                                                                                Building America's Future            10
+                                                                                                                                                                                        NPR, PBS NewsHour             9
+                                                                                                                              KSTP-TV (St. Paul, Minn.), KAAL-TV (Austin, Minn.), WDIO-DT (Duluth, Minn.)             9
+                                                                                                                                                                         Iowans for Tax Relief Foundation             9
+                                                                                                                                                                               The Times of London, SAY24             9
+                                                                                                                                                                                                 NBC News             9
+                                                                                                                                                                                    John Bolton Super PAC             8
+                                                                                                                                                                                        Los Angeles Times             8
+                                                                                                                                                                                       The Canadian Press             8
+                                                                                                                                                                                     Progress Action Fund             8
+                                                                                                                                                                                                  Nexstar             8
+                                                                                                                                                                                        On Point Politics             8
+                                                                                                                                                                       Clean and Prosperous America (PAC)             8
+                                                                                                                                                                                         WHDH-TV (Boston)             8
+                                                                                                                                                                               League of American Workers             8
+                                                                                                                                                                             Peter G. Peterson Foundation             7
+                                                                                                                                                                          Northwest Progressive Institute             7
+                                                                                                                                                                                  The Heritage Foundation             7
+                                                                                                                                   Claremont McKenna College Rose Institute of State and Local Government             7
+                                                                                                                                                                               Beacon Center of Tennessee             6
+                                                                                                                                                                                  Senate Opportunity Fund             6
+                                                                                                                                                                                      Article III Project             6
+                                                                                                                                                                                    Future Majority (PAC)             6
+                                                                                                                                                                                        The Center Square             6
+                                                                                                                                                                                         Rust Belt Rising             6
+                                                                                                                                                                                           RealClearWorld             6
+                                                                                                                                                                         The Atlanta Journal-Constitution             6
+                                                                                                                                                                                        The New York Post             6
+                                                                                                                                                                                            NPR, PBS News             5
+                                                                                                                                                                                               NH Journal             5
+                                                                                                                                                                                         Carolina Journal             5
+                                                                                                                                                                                                Daily Kos             5
+                                                                                                                                                                                                     CNBC             5
+                                                                                                                                                                                The Hill, WPIX (New York)             5
+                                                                                                                                                                           America's New Majority Project             5
+                                                                                                                                                                            The Competitiveness Coalition             5
+                                                                                                                                                                        The Des Moines Register, Mediacom             5
+                                                                                                                                                                      The Detroit News, WDIV-TV (Detroit)             5
+                                                                                                                                                           Trump Make America Great Again Committee (PAC)             5
+                                                                                                                                                                                                 Politico             5
+                                                                                                                                                                                         WCVB-TV (Boston)             5
+                                                                                                                                                                  American Principles Project (super PAC)             5
+                                                                                                                                                                                               NumbersUSA             4
+                                                                                                                                                                              Florida Chamber of Commerce             4
+                                                                                                                                                                                The Philadelphia Inquirer             4
+                                                                                                                                                                                         Carolina Forward             4
+                                                                                                                                                                                  WRAL-TV (Raleigh, N.C.)             4
+                                                                                                                                                                                             PollSmart MR             4
+                                                                                                                                                                                                     NRCC             4
+                                                                                                                                          Deseret News, University of Utah Hinckley Institute of Politics             4
+                                                                                                                                                                            KLAS-TV (Las Vegas), The Hill             4
+                                                                                                                                                                  Michigan Information & Research Service             4
+                                                                                                                                                                                        Americans for IVF             4
+                                                                                                                                                                                  Commonwealth Foundation             4
+                                                                                                                                                                                           Cato Institute             3
+                                                                                                                                                                                       Detroit Free Press             3
+                                                                                                                                                                              Save My Country Action Fund             3
+                                                                                                                        Salve Regina University Pell Center for International Relations and Public Policy             3
+                                                                                                                                                                              Bangor Daily News, FairVote             3
+                                                                                                                                                                                             Deseret News             3
+                                                                                                                                                                             Vapor Technology Association             3
+                                                                                                                                            Michigan Information & Research Service, Michigan News Source             3
+                                                                                                                                                                                              John Jordan             3
+                                                                                                                                                                                        KCTS-TV (Seattle)             3
+                                                                                                                                                                                         Grinnell College             3
+                                                                                                                                                                                                 MinnPost             3
+                                                                                                                                                                                                     NRSC             3
+                                                                                                                                                                                Pinpoint Policy Institute             3
+                                                                                                                                                                                           Missouri Scout             3
+                                                                                                                                                                                   Focus on Rural America             3
+                                                                                                                                                                                           The Federalist             3
+                                                                                                                                                                     The Hill, Inside California Politics             3
+                                                                                                                                                                                         The Boston Globe             3
+                                                                                                                                    Vanderbilt University Center for the Study of Democratic Institutions             3
+                                                                                                                                                                                               WelcomePAC             3
+                                                                                                                                                                                                 The 19th             3
+                                                                                                                                                                                    RealClearPennsylvania             3
+                                                                                                                                                                                   The Nevada Independent             2
+                                                                                                                                                                                   Breaking Battlegrounds             2
+                                                                                                                                                                                      Albuquerque Journal             2
+                                                                                                                                      University of Mary Washington Center for Leadership & Media Studies             2
+                                                                                                                                                                                         The Morning Call             2
+                                                                                                                                                                        The Hill, WTNH (New Haven, Conn.)             2
+                                                                                                                                                                                  The Heartland Institute             2
+                                                                                                                                                                                         With Honor (PAC)             2
+                                                                                                                                                             American Free Enterprise Chamber of Commerce             2
+                                                                                                                 South Dakota News Watch, Chiesman Center for Democracy at the University of South Dakota             2
+                                                                                                                               StarTribune (Minneapolis), Minnesota Public Radio News, KARE (Minneapolis)             2
+                                                                                                                                                                                            La Torre Live             2
+                                                                                                                                                                              New Mexico Political Report             2
+                                                                                                                                                             High Point University Survey Research Center             2
+                                                                                                                                                                     The Hill, WDAF-TV (Kansas City, Mo.)             2
+                                                                                                                                                                                     ProgressNow Colorado             2
+                                                                                                                                                                      The Hill, WDVM-TV (Hagerstown, Md.)             2
+                                                                                                                                                                       The Hill, KRQE (Albuquerque, N.M.)             2
+                                                                                                                                                                      Nexstar, Inside California Politics             2
+                                                                                                                                                                                             Split Ticket             2
+                                                                                                                                                                 The Absolute Truth with Emerald Robinson             2
+                                                                                                                                                             The Hill, Nexstar, WDVM-TV (Hagerstown, Md.)             2
+                                                                                                                                                    University of Colorado American Politics Research Lab             2
+                                                                                                                                                                                      The Liberal Patriot             2
+                                                                                                                                                                The Civic Health and Institutions Project             2
+KMOV (St. Louis), KYTV (Springfield, Mo.), KCTV (Kansas City, Mo.), KOAM-TV (Pittsburg, Kan.), KRCG (Jefferson City, Mo.), KFVS-TV (Cape Girardeau, Mo.), KYOU-TV (Ottumwa, Iowa), WGEM-TV (Quincy, Ill.)             2
+                                                                                                                                                                                     Michigan News Source             2
+                                                                                                                                                                   Nebraska Railroaders for Public Safety             2
+                                                                                                                                                                                              Joe Cassidy             2
+                                                                                                                                                                         Associated Industries of Florida             2
+                                                                                                             KING-TV (Seattle), The Seattle Times, University of Washington Center for an Informed Public             2
+                                                                                                                                                                    KELO-TV (Sioux Falls, S.D.), The Hill             2
+                                                                                                                                                                                          Elon University             2
+                                                                                                                                                                               Colorado Polling Institute             2
+                                                                                                                                                                                          Democracy Corps             2
+                                                                                                                                                                                      WNYT (Albany, N.Y.)             2
+                                                                                                                                                                               WGN-TV (Chicago), The Hill             2
+                                                                                                                                                                                KULR-TV (Billings, Mont.)             2
+                                                                                                                                                                                                     BUSR             2
+                                                                                                                                                                         WCMH-TV (Columbus, OH), The Hill             2
+                                                                                                                                                                      WHTM-TV (Harrisburg, Pa.), The Hill             2
+                                                                                                                                                                                  KOB (Albuquerque, N.M.)             2
+                                                                                                                                                                           Citizens for Judicial Fairness             1
+                                                                                                                                                                                  Platform Communications             1
+                                                                                                                                                                                 Montana Republican Party             1
+                                                                                                                                                                   More Jobs, Less Government (super PAC)             1
+                                                                                                                                                                                 National Security Action             1
+                                                                                                                                                                                        Nevada Newsmakers             1
+                                                                                                                                                                                                  Newsday             1
+                                                                                                                                                                                            National Post             1
+                                                                                                                                                                                          Lawrence Kadish             1
+                                                                                                                                                Michigan Information & Research Service, Traverse Connect             1
+                                                                                                                                                          KWTV-DT (Oklahoma City), KOTV-DT (Tulsa, Okla.)             1
+                                                                                                                                                                    Leadership America Needs (hybrid PAC)             1
+                                                                                                                                                                                                  Jacobin             1
+                                                                                                                                                                         Issue One, Worthy Strategy Group             1
+                                                                                                                                                                               Inside California Politics             1
+                                                                                                                                                                                         IndyPolitics.org             1
+                                                                                                                                                                        Hardworking Americans (super PAC)             1
+                                                                                                                                                                                        Fields of Freedom             1
+                                                                                                                                                                                         Florida Politics             1
+                                                                                                                                                                                 Florida Republican Party             1
+                                                                                                                                             Florida State University Institute for Governance and Civics             1
+                                                                                                                                                                 Foundation for Government Accountability             1
+                                                                                                                                   Gray Television, KOAM-TV (Pittsburg, Kan.), KRCG (Jefferson City, Mo.)             1
+                                                                                                                                                               Gray Television, KOAM-TV (Pittsburg, Kan.)             1
+                                                                                                                                           George Washington University Society of Presidential Pollsters             1
+                                                                                                                                                                                                 Crosscut             1
+                                                                                                                                                                              Conservative Energy Network             1
+                                                                                                                                                                                 John Jordan, Dick Morris             1
+                                                                                                                               Hofstra University Kalikow Center for the Study of the American Presidency             1
+                                                                                                                                                                               College Republicans United             1
+                                                                                                                                                                                    Club for Growth (PAC)             1
+                                                                                                                                                                               WHDH-TV (Boston), The Hill             1
+                                                                                                                                                                                             AZ Free News             1
+                                                                                                                                                                                      American Unity Fund             1
+                                                                                                                                                                         American Values 2024 (super PAC)             1
+                                                                                                                                                                                 Americans for Prosperity             1
+                                                                                                                                                                                 Americas PAC (super PAC)             1
+                                                                                                                                                                                          Arnold Ventures             1
+                                                                                                                                                                  Arizona's Family KTVK/KPHO-TV (Phoenix)             1
+                                                                                                                                                             WHTM-TV (Harrisburg, Pa.), The Hill, Nexstar             1
+                                                                                                                                                                               WMNF FM 88.5 (Tampa, Fla.)             1
+                                                                                                                                                      Virginians Against Neighborhood Slot Machines (PAC)             1
+                                                                                                                                                           WNYT (Albany, N.Y.), WHEC-TV (Rochester, N.Y.)             1
+                                                                                                                                                                                                     2Way             1
+                                                                                                                                                                             \r\nBrighter Future Alliance             1
+                                                                                                                                                                           WGBH News, CommonWealth Beacon             1
+                                                                                              WCMH-TV (Columbus, OH), The Hill, Nexstar, WJW (Cleveland), WKBN-TV (Youngstown, Ohio), WDTN (Dayton, Ohio)             1
+                                                                                                                                                               WBUR-FM 90.9 (Boston), CommonWealth Beacon             1
+                                                                                                                                                                                        WAGA-TV (Atlanta)             1
+                                                                                                                                                                                Democracy Defense Project             1
+                                                                                                                                                        Democracy Defense Project, Echo Canyon Consulting             1
+                                                                                                                                                               Detroit Free Press, WJRT-TV (Flint, Mich.)             1
+                                                                                                                                                                                       EMILY's List (PAC)             1
+                                                                                                                                                                                     Charles H. Riggs III             1
+                                                                                                                                                                                                    Zeteo             1
+                                                                                                                                           Carolina Partnership for Reform, Carolina Leadership Coalition             1
+                                                                                                                                                                            Early Vote Action (super PAC)             1
+                                                                                                                                                                           Common Sense for America (PAC)             1
+                                                                                                                                                            Concerned Taxpayers of Washington State (PAC)             1
+                                                                                                                                                                                   Blockchain Association             1
+                                                                                                                                                                    Defend Texas Liberty PAC (hybrid PAC)             1
+                                                                                                                                                                Chicago Sun-Times, WBEZ-FM 91.5 (Chicago)             1
+                                                                                                                                                                                     State Policy Network             1
+                                                                                                         Susan B. Anthony Pro-Life America, North Carolina Faith & Freedom Coalition, NC Values Coalition             1
+                                                                                                                                                                                         Suasion Insights             1
+                                                                                                                                                                       The Hill, Nexstar, WPIX (New York)             1
+                                                                                                                                                                            Texas Public Opinion Research             1
+                                                                                                                                                                                         Texas Gun Rights             1
+                                                                                                                                                                      The Hill, WFRV-TV (Green Bay, Wis.)             1
+                                                                                                                                                                              The Boston Globe, USA Today             1
+                                                                                                                                                 The Canadian Press, The Association for Canadian Studies             1
+                                                                                                                                                                         The Advocate, The Times-Picayune             1
+                                                                                                                                                                                          The Common Good             1
+                                                                                                                                                                         Sentinel Action Fund (super PAC)             1
+                                                                                                                                                                                       Spirit of Virginia             1
+                                                                                                                                                                               Stand for Children Arizona             1
+                                                                                                                                                                                             Spotlight PA             1
+                                                                                                                                                                                   Saint Louis University             1
+                                                                                                                                          Ohio Northern University Institute for Civics and Public Policy             1
+                                                                                                                                                                            North Dakota News Cooperative             1
+                                                                                                                                                                                                 Paradigm             1
+                                                                                                                                                                    Retire Career Politicians (super PAC)             1
+                                                                                                                                                                                     Rhode Island Current             1
+                                                                                                                                                                                                 Newsweek             1
+                                                                                                                                                                                                No Labels             1
+                                                                                                                                                                                 Nexstar, WJW (Cleveland)             1
+                                                                                                                                                              Pennsylvania Energy Infrastructure Alliance             1
+                                                                                                                                                                                         RealClearDefense             1
+                                                                                                                                                                                       Red Eagle Politics             1
+                                                                                                                                                                                        Progress Michigan             1
+                                                                                                                                                                                         Protect Our Care             1
+                                                                                                                                                                                          Political Media             1
+                                                                                                                                                                         Texans for Fiscal Responsibility             1
+                                                                                                                                                                                 Talk Business & Politics             1
+                                                                                                                                                                                The John Locke Foundation             1
+                                                                                                                                                                              The James Madison Institute             1
+                                                                                                                                                                                  The Hill, KDVR (Denver)             1
+                                                                                                                                            Vanderbilt University Project on Unity and American Democracy             1
+                                                                                                                                                                                           The Tennessean             1
+                                                                                                                                                                                                Third Way             1
+                                                                                                                                                                                     University of Austin             1
+                                                                                                                                                                            USA Today, WSVN (Miami, Fla.)             1
+                                                                                                                                                                            The Hill, WJBF (Augusta, Ga.)             1
+                                                                                                                                                                        The Hill, WGHP (High Point, N.C.)             1
+                                                                                                                                                    University of Chicago Department of Political Science             1
+                                                                                                                                                                        The Hill, WSAV-TV (Savannah, Ga.)             1
+                                                                                                                                                The Hill, WGHP (High Point, N.C.), WNCN (Goldsboro, N.C.)             1
+                                                                                                                                                                         The George Washington University             1
+                                                                                                                                                                                             The National             1
+                                                                                                                                                                           The Liberal Patriot, Blueprint             1
+                                                                                                                                                              The John Locke Foundation, Carolina Journal             1
+                                                                                                                                                                                          Unknown Sponsor             1
+                                                                                                                                                               University of Virginia Center for Politics             1
+                                                                                                                                                                                       The New York Times             1
+                                                                                                                                                                                                Brookings             1
+                                                                                                                                                                                       Bull Moose Project             1
+                                                            Brookings, Carnegie Corporation of New York, Ford Foundation, Unitarian Universalist Veatch Program at Shelter Rock, Open Society Foundations             1
+                                                                                                                                                                               Capitol Resource Institute             1
+                                                                                                                                                                                                CT Mirror             1
+                                                                                                                                                                                               CNN Brazil             1
+                                                                                                                                                                                                      CNN             1
+                                                                                                                                                                                  West Virginia MetroNews             1
+                                                                                                                                                                         Wichita Journalism Collaborative             1
+                                                                                                                          Wisconsin Manufacturers & Commerce, American Fuel & Petrochemical Manufacturers             1
+                                                                                                                                                                                          Wisconsin Watch             1
+                                                                                                                                                                                      Accountable Florida             1
+                                                                                                                                                    WPRI-TV (Providence, R.I.), Roger Williams University             1
+                                                                                                                                                                                       WTVT (Tampa, Fla.)             1
+                                                                                                                                                                                             WTVJ (Miami)             1
+  (+ 2228 polls with null/empty sponsors)
+
+SPONSOR_CANDIDATE   17 unique values, 87 total polls, 3655 polls with no value:
+
+    sponsor_candidate  unique_polls
+    Robert F. Kennedy            51
+         Donald Trump            12
+           Dan Osborn             7
+          Deb Fischer             3
+            Kari Lake             2
+         Andy Beshear             1
+   Daniel Jay Cameron             1
+       Dave McCormick             1
+        Brian S. King             1
+ Jerome Michael Segal             1
+  Destiny Scott Wells             1
+        Lars Mapstead             1
+ Katrina Christiansen             1
+          Lucas Kunce             1
+     Malcolm Kenyatta             1
+Nella Louise Domenici             1
+          Nick Begich             1
+  (+ 3655 polls with null/empty sponsor_candidate)
+
+MODE   53 unique values, 3562 total polls, 180 polls with no value:
+
+                                                  mode  unique_polls
+                                   Online Opt-In Panel          1691
+                                            Live Phone           299
+                                 Online Matched Sample           236
+                                Live Phone/Text-to-Web           179
+                                     Probability Panel           130
+                   IVR/Online Opt-In Panel/Text-to-Web           120
+                                             App Panel           117
+                       Online Opt-In Panel/Text-to-Web            99
+                               IVR/Online Opt-In Panel            87
+                                             Online Ad            67
+                                              IVR/Text            60
+                                       IVR/Text-to-Web            50
+                        Live Phone/Online Opt-In Panel            39
+         IVR/Live Phone/Text/Online Opt-In Panel/Email            37
+            Live Phone/Online Opt-In Panel/Text-to-Web            35
+                         IVR/Online Opt-In Panel/Email            35
+                                           Text-to-Web            35
+             IVR/Online Opt-In Panel/Text-to-Web/Email            33
+                                                  Text            28
+                                 Text-to-Web/Online Ad            28
+                                                 Email            13
+                  Online Opt-In Panel/Text-to-Web/Text            12
+                   Live Phone/Online Opt-In Panel/Text            12
+                                                   IVR            10
+              Live Phone/Text-to-Web/Email/Mail-to-Web             9
+                          Live Phone/Text-to-Web/Email             8
+                             Mail-to-Web/Mail-to-Phone             7
+                              Online Opt-In Panel/Text             7
+Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone             7
+                             Online Opt-In Panel/Email             7
+                                 IVR/Text-to-Web/Email             6
+                                      Live Phone/Email             6
+                          Live Phone/Probability Panel             6
+                         Online Opt-In Panel/Online Ad             6
+                            IVR/Live Phone/Text-to-Web             5
+        IVR/Live Phone/Online Opt-In Panel/Text-to-Web             4
+                      Live Phone/Text-to-Web/App Panel             4
+                             Live Phone/Text/Online Ad             4
+                 Online Opt-In Panel/Email/Text-to-Web             3
+       Live Phone/Online Opt-In Panel/Text-to-Web/Text             2
+              Live Phone/Online Opt-In Panel/App Panel             2
+                 Online Opt-In Panel/Probability Panel             2
+                    IVR/Live Phone/Online Opt-In Panel             2
+                                           Mail-to-Web             2
+                      Live Phone/Text-to-Web/Online Ad             2
+                                     Text-to-Web/Email             2
+                          Live Phone/Email/Mail-to-Web             1
+                                   IVR/Live Phone/Text             1
+                                          Face-to-Face             1
+                                       Email/Online Ad             1
+                                            LIve Phone             1
+            Live Phone/Online Opt-In Panel/Mail-to-Web             1
+                                       Live Phone/Text             1
+  (+ 180 polls with null/empty mode)
+
+STATE   56 unique values, 2016 total polls, 1726 polls with no value:
+
+         state  unique_polls
+  Pennsylvania           230
+      Michigan           202
+       Arizona           176
+     Wisconsin           166
+       Georgia           159
+North Carolina           158
+        Nevada           124
+       Florida            89
+         Texas            60
+          Ohio            52
+    California            46
+      Virginia            44
+ New Hampshire            41
+     Minnesota            39
+      New York            31
+          Iowa            26
+      Maryland            24
+      Missouri            22
+ Massachusetts            21
+       Montana            21
+    Washington            21
+      Colorado            21
+    New Mexico            18
+      Nebraska            17
+     Tennessee            16
+South Carolina            13
+          Utah            12
+         Maine            11
+    Maine CD-2            11
+ Nebraska CD-2            10
+      Oklahoma            10
+  Rhode Island            10
+        Alaska            10
+      Illinois             9
+    Maine CD-1             8
+       Indiana             8
+    New Jersey             8
+  South Dakota             7
+   Connecticut             6
+        Kansas             6
+        Oregon             6
+   Puerto Rico             5
+  North Dakota             5
+ West Virginia             4
+       Wyoming             4
+      Arkansas             4
+      Kentucky             4
+       Vermont             4
+       Alabama             3
+      Delaware             3
+     Louisiana             3
+        Hawaii             2
+         Idaho             2
+   Mississippi             2
+ Nebraska CD-1             1
+ Nebraska CD-3             1
+  (+ 1726 polls with null/empty state)
+
+PARTISAN   5 unique values, 403 total polls, 3339 polls with no value:
+
+partisan  unique_polls
+     REP           224
+     DEM           116
+     IND            60
+DEM, IND             2
+     LIB             1
+  (+ 3339 polls with null/empty partisan)
+
+Polls with multiple Harris + Trump questions:
+  619 polls had more than one Harris + Trump question
+  1045 polls had exactly one Harris + Trump question
+
+Distribution of Harris + Trump question counts per poll:
+num_harris_trump_questions
+1    1045
+2     450
+3      30
+4     128
+5       2
+6       8
+8       1
+
+POLLSTER (Harris+Trump questions)   196 unique values, 2613 total questions, 0 questions with no value:
+
+                                             pollster  unique_questions
+                                      Morning Consult               299
+                         Redfield & Wilton Strategies               187
+                                            Siena/NYT               158
+                                               YouGov               125
+                                           AtlasIntel               109
+                                              Emerson                91
+                                            Focaldata                87
+                                             ActiVote                82
+                                                 TIPP                71
+                                          Beacon/Shaw                53
+                                              HarrisX                50
+      Florida Atlantic University/Mainstreet Research                48
+                                       Marist College                42
+                                                Ipsos                41
+                                           Quinnipiac                38
+                                     InsiderAdvantage                36
+                                           McLaughlin                36
+                                          Big Village                35
+                                         RMG Research                32
+                                      Trafalgar Group                32
+            Benenson Strategy Group/GS Strategy Group                28
+                                         CES / YouGov                28
+                                     U. New Hampshire                28
+                                                  PPP                25
+                                  HarrisX/Harris Poll                25
+                                 Marquette Law School                24
+                                               Cygnal                24
+                                            SurveyUSA                23
+                                       ABC News/Ipsos                23
+                                            Bullfinch                22
+                            Noble Predictive Insights                22
+                                        Fabrizio/GBAO                20
+                                             CNN/SSRS                20
+                                      Fabrizio/Impact                20
+              Washington Post/George Mason University                20
+                                     Echelon Insights                19
+                                      Patriot Polling                19
+                                     SoCal Strategies                17
+                                         Research Co.                16
+                                        Big Data Poll                15
+    Global Strategy Group/North Star Opinion Research                14
+                                              Suffolk                12
+                                            Navigator                12
+                                 Outward Intelligence                12
+                                             Mitchell                11
+                                       OnMessage Inc.                11
+                                    Data for Progress                10
+                                MassINC Polling Group                10
+                                        J.L. Partners                10
+                                      Spry Strategies                10
+                                  The Washington Post                10
+                                          Susquehanna                 9
+                                             Hart/POS                 9
+                                      Change Research                 9
+            University of Massachusetts Lowell/YouGov                 8
+                                       SoCal Research                 8
+                                       American Pulse                 7
+                                            Remington                 7
+                                     Quantus Insights                 7
+                                  Fabrizio/McLaughlin                 7
+                                                Leger                 7
+                               Quantus Polls and News                 7
+                                        Fabrizio Ward                 6
+                                       Capitol Weekly                 6
+                             East Carolina University                 6
+                                  ABC/Washington Post                 6
+                               Alaska Survey Research                 6
+                                          Harris Poll                 6
+                                     Victory Insights                 6
+                                      Z to A Research                 6
+                                           St. Anselm                 6
+                          OnMessage Public Strategies                 6
+                               Targoz Market Research                 6
+                                                Siena                 6
+                                           Angus Reid                 5
+                        Franklin and Marshall College                 5
+               University of Maryland/Washington Post                 5
+                                     Research America                 5
+                            Public Opinion Strategies                 5
+                                Glengariff Group Inc.                 4
+                                              Clarity                 4
+                                               Civiqs                 4
+                                          The Citadel                 4
+                                         co/efficient                 4
+                                                  Pew                 4
+                             Virginia Commonwealth U.                 4
+                                        Hunt Research                 4
+                                             Monmouth                 4
+                                      Embold Research                 4
+                                           HighGround                 3
+                                      U. Texas/YouGov                 3
+                          North Star Opinion Research                 3
+                                 UMass Amherst/YouGov                 3
+                                    Kaplan Strategies                 3
+                                        RG Strategies                 3
+                                     Chism Strategies                 3
+                                             EPIC-MRA                 3
+                                     Digital Research                 3
+                                        Axis Research                 3
+                                      U. Georgia SPIA                 3
+                                         SurveyMonkey                 3
+                                          UC Berkeley                 3
+                                      Roanoke College                 3
+                                Pan Atlantic Research                 3
+                                                 PRRI                 3
+                                        Lake Research                 3
+                  Institute for Global Affairs/YouGov                 3
+                                          Mason-Dixon                 3
+                                                 PPIC                 2
+                                           Muhlenberg                 2
+                                               Selzer                 2
+                                                 WPAi                 2
+                                                 Wick                 2
+                                     U. North Florida                 2
+                                           U. Houston                 2
+                                   U. Arizona/TrueDot                 2
+                                       Dartmouth Poll                 2
+                                                  GQR                 2
+                                                Elway                 2
+                                         Data Orbital                 2
+                                      Beacon Research                 2
+                                Cherry Communications                 2
+                                         CWS Research                 2
+                Bowling Green State University/YouGov                 2
+                                High Point University                 2
+                                             Fabrizio                 2
+                           Fort Hays State University                 2
+                                       Strategies 360                 2
+                     Texas Hispanic Policy Foundation                 2
+                                     Rutgers-Eagleton                 2
+                                             Tarrance                 2
+                                  Fairleigh Dickinson                 2
+                                  Manhattan Institute                 2
+                                     Hoffman Research                 2
+                              Landmark Communications                 2
+                                     Keating Research                 2
+                                John Zogby Strategies                 2
+                                   Research & Polling                 2
+                                        RABA Research                 2
+                                            Rasmussen                 2
+                                                Tufts                 2
+                                  Praecones Analytica                 2
+                                         Arc Insights                 1
+                      Bendixen & Amandi International                 1
+                                         DHM Research                 1
+                                   Claflin University                 1
+                                       ARW Strategies                 1
+                                        BK Strategies                 1
+                                      Hendrix College                 1
+                   Gonzales Research & Media Services                 1
+                         Gateway Political Strategies                 1
+                                Global Strategy Group                 1
+                                Echelon Insights/GBAO                 1
+                     El Nuevo D a/The Research Office                 1
+                       Fabrizio/David Binder Research                 1
+                                            Deltapoll                 1
+                               Christopher Newport U.                 1
+                                           Iron Light                 1
+                                       MSU - Billings                 1
+                       MRG (Marketing Resource Group)                 1
+                     Michigan State University/YouGov                 1
+                          McCourtney Institute/YouGov                 1
+                              Miami University (Ohio)                 1
+                                  Lord Ashcroft Polls                 1
+                                        Peak Insights                 1
+                                    National Research                 1
+                              National Public Affairs                 1
+                                             Paradigm                 1
+                                     Meredith College                 1
+                             Kaiser Family Foundation                 1
+                                       IZQ Strategies                 1
+                                      Impact Research                 1
+                                 Slingshot Strategies                 1
+                                     Schoen Cooperman                 1
+                       Survey Center on American Life                 1
+                                            Survation                 1
+                       Split Ticket/Data for Progress                 1
+                                       SoonerPoll.com                 1
+                                       St. Pete Polls                 1
+Stetson University Center for Public Opinion Research                 1
+                     Trafalgar Group/InsiderAdvantage                 1
+                                Torchlight Strategies                 1
+                               University of Delaware                 1
+      University of Houston/Texas Southern University                 1
+                                                 UMBC                 1
+          USC Dornsife/CSU Long Beach/Cal Poly Pomona                 1
+                                      U. Rhode Island                 1
+                                  University of Akron                 1
+                        University of Maryland/YouGov                 1
+                                University of Wyoming                 1
+                         University of Texas at Tyler                 1
+                                          Winthrop U.                 1
+                                          YouGov Blue                 1
+                                      Yale Youth Poll                 1
+                                     YouGov/SNF Agora                 1
+             YouGov/Center for Working Class Politics                 1
+
+SPONSORS (Harris+Trump questions)   156 unique values, 1099 total questions, 1514 questions with no value:
+
+                                                                                    sponsors  unique_questions
+                                                                               The Telegraph               108
+                                                                                   Bloomberg               105
+                                                                                    Fox News                53
+                                                                                     Reuters                38
+                                                                          American Greatness                36
+                                    Harvard University Center for American Political Studies                31
+                                                                  The Times of London, SAY24                31
+                                                                         Napolitan Institute                29
+                                                                           The Hill, Nexstar                28
+                                                                   The Cook Political Report                28
+                                                                               The Economist                27
+                                                                                      Forbes                26
+                                                                                    The Hill                25
+                                                                                  Yahoo News                24
+                                                                                        AARP                22
+                                                                     The Wall Street Journal                20
+                                                       On Point Politics, Red Eagle Politics                17
+                                                                Peter G. Peterson Foundation                14
+                                                                                    CBS News                14
+                                                                            TrendingPolitics                12
+                                                                              Cato Institute                12
+                      Claremont McKenna College Rose Institute of State and Local Government                12
+                                                          Clean and Prosperous America (PAC)                12
+                                                                   The Philadelphia Inquirer                12
+                                                                      Public Polling Project                11
+                                                                                Deseret News                11
+                                                                                   USA Today                10
+                                                     American Principles Project (super PAC)                10
+                                                                      The Independent Center                10
+                                                                               NPR, PBS News                 9
+                                                                            Rust Belt Rising                 9
+                                                                           The Center Square                 8
+                                                                               DailyMail.com                 7
+                                                                        Progress Action Fund                 7
+                                                                                     Nexstar                 7
+                                                                                    NBC News                 7
+                                                                           On Point Politics                 7
+                               Michigan Information & Research Service, Michigan News Source                 6
+                                                                     Senate Opportunity Fund                 6
+                                                                         Article III Project                 6
+                                                                              RealClearWorld                 6
+                                                                   Pinpoint Policy Institute                 6
+                                                                           Issues & Insights                 6
+                              George Washington University Society of Presidential Pollsters                 6
+                                                 American Fuel & Petrochemical Manufacturers                 5
+                                                               The Competitiveness Coalition                 5
+                                                              America's New Majority Project                 4
+                                                                           Americans for IVF                 4
+                 KSTP-TV (St. Paul, Minn.), KAAL-TV (Austin, Minn.), WDIO-DT (Duluth, Minn.)                 4
+                                                         The Detroit News, WDIV-TV (Detroit)                 4
+                                                                       RealClearPennsylvania                 4
+                                                                                        NRCC                 4
+                         University of Mary Washington Center for Leadership & Media Studies                 4
+                                                                           The New York Post                 4
+                                                                     Commonwealth Foundation                 4
+                                                                      Blockchain Association                 4
+                                                                 Bangor Daily News, FairVote                 3
+                                                                            Carolina Journal                 3
+                                                                            WHDH-TV (Boston)                 3
+                                                                                   Brookings                 3
+                             Deseret News, University of Utah Hinckley Institute of Politics                 3
+                                                                      Focus on Rural America                 3
+                                                High Point University Survey Research Center                 3
+                                                             Northwest Progressive Institute                 3
+                                                            The Atlanta Journal-Constitution                 3
+                                                                          Detroit Free Press                 3
+                                                                           Los Angeles Times                 3
+                                                                              The Federalist                 3
+                                                                                    The 19th                 3
+                                                            Associated Industries of Florida                 2
+                                                                                        2Way                 2
+                                                                         Albuquerque Journal                 2
+                                                                        University of Austin                 2
+                                                                 The James Madison Institute                 2
+                                                                                        CNBC                 2
+                                                                  Beacon Center of Tennessee                 2
+                                                                     WRAL-TV (Raleigh, N.C.)                 2
+                                                            Wichita Journalism Collaborative                 2
+                                                                            WCVB-TV (Boston)                 2
+                                                                             Wisconsin Watch                 2
+                                                                                    MinnPost                 2
+                                                                                 Joe Cassidy                 2
+                                                                           KCTS-TV (Seattle)                 2
+                                                                                  NH Journal                 2
+                                                                               La Torre Live                 2
+                                                                               National Post                 2
+                                                                                     Newsday                 2
+                                                                     KOB (Albuquerque, N.M.)                 2
+                                Florida State University Institute for Governance and Civics                 2
+                                                                 Florida Chamber of Commerce                 2
+                                                                             Elon University                 2
+                                                               Early Vote Action (super PAC)                 2
+                                                     Michigan Information & Research Service                 2
+                                                                        Rhode Island Current                 2
+                                                           The Des Moines Register, Mediacom                 2
+                                                  WBUR-FM 90.9 (Boston), CommonWealth Beacon                 2
+                                                                            The Morning Call                 2
+                                                                                Split Ticket                 2
+           Salve Regina University Pell Center for International Relations and Public Policy                 2
+KING-TV (Seattle), The Seattle Times, University of Washington Center for an Informed Public                 2
+                                                                                Spotlight PA                 2
+                                                              Citizens for Judicial Fairness                 1
+                                                                                   Daily Kos                 1
+                                                                                   CT Mirror                 1
+                                                                                AZ Free News                 1
+                                                     Arizona's Family KTVK/KPHO-TV (Phoenix)                 1
+                                                                            Carolina Forward                 1
+                                                                           NPR, PBS NewsHour                 1
+                                                                            Florida Politics                 1
+                                                            Iowans for Tax Relief Foundation                 1
+                                                                            IndyPolitics.org                 1
+                                                                   Democracy Defense Project                 1
+                                           Democracy Defense Project, Echo Canyon Consulting                 1
+                                                                           Fields of Freedom                 1
+                                                                    Florida Republican Party                 1
+                                                                                        NRSC                 1
+                                                                        Michigan News Source                 1
+                                                                  League of American Workers                 1
+                                                                   KULR-TV (Billings, Mont.)                 1
+                                                                       Future Majority (PAC)                 1
+                                                            Issue One, Worthy Strategy Group                 1
+                                                                                     Jacobin                 1
+                                                       KELO-TV (Sioux Falls, S.D.), The Hill                 1
+                                                               KLAS-TV (Las Vegas), The Hill                 1
+                                                                            RealClearDefense                 1
+                                                                     Platform Communications                 1
+                                                               North Dakota News Cooperative                 1
+                             Ohio Northern University Institute for Civics and Public Policy                 1
+                                                         Nexstar, Inside California Politics                 1
+                                                                              Missouri Scout                 1
+                                                               Texas Public Opinion Research                 1
+                                                                            The Boston Globe                 1
+                                                                      Saint Louis University                 1
+                                                       Retire Career Politicians (super PAC)                 1
+                                                                          Red Eagle Politics                 1
+                                                            Sentinel Action Fund (super PAC)                 1
+    South Dakota News Watch, Chiesman Center for Democracy at the University of South Dakota                 1
+                  StarTribune (Minneapolis), Minnesota Public Radio News, KARE (Minneapolis)                 1
+                                                                    Talk Business & Politics                 1
+                                                            Texans for Fiscal Responsibility                 1
+                                                        The Hill, Inside California Politics                 1
+                                                                     The Heritage Foundation                 1
+                                                                            Texas Gun Rights                 1
+                                                               USA Today, WSVN (Miami, Fla.)                 1
+                                                                   The Hill, WPIX (New York)                 1
+                                                         The Hill, WDVM-TV (Hagerstown, Md.)                 1
+                                                The Hill, Nexstar, WDVM-TV (Hagerstown, Md.)                 1
+                                                                                The National                 1
+                                                                  WHDH-TV (Boston), The Hill                 1
+                                       University of Colorado American Politics Research Lab                 1
+                                                                             Unknown Sponsor                 1
+                                                                           WAGA-TV (Atlanta)                 1
+                                                                     West Virginia MetroNews                 1
+                                                                          WTVT (Tampa, Fla.)                 1
+                                                                                WTVJ (Miami)                 1
+                                                                            With Honor (PAC)                 1
+  (+ 1514 questions with null/empty sponsors)
+
+SPONSOR_CANDIDATE (Harris+Trump questions)   9 unique values, 19 total questions, 2594 questions with no value:
+
+   sponsor_candidate  unique_questions
+        Donald Trump                 7
+          Dan Osborn                 5
+       Brian S. King                 1
+         Deb Fischer                 1
+ Destiny Scott Wells                 1
+Katrina Christiansen                 1
+         Lucas Kunce                 1
+    Malcolm Kenyatta                 1
+         Nick Begich                 1
+  (+ 2594 questions with null/empty sponsor_candidate)
+
+MODE (Harris+Trump questions)   43 unique values, 2440 total questions, 173 questions with no value:
+
+                                                  mode  unique_questions
+                                   Online Opt-In Panel               935
+                                            Live Phone               283
+                                 Online Matched Sample               179
+                                Live Phone/Text-to-Web               163
+                                     Probability Panel               129
+                                             Online Ad               117
+                       Online Opt-In Panel/Text-to-Web               102
+                                             App Panel                82
+                   IVR/Online Opt-In Panel/Text-to-Web                64
+            Live Phone/Online Opt-In Panel/Text-to-Web                51
+                               IVR/Online Opt-In Panel                42
+                                              IVR/Text                41
+                                           Text-to-Web                35
+         IVR/Live Phone/Text/Online Opt-In Panel/Email                33
+                                       IVR/Text-to-Web                30
+                                                  Text                25
+                                 Text-to-Web/Online Ad                18
+                        Live Phone/Online Opt-In Panel                14
+              Live Phone/Text-to-Web/Email/Mail-to-Web                14
+                                                 Email                 9
+                                      Live Phone/Email                 8
+                          Live Phone/Text-to-Web/Email                 7
+Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone                 7
+                              Online Opt-In Panel/Text                 6
+                         IVR/Online Opt-In Panel/Email                 6
+                             Mail-to-Web/Mail-to-Phone                 5
+                                                   IVR                 4
+                  Online Opt-In Panel/Text-to-Web/Text                 4
+              Live Phone/Online Opt-In Panel/App Panel                 3
+                 Online Opt-In Panel/Probability Panel                 3
+        IVR/Live Phone/Online Opt-In Panel/Text-to-Web                 3
+                         Online Opt-In Panel/Online Ad                 3
+                                     Text-to-Web/Email                 2
+                            IVR/Live Phone/Text-to-Web                 2
+                    IVR/Live Phone/Online Opt-In Panel                 2
+                                           Mail-to-Web                 2
+                                          Face-to-Face                 1
+                   Live Phone/Online Opt-In Panel/Text                 1
+                          Live Phone/Email/Mail-to-Web                 1
+             IVR/Online Opt-In Panel/Text-to-Web/Email                 1
+                          Live Phone/Probability Panel                 1
+                                            LIve Phone                 1
+                      Live Phone/Text-to-Web/Online Ad                 1
+  (+ 173 questions with null/empty mode)
+
+STATE (Harris+Trump questions)   50 unique values, 1752 total questions, 861 questions with no value:
+
+         state  unique_questions
+  Pennsylvania               241
+      Michigan               194
+     Wisconsin               191
+       Georgia               166
+       Arizona               164
+North Carolina               161
+        Nevada               121
+       Florida                67
+         Texas                49
+      Virginia                46
+          Ohio                41
+     Minnesota                27
+ New Hampshire                24
+    California                23
+      Maryland                20
+       Montana                15
+      New York                15
+      Nebraska                14
+    New Mexico                12
+    Maine CD-2                11
+ Nebraska CD-2                11
+ Massachusetts                10
+    Washington                10
+          Utah                10
+      Missouri                 9
+         Maine                 8
+    Maine CD-1                 8
+        Alaska                 7
+South Carolina                 7
+    New Jersey                 7
+          Iowa                 7
+      Colorado                 7
+  Rhode Island                 6
+       Indiana                 5
+     Tennessee                 5
+   Puerto Rico                 5
+      Oklahoma                 4
+       Vermont                 3
+      Illinois                 3
+        Oregon                 3
+        Kansas                 2
+      Delaware                 2
+       Wyoming                 2
+  South Dakota                 2
+  North Dakota                 2
+      Arkansas                 1
+   Connecticut                 1
+ Nebraska CD-3                 1
+ Nebraska CD-1                 1
+ West Virginia                 1
+  (+ 861 questions with null/empty state)
+
+PARTISAN (Harris+Trump questions)   3 unique values, 175 total questions, 2438 questions with no value:
+
+partisan  unique_questions
+     REP               124
+     DEM                45
+     IND                 6
+  (+ 2438 questions with null/empty partisan)
