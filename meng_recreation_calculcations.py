@@ -1086,7 +1086,7 @@ print(
 # trump worst MSE
 print("Trump states with largest MSE")
 
-worst_mse_trump = val_mergedtruth_TH.nlargest(5, "MSE_trump")[["state_name", "MSE_trump", "rho_hat_trump", "f_s", "sigma_trump"]]
+worst_mse_trump = val_mergedtruth_TH.nlargest(10, "MSE_trump")[["state_name", "MSE_trump", "rho_hat_trump", "f_s", "DO_s","sigma_trump", "p_hat_trump","p_trump_true","bias_trump"]]
 
 print(worst_mse_trump
     .assign(sigma2=lambda df: df["sigma_trump"] ** 2)
@@ -1095,7 +1095,11 @@ print(worst_mse_trump
         "MSE_trump": r"$\mathrm{MSE}$",
         "rho_hat_trump": r"$\rho$",
         "f_s": r"$f$",
+        "Dropout odds":r"$D_O$",
         "sigma2": r"$\sigma^2$",
+        "Estimated Trump Support": r"$\hat p$",
+        "Realized Trump Support": r"$p$",
+        "Bias":r"bias",
     }).to_string(index=False))
 
 print("\nInterpretation guide:")
@@ -1106,7 +1110,7 @@ print(r"High $\sigma^2 \;\to\;$ close race ($p \approx 0.5$)")
 # harris worst MSE
 print("\nHarris states with largest MSE")
 
-worst_mse_harris = val_mergedtruth_TH.nlargest(5, "MSE_harris")[["state_name", "MSE_harris", "rho_hat_harris", "f_s", "sigma_harris"]]
+worst_mse_harris = val_mergedtruth_TH.nlargest(10, "MSE_harris")[["state_name", "MSE_harris", "rho_hat_harris", "f_s", "sigma_harris","p_hat_harris","p_harris_true","bias_harris"]]
 
 print(
     worst_mse_harris
@@ -1116,7 +1120,11 @@ print(
         "MSE_harris": r"$\mathrm{MSE}$",
         "rho_hat_harris": r"$\rho$",
         "f_s": r"$f$",
+        "Dropout odds":r"$D_O$",
         "sigma2": r"$\sigma^2$",
+        "Estimated Harris Support": r"$\hat p$",
+        "Realized Harris Support": r"$p$",
+        "Bias":r"bias",
     }).to_string(index=False))
 
 ########################################################################################
