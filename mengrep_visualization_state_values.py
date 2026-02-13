@@ -4,7 +4,7 @@ import pandas as pd
 from scipy.stats import linregress
 
 ########################################################################################
-############ State level visualizations for MSE and design effect ###########################
+############ State level visualizations for MSE and design effect from CCES ###########################
 ########################################################################################
 
 # this file is made by running meng_mse_deff_calculations.py
