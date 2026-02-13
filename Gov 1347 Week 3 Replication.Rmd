@@ -39,8 +39,9 @@ d_pollav_natl <- read_csv("data/gov1347_national_polls_1968-2024partial.csv")
 # Fiftypluysone polling average dataset
 d_fiftyplusone <- read_csv("data/president_2024_general.csv")
 
-# pollster rating from 538
-d_pollster_ratings <- read_csv("data/gov1347_pollster-ratings-combined.csv")
+# pollster rating from 538, updated for 2024
+# data meanings here: https://github.com/fivethirtyeight/data/tree/master/pollster-ratings
+d_pollster_ratings <- read_csv("data/538_2024_pollster-ratings-combined.csv")
 
 # polling data from 2020
 d_poll_2020 <- read_csv("data/gov1347_president_polls_2020.csv")
