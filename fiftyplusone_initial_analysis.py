@@ -34,3 +34,41 @@ print(f"Found {len(answer_set_counts)} unique answer set(s):\n")
 for _, row in answer_set_counts.iterrows():
     print(f"Count: {row['count']} | {sorted(row['answer_set'])}")
 
+######## find unique sets of answers and the number of times they occur
+# split based on start date before or after dropout
+
+# Group answers by (question_id, poll_id) and collect the set of answer names + min start_date
+answer_sets = (
+    df.groupby(['question_id', 'poll_id'])
+    .agg(answer=('answer', lambda x: frozenset(x.dropna())),
+         start_date=('start_date', 'min'))
+    .reset_index()
+)
+
+# convert start_date to datetime
+answer_sets['start_date'] = pd.to_datetime(answer_sets['start_date'])
+
+# check everything converted correctly
+print("NaT count:", answer_sets['start_date'].isna().sum())
+
+# define cutoff date
+cutoff = pd.Timestamp('2024-07-21')
+
+# count occurrences split by date
+before = answer_sets[answer_sets['start_date'] < cutoff].groupby('answer')['answer'].count()
+after  = answer_sets[answer_sets['start_date'] >= cutoff].groupby('answer')['answer'].count()
+
+# combine into a summary df
+summary = (
+    pd.DataFrame({'before_7_21': before, 'after_7_21': after})
+    .fillna(0)
+    .astype(int)
+    .assign(total=lambda x: x['before_7_21'] + x['after_7_21'])
+    .sort_values('total', ascending=False)
+    .reset_index()
+)
+summary.columns = ['answer_set', 'before_7_21', 'after_7_21', 'total']
+
+print(f"Found {len(summary)} unique answer set(s):\n")
+for _, row in summary.iterrows():
+    print(f"Before: {row['before_7_21']} | After: {row['after_7_21']} | Total: {row['total']} | {sorted(row['answer_set'])}")
