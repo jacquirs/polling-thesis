@@ -189,3 +189,30 @@ for _, row in harris_trump_no_biden_counts.iterrows():
 # important results include
 # Before: 239 | After: 1412 | Total: 1651 | ['Harris', 'Trump']
 # there are also many others with additional candidates, some with as many as 327 uses and other with as little as 1
+
+########################################################################################
+############################ Poll Metadata Analysis ####################################
+########################################################################################
+
+######## for all polls
+# for each metadata variable, count unique polls (on poll_id) per category
+metadata_vars = ['pollster', 'sponsors', 'sponsor_candidate', 'mode', 'state', 'partisan']
+
+for var in metadata_vars:
+    # count unique polls per category (excluding NaN)
+    counts = (
+        df.groupby(var, dropna=True)['poll_id']
+        .nunique()
+        .reset_index()
+        .rename(columns={'poll_id': 'unique_polls'})
+        .sort_values('unique_polls', ascending=False)
+        .reset_index(drop=True)
+    )
+
+    # count unique polls where this variable is null/empty
+    na_poll_count = df[df[var].isna() | (df[var].astype(str).str.strip() == '')]['poll_id'].nunique()
+
+    print(f"\n{var.upper()} — {len(counts)} unique values, {counts['unique_polls'].sum()} total polls, {na_poll_count} polls with no value:\n")
+    print(counts.to_string(index=False))
+    if na_poll_count > 0:
+        print(f"  (+ {na_poll_count} polls with null/empty {var})")
