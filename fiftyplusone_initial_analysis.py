@@ -3,7 +3,7 @@ import numpy as np
 import sys
 
 # redirect all print output to a log file
-log_file = open('output/analysis_log.txt', 'w')
+log_file = open('output/fiftyplusone_initial_clean_analysis_log.txt', 'w')
 sys.stdout = log_file
 
 
@@ -314,4 +314,4 @@ harris_trump_full_df.to_csv('data/fiftyplusone_cleaned_harris_trump_questions.cs
 # close log file and restore terminal output
 log_file.close()
 sys.stdout = sys.__stdout__
-print("Analysis complete — see output/analysis_log.txt")
+print("Analysis complete — see output/fiftyplusone_initial_clean_analysis_log.txt")
