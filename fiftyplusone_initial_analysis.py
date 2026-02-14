@@ -3,7 +3,7 @@ import numpy as np
 import sys
 
 # redirect all print output to a log file
-log_file = open('output/fiftyplusone_initial_clean_analysis_log.txt', 'w')
+log_file = open('output/fiftyplusone_initial_analysis_log.txt', 'w')
 sys.stdout = log_file
 
 
@@ -27,9 +27,16 @@ df = pd.read_csv("data/president_2024_general.csv")
 # normalize answer to reflect candidate_name distinctions where trump jr and trump aren't the same person
 df.loc[df['candidate_name'].str.lower().str.contains('trump jr', na=False), 'answer'] = 'Trump Jr.'
 
+# clean pct column
+df['pct'] = pd.to_numeric(df['pct'], errors='coerce')
+
 # fill missing/empty state values with 'National'
 df['state'] = df['state'].fillna('National')
 df.loc[df['state'].astype(str).str.strip() == '', 'state'] = 'National'
+
+# convert start_date to datetime
+df['start_date'] = pd.to_datetime(df['start_date'])
+print("NaT count:", df['start_date'].isna().sum())
 
 print(f"Rows after loading: {len(df)}")
 print(f"Unique polls: {df['poll_id'].nunique()}")
@@ -48,10 +55,6 @@ question_answer_sets = (
     )
     .reset_index()
 )
-
-# convert start_date to datetime and verify
-question_answer_sets['start_date'] = pd.to_datetime(question_answer_sets['start_date'])
-print("NaT count:", question_answer_sets['start_date'].isna().sum())
 
 # define cutoff date (Biden dropout)
 dropout_cutoff = pd.Timestamp('2024-07-21')
@@ -314,4 +317,4 @@ harris_trump_full_df.to_csv('data/fiftyplusone_cleaned_harris_trump_questions.cs
 # close log file and restore terminal output
 log_file.close()
 sys.stdout = sys.__stdout__
-print("Analysis complete — see output/fiftyplusone_initial_clean_analysis_log.txt")
+print("Analysis complete — see output/fiftyplusone_initial_analysis_log.txt")
