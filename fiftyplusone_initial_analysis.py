@@ -12,9 +12,6 @@ sys.stdout = log_file
 # load CCES 2024 data from site
 df = pd.read_csv("data/president_2024_general.csv")
 
-# normalize answer to reflect candidate_name distinctions where trump jr and trump aren't the same person
-df.loc[df['candidate_name'].str.lower().str.contains('trump jr', na=False), 'answer'] = 'Trump Jr.'
-
 ######## Jacqui's Notes on How to Know What Is a Useful Question 
 
 # each poll has its own poll_id
@@ -22,6 +19,21 @@ df.loc[df['candidate_name'].str.lower().str.contains('trump jr', na=False), 'ans
 # each question has a question_id
 # the answers to a question can be accessed through a shared question_id x poll_id
 # the answers are in answer
+
+########################################################################################
+##################################### Data Cleaning ####################################
+########################################################################################
+
+# normalize answer to reflect candidate_name distinctions where trump jr and trump aren't the same person
+df.loc[df['candidate_name'].str.lower().str.contains('trump jr', na=False), 'answer'] = 'Trump Jr.'
+
+# fill missing/empty state values with 'National'
+df['state'] = df['state'].fillna('National')
+df.loc[df['state'].astype(str).str.strip() == '', 'state'] = 'National'
+
+print(f"Rows after loading: {len(df)}")
+print(f"Unique polls: {df['poll_id'].nunique()}")
+print(f"Unique questions: {df['question_id'].nunique()}")
 
 ########################################################################################
 ##################################### Unique Answer Sets ###############################

@@ -1,3 +1,6 @@
+Rows after loading: 18246
+Unique polls: 3742
+Unique questions: 6806
 NaT count: 0
 
 Found 140 unique answer set(s):
@@ -201,7 +204,7 @@ Before: 0 | After: 1 | Total: 1 | ['Harris', 'Kennedy', 'Kishore', 'Stein', 'Ter
 Before: 0 | After: 1 | Total: 1 | ['Garrity', 'Harris', 'Oliver', 'Trump']
 Before: 0 | After: 1 | Total: 1 | ['De la Cruz', 'Harris', 'Kennedy', 'Oliver', 'Trump', 'West']
 
-POLLSTER   247 unique values, 3742 total polls, 0 polls with no value:
+POLLSTER — 247 unique values, 3742 total polls, 0 polls with no value:
 
                                                        pollster  unique_polls
                                                 Morning Consult           844
@@ -386,7 +389,7 @@ Ohio Northern University Institute for Civics and Public Policy             3
                                                       Deltapoll             1
                                                 Differentiators             1
                                           Echelon Insights/GBAO             1
-                               El Nuevo D a/The Research Office             1
+                               El Nuevo Día/The Research Office             1
                                         Meeting Street Insights             1
                                     McCourtney Institute/YouGov             1
                               Let's Preserve the American Dream             1
@@ -452,7 +455,7 @@ Ohio Northern University Institute for Civics and Public Policy             3
                        YouGov/Center for Working Class Politics             1
                                                YouGov/SNF Agora             1
 
-SPONSORS   277 unique values, 1514 total polls, 2228 polls with no value:
+SPONSORS — 277 unique values, 1514 total polls, 2228 polls with no value:
 
                                                                                                                                                                                                  sponsors  unique_polls
                                                                                                                                                                                             The Telegraph           158
@@ -734,7 +737,7 @@ KMOV (St. Louis), KYTV (Springfield, Mo.), KCTV (Kansas City, Mo.), KOAM-TV (Pit
                                                                                                                                                                                              WTVJ (Miami)             1
   (+ 2228 polls with null/empty sponsors)
 
-SPONSOR_CANDIDATE   17 unique values, 87 total polls, 3655 polls with no value:
+SPONSOR_CANDIDATE — 17 unique values, 87 total polls, 3655 polls with no value:
 
     sponsor_candidate  unique_polls
     Robert F. Kennedy            51
@@ -756,7 +759,7 @@ Nella Louise Domenici             1
           Nick Begich             1
   (+ 3655 polls with null/empty sponsor_candidate)
 
-MODE   53 unique values, 3562 total polls, 180 polls with no value:
+MODE — 53 unique values, 3562 total polls, 180 polls with no value:
 
                                                   mode  unique_polls
                                    Online Opt-In Panel          1691
@@ -814,9 +817,10 @@ Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone             7
                                        Live Phone/Text             1
   (+ 180 polls with null/empty mode)
 
-STATE   56 unique values, 2016 total polls, 1726 polls with no value:
+STATE — 57 unique values, 3742 total polls, 0 polls with no value:
 
          state  unique_polls
+      National          1726
   Pennsylvania           230
       Michigan           202
        Arizona           176
@@ -851,8 +855,8 @@ South Carolina            13
   Rhode Island            10
         Alaska            10
       Illinois             9
-    Maine CD-1             8
        Indiana             8
+    Maine CD-1             8
     New Jersey             8
   South Dakota             7
    Connecticut             6
@@ -873,9 +877,8 @@ South Carolina            13
    Mississippi             2
  Nebraska CD-1             1
  Nebraska CD-3             1
-  (+ 1726 polls with null/empty state)
 
-PARTISAN   5 unique values, 403 total polls, 3339 polls with no value:
+PARTISAN — 5 unique values, 403 total polls, 3339 polls with no value:
 
 partisan  unique_polls
      REP           224
@@ -899,7 +902,7 @@ num_harris_trump_questions
 6       8
 8       1
 
-POLLSTER (Harris+Trump questions)   196 unique values, 2613 total questions, 0 questions with no value:
+POLLSTER (Harris+Trump questions) — 196 unique values, 2613 total questions, 0 questions with no value:
 
                                              pollster  unique_questions
                                       Morning Consult               299
@@ -1055,7 +1058,7 @@ POLLSTER (Harris+Trump questions)   196 unique values, 2613 total questions, 0 q
                          Gateway Political Strategies                 1
                                 Global Strategy Group                 1
                                 Echelon Insights/GBAO                 1
-                     El Nuevo D a/The Research Office                 1
+                     El Nuevo Día/The Research Office                 1
                        Fabrizio/David Binder Research                 1
                                             Deltapoll                 1
                                Christopher Newport U.                 1
@@ -1099,7 +1102,7 @@ Stetson University Center for Public Opinion Research                 1
                                      YouGov/SNF Agora                 1
              YouGov/Center for Working Class Politics                 1
 
-SPONSORS (Harris+Trump questions)   156 unique values, 1099 total questions, 1514 questions with no value:
+SPONSORS (Harris+Trump questions) — 156 unique values, 1099 total questions, 1514 questions with no value:
 
                                                                                     sponsors  unique_questions
                                                                                The Telegraph               108
@@ -1260,7 +1263,7 @@ KING-TV (Seattle), The Seattle Times, University of Washington Center for an Inf
                                                                             With Honor (PAC)                 1
   (+ 1514 questions with null/empty sponsors)
 
-SPONSOR_CANDIDATE (Harris+Trump questions)   9 unique values, 19 total questions, 2594 questions with no value:
+SPONSOR_CANDIDATE (Harris+Trump questions) — 9 unique values, 19 total questions, 2594 questions with no value:
 
    sponsor_candidate  unique_questions
         Donald Trump                 7
@@ -1274,7 +1277,7 @@ Katrina Christiansen                 1
          Nick Begich                 1
   (+ 2594 questions with null/empty sponsor_candidate)
 
-MODE (Harris+Trump questions)   43 unique values, 2440 total questions, 173 questions with no value:
+MODE (Harris+Trump questions) — 43 unique values, 2440 total questions, 173 questions with no value:
 
                                                   mode  unique_questions
                                    Online Opt-In Panel               935
@@ -1322,9 +1325,10 @@ Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone                 7
                       Live Phone/Text-to-Web/Online Ad                 1
   (+ 173 questions with null/empty mode)
 
-STATE (Harris+Trump questions)   50 unique values, 1752 total questions, 861 questions with no value:
+STATE (Harris+Trump questions) — 51 unique values, 2613 total questions, 0 questions with no value:
 
          state  unique_questions
+      National               861
   Pennsylvania               241
       Michigan               194
      Wisconsin               191
@@ -1355,8 +1359,8 @@ North Carolina               161
         Alaska                 7
 South Carolina                 7
     New Jersey                 7
-          Iowa                 7
       Colorado                 7
+          Iowa                 7
   Rhode Island                 6
        Indiana                 5
      Tennessee                 5
@@ -1365,8 +1369,8 @@ South Carolina                 7
        Vermont                 3
       Illinois                 3
         Oregon                 3
-        Kansas                 2
       Delaware                 2
+        Kansas                 2
        Wyoming                 2
   South Dakota                 2
   North Dakota                 2
@@ -1375,9 +1379,8 @@ South Carolina                 7
  Nebraska CD-3                 1
  Nebraska CD-1                 1
  West Virginia                 1
-  (+ 861 questions with null/empty state)
 
-PARTISAN (Harris+Trump questions)   3 unique values, 175 total questions, 2438 questions with no value:
+PARTISAN (Harris+Trump questions) — 3 unique values, 175 total questions, 2438 questions with no value:
 
 partisan  unique_questions
      REP               124
