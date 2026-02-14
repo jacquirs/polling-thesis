@@ -293,6 +293,24 @@ for var in metadata_vars:
         print(f"  (+ {na_question_count} questions with null/empty {var})")
 
 
+########################################################################################
+##################################### Harris+Trump Dataset #############################
+########################################################################################
+
+# build full dataset of all rows belonging to Harris+Trump questions
+harris_trump_full_df = df.merge(
+    harris_trump_questions,
+    on=['poll_id', 'question_id'],
+    how='inner'
+)
+
+print(f"\nHarris+Trump Polls dataset:")
+print(f"  {len(harris_trump_full_df)} rows")
+print(f"  {harris_trump_full_df['poll_id'].nunique()} unique polls")
+print(f"  {harris_trump_full_df['question_id'].nunique()} unique questions")
+
+harris_trump_full_df.to_csv('data/fiftyplusone_cleaned_harris_trump_questions.csv', index=False)
+
 # close log file and restore terminal output
 log_file.close()
 sys.stdout = sys.__stdout__

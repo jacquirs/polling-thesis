@@ -1387,3 +1387,8 @@ partisan  unique_questions
      DEM                45
      IND                 6
   (+ 2438 questions with null/empty partisan)
+
+Harris+Trump Polls dataset:
+  7731 rows
+  1664 unique polls
+  2613 unique questions
