@@ -28,21 +28,6 @@ election_date  = pd.Timestamp('2024-11-05')
 ########################################################################################
 ############################# Handling fields before pivot ################################
 ########################################################################################
-# before pivoting to wide format (one row per question), need to extract variables that are constant within a question_id but would be lost in the pivot
-# we take the first row per question since all metadata fields are identical across trump and harris rows for the same question
-question_meta = (
-    harris_trump_full_df
-    .groupby('question_id')
-    .first()
-    .reset_index()
-    [[
-        'question_id', 'poll_id', 'pollster', 'state',
-        'start_date', 'end_date', 'mode',
-        'population', 'sample_size',
-        'partisan', 'internal'
-    ]]
-)
-
 # pct_dk captures the share of respondents not supporting any named candidate
 # it equals 100 minus the sum of all named candidates' percentages per question
 # this picks up undecided voters, third-party supporters, and refusals combined
@@ -66,7 +51,11 @@ pct_total_by_question['pct_dk'] = 100 - pct_total_by_question['pct_total']
 harris_trump_pivot = (
     harris_trump_full_df[harris_trump_full_df['answer'].isin(['Trump', 'Harris'])]
     .pivot_table(
-        index=['question_id', 'poll_id', 'state', 'end_date', 'mode'],
+        index=[
+            'question_id', 'poll_id', 'pollster', 'state',
+            'start_date', 'end_date', 'mode',
+            'population', 'sample_size',
+        ],
         columns='answer',
         values='pct',
         aggfunc='mean'
@@ -80,6 +69,7 @@ harris_trump_pivot.columns.name = None
 
 # re-cast start_date and end_date to datetime after pivot
 harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
+harris_trump_pivot['start_date'] = pd.to_datetime(harris_trump_pivot['start_date'])
 
 # drop questions missing either estimate
 n_before_drop = harris_trump_pivot['question_id'].nunique()
@@ -92,23 +82,12 @@ harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
 print(f"Questions with both Trump and Harris pct: {n_after_drop}")
 print(f"Questions dropped due to missing pct:     {n_before_drop - n_after_drop}")
 
-# merge pre pivot metadata back in
-# re-attach all the fields we extracted before the pivot (start_date, population, sample_size, pollster, partisan, internal)
-harris_trump_pivot = harris_trump_pivot.merge(
-    question_meta.drop(columns=['state', 'end_date', 'mode']),
-    on=['question_id', 'poll_id'],
-    how='left'
-)
-
 # merge in pct_dk
 harris_trump_pivot = harris_trump_pivot.merge(
     pct_total_by_question[['question_id', 'pct_dk']],
     on='question_id',
     how='left'
 )
-
-# cast start_date to datetime after the question_meta merge
-harris_trump_pivot['start_date'] = pd.to_datetime(harris_trump_pivot['start_date'])
 
 ######## compute national true vote shares as weighted average of state results
 national_true = pd.Series({
@@ -130,12 +109,15 @@ national_abs_margin = abs(national_true['p_trump_true'] - national_true['p_harri
 true_votes_with_national = pd.concat([
     true_votes[['state_name', 'p_trump_true', 'p_harris_true', 'abs_margin']],
     pd.DataFrame([{
-        'state_name':    'National',
+        'state_name':    'national',
         'p_trump_true':  national_true['p_trump_true'],
         'p_harris_true': national_true['p_harris_true'],
         'abs_margin':    national_abs_margin
     }])
 ], ignore_index=True)
+
+true_votes_with_national['state_name'] = true_votes_with_national['state_name'].str.strip().str.lower()
+harris_trump_pivot['state']            = harris_trump_pivot['state'].str.strip().str.lower()
 
 ######## merge in actual state + national results (on state name becuase national now a state name)
 harris_trump_pivot = harris_trump_pivot.merge(
@@ -169,7 +151,7 @@ harris_trump_pivot['A'] = np.log(
 
 # flag poll level (state vs national) used to split regressions
 harris_trump_pivot['poll_level'] = np.where(
-    harris_trump_pivot['state'] == 'National', 'national', 'state'
+    harris_trump_pivot['state'] == 'national', 'national', 'state'
 )
 
 # diagnostic: confirm how many questions were flagged as national
