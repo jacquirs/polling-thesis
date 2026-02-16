@@ -251,6 +251,24 @@ def kalman_filter_smoother(df: pd.DataFrame,sigma2_u_per_day: float = None) -> t
     
     # the smoother has the smallest mse of any linear weighting scheme applied to the poll sequence, assuming correct model specification and normally distributed errors (hamilton 1994, cited by paper pg 184)
 
+    # departure from the paper: rts smoother vs eq 8
+    # green et al. eq. (8) gives the smoothed point estimate as: S_{T-1} = F_{T-1} + (S_T - F_{T-1}) * (1 - sigma2_u / P_T)
+    # this is written for unit time steps (one period = one poll interval)
+    # the smoothing factor (1 - sigma2_u / P_T) implicitly assumes that P_pred = P_{T-1} + sigma2_u, i.e., exactly one unit of time elapsed
+    # we instead use the standard rauch-tung-striebel (rts) smoother:
+    # G = P[t] / P_pred (smoothing gain)
+    # S[t] = F[t] + G * (S[t+1] - F[t])
+    # where P_pred = P[t] + sigma2_u * days_elapsed
+    # rts is derived in hamilton (1994)
+
+    # this is the correct general form that handles uneven time spacing when polls are days or weeks apart, the predicted variance must grow in proportion to the gap, not by a fixed unit amount
+    # with days_elapsed=1 and integerspaced polls, rts and eq 8 are algebraically identical
+    # for unevenly spaced data like here, eq 8 taken literally would under-smooth across long gaps and over-smooth across short ones
+
+    # for smoothed variances (PS): the paper provides no variance recursion alongside eq 8, it presents only the point estimate
+    # we use the standard rts variance recursion from hamilton (1994): PS[t] = P[t] + G^2 * (PS[t+1] - P_pred)
+    # an alternative conservative fallback would be PS[t] = P[t] (filtered variance), which would not show the precision gain from smoothing that the paper highlights (won't try this here)
+
     S  = np.zeros(n) # smoothed estimates
     PS = np.zeros(n) # smoothed uncertainty (variance)
 
