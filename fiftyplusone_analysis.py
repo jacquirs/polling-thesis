@@ -497,6 +497,66 @@ print_accuracy_table(harris_trump_modes, 'base_mode', 'polling mode')
 # shows whether polls targeting different populations are systematically more or less accurate, without controlling for other factors
 print_accuracy_table(reg_df, 'population', 'target population')
 
+
+########################################################################################
+#################### Regression by time window (like in harrison 2009) #################
+########################################################################################
+
+# re-run the same regression separately for five time windows prior to the election, where each window includes only polls whose end_date falls within that many days of election day
+# ex: the 30 day window includes polls ending 30 or fewer days before election day
+# lets us see whether the predictors of accuracy change as we get closer to election day, loses significance in shorter windows as found by harrison and desart/holbrook
+# windows chosen: 200, 107, 90, 60, 30, and 7 days.
+
+time_windows = [200, 107, 90, 60, 30, 7]
+
+def run_window_regressions(reg_state_df, reg_national_df, x_vars, window_days):
+    # filter each sample to polls ending within window_days of election day
+    state_w    = reg_state_df[reg_state_df['days_before_election'] <= window_days].copy()
+    national_w = reg_national_df[reg_national_df['days_before_election'] <= window_days].copy()
+
+    print(f"\n  window: {window_days} days before election")
+    print(f"  state questions in window:    {len(state_w)}")
+    print(f"  national questions in window: {len(national_w)}")
+
+    # state regression
+    # skip if fewer than 10 complete cases to avoid degenerate models
+    state_complete = state_w[x_vars + ['A', 'poll_id']].dropna()
+    if len(state_complete) < 10:
+        print(f"  state regression skipped - only {len(state_complete)} complete cases")
+        res_state = None
+    else:
+        res_state = run_ols_clustered(
+            df          = state_w,
+            y_col       = 'A',
+            x_cols      = x_vars,
+            cluster_col = 'poll_id',
+            label       = f'state-level polls - {window_days} days before election'
+        )
+
+    # national regression 
+    # skip if fewer than 10 complete cases
+    national_complete = national_w[x_vars + ['A', 'poll_id']].dropna()
+    if len(national_complete) < 10:
+        print(f"  national regression skipped - only {len(national_complete)} complete cases")
+        res_national = None
+    else:
+        res_national = run_ols_clustered(
+            df          = national_w,
+            y_col       = 'A',
+            x_cols      = x_vars,
+            cluster_col = 'poll_id',
+            label       = f'national polls - {window_days} days before election'
+        )
+
+    return res_state, res_national
+
+# run and store results for each window
+window_results = {}
+for window in time_windows:
+    res_s, res_n = run_window_regressions(reg_state, reg_national, all_x_vars, window)
+    window_results[window] = {'state': res_s, 'national': res_n}
+
+
 ######## save outputs
 # save question-level accuracy dataset for further analysis
 harris_trump_pivot.to_csv('data/harris_trump_accuracy.csv', index=False)
