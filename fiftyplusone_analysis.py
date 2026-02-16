@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import sys
 
-
 # redirect all print output to a log file
 log_file = open('output/fiftyplusone_analysis_log.txt', 'w')
 sys.stdout = log_file
@@ -20,7 +19,7 @@ true_votes = pd.read_csv("data/true_votes_by_state_mengrep.csv")
 dropout_cutoff = pd.Timestamp('2024-07-21')
 
 ########################################################################################
-##################################### Accuracy Analysis ################################
+############################# General Accuracy Analysis ################################
 ########################################################################################
 
 ######## pivot to get one row per question with trump and harris pct side by side
@@ -200,6 +199,16 @@ accuracy_by_mode_period = (
 
 print(f"\nMethod A accuracy by base mode and period:\n")
 print(accuracy_by_mode_period.to_string(index=False))
+
+
+########################################################################################
+################ Harrison 2008 Replication and Continuation ############################
+########################################################################################
+
+
+
+
+
 
 # save question-level accuracy dataset for further analysis
 harris_trump_pivot.to_csv('data/harris_trump_accuracy.csv', index=False)
