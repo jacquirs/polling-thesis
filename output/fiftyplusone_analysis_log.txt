@@ -1,0 +1,101 @@
+Questions with both Trump and Harris pct: 2440
+Questions dropped due to missing pct:     0
+
+Derived national true vote shares:
+  Trump:  0.4981
+  Harris: 0.4834
+
+Questions unmatched after state + national merge: 37
+Unmatched states:
+state
+Maine CD-2       11
+Nebraska CD-2    11
+Maine CD-1        8
+Puerto Rico       5
+Nebraska CD-1     1
+Nebraska CD-3     1
+
+Questions remaining for accuracy analysis: 2403
+
+Overall Method A accuracy (all Harris+Trump questions):
+  Mean A:   -0.0549  (+ = Republican bias, - = Democratic bias)
+  Median A: -0.0591
+  Std A:    0.0792
+  N:        2403
+
+Method A accuracy by period:
+
+        period      mean    median      std    n
+ after_dropout -0.069562 -0.070524 0.064022 2137
+before_dropout  0.062837  0.058283 0.090467  266
+
+Method A accuracy by poll level (state vs national):
+
+poll_level      mean    median      std    n
+  national -0.045099 -0.070010 0.086421  834
+     state -0.060120 -0.057486 0.074600 1569
+
+Method A accuracy by poll level and period:
+
+poll_level         period      mean    median    n
+  national  after_dropout -0.078034 -0.080015  646
+  national before_dropout  0.068075  0.070079  188
+     state  after_dropout -0.065892 -0.061768 1491
+     state before_dropout  0.050212  0.036006   78
+
+Base mode breakdown (unique questions per mode):
+
+            base_mode  unique_questions
+  Online Opt-In Panel              1262
+           Live Phone               581
+          Text-to-Web               492
+                  IVR               224
+Online Matched Sample               176
+            Online Ad               137
+    Probability Panel               127
+                 Text               109
+                Email                87
+            App Panel                85
+          Mail-to-Web                28
+        Mail-to-Phone                11
+
+Method A accuracy by base mode (+ = Republican bias, - = Democratic bias):
+
+            base_mode      mean    median      std    n
+            Online Ad -0.009881 -0.002073 0.053982  137
+                  IVR -0.027765 -0.028733 0.088712  224
+                 Text -0.033641 -0.021652 0.058905  109
+                Email -0.043458 -0.048704 0.075155   87
+           Live Phone -0.050104 -0.048704 0.068135  581
+  Online Opt-In Panel -0.050760 -0.063201 0.086766 1262
+          Text-to-Web -0.058404 -0.053638 0.061854  492
+            App Panel -0.069393 -0.075879 0.054882   85
+Online Matched Sample -0.081162 -0.082656 0.054302  176
+        Mail-to-Phone -0.085992 -0.097710 0.045783   11
+    Probability Panel -0.097816 -0.094543 0.058042  127
+          Mail-to-Web -0.108599 -0.092000 0.118977   28
+
+Method A accuracy by base mode and period:
+
+            base_mode         period      mean    median    n
+            App Panel  after_dropout -0.069393 -0.075879   85
+                Email  after_dropout -0.059035 -0.063201   79
+                Email before_dropout  0.110368  0.116690    8
+                  IVR  after_dropout -0.054881 -0.043181  181
+                  IVR before_dropout  0.086374  0.086218   43
+           Live Phone  after_dropout -0.054325 -0.051412  542
+           Live Phone before_dropout  0.008553  0.013481   39
+        Mail-to-Phone  after_dropout -0.085992 -0.097710   11
+          Mail-to-Web  after_dropout -0.108599 -0.092000   28
+            Online Ad  after_dropout -0.014441 -0.003696  129
+            Online Ad before_dropout  0.063648  0.033172    8
+Online Matched Sample  after_dropout -0.086936 -0.085055  164
+Online Matched Sample before_dropout -0.002249  0.002975   12
+  Online Opt-In Panel  after_dropout -0.075426 -0.073310 1064
+  Online Opt-In Panel before_dropout  0.081793  0.085577  198
+    Probability Panel  after_dropout -0.101812 -0.095962  121
+    Probability Panel before_dropout -0.017232 -0.005580    6
+                 Text  after_dropout -0.040820 -0.025441   99
+                 Text before_dropout  0.037428  0.024827   10
+          Text-to-Web  after_dropout -0.062132 -0.055496  479
+          Text-to-Web before_dropout  0.078973  0.058943   13
