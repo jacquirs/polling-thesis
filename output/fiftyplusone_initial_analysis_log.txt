@@ -1,4 +1,5 @@
 NaT count: 0
+NaT count: 0
 Rows after loading: 18246
 Unique polls: 3742
 Unique questions: 6806

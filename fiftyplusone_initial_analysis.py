@@ -34,9 +34,11 @@ df['pct'] = pd.to_numeric(df['pct'], errors='coerce')
 df['state'] = df['state'].fillna('National')
 df.loc[df['state'].astype(str).str.strip() == '', 'state'] = 'National'
 
-# convert start_date to datetime
+# convert start_date and end_date to datetime
 df['start_date'] = pd.to_datetime(df['start_date'])
+df['end_date'] = pd.to_datetime(df['start_date'])
 print("NaT count:", df['start_date'].isna().sum())
+print("NaT count:", df['end_date'].isna().sum())
 
 print(f"Rows after loading: {len(df)}")
 print(f"Unique polls: {df['poll_id'].nunique()}")
@@ -46,12 +48,12 @@ print(f"Unique questions: {df['question_id'].nunique()}")
 ##################################### Unique Answer Sets ###############################
 ########################################################################################
 
-# group answers by (question_id, poll_id), collect answer sets and min start_date
+# group answers by (question_id, poll_id), collect answer sets and min end_date
 question_answer_sets = (
     df.groupby(['question_id', 'poll_id'])
     .agg(
         answer_set=('answer', lambda x: frozenset(x.dropna())),
-        start_date=('start_date', 'min')
+        end_date=('end_date', 'min')
     )
     .reset_index()
 )
@@ -61,8 +63,8 @@ dropout_cutoff = pd.Timestamp('2024-07-21')
 
 ######## count of each unique answer set, split before/after dropout
 
-before_dropout = question_answer_sets[question_answer_sets['start_date'] <  dropout_cutoff]
-after_dropout  = question_answer_sets[question_answer_sets['start_date'] >= dropout_cutoff]
+before_dropout = question_answer_sets[question_answer_sets['end_date'] <  dropout_cutoff]
+after_dropout  = question_answer_sets[question_answer_sets['end_date'] >= dropout_cutoff]
 
 answer_set_counts = (
     pd.DataFrame({
@@ -100,8 +102,8 @@ question_answer_sets['trump_harris_classification'] = question_answer_sets['answ
 trump_harris_counts = (
     question_answer_sets.groupby('trump_harris_classification')
     .apply(lambda x: pd.Series({
-        'before_dropout': (x['start_date'] <  dropout_cutoff).sum(),
-        'after_dropout':  (x['start_date'] >= dropout_cutoff).sum(),
+        'before_dropout': (x['end_date'] <  dropout_cutoff).sum(),
+        'after_dropout':  (x['end_date'] >= dropout_cutoff).sum(),
         'total':          len(x)
     }))
     .sort_values('total', ascending=False)
@@ -153,8 +155,8 @@ question_answer_sets['biden_harris_trump_classification'] = question_answer_sets
 biden_harris_trump_counts = (
     question_answer_sets.groupby('biden_harris_trump_classification')
     .apply(lambda x: pd.Series({
-        'before_dropout': (x['start_date'] <  dropout_cutoff).sum(),
-        'after_dropout':  (x['start_date'] >= dropout_cutoff).sum(),
+        'before_dropout': (x['end_date'] <  dropout_cutoff).sum(),
+        'after_dropout':  (x['end_date'] >= dropout_cutoff).sum(),
         'total':          len(x)
     }))
     .reindex(all_classifications)   # ensures all 8 rows always appear
@@ -167,8 +169,8 @@ print(f"\nBiden/Harris/Trump classification:\n")
 print(biden_harris_trump_counts.to_string(index=False))
 
 # propagate classification back to before/after slices
-before_dropout = question_answer_sets[question_answer_sets['start_date'] <  dropout_cutoff]
-after_dropout  = question_answer_sets[question_answer_sets['start_date'] >= dropout_cutoff]
+before_dropout = question_answer_sets[question_answer_sets['end_date'] <  dropout_cutoff]
+after_dropout  = question_answer_sets[question_answer_sets['end_date'] >= dropout_cutoff]
 
 # results
 # biden_harris_trump_classification  before_dropout  after_dropout  total
