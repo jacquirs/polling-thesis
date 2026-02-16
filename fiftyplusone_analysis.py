@@ -391,6 +391,16 @@ print(f"\nregression sample sizes:")
 print(f"  state-level questions:    {len(reg_state)}")
 print(f"  national-level questions: {len(reg_national)}")
 
+# these polls likely skewing the results given how far from election they are, therefore rely on ones run below split by time to election
+# print the top 10 polls by days_before_election to identify outliers
+print(f"\ntop questions by days before election:")
+top_early = (
+    reg_df[['poll_id', 'pollster', 'state', 'start_date', 'end_date', 'days_before_election']]
+    .sort_values('days_before_election', ascending=False)
+    .head(20)
+)
+print(top_early.to_string(index=False))
+
 # final covariate lists per regression
 state_x_vars    = time_vars + other_vars
 national_x_vars = time_vars + other_vars

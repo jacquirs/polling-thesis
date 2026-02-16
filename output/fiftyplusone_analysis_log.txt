@@ -110,13 +110,35 @@ Online Matched Sample before_dropout -0.001461  0.002975   10
           Text-to-Web before_dropout  0.078973  0.058943   13
 
 time variable diagnostics:
-  duration_days        — mean: 5.8, min: 1, max: 43
-  days_before_election — mean: 90.5, min: 1, max: 1267
-  polls ending after election day (days_before_election < 0): 0
+  duration_days        -- mean: 5.8, min: 1, max: 43
+  days_before_election -- mean: 90.5, min: 1, max: 1267
 
 regression sample sizes:
   state-level questions:    1561
   national-level questions: 826
+
+top questions by days before election:
+ poll_id                     pollster         state start_date   end_date  days_before_election
+   74819                   McLaughlin      national 2021-05-12 2021-05-18                  1267
+   74998                   McLaughlin      national 2021-06-16 2021-06-20                  1234
+   74995             Echelon Insights      national 2021-06-18 2021-06-22                  1232
+   75491                   McLaughlin      national 2021-07-29 2021-08-03                  1190
+   76285                   McLaughlin      national 2021-09-09 2021-09-14                  1148
+   76752             Victory Insights       florida 2021-09-16 2021-09-18                  1144
+   76441                    Rasmussen      national 2021-09-21 2021-09-22                  1140
+   76905                   McLaughlin      national 2021-10-14 2021-10-18                  1114
+   77744 Redfield & Wilton Strategies      national 2021-11-15 2021-11-15                  1086
+   77791                   McLaughlin      national 2021-11-11 2021-11-16                  1085
+   77982                  Harris Poll      national 2021-11-30 2021-12-02                  1069
+   78037 Redfield & Wilton Strategies      national 2021-12-05 2021-12-05                  1066
+   78037 Redfield & Wilton Strategies      national 2021-12-05 2021-12-05                  1066
+   78084              Trafalgar Group new hampshire 2021-12-10 2021-12-12                  1059
+   78272 Redfield & Wilton Strategies      national 2022-01-08 2022-01-09                  1031
+   78272 Redfield & Wilton Strategies      national 2022-01-08 2022-01-09                  1031
+   78297                   McLaughlin      national 2022-01-13 2022-01-18                  1022
+   78328                  Harris Poll      national 2022-01-19 2022-01-20                  1020
+   78425 Redfield & Wilton Strategies      national 2022-02-06 2022-02-06                  1003
+   78425 Redfield & Wilton Strategies      national 2022-02-06 2022-02-06                  1003
 
 ======================================================================
   ols regression: state-level polls
