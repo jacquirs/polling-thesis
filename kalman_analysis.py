@@ -282,9 +282,9 @@ def kalman_filter_smoother(df: pd.DataFrame,sigma2_u_per_day: float = None) -> t
         # predicted variance for period t+1 given information through t
         P_pred = P[t] + sigma2_u_per_day * days_elapsed
 
-        # smoothing gain (green et al. eq 8)
-        # the more true opinion changes over time, the less future information
-        # should revise the estimate of opinion at the current period
+        # rts smoothing gain: G = P[t] / P_pred
+        # generalises eq 8 to uneven spacing
+        # the more true opinion changes over time (large sigma2_u * days_elapsed), the larger P_pred relative to P[t], the smaller G, and the less future information revises the estimate of opinion at the current period
         G = P[t] / P_pred
 
         # smoothed estimate and variance (green et al. eq 8)
