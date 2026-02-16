@@ -61,7 +61,9 @@ true_votes = state_totals[
     ["state_name", "p_trump_true", "p_harris_true", "N_state"]
 ].copy()
 
-
+########################################################################################
+#################################### Compare to census #################################
+########################################################################################
 
 # load turnout data from census
 census_turnout = pd.read_csv("data/turnout_by_state.csv")
