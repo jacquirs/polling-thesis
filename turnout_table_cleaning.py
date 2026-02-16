@@ -16,6 +16,9 @@ df["state"] = df["state"].replace("united states", "national")
 # drop footnotes
 df = df.dropna(subset=["total_registered", "total_voted"])
 
+# cols are in thousands
+df["total_registered"] = (df["total_registered"] * 1000).astype(int)
+df["total_voted"] = (df["total_voted"] * 1000).astype(int)
 
 print(df)
 df.to_csv("data/turnout_by_state.csv", index=False)
