@@ -78,15 +78,32 @@ def load_and_prepare(filepath: str) -> pd.DataFrame:
 ########################################################################################
 ######################### Anchor to true result ########################################
 ########################################################################################
-def append_election_result(df: pd.DataFrame, election_date: str = '2024-11-05') -> pd.DataFrame:
+def append_election_result(df: pd.DataFrame, election_date: str = '2024-11-05', anchor: bool = True) -> pd.DataFrame:
     """
-    treat the certified election result as a final synthetic poll with effectively zero sampling variance (via an enormous synthetic sample size)
+    optionally treat the certified election result as a final synthetic poll with effectively zero sampling variance (via an enormous synthetic sample size)
 
-    this anchors the smoother to the true outcome
-    is the key feature that allows us to measure how far the smoothed trajectory was from truth at each point in the campaign
-    without this anchor, the smoother would estimate the trajectory of perceived opinion but could not measure bias relative to the true result
+    this function operates in two modes:
+
+    anchored (anchor=True, default):
+    - adds the election result as a terminal observation, forcing the smoother to reconcile all polls with the known true outcome
+    - this enables retrospective bias decomposition: systematic_bias measures how far the smoothed trajectory was from truth at each point
+    - the question answered is "given that the outcome was X, what latent opinion trajectory best explains the polls?"
+
+    unanchored (anchor=False): 
+    - skips the synthetic observation
+    - the smoother estimates the latent opinion trajectory based solely on polls and model assumptions, with no constraint to match the final result
+    - systematic_bias becomes an out-of-sample diagnostic (final smoothed estimate minus true result), not something the model was conditioned on
+    - the question answered is "based on polls alone, what did underlying opinion look like in real time?"
+
+    the anchored version is appropriate for bias decomposition
+    the unanchored version is appropriate for understanding real-time poll aggregation and evaluating forecast performance
     """
     true_margin = df['true_margin'].iloc[0]  # same value for all national rows
+
+    if not anchor:
+        print(f"\nskipping election result anchor (unanchored mode)")
+        print(f"true margin: {true_margin:.3f} pp (not used as constraint)")
+        return df
 
     anchor = {
         'question_id':  -1,
