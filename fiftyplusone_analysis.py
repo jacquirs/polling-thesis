@@ -357,7 +357,7 @@ print(f"  duration_days        -- mean: {reg_df['duration_days'].mean():.1f}, "
       f"min: {reg_df['duration_days'].min()}, max: {reg_df['duration_days'].max()}")
 print(f"  days_before_election -- mean: {reg_df['days_before_election'].mean():.1f}, "
       f"min: {reg_df['days_before_election'].min()}, max: {reg_df['days_before_election'].max()}")
-print(f"  polls ending after election day (days_before_election < 0): {n_post_election}")
+# print(f"  polls ending after election day (days_before_election < 0): {n_post_election}") # none yay! so commented out
 
 # VAR: pct_dk
 # already computed pre-pivot and merged into harris_trump_pivot above
