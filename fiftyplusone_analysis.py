@@ -26,7 +26,7 @@ election_date  = pd.Timestamp('2024-11-05')
 
 
 ########################################################################################
-############################# Handling fields before pivot ################################
+############################# New fields ################################
 ########################################################################################
 # pct_dk captures the share of respondents not supporting any named candidate
 # it equals 100 minus the sum of all named candidates' percentages per question

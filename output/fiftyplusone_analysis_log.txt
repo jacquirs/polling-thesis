@@ -35,8 +35,8 @@ Overall Method A accuracy (all Harris+Trump questions):
 Method A accuracy by period:
 
         period      mean    median      std    n
- after_dropout -0.069553 -0.070524 0.064108 2121
-before_dropout  0.062837  0.058283 0.090467  266
+ after_dropout -0.068838 -0.070010 0.064772 2136
+before_dropout  0.064660  0.058943 0.090871  251
 
 Method A accuracy by poll level (state vs national):
 
@@ -47,10 +47,10 @@ poll_level      mean   median      std    n
 Method A accuracy by poll level and period:
 
 poll_level         period      mean    median    n
-  national  after_dropout -0.077870 -0.080015  638
-  national before_dropout  0.068075  0.070079  188
-     state  after_dropout -0.065975 -0.061920 1483
-     state before_dropout  0.050212  0.036006   78
+  national  after_dropout -0.075500 -0.076524  649
+  national before_dropout  0.068454  0.070079  177
+     state  after_dropout -0.065930 -0.061920 1487
+     state before_dropout  0.055583  0.039542   74
 
 Base mode breakdown (unique questions per mode):
 
@@ -90,18 +90,18 @@ Method A accuracy by base mode and period:
             App Panel  after_dropout -0.069393 -0.075879   85
                 Email  after_dropout -0.059760 -0.063380   78
                 Email before_dropout  0.110368  0.116690    8
-                  IVR  after_dropout -0.055172 -0.043456  180
-                  IVR before_dropout  0.086374  0.086218   43
-           Live Phone  after_dropout -0.054421 -0.051565  541
-           Live Phone before_dropout  0.008553  0.013481   39
+                  IVR  after_dropout -0.051868 -0.042075  184
+                  IVR before_dropout  0.085305  0.086218   39
+           Live Phone  after_dropout -0.053967 -0.051158  544
+           Live Phone before_dropout  0.006941  0.013870   36
         Mail-to-Phone  after_dropout -0.085992 -0.097710   11
           Mail-to-Web  after_dropout -0.108599 -0.092000   28
-            Online Ad  after_dropout -0.014441 -0.003696  129
-            Online Ad before_dropout  0.063648  0.033172    8
-Online Matched Sample  after_dropout -0.087750 -0.086602  158
-Online Matched Sample before_dropout -0.002249  0.002975   12
-  Online Opt-In Panel  after_dropout -0.075542 -0.073404 1058
-  Online Opt-In Panel before_dropout  0.081793  0.085577  198
+            Online Ad  after_dropout -0.013954 -0.003385  130
+            Online Ad before_dropout  0.065762  0.017494    7
+Online Matched Sample  after_dropout -0.086730 -0.085055  160
+Online Matched Sample before_dropout -0.001461  0.002975   10
+  Online Opt-In Panel  after_dropout -0.074563 -0.072564 1067
+  Online Opt-In Panel before_dropout  0.083758  0.086438  189
     Probability Panel  after_dropout -0.100674 -0.095812  116
     Probability Panel before_dropout -0.017232 -0.005580    6
                  Text  after_dropout -0.041211 -0.025590   98
@@ -110,8 +110,8 @@ Online Matched Sample before_dropout -0.002249  0.002975   12
           Text-to-Web before_dropout  0.078973  0.058943   13
 
 time variable diagnostics:
-  duration_days        — mean: 1.0, min: 1, max: 1
-  days_before_election — mean: 95.3, min: 2, max: 1273
+  duration_days        — mean: 5.8, min: 1, max: 43
+  days_before_election — mean: 90.5, min: 1, max: 1267
   polls ending after election day (days_before_election < 0): 0
 
 regression sample sizes:
@@ -125,13 +125,13 @@ regression sample sizes:
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0329     0.0026    ***
+  duration_days                          -0.0014     0.0003    ***
   days_before_election                    0.0001     0.0001       
-  pct_dk                                  0.0038     0.0011    ***
-  abs_margin                             -0.2324     0.0442    ***
-  const                                  -0.0329     0.0026    ***
+  pct_dk                                  0.0031     0.0012    ***
+  abs_margin                             -0.2056     0.0451    ***
+  const                                  -0.0546     0.0058    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.0688
+  adjusted r2:  0.0837
   n:            1561
 ======================================================================
 
@@ -143,13 +143,13 @@ regression sample sizes:
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0368     0.0023    ***
+  duration_days                          -0.0039     0.0014    ***
   days_before_election                    0.0002     0.0000    ***
-  pct_dk                                 -0.0004     0.0007       
-  abs_margin                             -0.0005     0.0000    ***
-  const                                  -0.0368     0.0023    ***
+  pct_dk                                 -0.0008     0.0007       
+  abs_margin                             -0.0008     0.0001    ***
+  const                                  -0.0561     0.0073    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.3182
+  adjusted r2:  0.3282
   n:            826
 ======================================================================
 
