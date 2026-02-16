@@ -28,6 +28,15 @@ state_totals = (
     .rename(columns={"votes": "N_state"})
 )
 
+# pull total_votes from raw data (one row per state, should be constant)
+state_total_votes = (
+    df_pres_2024.groupby("state_name")["totalvotes"]
+    .first()
+    .reset_index()
+    .rename(columns={"totalvotes": "total_votes"})
+)
+state_total_votes["state_name"] = state_total_votes["state_name"].str.strip().str.lower()
+
 # aggregate Trump votes per state
 trump_votes = (
     df_pres_2024[df_pres_2024["candidate"] == "TRUMP, DONALD J."]
@@ -44,7 +53,6 @@ harris_votes = (
 
 state_totals["trump_votes"] = state_totals["state_name"].map(trump_votes)
 state_totals["harris_votes"] = state_totals["state_name"].map(harris_votes)
-
 
 # compute Trump share
 state_totals["p_trump_true"] = (
@@ -82,7 +90,14 @@ true_votes = pd.concat([true_votes, national_row], ignore_index=True)
 df = census_turnout.merge(true_votes[["state_name", "N_state"]], left_on="state", right_on="state_name", how="left")
 df = df.drop(columns="state_name")
 
-df["diff"] = df["N_state"] - df["total_voted"]
-df["diff_pct"] = (df["diff"] / df["total_voted"] * 100).round(2)
+# merge in total_votes from raw data
+df = df.merge(state_total_votes, left_on="state", right_on="state_name", how="left")
+df = df.drop(columns="state_name")
 
-print(df[["state", "total_voted", "N_state", "diff", "diff_pct"]].to_string(index=False))
+df["diff_Nstate_census"] = df["N_state"] - df["total_voted"]
+df["diff_census_pct"] = (df["diff_Nstate_census"] / df["total_voted"] * 100).round(2)
+
+df["diff_Nstate_totalvotes"] = df["N_state"] - df["total_votes"]
+df["diff_totalvotes_pct"] = (df["diff_Nstate_totalvotes"] / df["total_votes"] * 100).round(2)
+
+print(df[["state", "total_voted", "total_votes", "N_state", "diff_Nstate_census", "diff_census_pct", "diff_Nstate_totalvotes", "diff_totalvotes_pct"]].to_string(index=False))
