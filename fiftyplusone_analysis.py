@@ -353,9 +353,9 @@ reg_df['days_before_election'] = (election_date - reg_df['end_date']).dt.days
 # these would have negative days_before_election and may warrant exclusion
 n_post_election = (reg_df['days_before_election'] < 0).sum()
 print(f"\ntime variable diagnostics:")
-print(f"  duration_days        — mean: {reg_df['duration_days'].mean():.1f}, "
+print(f"  duration_days        -- mean: {reg_df['duration_days'].mean():.1f}, "
       f"min: {reg_df['duration_days'].min()}, max: {reg_df['duration_days'].max()}")
-print(f"  days_before_election — mean: {reg_df['days_before_election'].mean():.1f}, "
+print(f"  days_before_election -- mean: {reg_df['days_before_election'].mean():.1f}, "
       f"min: {reg_df['days_before_election'].min()}, max: {reg_df['days_before_election'].max()}")
 print(f"  polls ending after election day (days_before_election < 0): {n_post_election}")
 
