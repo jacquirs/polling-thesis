@@ -27,7 +27,7 @@ dropout_cutoff = pd.Timestamp('2024-07-21')
 harris_trump_pivot = (
     harris_trump_full_df[harris_trump_full_df['answer'].isin(['Trump', 'Harris'])]
     .pivot_table(
-        index=['question_id', 'poll_id', 'state', 'start_date', 'mode'],
+        index=['question_id', 'poll_id', 'state', 'end_date', 'mode'],
         columns='answer',
         values='pct',
         aggfunc='mean'
@@ -41,8 +41,8 @@ n_before_drop = harris_trump_pivot['question_id'].nunique()
 harris_trump_pivot = harris_trump_pivot.dropna(subset=['pct_trump_poll', 'pct_harris_poll'])
 n_after_drop = harris_trump_pivot['question_id'].nunique()
 
-# convert start_date to datetime after pivot
-harris_trump_pivot['start_date'] = pd.to_datetime(harris_trump_pivot['start_date'])
+# convert end_date to datetime after pivot
+harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
 
 print(f"Questions with both Trump and Harris pct: {n_after_drop}")
 print(f"Questions dropped due to missing pct:     {n_before_drop - n_after_drop}")
@@ -109,7 +109,7 @@ print(f"  N:        {len(harris_trump_pivot)}")
 ######## accuracy split before/after dropout
 
 harris_trump_pivot['period'] = np.where(
-    harris_trump_pivot['start_date'] < dropout_cutoff, 'before_dropout', 'after_dropout'
+    harris_trump_pivot['end_date'] < dropout_cutoff, 'before_dropout', 'after_dropout'
 )
 
 accuracy_by_period = (
@@ -218,6 +218,7 @@ print(accuracy_by_mode_period.to_string(index=False))
 # variables to include: base_mode / mode indicators, population indicators (have a, lv, rv)
 # variables to create: duration in field (difference between start_date and end_date), days before election (end_date to november 5 2025), final absolute margin of victory (state or national depending on regression), percent of don't know (100 - total for all candidates in a question), total statewide turnout percent (i will need to find you a dataset with the number of people registered to vote in each state)
 
+# later additions after build out
 # restricting to competitive states versus all states
 # split into time periods ( analysis using three different time frame, 90, 30, and 7 days before the elections)
 

@@ -1,4 +1,4 @@
-question_id,poll_id,state,start_date,mode,pct_harris_poll,pct_trump_poll,p_trump_true,p_harris_true,A,period,poll_level
+question_id,poll_id,state,end_date,mode,pct_harris_poll,pct_trump_poll,p_trump_true,p_harris_true,A,period,poll_level
 142439,74819,National,2021-05-12,Online Opt-In Panel,45.0,49.0,0.4981049511152404,0.48338159549328136,0.055153402814257214,before_dropout,national
 142927,74995,National,2021-06-18,Online Opt-In Panel,47.0,40.0,0.4981049511152404,0.48338159549328136,-0.1912725531221718,before_dropout,national
 142946,74998,National,2021-06-16,Online Opt-In Panel,45.0,49.0,0.4981049511152404,0.48338159549328136,0.055153402814257214,before_dropout,national
