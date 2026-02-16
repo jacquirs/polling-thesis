@@ -405,18 +405,13 @@ results_state = run_ols_clustered(
 )
 
 # national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
-if len(reg_national[all_x_vars + ['A', 'poll_id']].dropna()) == 0:
-    print("national regression skipped — no complete cases after dropna on covariates")
-    print("check the missingness diagnostic above to identify the culprit variable")
-    results_national = None
-else:
-    results_national = run_ols_clustered(
-        df          = reg_national,
-        y_col       = 'A',
-        x_cols      = all_x_vars,
-        cluster_col = 'poll_id',
-        label       = 'national polls'
-    )
+results_national = run_ols_clustered(
+    df          = reg_national,
+    y_col       = 'A',
+    x_cols      = all_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'national polls'
+)
 
 # later additions after build out
 # restricting to competitive states versus all states
