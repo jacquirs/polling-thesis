@@ -414,9 +414,71 @@ results_national = run_ols_clustered(
 # later additions after build out
 # restricting to competitive states versus all states
 # split into time periods ( analysis using three different time frame, 90, 30, and 7 days before the elections)
-# how to say "mode X is more biased controlling for days before election and competitiveness."
+# how to say "mode X is more biased controlling for days before election and competitiveness"
 
 
+########################################################################################
+########################## Accuracy by mode and target population ######################
+########################################################################################
+
+# these two tables report mean, median, std, and n for method a broken out by (1) polling mode and (2) target population, each split by state vs national
+# mode and population are reported separately from the regression because they are categorical design choices better understood descriptively, and the multi-hot nature of mode makes regression coefficients hard to interpret cleanly (but i may go back to this later so i can say something like mode X is more biased controlling for days before election and competitiveness)
+
+# table print function
+def print_accuracy_table(df, group_col, label):
+    """
+    groups df by group_col and poll_level, computes mean/median/std/n of method a,
+    and prints a formatted table with state and national columns side by side.
+    rows are sorted by state mean accuracy descending (national only rows go last)
+    """
+    tbl = (
+        df.groupby([group_col, 'poll_level'])['A']
+        .agg(mean='mean', median='median', std='std', n='count')
+        .reset_index()
+    )
+
+    # pivot so state and national appear as side-by-side column groups
+    tbl_wide = tbl.pivot(index=group_col, columns='poll_level', values=['mean', 'median', 'std', 'n'])
+    tbl_wide.columns = [f"{stat}_{level}" for stat, level in tbl_wide.columns]
+    tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
+
+    print(f"\n{'='*85}")
+    print(f"  method a accuracy by {label}")
+    print(f"  (+ = republican bias, - = democratic bias)")
+    print(f"{'='*85}")
+    print(f"  {'':30} {'------ state ------':>30} {'----- national -----':>30}")
+    print(f"  {group_col:<30} {'mean':>7} {'median':>7} {'std':>7} {'n':>5}   "
+          f"{'mean':>7} {'median':>7} {'std':>7} {'n':>5}")
+    print(f"  {'-'*81}")
+
+    for _, row in tbl_wide.iterrows():
+        # helper to format a value or show a dash if missing
+        def fmt(val, decimals=4):
+            return f"{val:.{decimals}f}" if pd.notna(val) else '    —'
+
+        print(
+            f"  {str(row[group_col]):<30} "
+            f"{fmt(row.get('mean_state')):>7} "
+            f"{fmt(row.get('median_state')):>7} "
+            f"{fmt(row.get('std_state')):>7} "
+            f"{fmt(row.get('n_state'), 0):>5}   "
+            f"{fmt(row.get('mean_national')):>7} "
+            f"{fmt(row.get('median_national')):>7} "
+            f"{fmt(row.get('std_national')):>7} "
+            f"{fmt(row.get('n_national'), 0):>5}"
+        )
+
+    print(f"{'='*85}\n")
+
+# Table: accuracy by polling mode
+print_accuracy_table(harris_trump_modes, 'base_mode', 'polling mode')
+
+
+# Table: accuracy by target population
+# shows whether polls targeting different populations are systematically more or less accurate, without controlling for other factors
+print_accuracy_table(reg_df, 'population', 'target population')
+
+######## save outputs
 # save question-level accuracy dataset for further analysis
 harris_trump_pivot.to_csv('data/harris_trump_accuracy.csv', index=False)
 
