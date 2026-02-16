@@ -30,11 +30,29 @@ def load_and_prepare(filepath: str) -> pd.DataFrame:
     df['true_margin'] = (df['p_trump_true'] - df['p_harris_true']) * 100
 
     # sampling variance per observation, in percentage-point units
-    # formula: p*(1-p)/N * 10000, which is the variance of 100*p_hat.
-    # we plug in the observed poll share for the unknown true p, following the paper's approach (green et al. 1999, p.181, footnote 3).
-    # caveat: this understates variance for polls that use stratified sampling, apply nonresponse weighting, or have design effects > 1, the paper notes this limitation explicitly (p.181, footnote 3).
-    df['p_hat'] = df['pct_trump_poll'] / 100.0
-    df['sampling_var'] = (df['p_hat'] * (1 - df['p_hat'])) / df['sample_size'] * 10000
+    
+    # departure from the paper: green et al. track a single percentage (e.g., % republican), so their observable is 100*pT and their sampling variance formula is simply pT*(1-pT)/N * 10000 (p.181, with plug-in pT for the unknown true proportion, footnote 3)
+
+    # our observable is the margin 100*(pT - pH), a *difference* of two shares from the same multinomial sample
+    # the correct variance is:
+    #   var(100*(pT - pH)) = 10000 * var(pT - pH)
+    #                      = 10000 * (var(pT) + var(pH) - 2*cov(pT, pH)) / N
+    
+    # in a multinomial sample: var(pT) = pT*(1-pT), var(pH) = pH*(1-pH), and cov(pT, pH) = -pT*pH  (negative because the counts compete)
+    # substituting and simplifying:
+    #   var(pT - pH) = (pT*(1-pT) + pH*(1-pH) + 2*pT*pH) / N
+    #               = (pT + pH - (pT - pH)^2) / N
+    
+    # near 50/50 (e.g., pT=0.47, pH=0.46) this is multiple times larger than the paper's single-share formula
+    # using the paper's formula here would systematically understate sampling variance, cause the filter to over-weight individual polls, and under-smooth, inflating the sampling noise component and shrinking the systematic bias estimate
+    
+    # still follow the paper's plug-in convention (footnote 3): observed shares substitute for unknown true shares
+    
+    # caveat: this still understates variance for polls with stratified sampling, nonresponse weighting, or design effects > 1, since those factors increase effective variance beyond the simple multinomial; the paper notes this limitation explicitly (p.181, footnote 3)
+    pT = df['pct_trump_poll']  / 100.0
+    pH = df['pct_harris_poll'] / 100.0
+    df['sampling_var'] = (pT + pH - (pT - pH) ** 2) / df['sample_size'] * 10000
+
 
     # drop rows missing any required value
     df = df.dropna(subset=['end_date', 'poll_margin', 'sampling_var', 'sample_size'])
@@ -494,3 +512,4 @@ if __name__ == '__main__':
 # state level instead of just national (by each swing state)
 # cut the dates to start like 200 days before election
 # clean figures
+# anchoring vs not
