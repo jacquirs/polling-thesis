@@ -110,7 +110,6 @@ harris_trump_pivot = harris_trump_pivot.merge(
 # cast start_date to datetime after the question_meta merge
 harris_trump_pivot['start_date'] = pd.to_datetime(harris_trump_pivot['start_date'])
 
-
 ######## compute national true vote shares as weighted average of state results
 national_true = pd.Series({
     'p_trump_true':  np.average(true_votes['p_trump_true'],  weights=true_votes['N_state']),
@@ -131,7 +130,7 @@ national_abs_margin = abs(national_true['p_trump_true'] - national_true['p_harri
 true_votes_with_national = pd.concat([
     true_votes[['state_name', 'p_trump_true', 'p_harris_true', 'abs_margin']],
     pd.DataFrame([{
-        'state_name':    'national',
+        'state_name':    'National',
         'p_trump_true':  national_true['p_trump_true'],
         'p_harris_true': national_true['p_harris_true'],
         'abs_margin':    national_abs_margin
@@ -170,8 +169,14 @@ harris_trump_pivot['A'] = np.log(
 
 # flag poll level (state vs national) used to split regressions
 harris_trump_pivot['poll_level'] = np.where(
-    harris_trump_pivot['state'] == 'national', 'national', 'state'
+    harris_trump_pivot['state'] == 'National', 'national', 'state'
 )
+
+# diagnostic: confirm how many questions were flagged as national
+print(f"\npoll_level counts after flagging:")
+print(harris_trump_pivot['poll_level'].value_counts(dropna=False).to_string())
+print(f"\nstate values flagged as national:")
+print(harris_trump_pivot[harris_trump_pivot['poll_level'] == 'national']['state'].value_counts(dropna=False).to_string())
 
 # flag period (before/after biden dropout) used for descriptive splits
 harris_trump_pivot['period'] = np.where(
@@ -295,16 +300,17 @@ print(accuracy_by_mode_period.to_string(index=False))
 # function to run ols with clustered ses and print a formatted table
 def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
     """
-    fits ols on df using x_cols to predict y_col
-    standard errors are clustered on cluster_col (huber-white sandwich)
-    prints a formatted regression table with stars, adj-r squard, constant, and n
-    returns the fitted statsmodels results object
+    fits ols on df using x_cols to predict y_col.
+    standard errors are clustered on cluster_col (huber-white sandwich).
+    prints a formatted regression table with stars, adj-r2, constant, and n.
+    returns the fitted statsmodels results object.
     """
     # drop rows with any missing values in the variables used
     df_reg = df[x_cols + [y_col, cluster_col]].dropna()
 
-    # add intercept column (statsmodels does not add one automatically)
-    X      = sm.add_constant(df_reg[x_cols])
+    # add intercept column with has_constant='add' to force it even if data
+    # appears to already contain a constant — sm.add_constant names it 'const'
+    X      = sm.add_constant(df_reg[x_cols], has_constant='add')
     y      = df_reg[y_col]
     groups = df_reg[cluster_col]
 
@@ -319,7 +325,7 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
         elif p < 0.10: return '*'
         else:          return ''
 
-    # print formatted table header
+    # print formatted table
     print(f"\n{'='*70}")
     print(f"  ols regression: {label}")
     print(f"  dependent variable: method a  (+ = republican bias)")
@@ -332,13 +338,17 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
     bse     = result.bse
     pvalues = result.pvalues
 
-    # print all covariates first, then constant at the bottom
-    var_order = [v for v in params.index if v != 'const'] + ['const']
+    # identify the intercept name defensively — add_constant uses 'const' by
+    # default but older statsmodels versions may use 'Intercept' or 'intercept'
+    intercept_name = next((v for v in params.index if v.lower() in ('const', 'intercept')), None)
+
+    # print all covariates first, then intercept at the bottom
+    var_order = [v for v in params.index if v != intercept_name] + ([intercept_name] if intercept_name else [])
     for var in var_order:
         print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars(pvalues[var]):>6}")
 
     print(f"  {'-'*63}")
-    print(f"  adjusted r^2:  {result.rsquared_adj:.4f}")
+    print(f"  adjusted r2:  {result.rsquared_adj:.4f}")
     print(f"  n:            {int(result.nobs)}")
     print(f"{'='*70}\n")
 
@@ -413,13 +423,18 @@ results_state = run_ols_clustered(
 )
 
 # national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
-results_national = run_ols_clustered(
-    df          = reg_national,
-    y_col       = 'A',
-    x_cols      = national_x_vars,
-    cluster_col = 'poll_id',
-    label       = 'national polls'
-)
+if len(reg_national[all_x_vars + ['A', 'poll_id']].dropna()) == 0:
+    print("national regression skipped — no complete cases after dropna on covariates")
+    print("check the missingness diagnostic above to identify the culprit variable")
+    results_national = None
+else:
+    results_national = run_ols_clustered(
+        df          = reg_national,
+        y_col       = 'A',
+        x_cols      = all_x_vars,
+        cluster_col = 'poll_id',
+        label       = 'national polls'
+    )
 
 # later additions after build out
 # restricting to competitive states versus all states
@@ -438,8 +453,8 @@ results_national = run_ols_clustered(
 def print_accuracy_table(df, group_col, label):
     """
     groups df by group_col and poll_level, computes mean/median/std/n of method a,
-    and prints a formatted table with state and national columns side by side.
-    rows are sorted by state mean accuracy descending (national only rows go last)
+    and prints a formatted table with state and national columns side by side
+    rows are sorted by state mean accuracy descending (national-only rows go last)
     """
     tbl = (
         df.groupby([group_col, 'poll_level'])['A']
@@ -456,26 +471,33 @@ def print_accuracy_table(df, group_col, label):
     print(f"  method a accuracy by {label}")
     print(f"  (+ = republican bias, - = democratic bias)")
     print(f"{'='*85}")
-    print(f"  {'':30} {'------ state ------':>30} {'----- national -----':>30}")
-    print(f"  {group_col:<30} {'mean':>7} {'median':>7} {'std':>7} {'n':>5}   "
-          f"{'mean':>7} {'median':>7} {'std':>7} {'n':>5}")
-    print(f"  {'-'*81}")
+    print(f"  {'':30} {'-------- state --------':>34} {'------- national -------':>34}")
+    print(f"  {group_col:<30} {'mean':>8} {'median':>8} {'std':>8} {'n':>5}   "
+          f"{'mean':>8} {'median':>8} {'std':>8} {'n':>5}")
+    print(f"  {'-'*85}")
 
     for _, row in tbl_wide.iterrows():
-        # helper to format a value or show a dash if missing
-        def fmt(val, decimals=4):
-            return f"{val:.{decimals}f}" if pd.notna(val) else '    —'
+        # fmt_val: format a continuous value (mean/median/std) to 4dp, or dash if missing
+        def fmt_val(val):
+            return f"{val:.4f}" if pd.notna(val) else '   --'
+
+        # fmt_n: format n as integer, or dash if missing/zero
+        # n=0 shouldn't appear (groupby only produces rows with data) but guard anyway
+        def fmt_n(val):
+            if pd.isna(val) or val == 0:
+                return '   --'
+            return f"{int(val)}"
 
         print(
             f"  {str(row[group_col]):<30} "
-            f"{fmt(row.get('mean_state')):>7} "
-            f"{fmt(row.get('median_state')):>7} "
-            f"{fmt(row.get('std_state')):>7} "
-            f"{fmt(row.get('n_state'), 0):>5}   "
-            f"{fmt(row.get('mean_national')):>7} "
-            f"{fmt(row.get('median_national')):>7} "
-            f"{fmt(row.get('std_national')):>7} "
-            f"{fmt(row.get('n_national'), 0):>5}"
+            f"{fmt_val(row.get('mean_state')):>8} "
+            f"{fmt_val(row.get('median_state')):>8} "
+            f"{fmt_val(row.get('std_state')):>8} "
+            f"{fmt_n(row.get('n_state')):>5}   "
+            f"{fmt_val(row.get('mean_national')):>8} "
+            f"{fmt_val(row.get('median_national')):>8} "
+            f"{fmt_val(row.get('std_national')):>8} "
+            f"{fmt_n(row.get('n_national')):>5}"
         )
 
     print(f"{'='*85}\n")
