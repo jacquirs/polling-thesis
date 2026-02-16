@@ -338,14 +338,17 @@ def kalman_filter_smoother(df: pd.DataFrame,sigma2_u_per_day: float = None) -> t
 ######################### Summary stats @###############################################
 ########################################################################################
 
-def summarize_bias(df: pd.DataFrame) -> pd.DataFrame:
+def summarize_bias(df: pd.DataFrame, anchored: bool = True) -> pd.DataFrame:
     # print a decomposition of polling error into systematic vs random components
     # exclude the synthetic election result row from summary statistics
     results = df[df['pollster'] != 'ELECTION_RESULT'].copy()
     true_margin = results['true_margin'].iloc[0]
 
     print("\n" + "=" * 60)
-    print("polling bias decomposition — national (trump margin)")
+    if anchored:
+        print("polling bias decomposition — national (trump margin, anchored)")
+    else:
+        print("polling opinion trajectory — national (trump margin, unanchored)")
     print("=" * 60)
     print(f"\ntrue margin (certified result): {true_margin:.3f} pp")
 
@@ -355,19 +358,25 @@ def summarize_bias(df: pd.DataFrame) -> pd.DataFrame:
     print(f"  sd of total error:         {results['total_error'].std():.3f} pp")
 
     print(f"\n--- decomposition (means) ---")
-    print(f"  mean systematic bias:      {results['systematic_bias'].mean():.3f} pp")
+    if anchored:
+        print(f"  mean systematic bias:      {results['systematic_bias'].mean():.3f} pp")
+    else:
+        print(f"  final forecast error:      {results['systematic_bias'].iloc[-1]:.3f} pp")
+        print(f"  mean smoothed-poll gap:    {results['sampling_noise'].abs().mean():.3f} pp")
     print(f"  mean |sampling noise|:     {results['sampling_noise'].abs().mean():.3f} pp")
 
     # variance decomposition: what share of total poll error variance
     # is systematic (survives smoothing) vs. random (filtered out)?
     # caveat: this decomposition assumes sampling_noise and systematic_bias are orthogonal, which holds approximately but not exactly in practice
-    var_total      = results['total_error'].var()
-    var_systematic = results['systematic_bias'].var()
-    var_noise      = results['sampling_noise'].var()
-    print(f"\n--- variance decomposition ---")
-    print(f"  var(total error):          {var_total:.4f}")
-    print(f"  var(systematic bias):      {var_systematic:.4f}  ({100 * var_systematic / var_total:.1f}%)")
-    print(f"  var(sampling noise):       {var_noise:.4f}  ({100 * var_noise / var_total:.1f}%)")
+    # only meaningful in anchored mode where systematic_bias is conditioned on the true outcome
+    if anchored:
+        var_total      = results['total_error'].var()
+        var_systematic = results['systematic_bias'].var()
+        var_noise      = results['sampling_noise'].var()
+        print(f"\n--- variance decomposition ---")
+        print(f"  var(total error):          {var_total:.4f}")
+        print(f"  var(systematic bias):      {var_systematic:.4f}  ({100 * var_systematic / var_total:.1f}%)")
+        print(f"  var(sampling noise):       {var_noise:.4f}  ({100 * var_noise / var_total:.1f}%)")
 
     return results
 
@@ -375,7 +384,7 @@ def summarize_bias(df: pd.DataFrame) -> pd.DataFrame:
 ########################################################################################
 ######################### Visualization ################################################
 ########################################################################################
-def plot_results(df: pd.DataFrame, save_path: str = None):
+def plot_results(df: pd.DataFrame, anchored: bool = True, save_path: str = None):
     """
     panel 1: raw polls, filtered estimate, smoothed estimate, true margin
     panel 2: standard errors, conventional vs filtered vs smoothed
@@ -385,8 +394,10 @@ def plot_results(df: pd.DataFrame, save_path: str = None):
     true_margin = results['true_margin'].iloc[0]
 
     fig, axes = plt.subplots(3, 1, figsize=(14, 14), sharex=True)
+    
+    mode_label = "anchored" if anchored else "unanchored"
     fig.suptitle(
-        'kalman filtering & smoothing: national polling bias 2021-2024\n(trump margin, pp)',
+        f'kalman filtering & smoothing: national polling bias 2021-2024 ({mode_label})\n(trump margin, pp)',
         fontsize=14, fontweight='bold', y=0.98
     )
 
@@ -445,8 +456,9 @@ def plot_results(df: pd.DataFrame, save_path: str = None):
 
     # panel 3: systematic bias trajectory
     # positive values = polls overstated trump relative to the true result;
-    # negative values = polls overstated harris.
-    # this is aggregate industry bias only, house effects and other pollster-specific components are not separated out here
+    # negative values = polls overstated harris
+    # in anchored mode: this is aggregate industry bias over time, this is aggregate industry bias only, house effects and other pollster-specific components are not separated out here
+    # in unanchored mode: this is the model's latent trajectory vs the realized outcome
     ax3 = axes[2]
     ax3.plot(dates, results['systematic_bias'],
              color=colors['bias'], linewidth=2,
@@ -466,6 +478,20 @@ def plot_results(df: pd.DataFrame, save_path: str = None):
         '(positive = polls overstated trump relative to certified result)',
         fontsize=11
     )
+    ax3.grid(True, alpha=0.3)
+
+    if anchored:
+        ax3.set_title(
+            'systematic industry bias over time\n'
+            '(positive = polls overstated trump relative to certified result)',
+            fontsize=11
+        )
+    else:
+        ax3.set_title(
+            'smoothed trajectory vs. final certified result\n'
+            '(positive = smoothed trajectory overstated trump; final value = forecast error)',
+            fontsize=11
+        )
     ax3.grid(True, alpha=0.3)
 
     # format x-axis dates
@@ -520,26 +546,58 @@ if __name__ == '__main__':
     # important values
     DATA_PATH     = 'data/harris_trump_accuracy.csv'
     ELECTION_DATE = '2024-11-05'
-    FIG_PATH      = 'figures/kalman_polling_bias.png'
-    RESULTS_PATH  = 'output/kalman_results.csv'
 
-    # run pipeline
-    df = load_and_prepare(DATA_PATH)
+    # -------------------------------------------------------------------------
+    # anchored version: bias decomposition
+    # -------------------------------------------------------------------------
+    print("\n" + "="*70)
+    print("ANCHORED MODE: bias decomposition conditional on known outcome")
+    print("="*70)
+    
+    df_anchored = load_and_prepare(DATA_PATH)
+    print(f"\nsanity check — unique true_margin values: {df_anchored['true_margin'].unique()}")
+    
+    df_anchored = append_election_result(df_anchored, ELECTION_DATE, anchor=True)
+    df_anchored, sigma2u_anchored = kalman_filter_smoother(df_anchored)
+    
+    summarize_bias(df_anchored, anchored=True)
+    plot_results(df_anchored, anchored=True, save_path='figures/kalman_bias_anchored.png')
+    export_results(df_anchored, out_path='output/kalman_results_anchored.csv')
 
-    # sanity check: true_margin should be near +1.5 pp
-    print(f"\nsanity check — unique true_margin values: {df['true_margin'].unique()}")
+    # -------------------------------------------------------------------------
+    # unanchored version: real-time opinion trajectory
+    # -------------------------------------------------------------------------
+    print("\n" + "="*70)
+    print("UNANCHORED MODE: real-time opinion trajectory from polls alone")
+    print("="*70)
+    
+    df_unanchored = load_and_prepare(DATA_PATH)
+    df_unanchored = append_election_result(df_unanchored, ELECTION_DATE, anchor=False)
+    df_unanchored, sigma2u_unanchored = kalman_filter_smoother(df_unanchored)
+    
+    summarize_bias(df_unanchored, anchored=False)
+    plot_results(df_unanchored, anchored=False, save_path='figures/kalman_trajectory_unanchored.png')
+    export_results(df_unanchored, out_path='output/kalman_results_unanchored.csv')
 
-    df = append_election_result(df, election_date=ELECTION_DATE)
-
-    df, sigma2u = kalman_filter_smoother(df)
-
-    summarize_bias(df)
-
-    plot_results(df, save_path=FIG_PATH)
-
-    export_results(df, out_path=RESULTS_PATH)
-
-
+    # -------------------------------------------------------------------------
+    # comparison
+    # -------------------------------------------------------------------------
+    print("\n" + "="*70)
+    print("COMPARISON: anchored vs unanchored")
+    print("="*70)
+    print(f"sigma2_u (anchored):   {sigma2u_anchored:.6f}")
+    print(f"sigma2_u (unanchored): {sigma2u_unanchored:.6f}")
+    print(f"ratio (anchored/unanchored): {sigma2u_anchored/sigma2u_unanchored:.3f}")
+    
+    final_smoothed_anchored   = df_anchored[df_anchored['pollster']!='ELECTION_RESULT']['smoothed'].iloc[-1]
+    final_smoothed_unanchored = df_unanchored['smoothed'].iloc[-1]
+    true_margin = df_anchored['true_margin'].iloc[0]
+    
+    print(f"\nfinal smoothed estimate (anchored):   {final_smoothed_anchored:.3f} pp")
+    print(f"final smoothed estimate (unanchored): {final_smoothed_unanchored:.3f} pp")
+    print(f"true margin:                          {true_margin:.3f} pp")
+    print(f"unanchored forecast error:            {final_smoothed_unanchored - true_margin:.3f} pp")
+    print(f"anchored terminal adjustment:         {true_margin - final_smoothed_anchored:.3f} pp")
 
 
 # TODO
@@ -547,4 +605,3 @@ if __name__ == '__main__':
 # state level instead of just national (by each swing state)
 # cut the dates to start like 200 days before election
 # clean figures
-# anchoring vs not
