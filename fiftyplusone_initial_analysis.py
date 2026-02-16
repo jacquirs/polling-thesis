@@ -36,7 +36,7 @@ df.loc[df['state'].astype(str).str.strip() == '', 'state'] = 'National'
 
 # convert start_date and end_date to datetime
 df['start_date'] = pd.to_datetime(df['start_date'])
-df['end_date'] = pd.to_datetime(df['start_date'])
+df['end_date'] = pd.to_datetime(df['end_date'])
 print("NaT count:", df['start_date'].isna().sum())
 print("NaT count:", df['end_date'].isna().sum())
 
