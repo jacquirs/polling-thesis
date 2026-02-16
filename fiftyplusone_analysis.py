@@ -265,6 +265,12 @@ print(accuracy_by_mode_period.to_string(index=False))
 ###################### Multivariate Regression Analysis ################################
 ########################################################################################
 
+# unit of analysis: one row per question (question_id)
+# dependent variable: method a (continuous, centered at 0)
+# two separate regressions: state level polls and national polls
+# standard errors: clustered by poll_id in both regressions (clustering on poll_id is robust to both heteroskedasticity and within-poll correlation, as multiple questions from the same poll have correlated errors. this is the huber-white sandwich estimator extended to clusters, satisfying the requirement from martin, traugott & kennedy for correlated errors)
+
+# psuedocode for this section (removing once done)
 # unit of analysis is a single survey
 # do OLS regression mtulivariate predicting method A value 
 # state and national polls are in different regressions 
@@ -275,6 +281,63 @@ print(accuracy_by_mode_period.to_string(index=False))
 # adjusted r square at bottom, constant at bottom, N at bottom
 # variables to include: base_mode / mode indicators, population indicators (have a, lv, rv)
 # variables to create: duration in field (difference between start_date and end_date), days before election (end_date to november 5 2025), final absolute margin of victory (state or national depending on regression), percent of don't know (100 - total for all candidates in a question), total statewide turnout percent (i will need to find you a dataset with the number of people registered to vote in each state)
+
+# function to run ols with clustered ses and print a formatted table
+def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
+    """
+    fits ols on df using x_cols to predict y_col
+    standard errors are clustered on cluster_col (huber-white sandwich)
+    prints a formatted regression table with stars, adj-r squard, constant, and n
+    returns the fitted statsmodels results object
+    """
+    # drop rows with any missing values in the variables used
+    df_reg = df[x_cols + [y_col, cluster_col]].dropna()
+
+    # add intercept column (statsmodels does not add one automatically)
+    X      = sm.add_constant(df_reg[x_cols])
+    y      = df_reg[y_col]
+    groups = df_reg[cluster_col]
+
+    # fit ols with cluster-robust covariance
+    model  = sm.OLS(y, X)
+    result = model.fit(cov_type='cluster', cov_kwds={'groups': groups})
+
+    # significance stars based on two-tailed p-values
+    def stars(p):
+        if p < 0.01:   return '***'
+        elif p < 0.05: return '**'
+        elif p < 0.10: return '*'
+        else:          return ''
+
+    # print formatted table header
+    print(f"\n{'='*70}")
+    print(f"  ols regression: {label}")
+    print(f"  dependent variable: method a  (+ = republican bias)")
+    print(f"  standard errors: clustered by {cluster_col}")
+    print(f"{'='*70}")
+    print(f"  {'variable':<35} {'coef':>10} {'se':>10} {'sig':>6}")
+    print(f"  {'-'*63}")
+
+    params  = result.params
+    bse     = result.bse
+    pvalues = result.pvalues
+
+    # print all covariates first, then constant at the bottom
+    var_order = [v for v in params.index if v != 'const'] + ['const']
+    for var in var_order:
+        print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars(pvalues[var]):>6}")
+
+    print(f"  {'-'*63}")
+    print(f"  adjusted r²:  {result.rsquared_adj:.4f}")
+    print(f"  n:            {int(result.nobs)}")
+    print(f"{'='*70}\n")
+
+    return result
+
+# build regression dataset from from the pivoted question-level accuracy dataset
+reg_df = harris_trump_pivot.copy()
+
+
 
 # later additions after build out
 # restricting to competitive states versus all states
