@@ -75,6 +75,12 @@ harris_trump_pivot = (
     .rename(columns={'Trump': 'pct_trump_poll', 'Harris': 'pct_harris_poll'})
 )
 
+# pivot_table leaves a residual answer name on the columns axis
+harris_trump_pivot.columns.name = None
+
+# re-cast start_date and end_date to datetime after pivot
+harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
+
 # drop questions missing either estimate
 n_before_drop = harris_trump_pivot['question_id'].nunique()
 harris_trump_pivot = harris_trump_pivot.dropna(subset=['pct_trump_poll', 'pct_harris_poll'])
@@ -100,6 +106,10 @@ harris_trump_pivot = harris_trump_pivot.merge(
     on='question_id',
     how='left'
 )
+
+# cast start_date to datetime after the question_meta merge
+harris_trump_pivot['start_date'] = pd.to_datetime(harris_trump_pivot['start_date'])
+
 
 ######## compute national true vote shares as weighted average of state results
 national_true = pd.Series({
@@ -160,7 +170,7 @@ harris_trump_pivot['A'] = np.log(
 
 # flag poll level (state vs national) used to split regressions
 harris_trump_pivot['poll_level'] = np.where(
-    harris_trump_pivot['state'] == 'national', 'state'
+    harris_trump_pivot['state'] == 'national', 'national', 'state'
 )
 
 # flag period (before/after biden dropout) used for descriptive splits
