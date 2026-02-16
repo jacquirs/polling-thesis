@@ -485,3 +485,12 @@ if __name__ == '__main__':
     plot_results(df, save_path=FIG_PATH)
 
     export_results(df, out_path=RESULTS_PATH)
+
+
+
+
+# TODO
+# edit to have per pollster fixed effects
+# state level instead of just national (by each swing state)
+# cut the dates to start like 200 days before election
+# clean figures
