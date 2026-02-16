@@ -61,6 +61,9 @@ true_votes = state_totals[
     ["state_name", "p_trump_true", "p_harris_true", "N_state"]
 ].copy()
 
+# match case of census
+true_votes["state_name"] = true_votes["state_name"].str.strip().str.lower()
+
 ########################################################################################
 #################################### Compare to census #################################
 ########################################################################################
