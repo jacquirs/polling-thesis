@@ -328,7 +328,7 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
         print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars(pvalues[var]):>6}")
 
     print(f"  {'-'*63}")
-    print(f"  adjusted r²:  {result.rsquared_adj:.4f}")
+    print(f"  adjusted r^2:  {result.rsquared_adj:.4f}")
     print(f"  n:            {int(result.nobs)}")
     print(f"{'='*70}\n")
 
@@ -337,16 +337,91 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
 # build regression dataset from from the pivoted question-level accuracy dataset
 reg_df = harris_trump_pivot.copy()
 
+# VAR: duration in field
+# number of days the poll was in the field (inclusive of ends)
+# longer polls may average across more days of opinion movement
+reg_df['duration_days'] = (reg_df['end_date'] - reg_df['start_date']).dt.days + 1
 
+# VAR: days before election
+# how far in advance of election day the poll ended
+# polls closer to election day should in theory be more accurate
+reg_df['days_before_election'] = (election_date - reg_df['end_date']).dt.days
+
+# flag any polls that ended after election day (negative values)
+# these would have negative days_before_election and may warrant exclusion
+n_post_election = (reg_df['days_before_election'] < 0).sum()
+print(f"\ntime variable diagnostics:")
+print(f"  duration_days        — mean: {reg_df['duration_days'].mean():.1f}, "
+      f"min: {reg_df['duration_days'].min()}, max: {reg_df['duration_days'].max()}")
+print(f"  days_before_election — mean: {reg_df['days_before_election'].mean():.1f}, "
+      f"min: {reg_df['days_before_election'].min()}, max: {reg_df['days_before_election'].max()}")
+print(f"  polls ending after election day (days_before_election < 0): {n_post_election}")
+
+# VAR: pct_dk
+# already computed pre-pivot and merged into harris_trump_pivot above
+# higher dk share may indicate less crystallized opinion
+
+# VAR: abs_margin
+# the absolute margin of victory (|trump_share - harris_share|) in the state, 
+# or nationally captures competitiveness polling dynamics than lopsided ones, and pollsters may expend more effort in competitive states
+
+
+# VAR: statewide turnout
+# TODO: load a dataset with registered voters per state
+# merge on state, compute: turnout_pct = total_votes_cast / registered_voters.
+# then merge turnout_pct into reg_df on 'state'.
+# note: this variable only makes sense for state-level regression; national
+# polls should use the national turnout figure.
+# reg_df = reg_df.merge(turnout_df[['state', 'turnout_pct']], on='state', how='left')
+
+
+# covariates for both regressions
+time_vars  = ['duration_days', 'days_before_election']
+other_vars = ['pct_dk', 'abs_margin'] # once turnout is ready, add to other_vars
+
+all_x_vars = time_vars + other_vars
+
+# split into statelevel and national samples
+reg_state    = reg_df[reg_df['poll_level'] == 'state'].copy()
+reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
+
+print(f"\nregression sample sizes:")
+print(f"  state-level questions:    {len(reg_state)}")
+print(f"  national-level questions: {len(reg_national)}")
+
+# final covariate lists per regression
+state_x_vars    = time_vars + other_vars
+national_x_vars = time_vars + other_vars
+
+# state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
+results_state = run_ols_clustered(
+    df          = reg_state,
+    y_col       = 'A',
+    x_cols      = state_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'state-level polls'
+)
+
+# national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
+results_national = run_ols_clustered(
+    df          = reg_national,
+    y_col       = 'A',
+    x_cols      = national_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'national polls'
+)
 
 # later additions after build out
 # restricting to competitive states versus all states
 # split into time periods ( analysis using three different time frame, 90, 30, and 7 days before the elections)
-
+# how to say "mode X is more biased controlling for days before election and competitiveness."
 
 
 # save question-level accuracy dataset for further analysis
 harris_trump_pivot.to_csv('data/harris_trump_accuracy.csv', index=False)
+
+# save regression-ready dataset withs constructed covariates
+reg_df.to_csv('data/harris_trump_regression.csv', index=False)
 
 # close log and restore terminal
 log_file.close()
