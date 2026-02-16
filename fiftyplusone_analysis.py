@@ -205,28 +205,23 @@ print(accuracy_by_mode_period.to_string(index=False))
 ###################### Multivariate Regression Analysis ################################
 ########################################################################################
 
+# date of poll based on final day conducted 
+
+# unit of analysis is a single survey
 # do OLS regression mtulivariate predicting method A value 
 # state and national polls are in different regressions 
-# multivariate analysis to udnerstand impact of different decisions on accuracy
+# To control for correlated errors due to the clustering of the surveys within individual statewide studies, robust standard errors should be calculated in the manner suggested by Huber (1967) and White (1980) for all state but the overall national population surveys
+# multivariate analysis to understand impact of different decisions on accuracy
 # use method A as dependent variable 
 # report the regression coefficient, standard error, signifacnce stars for each factor 
 # adjusted r square at bottom, constant at bottom, N at bottom
-# Controls for survey methods, forecasting, election dynamics
-# factors relating to survey methods
-# factors related to election forecasts
-# Include duration the poll was in the field, which is an implicit measure of nonresponse 
-# include days before election (from last day of poll? first?)
-# controls for electoral context: total statewide turnout and final margin of victory
-# date of poll based on final day conducted 
+# variables to include: base_mode / mode indicators, population indicators (have a, lv, rv)
+# variables to create: duration in field (difference between start_date and end_date), days before election (end_date to november 5 2025), final absolute margin of victory (state or national depending on regression), percent of don't know (100 - total for all candidates in a question), total statewide turnout percent (i will need to find you a dataset with the number of people registered to vote in each state)
+
 # restricting to competitive states versus all states
-# who is the sampling frame (ex: lv)
-# percent of don't know (100 - total for all candidates in a question)
-# absolute margin of victory for winner (state and national)
 # split into time periods ( analysis using three different time frame, 90, 30, and 7 days before the elections)
-# unit of analysis is a single survey
-# variables to include: days in field, days before election, percent don't know, turnout, final margin, and more)
-# To control for correlated errors due to the clustering of the surveys within individual statewide studies, robust standard errors are calculated in the manner suggested by Huber (1967) and White (1980) for all but the overall national population surveys
-# mode of poll indiactors 
+
+
 
 # save question-level accuracy dataset for further analysis
 harris_trump_pivot.to_csv('data/harris_trump_accuracy.csv', index=False)
