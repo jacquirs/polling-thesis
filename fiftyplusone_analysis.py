@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sys
+import statsmodels.api as sm
 
 # redirect all print output to a log file
 log_file = open('output/fiftyplusone_analysis_log.txt', 'w')
@@ -8,6 +9,8 @@ sys.stdout = log_file
 
 # THIS FILE ANALYZES POLL ACCURACY AND MODE EFFECTS FOR HARRIS+TRUMP POLLS
 # using Martin, Traugott & Kennedy (2005) Method A accuracy measure
+# then runs multivariate ols regressions (state and national separately)
+# to understand what poll design factors predict accuracy
 
 # load cleaned harris+trump questions dataset (output from fiftyplusone_initial_analysis.py)
 harris_trump_full_df = pd.read_csv("data/fiftyplusone_cleaned_harris_trump_questions.csv")
@@ -18,12 +21,48 @@ true_votes = pd.read_csv("data/true_votes_by_state_mengrep.csv")
 # define cutoff date (Biden dropout)
 dropout_cutoff = pd.Timestamp('2024-07-21')
 
+# election day 2024
+election_date  = pd.Timestamp('2024-11-05')   
+
+
 ########################################################################################
-############################# General Accuracy Analysis ################################
+############################# Handling fields before pivot ################################
+########################################################################################
+# before pivoting to wide format (one row per question), need to extract variables that are constant within a question_id but would be lost in the pivot
+# we take the first row per question since all metadata fields are identical across trump and harris rows for the same question
+question_meta = (
+    harris_trump_full_df
+    .groupby('question_id')
+    .first()
+    .reset_index()
+    [[
+        'question_id', 'poll_id', 'pollster', 'state',
+        'start_date', 'end_date', 'mode',
+        'population', 'sample_size',
+        'partisan', 'internal'
+    ]]
+)
+
+# pct_dk captures the share of respondents not supporting any named candidate
+# it equals 100 minus the sum of all named candidates' percentages per question
+# this picks up undecided voters, third-party supporters, and refusals combined
+# compute this before pivoting because the pivot only keeps trump and harris rows with pct values (maybe need to cahnge later)
+
+pct_total_by_question = (
+    harris_trump_full_df
+    .groupby('question_id')['pct']
+    .sum()
+    .reset_index()
+    .rename(columns={'pct': 'pct_total'})
+)
+pct_total_by_question['pct_dk'] = 100 - pct_total_by_question['pct_total']
+
+########################################################################################
+##################################### Pivoting #########################################
 ########################################################################################
 
 ######## pivot to get one row per question with trump and harris pct side by side
-
+# keep all metadata columns in the index so they survive the pivot
 harris_trump_pivot = (
     harris_trump_full_df[harris_trump_full_df['answer'].isin(['Trump', 'Harris'])]
     .pivot_table(
@@ -47,29 +86,49 @@ harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
 print(f"Questions with both Trump and Harris pct: {n_after_drop}")
 print(f"Questions dropped due to missing pct:     {n_before_drop - n_after_drop}")
 
-######## compute national true vote shares as weighted average of state results
+# merge pre pivot metadata back in
+# re-attach all the fields we extracted before the pivot (start_date, population, sample_size, pollster, partisan, internal)
+harris_trump_pivot = harris_trump_pivot.merge(
+    question_meta.drop(columns=['state', 'end_date', 'mode']),
+    on=['question_id', 'poll_id'],
+    how='left'
+)
 
+# merge in pct_dk
+harris_trump_pivot = harris_trump_pivot.merge(
+    pct_total_by_question[['question_id', 'pct_dk']],
+    on='question_id',
+    how='left'
+)
+
+######## compute national true vote shares as weighted average of state results
 national_true = pd.Series({
     'p_trump_true':  np.average(true_votes['p_trump_true'],  weights=true_votes['N_state']),
     'p_harris_true': np.average(true_votes['p_harris_true'], weights=true_votes['N_state']),
 })
 
-print(f"\nDerived national true vote shares:")
+print(f"\nDerived national true vote shares (confirmed against results yay!!):")
 print(f"  Trump:  {national_true['p_trump_true']:.4f}")
 print(f"  Harris: {national_true['p_harris_true']:.4f}")
 
-# add national row to true_votes for merging
+# compute absolute margin of victory for each state (used in regression)
+true_votes['abs_margin'] = (true_votes['p_trump_true'] - true_votes['p_harris_true']).abs()
+
+# compute national absolute margin from the weighted averages
+national_abs_margin = abs(national_true['p_trump_true'] - national_true['p_harris_true'])
+
+# add a national row so we can merge both state and national polls in one pass
 true_votes_with_national = pd.concat([
-    true_votes[['state_name', 'p_trump_true', 'p_harris_true']],
+    true_votes[['state_name', 'p_trump_true', 'p_harris_true', 'abs_margin']],
     pd.DataFrame([{
-        'state_name':    'National',
+        'state_name':    'national',
         'p_trump_true':  national_true['p_trump_true'],
-        'p_harris_true': national_true['p_harris_true']
+        'p_harris_true': national_true['p_harris_true'],
+        'abs_margin':    national_abs_margin
     }])
 ], ignore_index=True)
 
-######## merge in actual state + national results
-
+######## merge in actual state + national results (on state name becuase national now a state name)
 harris_trump_pivot = harris_trump_pivot.merge(
     true_votes_with_national,
     left_on='state',
@@ -92,11 +151,26 @@ print(f"\nQuestions remaining for accuracy analysis: {len(harris_trump_pivot)}")
 # A = 0: perfect accuracy
 # A > 0: Republican bias (poll overestimates Trump relative to Harris)
 # A < 0: Democratic bias (poll overestimates Harris relative to Trump)
+# the log-odds ratio form is symmetric and scale-invariant, making it more appropriate than simple margin error for comparing polls across states with different competitive landscapes
 
 harris_trump_pivot['A'] = np.log(
     (harris_trump_pivot['pct_trump_poll']  / harris_trump_pivot['pct_harris_poll']) /
     (harris_trump_pivot['p_trump_true'] / harris_trump_pivot['p_harris_true'])
 )
+
+# flag poll level (state vs national) used to split regressions
+harris_trump_pivot['poll_level'] = np.where(
+    harris_trump_pivot['state'] == 'national', 'state'
+)
+
+# flag period (before/after biden dropout) used for descriptive splits
+harris_trump_pivot['period'] = np.where(
+    harris_trump_pivot['end_date'] < dropout_cutoff, 'before_dropout', 'after_dropout'
+)
+
+########################################################################################
+############################# General Accuracy Analysis ################################
+########################################################################################
 
 ######## overall accuracy
 
@@ -107,11 +181,6 @@ print(f"  Std A:    {harris_trump_pivot['A'].std():.4f}")
 print(f"  N:        {len(harris_trump_pivot)}")
 
 ######## accuracy split before/after dropout
-
-harris_trump_pivot['period'] = np.where(
-    harris_trump_pivot['end_date'] < dropout_cutoff, 'before_dropout', 'after_dropout'
-)
-
 accuracy_by_period = (
     harris_trump_pivot.groupby('period')['A']
     .agg(mean='mean', median='median', std='std', n='count')
@@ -122,11 +191,6 @@ print(f"\nMethod A accuracy by period:\n")
 print(accuracy_by_period.to_string(index=False))
 
 ######## accuracy split by state vs national
-
-harris_trump_pivot['poll_level'] = np.where(
-    harris_trump_pivot['state'] == 'National', 'national', 'state'
-)
-
 accuracy_by_level = (
     harris_trump_pivot.groupby('poll_level')['A']
     .agg(mean='mean', median='median', std='std', n='count')
@@ -137,7 +201,6 @@ print(f"\nMethod A accuracy by poll level (state vs national):\n")
 print(accuracy_by_level.to_string(index=False))
 
 ######## accuracy by state vs national, split before/after dropout
-
 accuracy_by_level_period = (
     harris_trump_pivot.groupby(['poll_level', 'period'])['A']
     .agg(mean='mean', median='median', n='count')
@@ -153,17 +216,16 @@ print(accuracy_by_level_period.to_string(index=False))
 ########################################################################################
 
 ######## fix typo and explode slash-separated modes into base modes
-
 harris_trump_pivot['mode'] = harris_trump_pivot['mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
 
 # each mode with a slash will count in both listed
+# explode slash-separated mode strings so a question with 'live phone/online' appears in counts and accuracy stats for both modes
 harris_trump_modes = harris_trump_pivot.copy()
 harris_trump_modes['base_mode'] = harris_trump_modes['mode'].str.split('/')
 harris_trump_modes = harris_trump_modes.explode('base_mode')
 harris_trump_modes['base_mode'] = harris_trump_modes['base_mode'].str.strip()
 
 ######## mode counts
-
 mode_counts = (
     harris_trump_modes.groupby('base_mode')['question_id']
     .nunique()
@@ -177,7 +239,6 @@ print(f"\nBase mode breakdown (unique questions per mode):\n")
 print(mode_counts.to_string(index=False))
 
 ######## accuracy by base mode
-
 accuracy_by_mode = (
     harris_trump_modes.groupby('base_mode')['A']
     .agg(mean='mean', median='median', std='std', n='count')
@@ -189,7 +250,6 @@ print(f"\nMethod A accuracy by base mode (+ = Republican bias, - = Democratic bi
 print(accuracy_by_mode.to_string(index=False))
 
 ######## accuracy by base mode split before/after dropout
-
 accuracy_by_mode_period = (
     harris_trump_modes.groupby(['base_mode', 'period'])['A']
     .agg(mean='mean', median='median', n='count')
@@ -204,8 +264,6 @@ print(accuracy_by_mode_period.to_string(index=False))
 ########################################################################################
 ###################### Multivariate Regression Analysis ################################
 ########################################################################################
-
-# date of poll based on final day conducted 
 
 # unit of analysis is a single survey
 # do OLS regression mtulivariate predicting method A value 
