@@ -603,5 +603,5 @@ if __name__ == '__main__':
 # TODO
 # edit to have per pollster fixed effects
 # state level instead of just national (by each swing state)
-# cut the dates to start like 200 days before election
+# cut the dates to start like 200 days before election (or right at when she becomes candidate)
 # clean figures
