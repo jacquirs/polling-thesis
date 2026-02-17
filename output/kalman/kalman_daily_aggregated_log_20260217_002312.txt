@@ -1,6 +1,6 @@
 kalman filtering & smoothing analysis — within-day aggregated version
-started: 2026-02-16 23:05:03
-log file: output/kalman_daily_aggregated_log_20260216_230503.txt
+started: 2026-02-17 00:23:12
+log file: output/kalman/kalman_daily_aggregated_log_20260217_002312.txt
 time windows: [None, 200, 107]
 
 ======================================================================
@@ -362,5 +362,5 @@ unanchored forecast error:            -1.761 pp
 anchored terminal adjustment:         0.871 pp
 
 ======================================================================
-analysis completed: 2026-02-16 23:06:02
-log saved to: output/kalman_daily_aggregated_log_20260216_230503.txt
+analysis completed: 2026-02-17 00:23:46
+log saved to: output/kalman/kalman_daily_aggregated_log_20260217_002312.txt
