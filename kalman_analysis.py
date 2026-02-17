@@ -581,7 +581,7 @@ if __name__ == '__main__':
 
     # set up logging to capture all terminal output
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_filename = f'output/kalman_analysis_log_{timestamp}.txt'
+    log_filename = f'output/kalman/kalman_analysis_log_{timestamp}.txt'
     logger = Logger(log_filename)
     sys.stdout = logger
     
@@ -637,7 +637,7 @@ if __name__ == '__main__':
         plot_results(df_unanchored, anchored=False, 
                     save_path=f'figures/kalman_trajectory_unanchored_{window_label}.png')
         export_results(df_unanchored, 
-                      out_path=f'output/kalman_results_unanchored_{window_label}.csv')
+                      out_path=f'data/kalman_results_unanchored_{window_label}.csv')
 
         # comparison
         print("\n" + "="*70)
@@ -666,5 +666,7 @@ if __name__ == '__main__':
 
 
 # TODO
-# edit to have per pollster fixed effects
-# state level instead of just national (by each swing state)
+# edit to have per pollster fixed effects (new file)
+# state level instead of just national (by each swing state) (new file)
+# run with harris + biden as general dem (new file)
+# rename this final to kalman_national_harrisonly_analysis
