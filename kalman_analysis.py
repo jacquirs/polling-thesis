@@ -668,4 +668,3 @@ if __name__ == '__main__':
 # TODO
 # edit to have per pollster fixed effects
 # state level instead of just national (by each swing state)
-# clean figures
