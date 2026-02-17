@@ -665,8 +665,7 @@ if __name__ == '__main__':
     sys.stdout = logger.terminal
 
 
-# TODO
+# TODO to make better
 # edit to have per pollster fixed effects (new file)
 # state level instead of just national (by each swing state) (new file)
 # run with harris + biden as general dem (new file)
-# rename this final to kalman_national_harrisonly_analysis
