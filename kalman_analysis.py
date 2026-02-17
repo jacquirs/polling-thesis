@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 ########################################################################################
 ##################################### Load Data ########################################
 ########################################################################################
-def load_and_prepare(filepath: str) -> pd.DataFrame:
+def load_and_prepare(filepath: str, election_date: str = '2024-11-05', days_before: int = None) -> pd.DataFrame:
     # load the polling dataset and prepare it for kalman analysis
     df = pd.read_csv(filepath)
 
@@ -19,6 +19,18 @@ def load_and_prepare(filepath: str) -> pd.DataFrame:
 
     # using end_date as the poll date throughout
     df['end_date'] = pd.to_datetime(df['end_date'])
+
+    # filter by date window if specified
+    if days_before is not None:
+        election_dt = pd.to_datetime(election_date)
+        cutoff_date = election_dt - pd.Timedelta(days=days_before)
+        n_before = len(df)
+        df = df[df['end_date'] >= cutoff_date].copy()
+        n_after = len(df)
+        print(f"date filter applied: keeping polls from {cutoff_date.date()} onward")
+        print(f"  polls before filter: {n_before}")
+        print(f"  polls after filter:  {n_after}")
+        print(f"  polls dropped:       {n_before - n_after}")
 
     # construct poll margin in percentage points (raw difference)
     # use the raw difference rather than the two party adjusted margin because: (a) presidential races stay near 50/50 so the adjustment is negligible, (b) the additive structure fits the kalman model directly, and (c) results are immediately interpretable in pp
@@ -128,11 +140,7 @@ def append_election_result(df: pd.DataFrame, election_date: str = '2024-11-05', 
 ########################################################################################
 ######################### estimate sigma2_u with grid search ###########################
 ########################################################################################
-def estimate_sigma2u(y: np.ndarray,
-                     obs_var: np.ndarray,
-                     days: np.ndarray,
-                     n_coarse: int = 500,
-                     n_fine: int = 200) -> float:
+def estimate_sigma2u(y: np.ndarray, obs_var: np.ndarray, days: np.ndarray, n_coarse: int = 500, n_fine: int = 200) -> float:
     """
     estimate sigma2_u (the disturbance variance per day) by maximizing the gaussian log-likelihood of one-step-ahead forecast errors
 
@@ -546,58 +554,76 @@ if __name__ == '__main__':
     # important values
     DATA_PATH     = 'data/harris_trump_accuracy.csv'
     ELECTION_DATE = '2024-11-05'
+    
+    # time windows to analyze: None = all data, 200 = last 200 days, 107 = last 107 days, etc.
+    TIME_WINDOWS = [None, 200, 107]
 
-    # -------------------------------------------------------------------------
-    # anchored version: bias decomposition
-    # -------------------------------------------------------------------------
-    print("\n" + "="*70)
-    print("ANCHORED MODE: bias decomposition conditional on known outcome")
-    print("="*70)
-    
-    df_anchored = load_and_prepare(DATA_PATH)
-    print(f"\nsanity check — unique true_margin values: {df_anchored['true_margin'].unique()}")
-    
-    df_anchored = append_election_result(df_anchored, ELECTION_DATE, anchor=True)
-    df_anchored, sigma2u_anchored = kalman_filter_smoother(df_anchored)
-    
-    summarize_bias(df_anchored, anchored=True)
-    plot_results(df_anchored, anchored=True, save_path='figures/kalman_bias_anchored.png')
-    export_results(df_anchored, out_path='output/kalman_results_anchored.csv')
+    # loop over each time window
+    for days_before in TIME_WINDOWS:
+        
+        # create descriptive suffix for output files
+        if days_before is None:
+            window_label = "all_data"
+            window_desc = "ALL DATA"
+        else:
+            window_label = f"last_{days_before}_days"
+            window_desc = f"LAST {days_before} DAYS"
+        
+        print("\n" + "="*70)
+        print("="*70)
+        print(f"ANALYZING TIME WINDOW: {window_desc}")
+        print("="*70)
+        print("="*70)
 
-    # -------------------------------------------------------------------------
-    # unanchored version: real-time opinion trajectory
-    # -------------------------------------------------------------------------
-    print("\n" + "="*70)
-    print("UNANCHORED MODE: real-time opinion trajectory from polls alone")
-    print("="*70)
-    
-    df_unanchored = load_and_prepare(DATA_PATH)
-    df_unanchored = append_election_result(df_unanchored, ELECTION_DATE, anchor=False)
-    df_unanchored, sigma2u_unanchored = kalman_filter_smoother(df_unanchored)
-    
-    summarize_bias(df_unanchored, anchored=False)
-    plot_results(df_unanchored, anchored=False, save_path='figures/kalman_trajectory_unanchored.png')
-    export_results(df_unanchored, out_path='output/kalman_results_unanchored.csv')
+        # anchored version: bias decomposition
+        print("\n" + "="*70)
+        print(f"ANCHORED MODE: bias decomposition conditional on known outcome ({window_desc})")
+        print("="*70)
+        
+        df_anchored = load_and_prepare(DATA_PATH, ELECTION_DATE, days_before=days_before)
+        print(f"\nsanity check — unique true_margin values: {df_anchored['true_margin'].unique()}")
+        
+        df_anchored = append_election_result(df_anchored, ELECTION_DATE, anchor=True)
+        df_anchored, sigma2u_anchored = kalman_filter_smoother(df_anchored)
+        
+        summarize_bias(df_anchored, anchored=True)
+        plot_results(df_anchored, anchored=True, 
+                    save_path=f'figures/kalman_bias_anchored_{window_label}.png')
+        export_results(df_anchored, 
+                      out_path=f'output/kalman_results_anchored_{window_label}.csv')
 
-    # -------------------------------------------------------------------------
-    # comparison
-    # -------------------------------------------------------------------------
-    print("\n" + "="*70)
-    print("COMPARISON: anchored vs unanchored")
-    print("="*70)
-    print(f"sigma2_u (anchored):   {sigma2u_anchored:.6f}")
-    print(f"sigma2_u (unanchored): {sigma2u_unanchored:.6f}")
-    print(f"ratio (anchored/unanchored): {sigma2u_anchored/sigma2u_unanchored:.3f}")
-    
-    final_smoothed_anchored   = df_anchored[df_anchored['pollster']!='ELECTION_RESULT']['smoothed'].iloc[-1]
-    final_smoothed_unanchored = df_unanchored['smoothed'].iloc[-1]
-    true_margin = df_anchored['true_margin'].iloc[0]
-    
-    print(f"\nfinal smoothed estimate (anchored):   {final_smoothed_anchored:.3f} pp")
-    print(f"final smoothed estimate (unanchored): {final_smoothed_unanchored:.3f} pp")
-    print(f"true margin:                          {true_margin:.3f} pp")
-    print(f"unanchored forecast error:            {final_smoothed_unanchored - true_margin:.3f} pp")
-    print(f"anchored terminal adjustment:         {true_margin - final_smoothed_anchored:.3f} pp")
+        # unanchored version: real-time opinion trajectory
+        print("\n" + "="*70)
+        print(f"UNANCHORED MODE: real-time opinion trajectory from polls alone ({window_desc})")
+        print("="*70)
+        
+        df_unanchored = load_and_prepare(DATA_PATH, ELECTION_DATE, days_before=days_before)
+        df_unanchored = append_election_result(df_unanchored, ELECTION_DATE, anchor=False)
+        df_unanchored, sigma2u_unanchored = kalman_filter_smoother(df_unanchored)
+        
+        summarize_bias(df_unanchored, anchored=False)
+        plot_results(df_unanchored, anchored=False, 
+                    save_path=f'figures/kalman_trajectory_unanchored_{window_label}.png')
+        export_results(df_unanchored, 
+                      out_path=f'output/kalman_results_unanchored_{window_label}.csv')
+
+        # comparison
+        print("\n" + "="*70)
+        print(f"COMPARISON: anchored vs unanchored ({window_desc})")
+        print("="*70)
+        print(f"sigma2_u (anchored):   {sigma2u_anchored:.6f}")
+        print(f"sigma2_u (unanchored): {sigma2u_unanchored:.6f}")
+        print(f"ratio (anchored/unanchored): {sigma2u_anchored/sigma2u_unanchored:.3f}")
+        
+        final_smoothed_anchored   = df_anchored[df_anchored['pollster']!='ELECTION_RESULT']['smoothed'].iloc[-1]
+        final_smoothed_unanchored = df_unanchored['smoothed'].iloc[-1]
+        true_margin = df_anchored['true_margin'].iloc[0]
+        
+        print(f"\nfinal smoothed estimate (anchored):   {final_smoothed_anchored:.3f} pp")
+        print(f"final smoothed estimate (unanchored): {final_smoothed_unanchored:.3f} pp")
+        print(f"true margin:                          {true_margin:.3f} pp")
+        print(f"unanchored forecast error:            {final_smoothed_unanchored - true_margin:.3f} pp")
+        print(f"anchored terminal adjustment:         {true_margin - final_smoothed_anchored:.3f} pp")
 
 
 # TODO
