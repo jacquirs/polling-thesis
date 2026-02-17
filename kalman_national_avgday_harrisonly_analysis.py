@@ -665,7 +665,7 @@ if __name__ == '__main__':
 
     # set up logging to capture all terminal output
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_filename = f'output/kalman_daily_aggregated_log_{timestamp}.txt'
+    log_filename = f'output/kalman/kalman_daily_aggregated_log_{timestamp}.txt'
     logger = Logger(log_filename)
     sys.stdout = logger
     
