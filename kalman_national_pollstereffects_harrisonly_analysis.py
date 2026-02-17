@@ -705,7 +705,8 @@ def plot_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
         print(f"\nfigure saved to: {save_path}")
 
-    plt.show()
+    #plt.show()
+    plt.close()
 
 
 ########################################################################################
