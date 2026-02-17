@@ -798,8 +798,8 @@ if __name__ == '__main__':
 
             export_results(
                 df, house_effects_df,
-                out_path_polls=f'output/kalman_he_polls_{mode_label}_{window_label}.csv',
-                out_path_house_effects=f'output/kalman_he_effects_{mode_label}_{window_label}.csv'
+                out_path_polls=f'data/kalman_he_polls_{mode_label}_{window_label}.csv',
+                out_path_house_effects=f'data/kalman_he_effects_{mode_label}_{window_label}.csv'
             )
 
     print(f"\n{'='*70}")
