@@ -8,6 +8,9 @@ from datetime import datetime
 warnings.filterwarnings('ignore')
 
 # THIS FILE ANALYZES POLLS USING KALMAN FILTERING/SMOOTHING
+# national level
+# harris v trump only
+# basic handling of multiple polls on the same day
 
 ########################################################################################
 ##################################### Logging Setup ####################################
