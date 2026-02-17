@@ -622,7 +622,7 @@ if __name__ == '__main__':
         plot_results(df_anchored, anchored=True, 
                     save_path=f'figures/kalman_bias_anchored_{window_label}.png')
         export_results(df_anchored, 
-                      out_path=f'output/kalman_results_anchored_{window_label}.csv')
+                      out_path=f'data/kalman_results_anchored_{window_label}.csv')
 
         # unanchored version: real-time opinion trajectory
         print("\n" + "="*70)
