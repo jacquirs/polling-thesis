@@ -3,9 +3,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import warnings
+import sys
+from datetime import datetime
 warnings.filterwarnings('ignore')
 
 # THIS FILE ANALYZES POLLS USING KALMAN FILTERING/SMOOTHING
+
+########################################################################################
+##################################### Logging Setup ####################################
+########################################################################################
+class Logger:
+    # write terminal output to both console and a log file simultaneously
+    def __init__(self, filename):
+        self.terminal = sys.stdout
+        self.log = open(filename, 'w')
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+    
+    def close(self):
+        self.log.close()
 
 ########################################################################################
 ##################################### Load Data ########################################
@@ -544,7 +566,6 @@ def export_results(df: pd.DataFrame, out_path: str = 'kalman_results.csv') -> pd
     return out
 
 
-
 ########################################################################################
 ######################### Actually run all these functions from here ###################
 ########################################################################################
@@ -557,6 +578,17 @@ if __name__ == '__main__':
     
     # time windows to analyze: None = all data, 200 = last 200 days, 107 = last 107 days, etc.
     TIME_WINDOWS = [None, 200, 107]
+
+    # set up logging to capture all terminal output
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_filename = f'output/kalman_analysis_log_{timestamp}.txt'
+    logger = Logger(log_filename)
+    sys.stdout = logger
+    
+    print(f"kalman filtering & smoothing analysis")
+    print(f"started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"log file: {log_filename}")
+    print(f"time windows: {TIME_WINDOWS}")
 
     # loop over each time window
     for days_before in TIME_WINDOWS:
@@ -625,9 +657,15 @@ if __name__ == '__main__':
         print(f"unanchored forecast error:            {final_smoothed_unanchored - true_margin:.3f} pp")
         print(f"anchored terminal adjustment:         {true_margin - final_smoothed_anchored:.3f} pp")
 
+    # close logger and restore normal stdout
+    print(f"\n{'='*70}")
+    print(f"analysis completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"log saved to: {log_filename}")
+    logger.close()
+    sys.stdout = logger.terminal
+
 
 # TODO
 # edit to have per pollster fixed effects
 # state level instead of just national (by each swing state)
-# cut the dates to start like 200 days before election (or right at when she becomes candidate)
 # clean figures
