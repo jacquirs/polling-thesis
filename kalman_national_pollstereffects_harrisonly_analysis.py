@@ -424,7 +424,6 @@ def em_kalman_house_effects(df: pd.DataFrame, pollster_names: list,
         counts = np.zeros(n_pollsters)
 
         for idx, pid in zip(poll_idx, pollster_ids):
-            residual = y_raw[poll_idx.index(idx)] - S[idx]
             # note: residual = (poll - he) + he - smoothed = poll - smoothed
             # so we use the original poll margin minus the smoothed state
             new_house_effects[pid] += (df.loc[idx, 'poll_margin'] - S[idx])
