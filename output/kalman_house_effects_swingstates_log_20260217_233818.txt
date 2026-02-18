@@ -1,0 +1,17 @@
+kalman filter with house effects analysis — swing states
+started: 2026-02-17 23:38:18
+log file: output/kalman_house_effects_swingstates_log_20260217_233818.txt
+states: ['Arizona', 'Georgia', 'Michigan', 'Nevada', 'North Carolina', 'Pennsylvania', 'Wisconsin']
+time windows: [None, 200, 107]
+
+======================================================================
+======================================================================
+ANALYZING: Arizona (AZ) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE (Arizona | ALL DATA)
+======================================================================
+Arizona polls loaded: 0 questions from 0 polls, 0 pollsters
+date range: NaT to NaT

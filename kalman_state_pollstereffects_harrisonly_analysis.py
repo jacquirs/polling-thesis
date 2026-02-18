@@ -767,8 +767,8 @@ if __name__ == '__main__':
     ELECTION_DATE = '2024-11-05'
     TIME_WINDOWS  = [None, 200, 107]
     
-    # SWING STATE MODIFICATION: analyze each swing state separately
-    SWING_STATES  = ['Arizona', 'Georgia', 'Michigan', 'Nevada', 'North Carolina', 'Pennsylvania', 'Wisconsin']
+    # analyze each swing state separately
+    SWING_STATES  = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
 
     # set up logging
     timestamp    = datetime.now().strftime('%Y%m%d_%H%M%S')
