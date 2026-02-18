@@ -787,13 +787,13 @@ if __name__ == '__main__':
 
         # state abbreviation for compact filenames
         state_abbrev = {
-            'Arizona': 'AZ',
-            'Georgia': 'GA',
-            'Michigan': 'MI',
-            'Nevada': 'NV',
-            'North Carolina': 'NC',
-            'Pennsylvania': 'PA',
-            'Wisconsin': 'WI'
+            'arizona': 'AZ',
+            'georgia': 'GA',
+            'michigan': 'MI',
+            'nevada': 'NV',
+            'north carolina': 'NC',
+            'pennsylvania': 'PA',
+            'wisconsin': 'WI'
         }[state]
 
         for days_before in TIME_WINDOWS:
