@@ -610,7 +610,7 @@ def plot_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
 
     fig, axes = plt.subplots(4, 1, figsize=(14, 18), sharex=False)
     mode_label = "anchored" if anchored else "unanchored"
-    # MODIFIED: title includes state name and poll count
+    # title includes state name and poll count
     fig.suptitle(
         f'kalman filter with house effects: {state} polling 2024 ({mode_label})\n(trump margin, pp | n={n_polls} polls)',
         fontsize=14, fontweight='bold', y=0.99
@@ -754,3 +754,99 @@ def export_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
 
     house_effects_df.to_csv(out_path_house_effects, index=False)
     print(f"house effects exported to: {out_path_house_effects}")
+
+
+
+########################################################################################
+######################### Actually run all these functions from here ###################
+########################################################################################
+if __name__ == '__main__':
+
+    # important values
+    DATA_PATH     = 'data/harris_trump_accuracy.csv'
+    ELECTION_DATE = '2024-11-05'
+    TIME_WINDOWS  = [None, 200, 107]
+    
+    # SWING STATE MODIFICATION: analyze each swing state separately
+    SWING_STATES  = ['Arizona', 'Georgia', 'Michigan', 'Nevada', 'North Carolina', 'Pennsylvania', 'Wisconsin']
+
+    # set up logging
+    timestamp    = datetime.now().strftime('%Y%m%d_%H%M%S')
+    log_filename = f'output/kalman_house_effects_swingstates_log_{timestamp}.txt'
+    logger       = Logger(log_filename)
+    sys.stdout   = logger
+
+    print(f"kalman filter with house effects analysis — swing states")
+    print(f"started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"log file: {log_filename}")
+    print(f"states: {SWING_STATES}")
+    print(f"time windows: {TIME_WINDOWS}")
+
+    # SWING STATE MODIFICATION: outer loop over states
+    for state in SWING_STATES:
+
+        # state abbreviation for compact filenames
+        state_abbrev = {
+            'Arizona': 'AZ',
+            'Georgia': 'GA',
+            'Michigan': 'MI',
+            'Nevada': 'NV',
+            'North Carolina': 'NC',
+            'Pennsylvania': 'PA',
+            'Wisconsin': 'WI'
+        }[state]
+
+        for days_before in TIME_WINDOWS:
+
+            if days_before is None:
+                window_label = "all_data"
+                window_desc  = "ALL DATA"
+            else:
+                window_label = f"last_{days_before}_days"
+                window_desc  = f"LAST {days_before} DAYS"
+
+            print("\n" + "="*70)
+            print("="*70)
+            print(f"ANALYZING: {state} ({state_abbrev}) | {window_desc}")
+            print("="*70)
+            print("="*70)
+
+            for anchor in [True, False]:
+                mode_label = "anchored" if anchor else "unanchored"
+                mode_desc  = "ANCHORED" if anchor else "UNANCHORED"
+
+                print("\n" + "="*70)
+                print(f"{mode_desc} MODE ({state} | {window_desc})")
+                print("="*70)
+
+                # pass state parameter to load_and_prepare
+                df, pollster_names = load_and_prepare(DATA_PATH, state, ELECTION_DATE, days_before=days_before)
+                print(f"\nsanity check — unique true_margin values: {df['true_margin'].unique()}")
+
+                df, pollster_names = append_election_result(df, pollster_names, ELECTION_DATE, anchor=anchor)
+
+                df, house_effects_df, sigma2u, history = em_kalman_house_effects(
+                    df, pollster_names, max_iter=50, tol=1e-4
+                )
+
+                # pass state parameter to summarize_results
+                summarize_results(df, house_effects_df, sigma2u, state, anchored=anchor)
+
+                # pass state parameter and use state_abbrev in filename
+                plot_results(
+                    df, house_effects_df, state, anchored=anchor,
+                    save_path=f'figures/kalman_he_{state_abbrev}_{mode_label}_{window_label}.png'
+                )
+
+                # use state_abbrev in output filenames
+                export_results(
+                    df, house_effects_df,
+                    out_path_polls=f'data/kalman_he_polls_{state_abbrev}_{mode_label}_{window_label}.csv',
+                    out_path_house_effects=f'data/kalman_he_effects_{state_abbrev}_{mode_label}_{window_label}.csv'
+                )
+
+    print(f"\n{'='*70}")
+    print(f"analysis completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"log saved to: {log_filename}")
+    logger.close()
+    sys.stdout = logger.terminal
