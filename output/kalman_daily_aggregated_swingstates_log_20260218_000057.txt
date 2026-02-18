@@ -1,0 +1,2515 @@
+kalman filtering & smoothing analysis — swing states (within-day aggregated version)
+started: 2026-02-18 00:00:57
+log file: output/kalman_daily_aggregated_swingstates_log_20260218_000057.txt
+states: ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
+time windows: [None, 200, 107]
+
+======================================================================
+======================================================================
+ANALYZING: arizona (AZ) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (arizona | ALL DATA)
+======================================================================
+arizona polls loaded: 147 questions from 94 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 5.529 pp
+poll margin range: -5.0 to 9.0 pp
+mean poll margin: 1.606 pp
+
+sanity check — unique true_margin values: [5.52860324]
+
+within-day aggregation complete:
+  observations before: 147 (individual poll questions)
+  observations after:  60 (one per unique end_date)
+  unique days:         60 -> 60
+  mean polls per day:  2.5
+  mean combined n:     2084
+  mean combined var:   7.7037 pp^2
+  mean individual var (pre-agg): 12.4122 pp^2
+  variance reduction factor: 1.6x
+
+election result appended: margin = 5.529 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.456130 per day
+  interpretation: true opinion can move ~0.675 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — arizona (trump margin, anchored)
+============================================================
+
+true margin (certified result): 5.529 pp
+
+--- overall poll error ---
+  mean poll margin:          1.949 pp
+  mean total error:          -3.580 pp
+  sd of total error:         2.726 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -3.686 pp
+  mean |sampling noise|:     1.509 pp
+
+--- variance decomposition ---
+  var(total error):          7.4294
+  var(systematic bias):      2.7037  (36.4%)
+  var(sampling noise):       3.5390  (47.6%)
+
+figure saved to: figures/kalman_agg_AZ_bias_anchored_all_data.png
+results exported to: data/kalman_agg_AZ_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (arizona | ALL DATA)
+======================================================================
+arizona polls loaded: 147 questions from 94 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 5.529 pp
+poll margin range: -5.0 to 9.0 pp
+mean poll margin: 1.606 pp
+
+within-day aggregation complete:
+  observations before: 147 (individual poll questions)
+  observations after:  60 (one per unique end_date)
+  unique days:         60 -> 60
+  mean polls per day:  2.5
+  mean combined n:     2084
+  mean combined var:   7.7037 pp^2
+  mean individual var (pre-agg): 12.4122 pp^2
+  variance reduction factor: 1.6x
+
+skipping election result anchor (unanchored mode)
+true margin: 5.529 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.113941 per day
+  interpretation: true opinion can move ~0.338 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — arizona (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 5.529 pp
+
+--- overall poll error ---
+  mean poll margin:          1.949 pp
+  mean total error:          -3.580 pp
+  sd of total error:         2.726 pp
+
+--- decomposition (means) ---
+  final forecast error:      -3.049 pp
+  mean smoothed-poll gap:    1.758 pp
+  mean |sampling noise|:     1.758 pp
+
+figure saved to: figures/kalman_agg_AZ_trajectory_unanchored_all_data.png
+results exported to: data/kalman_agg_AZ_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (arizona | ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.456130
+sigma2_u (unanchored): 0.113941
+ratio (anchored/unanchored): 4.003
+
+final smoothed estimate (anchored):   4.755 pp
+final smoothed estimate (unanchored): 2.480 pp
+true margin:                          5.529 pp
+unanchored forecast error:            -3.049 pp
+anchored terminal adjustment:         0.774 pp
+
+======================================================================
+======================================================================
+ANALYZING: arizona (AZ) | LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (arizona | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 147
+  polls after filter:  144
+  polls dropped:       3
+arizona polls loaded: 144 questions from 92 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 5.529 pp
+poll margin range: -5.0 to 9.0 pp
+mean poll margin: 1.519 pp
+
+sanity check — unique true_margin values: [5.52860324]
+
+within-day aggregation complete:
+  observations before: 144 (individual poll questions)
+  observations after:  58 (one per unique end_date)
+  unique days:         58 -> 58
+  mean polls per day:  2.5
+  mean combined n:     2118
+  mean combined var:   7.6890 pp^2
+  mean individual var (pre-agg): 12.4011 pp^2
+  variance reduction factor: 1.6x
+
+election result appended: margin = 5.529 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.558672 per day
+  interpretation: true opinion can move ~0.747 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — arizona (trump margin, anchored)
+============================================================
+
+true margin (certified result): 5.529 pp
+
+--- overall poll error ---
+  mean poll margin:          1.804 pp
+  mean total error:          -3.725 pp
+  sd of total error:         2.646 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -3.834 pp
+  mean |sampling noise|:     1.509 pp
+
+--- variance decomposition ---
+  var(total error):          7.0030
+  var(systematic bias):      2.2682  (32.4%)
+  var(sampling noise):       3.4741  (49.6%)
+
+figure saved to: figures/kalman_agg_AZ_bias_anchored_last_200_days.png
+results exported to: data/kalman_agg_AZ_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (arizona | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 147
+  polls after filter:  144
+  polls dropped:       3
+arizona polls loaded: 144 questions from 92 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 5.529 pp
+poll margin range: -5.0 to 9.0 pp
+mean poll margin: 1.519 pp
+
+within-day aggregation complete:
+  observations before: 144 (individual poll questions)
+  observations after:  58 (one per unique end_date)
+  unique days:         58 -> 58
+  mean polls per day:  2.5
+  mean combined n:     2118
+  mean combined var:   7.6890 pp^2
+  mean individual var (pre-agg): 12.4011 pp^2
+  variance reduction factor: 1.6x
+
+skipping election result anchor (unanchored mode)
+true margin: 5.529 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.191216 per day
+  interpretation: true opinion can move ~0.437 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — arizona (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 5.529 pp
+
+--- overall poll error ---
+  mean poll margin:          1.804 pp
+  mean total error:          -3.725 pp
+  sd of total error:         2.646 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.879 pp
+  mean smoothed-poll gap:    1.719 pp
+  mean |sampling noise|:     1.719 pp
+
+figure saved to: figures/kalman_agg_AZ_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_agg_AZ_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (arizona | LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.558672
+sigma2_u (unanchored): 0.191216
+ratio (anchored/unanchored): 2.922
+
+final smoothed estimate (anchored):   4.734 pp
+final smoothed estimate (unanchored): 2.649 pp
+true margin:                          5.529 pp
+unanchored forecast error:            -2.879 pp
+anchored terminal adjustment:         0.795 pp
+
+======================================================================
+======================================================================
+ANALYZING: arizona (AZ) | LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (arizona | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 147
+  polls after filter:  141
+  polls dropped:       6
+arizona polls loaded: 141 questions from 89 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 5.529 pp
+poll margin range: -5.0 to 7.8 pp
+mean poll margin: 1.388 pp
+
+sanity check — unique true_margin values: [5.52860324]
+
+within-day aggregation complete:
+  observations before: 141 (individual poll questions)
+  observations after:  55 (one per unique end_date)
+  unique days:         55 -> 55
+  mean polls per day:  2.6
+  mean combined n:     2194
+  mean combined var:   7.3951 pp^2
+  mean individual var (pre-agg): 12.3867 pp^2
+  variance reduction factor: 1.7x
+
+election result appended: margin = 5.529 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.509185 per day
+  interpretation: true opinion can move ~0.714 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — arizona (trump margin, anchored)
+============================================================
+
+true margin (certified result): 5.529 pp
+
+--- overall poll error ---
+  mean poll margin:          1.484 pp
+  mean total error:          -4.044 pp
+  sd of total error:         2.300 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -4.133 pp
+  mean |sampling noise|:     1.534 pp
+
+--- variance decomposition ---
+  var(total error):          5.2919
+  var(systematic bias):      1.1651  (22.0%)
+  var(sampling noise):       3.6562  (69.1%)
+
+figure saved to: figures/kalman_agg_AZ_bias_anchored_last_107_days.png
+results exported to: data/kalman_agg_AZ_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (arizona | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 147
+  polls after filter:  141
+  polls dropped:       6
+arizona polls loaded: 141 questions from 89 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 5.529 pp
+poll margin range: -5.0 to 7.8 pp
+mean poll margin: 1.388 pp
+
+within-day aggregation complete:
+  observations before: 141 (individual poll questions)
+  observations after:  55 (one per unique end_date)
+  unique days:         55 -> 55
+  mean polls per day:  2.6
+  mean combined n:     2194
+  mean combined var:   7.3951 pp^2
+  mean individual var (pre-agg): 12.3867 pp^2
+  variance reduction factor: 1.7x
+
+skipping election result anchor (unanchored mode)
+true margin: 5.529 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.022339 per day
+  interpretation: true opinion can move ~0.149 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — arizona (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 5.529 pp
+
+--- overall poll error ---
+  mean poll margin:          1.484 pp
+  mean total error:          -4.044 pp
+  sd of total error:         2.300 pp
+
+--- decomposition (means) ---
+  final forecast error:      -3.448 pp
+  mean smoothed-poll gap:    1.771 pp
+  mean |sampling noise|:     1.771 pp
+
+figure saved to: figures/kalman_agg_AZ_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_agg_AZ_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (arizona | LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.509185
+sigma2_u (unanchored): 0.022339
+ratio (anchored/unanchored): 22.794
+
+final smoothed estimate (anchored):   4.743 pp
+final smoothed estimate (unanchored): 2.081 pp
+true margin:                          5.529 pp
+unanchored forecast error:            -3.448 pp
+anchored terminal adjustment:         0.786 pp
+
+======================================================================
+======================================================================
+ANALYZING: georgia (GA) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (georgia | ALL DATA)
+======================================================================
+georgia polls loaded: 148 questions from 87 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 2.192 pp
+poll margin range: -6.0 to 11.0 pp
+mean poll margin: 1.436 pp
+
+sanity check — unique true_margin values: [2.19200309]
+
+within-day aggregation complete:
+  observations before: 148 (individual poll questions)
+  observations after:  57 (one per unique end_date)
+  unique days:         57 -> 57
+  mean polls per day:  2.6
+  mean combined n:     2431
+  mean combined var:   7.4338 pp^2
+  mean individual var (pre-agg): 11.8678 pp^2
+  variance reduction factor: 1.6x
+
+election result appended: margin = 2.192 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.159715 per day
+  interpretation: true opinion can move ~0.400 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — georgia (trump margin, anchored)
+============================================================
+
+true margin (certified result): 2.192 pp
+
+--- overall poll error ---
+  mean poll margin:          1.806 pp
+  mean total error:          -0.386 pp
+  sd of total error:         2.442 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -0.426 pp
+  mean |sampling noise|:     1.294 pp
+
+--- variance decomposition ---
+  var(total error):          5.9621
+  var(systematic bias):      2.1980  (36.9%)
+  var(sampling noise):       2.6242  (44.0%)
+
+figure saved to: figures/kalman_agg_GA_bias_anchored_all_data.png
+results exported to: data/kalman_agg_GA_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (georgia | ALL DATA)
+======================================================================
+georgia polls loaded: 148 questions from 87 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 2.192 pp
+poll margin range: -6.0 to 11.0 pp
+mean poll margin: 1.436 pp
+
+within-day aggregation complete:
+  observations before: 148 (individual poll questions)
+  observations after:  57 (one per unique end_date)
+  unique days:         57 -> 57
+  mean polls per day:  2.6
+  mean combined n:     2431
+  mean combined var:   7.4338 pp^2
+  mean individual var (pre-agg): 11.8678 pp^2
+  variance reduction factor: 1.6x
+
+skipping election result anchor (unanchored mode)
+true margin: 2.192 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.132517 per day
+  interpretation: true opinion can move ~0.364 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — georgia (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 2.192 pp
+
+--- overall poll error ---
+  mean poll margin:          1.806 pp
+  mean total error:          -0.386 pp
+  sd of total error:         2.442 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.334 pp
+  mean smoothed-poll gap:    1.327 pp
+  mean |sampling noise|:     1.327 pp
+
+figure saved to: figures/kalman_agg_GA_trajectory_unanchored_all_data.png
+results exported to: data/kalman_agg_GA_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (georgia | ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.159715
+sigma2_u (unanchored): 0.132517
+ratio (anchored/unanchored): 1.205
+
+final smoothed estimate (anchored):   1.916 pp
+final smoothed estimate (unanchored): 0.858 pp
+true margin:                          2.192 pp
+unanchored forecast error:            -1.334 pp
+anchored terminal adjustment:         0.276 pp
+
+======================================================================
+======================================================================
+ANALYZING: georgia (GA) | LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (georgia | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 148
+  polls after filter:  145
+  polls dropped:       3
+georgia polls loaded: 145 questions from 85 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 2.192 pp
+poll margin range: -6.0 to 11.0 pp
+mean poll margin: 1.371 pp
+
+sanity check — unique true_margin values: [2.19200309]
+
+within-day aggregation complete:
+  observations before: 145 (individual poll questions)
+  observations after:  55 (one per unique end_date)
+  unique days:         55 -> 55
+  mean polls per day:  2.6
+  mean combined n:     2478
+  mean combined var:   7.4082 pp^2
+  mean individual var (pre-agg): 11.8532 pp^2
+  variance reduction factor: 1.6x
+
+election result appended: margin = 2.192 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.170562 per day
+  interpretation: true opinion can move ~0.413 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — georgia (trump margin, anchored)
+============================================================
+
+true margin (certified result): 2.192 pp
+
+--- overall poll error ---
+  mean poll margin:          1.657 pp
+  mean total error:          -0.535 pp
+  sd of total error:         2.231 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -0.569 pp
+  mean |sampling noise|:     1.263 pp
+
+--- variance decomposition ---
+  var(total error):          4.9764
+  var(systematic bias):      1.5959  (32.1%)
+  var(sampling noise):       2.5421  (51.1%)
+
+figure saved to: figures/kalman_agg_GA_bias_anchored_last_200_days.png
+results exported to: data/kalman_agg_GA_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (georgia | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 148
+  polls after filter:  145
+  polls dropped:       3
+georgia polls loaded: 145 questions from 85 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 2.192 pp
+poll margin range: -6.0 to 11.0 pp
+mean poll margin: 1.371 pp
+
+within-day aggregation complete:
+  observations before: 145 (individual poll questions)
+  observations after:  55 (one per unique end_date)
+  unique days:         55 -> 55
+  mean polls per day:  2.6
+  mean combined n:     2478
+  mean combined var:   7.4082 pp^2
+  mean individual var (pre-agg): 11.8532 pp^2
+  variance reduction factor: 1.6x
+
+skipping election result anchor (unanchored mode)
+true margin: 2.192 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.139554 per day
+  interpretation: true opinion can move ~0.374 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — georgia (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 2.192 pp
+
+--- overall poll error ---
+  mean poll margin:          1.657 pp
+  mean total error:          -0.535 pp
+  sd of total error:         2.231 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.339 pp
+  mean smoothed-poll gap:    1.293 pp
+  mean |sampling noise|:     1.293 pp
+
+figure saved to: figures/kalman_agg_GA_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_agg_GA_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (georgia | LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.170562
+sigma2_u (unanchored): 0.139554
+ratio (anchored/unanchored): 1.222
+
+final smoothed estimate (anchored):   1.908 pp
+final smoothed estimate (unanchored): 0.854 pp
+true margin:                          2.192 pp
+unanchored forecast error:            -1.339 pp
+anchored terminal adjustment:         0.284 pp
+
+======================================================================
+======================================================================
+ANALYZING: georgia (GA) | LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (georgia | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 148
+  polls after filter:  135
+  polls dropped:       13
+georgia polls loaded: 135 questions from 81 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 2.192 pp
+poll margin range: -6.0 to 7.0 pp
+mean poll margin: 0.972 pp
+
+sanity check — unique true_margin values: [2.19200309]
+
+within-day aggregation complete:
+  observations before: 135 (individual poll questions)
+  observations after:  51 (one per unique end_date)
+  unique days:         51 -> 51
+  mean polls per day:  2.6
+  mean combined n:     2565
+  mean combined var:   7.3797 pp^2
+  mean individual var (pre-agg): 11.3547 pp^2
+  variance reduction factor: 1.5x
+
+election result appended: margin = 2.192 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.042621 per day
+  interpretation: true opinion can move ~0.206 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — georgia (trump margin, anchored)
+============================================================
+
+true margin (certified result): 2.192 pp
+
+--- overall poll error ---
+  mean poll margin:          1.270 pp
+  mean total error:          -0.922 pp
+  sd of total error:         1.770 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -0.963 pp
+  mean |sampling noise|:     1.338 pp
+
+--- variance decomposition ---
+  var(total error):          3.1339
+  var(systematic bias):      0.1327  (4.2%)
+  var(sampling noise):       2.9135  (93.0%)
+
+figure saved to: figures/kalman_agg_GA_bias_anchored_last_107_days.png
+results exported to: data/kalman_agg_GA_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (georgia | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 148
+  polls after filter:  135
+  polls dropped:       13
+georgia polls loaded: 135 questions from 81 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 2.192 pp
+poll margin range: -6.0 to 7.0 pp
+mean poll margin: 0.972 pp
+
+within-day aggregation complete:
+  observations before: 135 (individual poll questions)
+  observations after:  51 (one per unique end_date)
+  unique days:         51 -> 51
+  mean polls per day:  2.6
+  mean combined n:     2565
+  mean combined var:   7.3797 pp^2
+  mean individual var (pre-agg): 11.3547 pp^2
+  variance reduction factor: 1.5x
+
+skipping election result anchor (unanchored mode)
+true margin: 2.192 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.000100 per day
+  interpretation: true opinion can move ~0.010 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — georgia (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 2.192 pp
+
+--- overall poll error ---
+  mean poll margin:          1.270 pp
+  mean total error:          -0.922 pp
+  sd of total error:         1.770 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.201 pp
+  mean smoothed-poll gap:    1.382 pp
+  mean |sampling noise|:     1.382 pp
+
+figure saved to: figures/kalman_agg_GA_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_agg_GA_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (georgia | LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.042621
+sigma2_u (unanchored): 0.000100
+ratio (anchored/unanchored): 426.211
+
+final smoothed estimate (anchored):   2.047 pp
+final smoothed estimate (unanchored): 0.991 pp
+true margin:                          2.192 pp
+unanchored forecast error:            -1.201 pp
+anchored terminal adjustment:         0.145 pp
+
+======================================================================
+======================================================================
+ANALYZING: michigan (MI) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (michigan | ALL DATA)
+======================================================================
+michigan polls loaded: 176 questions from 112 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 1.414 pp
+poll margin range: -12.0 to 5.0 pp
+mean poll margin: -1.221 pp
+
+sanity check — unique true_margin values: [1.41420144]
+
+within-day aggregation complete:
+  observations before: 176 (individual poll questions)
+  observations after:  65 (one per unique end_date)
+  unique days:         65 -> 65
+  mean polls per day:  2.7
+  mean combined n:     2239
+  mean combined var:   7.8838 pp^2
+  mean individual var (pre-agg): 12.9793 pp^2
+  variance reduction factor: 1.6x
+
+election result appended: margin = 1.414 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.416303 per day
+  interpretation: true opinion can move ~0.645 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — michigan (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.414 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.121 pp
+  mean total error:          -2.535 pp
+  sd of total error:         2.625 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.550 pp
+  mean |sampling noise|:     1.565 pp
+
+--- variance decomposition ---
+  var(total error):          6.8900
+  var(systematic bias):      1.0497  (15.2%)
+  var(sampling noise):       4.8653  (70.6%)
+
+figure saved to: figures/kalman_agg_MI_bias_anchored_all_data.png
+results exported to: data/kalman_agg_MI_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (michigan | ALL DATA)
+======================================================================
+michigan polls loaded: 176 questions from 112 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 1.414 pp
+poll margin range: -12.0 to 5.0 pp
+mean poll margin: -1.221 pp
+
+within-day aggregation complete:
+  observations before: 176 (individual poll questions)
+  observations after:  65 (one per unique end_date)
+  unique days:         65 -> 65
+  mean polls per day:  2.7
+  mean combined n:     2239
+  mean combined var:   7.8838 pp^2
+  mean individual var (pre-agg): 12.9793 pp^2
+  variance reduction factor: 1.6x
+
+skipping election result anchor (unanchored mode)
+true margin: 1.414 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.000100 per day
+  interpretation: true opinion can move ~0.010 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — michigan (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.414 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.121 pp
+  mean total error:          -2.535 pp
+  sd of total error:         2.625 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.759 pp
+  mean smoothed-poll gap:    1.983 pp
+  mean |sampling noise|:     1.983 pp
+
+figure saved to: figures/kalman_agg_MI_trajectory_unanchored_all_data.png
+results exported to: data/kalman_agg_MI_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (michigan | ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.416303
+sigma2_u (unanchored): 0.000100
+ratio (anchored/unanchored): 4163.027
+
+final smoothed estimate (anchored):   0.793 pp
+final smoothed estimate (unanchored): -1.345 pp
+true margin:                          1.414 pp
+unanchored forecast error:            -2.759 pp
+anchored terminal adjustment:         0.622 pp
+
+======================================================================
+======================================================================
+ANALYZING: michigan (MI) | LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (michigan | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 176
+  polls after filter:  174
+  polls dropped:       2
+michigan polls loaded: 174 questions from 111 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 1.414 pp
+poll margin range: -12.0 to 5.0 pp
+mean poll margin: -1.236 pp
+
+sanity check — unique true_margin values: [1.41420144]
+
+within-day aggregation complete:
+  observations before: 174 (individual poll questions)
+  observations after:  64 (one per unique end_date)
+  unique days:         64 -> 64
+  mean polls per day:  2.7
+  mean combined n:     2254
+  mean combined var:   7.8891 pp^2
+  mean individual var (pre-agg): 12.9551 pp^2
+  variance reduction factor: 1.6x
+
+election result appended: margin = 1.414 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.477340 per day
+  interpretation: true opinion can move ~0.691 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — michigan (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.414 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.139 pp
+  mean total error:          -2.553 pp
+  sd of total error:         2.642 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.571 pp
+  mean |sampling noise|:     1.568 pp
+
+--- variance decomposition ---
+  var(total error):          6.9783
+  var(systematic bias):      1.1442  (16.4%)
+  var(sampling noise):       4.8407  (69.4%)
+
+figure saved to: figures/kalman_agg_MI_bias_anchored_last_200_days.png
+results exported to: data/kalman_agg_MI_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (michigan | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 176
+  polls after filter:  174
+  polls dropped:       2
+michigan polls loaded: 174 questions from 111 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 1.414 pp
+poll margin range: -12.0 to 5.0 pp
+mean poll margin: -1.236 pp
+
+within-day aggregation complete:
+  observations before: 174 (individual poll questions)
+  observations after:  64 (one per unique end_date)
+  unique days:         64 -> 64
+  mean polls per day:  2.7
+  mean combined n:     2254
+  mean combined var:   7.8891 pp^2
+  mean individual var (pre-agg): 12.9551 pp^2
+  variance reduction factor: 1.6x
+
+skipping election result anchor (unanchored mode)
+true margin: 1.414 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.000100 per day
+  interpretation: true opinion can move ~0.010 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — michigan (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.414 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.139 pp
+  mean total error:          -2.553 pp
+  sd of total error:         2.642 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.771 pp
+  mean smoothed-poll gap:    1.996 pp
+  mean |sampling noise|:     1.996 pp
+
+figure saved to: figures/kalman_agg_MI_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_agg_MI_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (michigan | LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.477340
+sigma2_u (unanchored): 0.000100
+ratio (anchored/unanchored): 4773.396
+
+final smoothed estimate (anchored):   0.791 pp
+final smoothed estimate (unanchored): -1.357 pp
+true margin:                          1.414 pp
+unanchored forecast error:            -2.771 pp
+anchored terminal adjustment:         0.623 pp
+
+======================================================================
+======================================================================
+ANALYZING: michigan (MI) | LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (michigan | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 176
+  polls after filter:  170
+  polls dropped:       6
+michigan polls loaded: 170 questions from 107 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 1.414 pp
+poll margin range: -12.0 to 4.0 pp
+mean poll margin: -1.323 pp
+
+sanity check — unique true_margin values: [1.41420144]
+
+within-day aggregation complete:
+  observations before: 170 (individual poll questions)
+  observations after:  60 (one per unique end_date)
+  unique days:         60 -> 60
+  mean polls per day:  2.8
+  mean combined n:     2364
+  mean combined var:   7.4135 pp^2
+  mean individual var (pre-agg): 12.9064 pp^2
+  variance reduction factor: 1.7x
+
+election result appended: margin = 1.414 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.507884 per day
+  interpretation: true opinion can move ~0.713 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — michigan (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.414 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.381 pp
+  mean total error:          -2.795 pp
+  sd of total error:         2.505 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.777 pp
+  mean |sampling noise|:     1.580 pp
+
+--- variance decomposition ---
+  var(total error):          6.2737
+  var(systematic bias):      0.7442  (11.9%)
+  var(sampling noise):       4.8532  (77.4%)
+
+figure saved to: figures/kalman_agg_MI_bias_anchored_last_107_days.png
+results exported to: data/kalman_agg_MI_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (michigan | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 176
+  polls after filter:  170
+  polls dropped:       6
+michigan polls loaded: 170 questions from 107 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 1.414 pp
+poll margin range: -12.0 to 4.0 pp
+mean poll margin: -1.323 pp
+
+within-day aggregation complete:
+  observations before: 170 (individual poll questions)
+  observations after:  60 (one per unique end_date)
+  unique days:         60 -> 60
+  mean polls per day:  2.8
+  mean combined n:     2364
+  mean combined var:   7.4135 pp^2
+  mean individual var (pre-agg): 12.9064 pp^2
+  variance reduction factor: 1.7x
+
+skipping election result anchor (unanchored mode)
+true margin: 1.414 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.000100 per day
+  interpretation: true opinion can move ~0.010 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — michigan (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.414 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.381 pp
+  mean total error:          -2.795 pp
+  sd of total error:         2.505 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.842 pp
+  mean smoothed-poll gap:    1.884 pp
+  mean |sampling noise|:     1.884 pp
+
+figure saved to: figures/kalman_agg_MI_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_agg_MI_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (michigan | LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.507884
+sigma2_u (unanchored): 0.000100
+ratio (anchored/unanchored): 5078.843
+
+final smoothed estimate (anchored):   0.791 pp
+final smoothed estimate (unanchored): -1.428 pp
+true margin:                          1.414 pp
+unanchored forecast error:            -2.842 pp
+anchored terminal adjustment:         0.623 pp
+
+======================================================================
+======================================================================
+ANALYZING: nevada (NV) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (nevada | ALL DATA)
+======================================================================
+nevada polls loaded: 106 questions from 66 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 3.140 pp
+poll margin range: -9.0 to 8.7 pp
+mean poll margin: -0.299 pp
+
+sanity check — unique true_margin values: [3.14001699]
+
+within-day aggregation complete:
+  observations before: 106 (individual poll questions)
+  observations after:  45 (one per unique end_date)
+  unique days:         45 -> 45
+  mean polls per day:  2.4
+  mean combined n:     1702
+  mean combined var:   9.9752 pp^2
+  mean individual var (pre-agg): 14.4661 pp^2
+  variance reduction factor: 1.5x
+
+election result appended: margin = 3.140 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.367949 per day
+  interpretation: true opinion can move ~0.607 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — nevada (trump margin, anchored)
+============================================================
+
+true margin (certified result): 3.140 pp
+
+--- overall poll error ---
+  mean poll margin:          0.242 pp
+  mean total error:          -2.898 pp
+  sd of total error:         2.688 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.918 pp
+  mean |sampling noise|:     1.316 pp
+
+--- variance decomposition ---
+  var(total error):          7.2264
+  var(systematic bias):      3.7290  (51.6%)
+  var(sampling noise):       3.6017  (49.8%)
+
+figure saved to: figures/kalman_agg_NV_bias_anchored_all_data.png
+results exported to: data/kalman_agg_NV_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (nevada | ALL DATA)
+======================================================================
+nevada polls loaded: 106 questions from 66 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 3.140 pp
+poll margin range: -9.0 to 8.7 pp
+mean poll margin: -0.299 pp
+
+within-day aggregation complete:
+  observations before: 106 (individual poll questions)
+  observations after:  45 (one per unique end_date)
+  unique days:         45 -> 45
+  mean polls per day:  2.4
+  mean combined n:     1702
+  mean combined var:   9.9752 pp^2
+  mean individual var (pre-agg): 14.4661 pp^2
+  variance reduction factor: 1.5x
+
+skipping election result anchor (unanchored mode)
+true margin: 3.140 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.086886 per day
+  interpretation: true opinion can move ~0.295 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — nevada (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 3.140 pp
+
+--- overall poll error ---
+  mean poll margin:          0.242 pp
+  mean total error:          -2.898 pp
+  sd of total error:         2.688 pp
+
+--- decomposition (means) ---
+  final forecast error:      -3.437 pp
+  mean smoothed-poll gap:    1.423 pp
+  mean |sampling noise|:     1.423 pp
+
+figure saved to: figures/kalman_agg_NV_trajectory_unanchored_all_data.png
+results exported to: data/kalman_agg_NV_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (nevada | ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.367949
+sigma2_u (unanchored): 0.086886
+ratio (anchored/unanchored): 4.235
+
+final smoothed estimate (anchored):   2.358 pp
+final smoothed estimate (unanchored): -0.297 pp
+true margin:                          3.140 pp
+unanchored forecast error:            -3.437 pp
+anchored terminal adjustment:         0.782 pp
+
+======================================================================
+======================================================================
+ANALYZING: nevada (NV) | LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (nevada | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 106
+  polls after filter:  103
+  polls dropped:       3
+nevada polls loaded: 103 questions from 64 polls
+date range: 2024-05-13 to 2024-11-04
+true margin (constant across rows): 3.140 pp
+poll margin range: -9.0 to 6.0 pp
+mean poll margin: -0.528 pp
+
+sanity check — unique true_margin values: [3.14001699]
+
+within-day aggregation complete:
+  observations before: 103 (individual poll questions)
+  observations after:  43 (one per unique end_date)
+  unique days:         43 -> 43
+  mean polls per day:  2.4
+  mean combined n:     1729
+  mean combined var:   10.0676 pp^2
+  mean individual var (pre-agg): 14.5166 pp^2
+  variance reduction factor: 1.4x
+
+election result appended: margin = 3.140 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.414766 per day
+  interpretation: true opinion can move ~0.644 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — nevada (trump margin, anchored)
+============================================================
+
+true margin (certified result): 3.140 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.111 pp
+  mean total error:          -3.251 pp
+  sd of total error:         2.158 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -3.302 pp
+  mean |sampling noise|:     1.340 pp
+
+--- variance decomposition ---
+  var(total error):          4.6550
+  var(systematic bias):      1.1594  (24.9%)
+  var(sampling noise):       3.6764  (79.0%)
+
+figure saved to: figures/kalman_agg_NV_bias_anchored_last_200_days.png
+results exported to: data/kalman_agg_NV_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (nevada | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 106
+  polls after filter:  103
+  polls dropped:       3
+nevada polls loaded: 103 questions from 64 polls
+date range: 2024-05-13 to 2024-11-04
+true margin (constant across rows): 3.140 pp
+poll margin range: -9.0 to 6.0 pp
+mean poll margin: -0.528 pp
+
+within-day aggregation complete:
+  observations before: 103 (individual poll questions)
+  observations after:  43 (one per unique end_date)
+  unique days:         43 -> 43
+  mean polls per day:  2.4
+  mean combined n:     1729
+  mean combined var:   10.0676 pp^2
+  mean individual var (pre-agg): 14.5166 pp^2
+  variance reduction factor: 1.4x
+
+skipping election result anchor (unanchored mode)
+true margin: 3.140 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.027761 per day
+  interpretation: true opinion can move ~0.167 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — nevada (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 3.140 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.111 pp
+  mean total error:          -3.251 pp
+  sd of total error:         2.158 pp
+
+--- decomposition (means) ---
+  final forecast error:      -3.600 pp
+  mean smoothed-poll gap:    1.549 pp
+  mean |sampling noise|:     1.549 pp
+
+figure saved to: figures/kalman_agg_NV_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_agg_NV_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (nevada | LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.414766
+sigma2_u (unanchored): 0.027761
+ratio (anchored/unanchored): 14.940
+
+final smoothed estimate (anchored):   2.336 pp
+final smoothed estimate (unanchored): -0.460 pp
+true margin:                          3.140 pp
+unanchored forecast error:            -3.600 pp
+anchored terminal adjustment:         0.804 pp
+
+======================================================================
+======================================================================
+ANALYZING: nevada (NV) | LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (nevada | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 106
+  polls after filter:  102
+  polls dropped:       4
+nevada polls loaded: 102 questions from 63 polls
+date range: 2024-07-24 to 2024-11-04
+true margin (constant across rows): 3.140 pp
+poll margin range: -9.0 to 6.0 pp
+mean poll margin: -0.562 pp
+
+sanity check — unique true_margin values: [3.14001699]
+
+within-day aggregation complete:
+  observations before: 102 (individual poll questions)
+  observations after:  42 (one per unique end_date)
+  unique days:         42 -> 42
+  mean polls per day:  2.4
+  mean combined n:     1760
+  mean combined var:   9.8357 pp^2
+  mean individual var (pre-agg): 14.4647 pp^2
+  variance reduction factor: 1.5x
+
+election result appended: margin = 3.140 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.452443 per day
+  interpretation: true opinion can move ~0.673 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — nevada (trump margin, anchored)
+============================================================
+
+true margin (certified result): 3.140 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.186 pp
+  mean total error:          -3.326 pp
+  sd of total error:         2.128 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -3.374 pp
+  mean |sampling noise|:     1.348 pp
+
+--- variance decomposition ---
+  var(total error):          4.5268
+  var(systematic bias):      1.0168  (22.5%)
+  var(sampling noise):       3.7086  (81.9%)
+
+figure saved to: figures/kalman_agg_NV_bias_anchored_last_107_days.png
+results exported to: data/kalman_agg_NV_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (nevada | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 106
+  polls after filter:  102
+  polls dropped:       4
+nevada polls loaded: 102 questions from 63 polls
+date range: 2024-07-24 to 2024-11-04
+true margin (constant across rows): 3.140 pp
+poll margin range: -9.0 to 6.0 pp
+mean poll margin: -0.562 pp
+
+within-day aggregation complete:
+  observations before: 102 (individual poll questions)
+  observations after:  42 (one per unique end_date)
+  unique days:         42 -> 42
+  mean polls per day:  2.4
+  mean combined n:     1760
+  mean combined var:   9.8357 pp^2
+  mean individual var (pre-agg): 14.4647 pp^2
+  variance reduction factor: 1.5x
+
+skipping election result anchor (unanchored mode)
+true margin: 3.140 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.022425 per day
+  interpretation: true opinion can move ~0.150 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — nevada (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 3.140 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.186 pp
+  mean total error:          -3.326 pp
+  sd of total error:         2.128 pp
+
+--- decomposition (means) ---
+  final forecast error:      -3.628 pp
+  mean smoothed-poll gap:    1.544 pp
+  mean |sampling noise|:     1.544 pp
+
+figure saved to: figures/kalman_agg_NV_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_agg_NV_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (nevada | LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.452443
+sigma2_u (unanchored): 0.022425
+ratio (anchored/unanchored): 20.176
+
+final smoothed estimate (anchored):   2.321 pp
+final smoothed estimate (unanchored): -0.488 pp
+true margin:                          3.140 pp
+unanchored forecast error:            -3.628 pp
+anchored terminal adjustment:         0.820 pp
+
+======================================================================
+======================================================================
+ANALYZING: north carolina (NC) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (north carolina | ALL DATA)
+======================================================================
+north carolina polls loaded: 145 questions from 93 polls
+date range: 2024-02-16 to 2024-11-04
+true margin (constant across rows): 3.212 pp
+poll margin range: -4.0 to 10.0 pp
+mean poll margin: 0.563 pp
+
+sanity check — unique true_margin values: [3.21185245]
+
+within-day aggregation complete:
+  observations before: 145 (individual poll questions)
+  observations after:  60 (one per unique end_date)
+  unique days:         60 -> 60
+  mean polls per day:  2.4
+  mean combined n:     2232
+  mean combined var:   8.6655 pp^2
+  mean individual var (pre-agg): 11.5996 pp^2
+  variance reduction factor: 1.3x
+
+election result appended: margin = 3.212 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.250246 per day
+  interpretation: true opinion can move ~0.500 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — north carolina (trump margin, anchored)
+============================================================
+
+true margin (certified result): 3.212 pp
+
+--- overall poll error ---
+  mean poll margin:          1.103 pp
+  mean total error:          -2.109 pp
+  sd of total error:         2.282 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.368 pp
+  mean |sampling noise|:     1.222 pp
+
+--- variance decomposition ---
+  var(total error):          5.2082
+  var(systematic bias):      2.1954  (42.2%)
+  var(sampling noise):       2.3088  (44.3%)
+
+figure saved to: figures/kalman_agg_NC_bias_anchored_all_data.png
+results exported to: data/kalman_agg_NC_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (north carolina | ALL DATA)
+======================================================================
+north carolina polls loaded: 145 questions from 93 polls
+date range: 2024-02-16 to 2024-11-04
+true margin (constant across rows): 3.212 pp
+poll margin range: -4.0 to 10.0 pp
+mean poll margin: 0.563 pp
+
+within-day aggregation complete:
+  observations before: 145 (individual poll questions)
+  observations after:  60 (one per unique end_date)
+  unique days:         60 -> 60
+  mean polls per day:  2.4
+  mean combined n:     2232
+  mean combined var:   8.6655 pp^2
+  mean individual var (pre-agg): 11.5996 pp^2
+  variance reduction factor: 1.3x
+
+skipping election result anchor (unanchored mode)
+true margin: 3.212 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.071626 per day
+  interpretation: true opinion can move ~0.268 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — north carolina (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 3.212 pp
+
+--- overall poll error ---
+  mean poll margin:          1.103 pp
+  mean total error:          -2.109 pp
+  sd of total error:         2.282 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.734 pp
+  mean smoothed-poll gap:    1.372 pp
+  mean |sampling noise|:     1.372 pp
+
+figure saved to: figures/kalman_agg_NC_trajectory_unanchored_all_data.png
+results exported to: data/kalman_agg_NC_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (north carolina | ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.250246
+sigma2_u (unanchored): 0.071626
+ratio (anchored/unanchored): 3.494
+
+final smoothed estimate (anchored):   2.532 pp
+final smoothed estimate (unanchored): 0.478 pp
+true margin:                          3.212 pp
+unanchored forecast error:            -2.734 pp
+anchored terminal adjustment:         0.680 pp
+
+======================================================================
+======================================================================
+ANALYZING: north carolina (NC) | LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (north carolina | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 145
+  polls after filter:  144
+  polls dropped:       1
+north carolina polls loaded: 144 questions from 92 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 3.212 pp
+poll margin range: -4.0 to 10.0 pp
+mean poll margin: 0.503 pp
+
+sanity check — unique true_margin values: [3.21185245]
+
+within-day aggregation complete:
+  observations before: 144 (individual poll questions)
+  observations after:  59 (one per unique end_date)
+  unique days:         59 -> 59
+  mean polls per day:  2.4
+  mean combined n:     2252
+  mean combined var:   8.6603 pp^2
+  mean individual var (pre-agg): 11.6178 pp^2
+  variance reduction factor: 1.3x
+
+election result appended: margin = 3.212 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.262003 per day
+  interpretation: true opinion can move ~0.512 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — north carolina (trump margin, anchored)
+============================================================
+
+true margin (certified result): 3.212 pp
+
+--- overall poll error ---
+  mean poll margin:          0.965 pp
+  mean total error:          -2.247 pp
+  sd of total error:         2.037 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.514 pp
+  mean |sampling noise|:     1.237 pp
+
+--- variance decomposition ---
+  var(total error):          4.1483
+  var(systematic bias):      1.0695  (25.8%)
+  var(sampling noise):       2.3753  (57.3%)
+
+figure saved to: figures/kalman_agg_NC_bias_anchored_last_200_days.png
+results exported to: data/kalman_agg_NC_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (north carolina | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 145
+  polls after filter:  144
+  polls dropped:       1
+north carolina polls loaded: 144 questions from 92 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 3.212 pp
+poll margin range: -4.0 to 10.0 pp
+mean poll margin: 0.503 pp
+
+within-day aggregation complete:
+  observations before: 144 (individual poll questions)
+  observations after:  59 (one per unique end_date)
+  unique days:         59 -> 59
+  mean polls per day:  2.4
+  mean combined n:     2252
+  mean combined var:   8.6603 pp^2
+  mean individual var (pre-agg): 11.6178 pp^2
+  variance reduction factor: 1.3x
+
+skipping election result anchor (unanchored mode)
+true margin: 3.212 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.000100 per day
+  interpretation: true opinion can move ~0.010 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — north carolina (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 3.212 pp
+
+--- overall poll error ---
+  mean poll margin:          0.965 pp
+  mean total error:          -2.247 pp
+  sd of total error:         2.037 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.775 pp
+  mean smoothed-poll gap:    1.537 pp
+  mean |sampling noise|:     1.537 pp
+
+figure saved to: figures/kalman_agg_NC_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_agg_NC_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (north carolina | LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.262003
+sigma2_u (unanchored): 0.000100
+ratio (anchored/unanchored): 2620.031
+
+final smoothed estimate (anchored):   2.522 pp
+final smoothed estimate (unanchored): 0.437 pp
+true margin:                          3.212 pp
+unanchored forecast error:            -2.775 pp
+anchored terminal adjustment:         0.690 pp
+
+======================================================================
+======================================================================
+ANALYZING: north carolina (NC) | LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (north carolina | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 145
+  polls after filter:  142
+  polls dropped:       3
+north carolina polls loaded: 142 questions from 90 polls
+date range: 2024-07-24 to 2024-11-04
+true margin (constant across rows): 3.212 pp
+poll margin range: -4.0 to 4.0 pp
+mean poll margin: 0.411 pp
+
+sanity check — unique true_margin values: [3.21185245]
+
+within-day aggregation complete:
+  observations before: 142 (individual poll questions)
+  observations after:  57 (one per unique end_date)
+  unique days:         57 -> 57
+  mean polls per day:  2.5
+  mean combined n:     2309
+  mean combined var:   8.4612 pp^2
+  mean individual var (pre-agg): 11.5796 pp^2
+  variance reduction factor: 1.4x
+
+election result appended: margin = 3.212 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.218398 per day
+  interpretation: true opinion can move ~0.467 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — north carolina (trump margin, anchored)
+============================================================
+
+true margin (certified result): 3.212 pp
+
+--- overall poll error ---
+  mean poll margin:          0.754 pp
+  mean total error:          -2.458 pp
+  sd of total error:         1.621 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.699 pp
+  mean |sampling noise|:     1.234 pp
+
+--- variance decomposition ---
+  var(total error):          2.6288
+  var(systematic bias):      0.2880  (11.0%)
+  var(sampling noise):       2.3503  (89.4%)
+
+figure saved to: figures/kalman_agg_NC_bias_anchored_last_107_days.png
+results exported to: data/kalman_agg_NC_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (north carolina | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 145
+  polls after filter:  142
+  polls dropped:       3
+north carolina polls loaded: 142 questions from 90 polls
+date range: 2024-07-24 to 2024-11-04
+true margin (constant across rows): 3.212 pp
+poll margin range: -4.0 to 4.0 pp
+mean poll margin: 0.411 pp
+
+within-day aggregation complete:
+  observations before: 142 (individual poll questions)
+  observations after:  57 (one per unique end_date)
+  unique days:         57 -> 57
+  mean polls per day:  2.5
+  mean combined n:     2309
+  mean combined var:   8.4612 pp^2
+  mean individual var (pre-agg): 11.5796 pp^2
+  variance reduction factor: 1.4x
+
+skipping election result anchor (unanchored mode)
+true margin: 3.212 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.000100 per day
+  interpretation: true opinion can move ~0.010 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — north carolina (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 3.212 pp
+
+--- overall poll error ---
+  mean poll margin:          0.754 pp
+  mean total error:          -2.458 pp
+  sd of total error:         1.621 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.844 pp
+  mean smoothed-poll gap:    1.372 pp
+  mean |sampling noise|:     1.372 pp
+
+figure saved to: figures/kalman_agg_NC_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_agg_NC_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (north carolina | LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.218398
+sigma2_u (unanchored): 0.000100
+ratio (anchored/unanchored): 2183.981
+
+final smoothed estimate (anchored):   2.561 pp
+final smoothed estimate (unanchored): 0.368 pp
+true margin:                          3.212 pp
+unanchored forecast error:            -2.844 pp
+anchored terminal adjustment:         0.650 pp
+
+======================================================================
+======================================================================
+ANALYZING: pennsylvania (PA) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (pennsylvania | ALL DATA)
+======================================================================
+pennsylvania polls loaded: 212 questions from 132 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 1.710 pp
+poll margin range: -6.0 to 9.7 pp
+mean poll margin: -0.488 pp
+
+sanity check — unique true_margin values: [1.70973099]
+
+within-day aggregation complete:
+  observations before: 212 (individual poll questions)
+  observations after:  69 (one per unique end_date)
+  unique days:         69 -> 69
+  mean polls per day:  3.1
+  mean combined n:     3148
+  mean combined var:   6.7486 pp^2
+  mean individual var (pre-agg): 11.4141 pp^2
+  variance reduction factor: 1.7x
+
+election result appended: margin = 1.710 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.157676 per day
+  interpretation: true opinion can move ~0.397 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — pennsylvania (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.710 pp
+
+--- overall poll error ---
+  mean poll margin:          0.063 pp
+  mean total error:          -1.647 pp
+  sd of total error:         2.447 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -1.883 pp
+  mean |sampling noise|:     1.325 pp
+
+--- variance decomposition ---
+  var(total error):          5.9855
+  var(systematic bias):      2.3905  (39.9%)
+  var(sampling noise):       2.7675  (46.2%)
+
+figure saved to: figures/kalman_agg_PA_bias_anchored_all_data.png
+results exported to: data/kalman_agg_PA_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (pennsylvania | ALL DATA)
+======================================================================
+pennsylvania polls loaded: 212 questions from 132 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 1.710 pp
+poll margin range: -6.0 to 9.7 pp
+mean poll margin: -0.488 pp
+
+within-day aggregation complete:
+  observations before: 212 (individual poll questions)
+  observations after:  69 (one per unique end_date)
+  unique days:         69 -> 69
+  mean polls per day:  3.1
+  mean combined n:     3148
+  mean combined var:   6.7486 pp^2
+  mean individual var (pre-agg): 11.4141 pp^2
+  variance reduction factor: 1.7x
+
+skipping election result anchor (unanchored mode)
+true margin: 1.710 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.071975 per day
+  interpretation: true opinion can move ~0.268 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — pennsylvania (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.710 pp
+
+--- overall poll error ---
+  mean poll margin:          0.063 pp
+  mean total error:          -1.647 pp
+  sd of total error:         2.447 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.889 pp
+  mean smoothed-poll gap:    1.409 pp
+  mean |sampling noise|:     1.409 pp
+
+figure saved to: figures/kalman_agg_PA_trajectory_unanchored_all_data.png
+results exported to: data/kalman_agg_PA_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (pennsylvania | ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.157676
+sigma2_u (unanchored): 0.071975
+ratio (anchored/unanchored): 2.191
+
+final smoothed estimate (anchored):   1.241 pp
+final smoothed estimate (unanchored): -0.180 pp
+true margin:                          1.710 pp
+unanchored forecast error:            -1.889 pp
+anchored terminal adjustment:         0.469 pp
+
+======================================================================
+======================================================================
+ANALYZING: pennsylvania (PA) | LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (pennsylvania | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 212
+  polls after filter:  209
+  polls dropped:       3
+pennsylvania polls loaded: 209 questions from 130 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 1.710 pp
+poll margin range: -6.0 to 7.0 pp
+mean poll margin: -0.575 pp
+
+sanity check — unique true_margin values: [1.70973099]
+
+within-day aggregation complete:
+  observations before: 209 (individual poll questions)
+  observations after:  67 (one per unique end_date)
+  unique days:         67 -> 67
+  mean polls per day:  3.1
+  mean combined n:     3209
+  mean combined var:   6.7054 pp^2
+  mean individual var (pre-agg): 11.3902 pp^2
+  variance reduction factor: 1.7x
+
+election result appended: margin = 1.710 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.157421 per day
+  interpretation: true opinion can move ~0.397 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — pennsylvania (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.710 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.132 pp
+  mean total error:          -1.842 pp
+  sd of total error:         2.131 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.083 pp
+  mean |sampling noise|:     1.323 pp
+
+--- variance decomposition ---
+  var(total error):          4.5424
+  var(systematic bias):      1.1306  (24.9%)
+  var(sampling noise):       2.8023  (61.7%)
+
+figure saved to: figures/kalman_agg_PA_bias_anchored_last_200_days.png
+results exported to: data/kalman_agg_PA_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (pennsylvania | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 212
+  polls after filter:  209
+  polls dropped:       3
+pennsylvania polls loaded: 209 questions from 130 polls
+date range: 2024-05-12 to 2024-11-04
+true margin (constant across rows): 1.710 pp
+poll margin range: -6.0 to 7.0 pp
+mean poll margin: -0.575 pp
+
+within-day aggregation complete:
+  observations before: 209 (individual poll questions)
+  observations after:  67 (one per unique end_date)
+  unique days:         67 -> 67
+  mean polls per day:  3.1
+  mean combined n:     3209
+  mean combined var:   6.7054 pp^2
+  mean individual var (pre-agg): 11.3902 pp^2
+  variance reduction factor: 1.7x
+
+skipping election result anchor (unanchored mode)
+true margin: 1.710 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.052048 per day
+  interpretation: true opinion can move ~0.228 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — pennsylvania (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.710 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.132 pp
+  mean total error:          -1.842 pp
+  sd of total error:         2.131 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.924 pp
+  mean smoothed-poll gap:    1.426 pp
+  mean |sampling noise|:     1.426 pp
+
+figure saved to: figures/kalman_agg_PA_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_agg_PA_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (pennsylvania | LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.157421
+sigma2_u (unanchored): 0.052048
+ratio (anchored/unanchored): 3.025
+
+final smoothed estimate (anchored):   1.241 pp
+final smoothed estimate (unanchored): -0.214 pp
+true margin:                          1.710 pp
+unanchored forecast error:            -1.924 pp
+anchored terminal adjustment:         0.469 pp
+
+======================================================================
+======================================================================
+ANALYZING: pennsylvania (PA) | LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (pennsylvania | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 212
+  polls after filter:  201
+  polls dropped:       11
+pennsylvania polls loaded: 201 questions from 125 polls
+date range: 2024-07-21 to 2024-11-04
+true margin (constant across rows): 1.710 pp
+poll margin range: -6.0 to 6.0 pp
+mean poll margin: -0.712 pp
+
+sanity check — unique true_margin values: [1.70973099]
+
+within-day aggregation complete:
+  observations before: 201 (individual poll questions)
+  observations after:  62 (one per unique end_date)
+  unique days:         62 -> 62
+  mean polls per day:  3.2
+  mean combined n:     3371
+  mean combined var:   6.2362 pp^2
+  mean individual var (pre-agg): 11.3416 pp^2
+  variance reduction factor: 1.8x
+
+election result appended: margin = 1.710 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.146587 per day
+  interpretation: true opinion can move ~0.383 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — pennsylvania (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.710 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.441 pp
+  mean total error:          -2.151 pp
+  sd of total error:         1.782 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.327 pp
+  mean |sampling noise|:     1.308 pp
+
+--- variance decomposition ---
+  var(total error):          3.1743
+  var(systematic bias):      0.4831  (15.2%)
+  var(sampling noise):       2.6779  (84.4%)
+
+figure saved to: figures/kalman_agg_PA_bias_anchored_last_107_days.png
+results exported to: data/kalman_agg_PA_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (pennsylvania | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 212
+  polls after filter:  201
+  polls dropped:       11
+pennsylvania polls loaded: 201 questions from 125 polls
+date range: 2024-07-21 to 2024-11-04
+true margin (constant across rows): 1.710 pp
+poll margin range: -6.0 to 6.0 pp
+mean poll margin: -0.712 pp
+
+within-day aggregation complete:
+  observations before: 201 (individual poll questions)
+  observations after:  62 (one per unique end_date)
+  unique days:         62 -> 62
+  mean polls per day:  3.2
+  mean combined n:     3371
+  mean combined var:   6.2362 pp^2
+  mean individual var (pre-agg): 11.3416 pp^2
+  variance reduction factor: 1.8x
+
+skipping election result anchor (unanchored mode)
+true margin: 1.710 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.014209 per day
+  interpretation: true opinion can move ~0.119 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — pennsylvania (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.710 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.441 pp
+  mean total error:          -2.151 pp
+  sd of total error:         1.782 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.071 pp
+  mean smoothed-poll gap:    1.416 pp
+  mean |sampling noise|:     1.416 pp
+
+figure saved to: figures/kalman_agg_PA_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_agg_PA_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (pennsylvania | LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.146587
+sigma2_u (unanchored): 0.014209
+ratio (anchored/unanchored): 10.317
+
+final smoothed estimate (anchored):   1.251 pp
+final smoothed estimate (unanchored): -0.361 pp
+true margin:                          1.710 pp
+unanchored forecast error:            -2.071 pp
+anchored terminal adjustment:         0.459 pp
+
+======================================================================
+======================================================================
+ANALYZING: wisconsin (WI) | ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (wisconsin | ALL DATA)
+======================================================================
+wisconsin polls loaded: 173 questions from 102 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 0.859 pp
+poll margin range: -9.0 to 8.0 pp
+mean poll margin: -1.678 pp
+
+sanity check — unique true_margin values: [0.85882864]
+
+within-day aggregation complete:
+  observations before: 173 (individual poll questions)
+  observations after:  64 (one per unique end_date)
+  unique days:         64 -> 64
+  mean polls per day:  2.7
+  mean combined n:     2158
+  mean combined var:   7.8509 pp^2
+  mean individual var (pre-agg): 13.1949 pp^2
+  variance reduction factor: 1.7x
+
+election result appended: margin = 0.859 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.217089 per day
+  interpretation: true opinion can move ~0.466 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — wisconsin (trump margin, anchored)
+============================================================
+
+true margin (certified result): 0.859 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.304 pp
+  mean total error:          -2.163 pp
+  sd of total error:         2.571 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.195 pp
+  mean |sampling noise|:     1.382 pp
+
+--- variance decomposition ---
+  var(total error):          6.6095
+  var(systematic bias):      2.0835  (31.5%)
+  var(sampling noise):       3.2962  (49.9%)
+
+figure saved to: figures/kalman_agg_WI_bias_anchored_all_data.png
+results exported to: data/kalman_agg_WI_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (wisconsin | ALL DATA)
+======================================================================
+wisconsin polls loaded: 173 questions from 102 polls
+date range: 2023-11-03 to 2024-11-04
+true margin (constant across rows): 0.859 pp
+poll margin range: -9.0 to 8.0 pp
+mean poll margin: -1.678 pp
+
+within-day aggregation complete:
+  observations before: 173 (individual poll questions)
+  observations after:  64 (one per unique end_date)
+  unique days:         64 -> 64
+  mean polls per day:  2.7
+  mean combined n:     2158
+  mean combined var:   7.8509 pp^2
+  mean individual var (pre-agg): 13.1949 pp^2
+  variance reduction factor: 1.7x
+
+skipping election result anchor (unanchored mode)
+true margin: 0.859 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.086065 per day
+  interpretation: true opinion can move ~0.293 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — wisconsin (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 0.859 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.304 pp
+  mean total error:          -2.163 pp
+  sd of total error:         2.571 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.240 pp
+  mean smoothed-poll gap:    1.526 pp
+  mean |sampling noise|:     1.526 pp
+
+figure saved to: figures/kalman_agg_WI_trajectory_unanchored_all_data.png
+results exported to: data/kalman_agg_WI_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (wisconsin | ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.217089
+sigma2_u (unanchored): 0.086065
+ratio (anchored/unanchored): 2.522
+
+final smoothed estimate (anchored):   0.332 pp
+final smoothed estimate (unanchored): -1.382 pp
+true margin:                          0.859 pp
+unanchored forecast error:            -2.240 pp
+anchored terminal adjustment:         0.526 pp
+
+======================================================================
+======================================================================
+ANALYZING: wisconsin (WI) | LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (wisconsin | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 173
+  polls after filter:  170
+  polls dropped:       3
+wisconsin polls loaded: 170 questions from 100 polls
+date range: 2024-05-13 to 2024-11-04
+true margin (constant across rows): 0.859 pp
+poll margin range: -9.0 to 8.0 pp
+mean poll margin: -1.745 pp
+
+sanity check — unique true_margin values: [0.85882864]
+
+within-day aggregation complete:
+  observations before: 170 (individual poll questions)
+  observations after:  62 (one per unique end_date)
+  unique days:         62 -> 62
+  mean polls per day:  2.7
+  mean combined n:     2193
+  mean combined var:   7.8332 pp^2
+  mean individual var (pre-agg): 13.1921 pp^2
+  variance reduction factor: 1.7x
+
+election result appended: margin = 0.859 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.265578 per day
+  interpretation: true opinion can move ~0.515 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — wisconsin (trump margin, anchored)
+============================================================
+
+true margin (certified result): 0.859 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.425 pp
+  mean total error:          -2.284 pp
+  sd of total error:         2.514 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.312 pp
+  mean |sampling noise|:     1.378 pp
+
+--- variance decomposition ---
+  var(total error):          6.3198
+  var(systematic bias):      1.8161  (28.7%)
+  var(sampling noise):       3.2336  (51.2%)
+
+figure saved to: figures/kalman_agg_WI_bias_anchored_last_200_days.png
+results exported to: data/kalman_agg_WI_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (wisconsin | LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 173
+  polls after filter:  170
+  polls dropped:       3
+wisconsin polls loaded: 170 questions from 100 polls
+date range: 2024-05-13 to 2024-11-04
+true margin (constant across rows): 0.859 pp
+poll margin range: -9.0 to 8.0 pp
+mean poll margin: -1.745 pp
+
+within-day aggregation complete:
+  observations before: 170 (individual poll questions)
+  observations after:  62 (one per unique end_date)
+  unique days:         62 -> 62
+  mean polls per day:  2.7
+  mean combined n:     2193
+  mean combined var:   7.8332 pp^2
+  mean individual var (pre-agg): 13.1921 pp^2
+  variance reduction factor: 1.7x
+
+skipping election result anchor (unanchored mode)
+true margin: 0.859 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.116898 per day
+  interpretation: true opinion can move ~0.342 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — wisconsin (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 0.859 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.425 pp
+  mean total error:          -2.284 pp
+  sd of total error:         2.514 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.225 pp
+  mean smoothed-poll gap:    1.510 pp
+  mean |sampling noise|:     1.510 pp
+
+figure saved to: figures/kalman_agg_WI_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_agg_WI_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (wisconsin | LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.265578
+sigma2_u (unanchored): 0.116898
+ratio (anchored/unanchored): 2.272
+
+final smoothed estimate (anchored):   0.305 pp
+final smoothed estimate (unanchored): -1.366 pp
+true margin:                          0.859 pp
+unanchored forecast error:            -2.225 pp
+anchored terminal adjustment:         0.553 pp
+
+======================================================================
+======================================================================
+ANALYZING: wisconsin (WI) | LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (wisconsin | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 173
+  polls after filter:  166
+  polls dropped:       7
+wisconsin polls loaded: 166 questions from 96 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 0.859 pp
+poll margin range: -9.0 to 2.0 pp
+mean poll margin: -1.848 pp
+
+sanity check — unique true_margin values: [0.85882864]
+
+within-day aggregation complete:
+  observations before: 166 (individual poll questions)
+  observations after:  58 (one per unique end_date)
+  unique days:         58 -> 58
+  mean polls per day:  2.9
+  mean combined n:     2303
+  mean combined var:   7.2510 pp^2
+  mean individual var (pre-agg): 13.1178 pp^2
+  variance reduction factor: 1.8x
+
+election result appended: margin = 0.859 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.230111 per day
+  interpretation: true opinion can move ~0.480 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — wisconsin (trump margin, anchored)
+============================================================
+
+true margin (certified result): 0.859 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.696 pp
+  mean total error:          -2.555 pp
+  sd of total error:         2.211 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.539 pp
+  mean |sampling noise|:     1.419 pp
+
+--- variance decomposition ---
+  var(total error):          4.8882
+  var(systematic bias):      1.0020  (20.5%)
+  var(sampling noise):       3.3194  (67.9%)
+
+figure saved to: figures/kalman_agg_WI_bias_anchored_last_107_days.png
+results exported to: data/kalman_agg_WI_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (wisconsin | LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 173
+  polls after filter:  166
+  polls dropped:       7
+wisconsin polls loaded: 166 questions from 96 polls
+date range: 2024-07-23 to 2024-11-04
+true margin (constant across rows): 0.859 pp
+poll margin range: -9.0 to 2.0 pp
+mean poll margin: -1.848 pp
+
+within-day aggregation complete:
+  observations before: 166 (individual poll questions)
+  observations after:  58 (one per unique end_date)
+  unique days:         58 -> 58
+  mean polls per day:  2.9
+  mean combined n:     2303
+  mean combined var:   7.2510 pp^2
+  mean individual var (pre-agg): 13.1178 pp^2
+  variance reduction factor: 1.8x
+
+skipping election result anchor (unanchored mode)
+true margin: 0.859 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.038569 per day
+  interpretation: true opinion can move ~0.196 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — wisconsin (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 0.859 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.696 pp
+  mean total error:          -2.555 pp
+  sd of total error:         2.211 pp
+
+--- decomposition (means) ---
+  final forecast error:      -2.255 pp
+  mean smoothed-poll gap:    1.609 pp
+  mean |sampling noise|:     1.609 pp
+
+figure saved to: figures/kalman_agg_WI_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_agg_WI_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (wisconsin | LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.230111
+sigma2_u (unanchored): 0.038569
+ratio (anchored/unanchored): 5.966
+
+final smoothed estimate (anchored):   0.324 pp
+final smoothed estimate (unanchored): -1.396 pp
+true margin:                          0.859 pp
+unanchored forecast error:            -2.255 pp
+anchored terminal adjustment:         0.534 pp
+
+======================================================================
+analysis completed: 2026-02-18 00:01:33
+log saved to: output/kalman_daily_aggregated_swingstates_log_20260218_000057.txt
