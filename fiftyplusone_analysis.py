@@ -47,15 +47,11 @@ pct_total_by_question['pct_dk'] = 100 - pct_total_by_question['pct_total']
 ########################################################################################
 
 ######## pivot to get one row per question with trump and harris pct side by side
-# keep all metadata columns in the index so they survive the pivot
+# only pivot on question_id because of metadata handling dropping 200 rows if not
 harris_trump_pivot = (
     harris_trump_full_df[harris_trump_full_df['answer'].isin(['Trump', 'Harris'])]
     .pivot_table(
-        index=[
-            'question_id', 'poll_id', 'pollster', 'state',
-            'start_date', 'end_date', 'mode',
-            'population', 'sample_size',
-        ],
+        index='question_id',
         columns='answer',
         values='pct',
         aggfunc='mean'
@@ -63,6 +59,16 @@ harris_trump_pivot = (
     .reset_index()
     .rename(columns={'Trump': 'pct_trump_poll', 'Harris': 'pct_harris_poll'})
 )
+
+# merge metadata from one of the rows
+metadata_to_merge = (
+    harris_trump_full_df[harris_trump_full_df['answer'] == 'Trump']
+    [['question_id', 'poll_id', 'pollster', 'state', 'start_date', 'end_date', 
+      'mode', 'population', 'sample_size']]
+    .drop_duplicates('question_id')
+)
+
+harris_trump_pivot = harris_trump_pivot.merge(metadata_to_merge, on='question_id', how='left')
 
 # pivot_table leaves a residual answer name on the columns axis
 harris_trump_pivot.columns.name = None
