@@ -180,12 +180,29 @@ def compute_clustered_se(df, value_col, cluster_col):
     """
     compute cluster-robust standard error of the mean, accounts for multiple questions per poll
     """
+    # remove any rows with missing values
     df_clean = df[[value_col, cluster_col]].dropna()
+    
+    if len(df_clean) == 0:
+        return np.nan, 0
+    
+    # get cluster means
     cluster_means = df_clean.groupby(cluster_col)[value_col].mean()
     n_clusters = len(cluster_means)
+    
+    # need at least 2 clusters to compute cluster-robust SE
+    if n_clusters < 2:
+        return np.nan, n_clusters
+    
+    # grand mean
     grand_mean = df_clean[value_col].mean()
+    
+    # cluster-robust variance of the mean
     cluster_var = ((cluster_means - grand_mean) ** 2).sum() / (n_clusters - 1)
+    
+    # standard error of grand mean
     se_robust = np.sqrt(cluster_var / n_clusters)
+    
     return se_robust, n_clusters
 
 def sig_stars(p):
@@ -210,35 +227,102 @@ print(f"  SD:    {harris_trump_pivot['A'].std():.4f}")
 print(f"  N:        {len(harris_trump_pivot)}")
 
 ######## accuracy split before/after dropout
-accuracy_by_period = (
-    harris_trump_pivot.groupby('period')['A']
-    .agg(mean='mean', median='median', std='std', n='count')
-    .reset_index()
-)
+print(f"\nMethod A accuracy by period:")
+results = []
+for period in harris_trump_pivot['period'].unique():
+    subdf = harris_trump_pivot[harris_trump_pivot['period'] == period]
+    mean_A = subdf['A'].mean()
+    se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+    t_stat = mean_A / se_robust
 
-print(f"\nMethod A accuracy by period:\n")
-print(accuracy_by_period.to_string(index=False))
+    # only compute p-value if SE is valid
+    if pd.notna(se_robust) and se_robust > 0:
+        t_stat = mean_A / se_robust
+        p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+    else:
+        p_value = np.nan
+    
+    results.append({
+        'period': period,
+        'mean': mean_A,
+        'median': subdf['A'].median(),
+        'sd': subdf['A'].std(),
+        'se': se_robust,
+        'p_value': p_value,
+        'n': len(subdf)
+    })
+
+results_df = pd.DataFrame(results)
+results_df['sig'] = results_df['p_value'].apply(sig_stars)
+print(results_df.to_string(index=False))
 
 ######## accuracy split by state vs national
-accuracy_by_level = (
-    harris_trump_pivot.groupby('poll_level')['A']
-    .agg(mean='mean', median='median', std='std', n='count')
-    .reset_index()
-)
+print(f"\nMethod A accuracy by poll level (state vs national):")
+results = []
+for level in harris_trump_pivot['poll_level'].unique():
+    subdf = harris_trump_pivot[harris_trump_pivot['poll_level'] == level]
+    mean_A = subdf['A'].mean()
+    se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+    t_stat = mean_A / se_robust
 
-print(f"\nMethod A accuracy by poll level (state vs national):\n")
-print(accuracy_by_level.to_string(index=False))
+    # only compute p-value if SE is valid
+    if pd.notna(se_robust) and se_robust > 0:
+        t_stat = mean_A / se_robust
+        p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+    else:
+        p_value = np.nan
+
+    results.append({
+        'poll_level': level,
+        'mean': mean_A,
+        'median': subdf['A'].median(),
+        'se': se_robust,
+        'p_value': p_value,
+        'sd': subdf['A'].std(),
+        'n': len(subdf)
+    })
+
+results_df = pd.DataFrame(results)
+results_df['sig'] = results_df['p_value'].apply(sig_stars)
+print(results_df.to_string(index=False))
 
 ######## accuracy by state vs national, split before/after dropout
-accuracy_by_level_period = (
-    harris_trump_pivot.groupby(['poll_level', 'period'])['A']
-    .agg(mean='mean', median='median', n='count')
-    .reset_index()
-    .sort_values(['poll_level', 'period'])
-)
+print(f"\nMethod A accuracy by poll level and period:")
+results = []
+for level in harris_trump_pivot['poll_level'].unique():
+    for period in harris_trump_pivot['period'].unique():
+        subdf = harris_trump_pivot[
+            (harris_trump_pivot['poll_level'] == level) & 
+            (harris_trump_pivot['period'] == period)
+        ]
+        if len(subdf) == 0:
+            continue
+            
+        mean_A = subdf['A'].mean()
+        se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+        t_stat = mean_A / se_robust
+       
+        # only compute p-value if SE is valid
+        if pd.notna(se_robust) and se_robust > 0:
+            t_stat = mean_A / se_robust
+            p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+        else:
+            p_value = np.nan
 
-print(f"\nMethod A accuracy by poll level and period:\n")
-print(accuracy_by_level_period.to_string(index=False))
+        results.append({
+            'poll_level': level,
+            'period': period,
+            'mean': mean_A,
+            'median': subdf['A'].median(),
+            'sd': subdf['A'].std(),
+            'se': se_robust,
+            'p_value': p_value,
+            'n': len(subdf)
+        })
+
+results_df = pd.DataFrame(results).sort_values(['poll_level', 'period'])
+results_df['sig'] = results_df['p_value'].apply(sig_stars)
+print(results_df.to_string(index=False))
 
 ########################################################################################
 ##################################### Mode Analysis ####################################
@@ -268,26 +352,72 @@ print(f"\nBase mode breakdown (unique questions per mode):\n")
 print(mode_counts.to_string(index=False))
 
 ######## accuracy by base mode
-accuracy_by_mode = (
-    harris_trump_modes.groupby('base_mode')['A']
-    .agg(mean='mean', median='median', std='std', n='count')
-    .reset_index()
-    .sort_values('mean', ascending=False)
-)
+print(f"\nMethod A accuracy by base mode")
+results = []
+for mode in harris_trump_modes['base_mode'].unique():
+    subdf = harris_trump_modes[harris_trump_modes['base_mode'] == mode]
+    mean_A = subdf['A'].mean()
+    se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+    t_stat = mean_A / se_robust
 
-print(f"\nMethod A accuracy by base mode (+ = Republican bias, - = Democratic bias):\n")
-print(accuracy_by_mode.to_string(index=False))
+    # only compute p-value if SE is valid
+    if pd.notna(se_robust) and se_robust > 0:
+        t_stat = mean_A / se_robust
+        p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+    else:
+        p_value = np.nan
+
+    results.append({
+        'base_mode': mode,
+        'mean': mean_A,
+        'median': subdf['A'].median(),
+        'sd': subdf['A'].std(),
+        'se': se_robust,
+        'p_value': p_value,
+        'n': len(subdf)
+    })
+
+results_df = pd.DataFrame(results).sort_values('mean', ascending=False)
+results_df['sig'] = results_df['p_value'].apply(sig_stars)
+print(results_df.to_string(index=False))
 
 ######## accuracy by base mode split before/after dropout
-accuracy_by_mode_period = (
-    harris_trump_modes.groupby(['base_mode', 'period'])['A']
-    .agg(mean='mean', median='median', n='count')
-    .reset_index()
-    .sort_values(['base_mode', 'period'])
-)
+print(f"\nMethod A accuracy by base mode and period:")
+results = []
+for mode in harris_trump_modes['base_mode'].unique():
+    for period in harris_trump_modes['period'].unique():
+        subdf = harris_trump_modes[
+            (harris_trump_modes['base_mode'] == mode) & 
+            (harris_trump_modes['period'] == period)
+        ]
+        if len(subdf) == 0:
+            continue
+            
+        mean_A = subdf['A'].mean()
+        se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+        t_stat = mean_A / se_robust
 
-print(f"\nMethod A accuracy by base mode and period:\n")
-print(accuracy_by_mode_period.to_string(index=False))
+        # only compute p-value if SE is valid
+        if pd.notna(se_robust) and se_robust > 0:
+            t_stat = mean_A / se_robust
+            p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+        else:
+            p_value = np.nan
+
+        results.append({
+            'base_mode': mode,
+            'period': period,
+            'mean': mean_A,
+            'median': subdf['A'].median(),
+            'sd': subdf['A'].std(),
+            'se': se_robust,
+            'p_value': p_value,
+            'n': len(subdf)
+        })
+
+results_df = pd.DataFrame(results).sort_values(['base_mode', 'period'])
+results_df['sig'] = results_df['p_value'].apply(sig_stars)
+print(results_df.to_string(index=False))
 
 
 ########################################################################################
@@ -471,55 +601,74 @@ results_national = run_ols_clustered(
 # table print function
 def print_accuracy_table(df, group_col, label):
     """
-    groups df by group_col and poll_level, computes mean/median/std/n of method a,
+    groups df by group_col and poll_level, computes mean/median/std/se/p-value/n of method a,
     and prints a formatted table with state and national columns side by side
-    rows are sorted by state mean accuracy descending (national-only rows go last)
     """
-    tbl = (
-        df.groupby([group_col, 'poll_level'])['A']
-        .agg(mean='mean', median='median', std='std', n='count')
-        .reset_index()
-    )
+    results = []
+    
+    for (group_val, level), subdf in df.groupby([group_col, 'poll_level']):
+        mean_A = subdf['A'].mean()
+        se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+        t_stat = mean_A / se_robust
 
-    # pivot so state and national appear as side-by-side column groups
-    tbl_wide = tbl.pivot(index=group_col, columns='poll_level', values=['mean', 'median', 'std', 'n'])
+        # only compute p-value if SE is valid
+        if pd.notna(se_robust) and se_robust > 0:
+            t_stat = mean_A / se_robust
+            p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+        else:
+            p_value = np.nan
+
+        results.append({
+            group_col: group_val,
+            'poll_level': level,
+            'mean': mean_A,
+            'se': se_robust,
+            'p_value': p_value,
+            'median': subdf['A'].median(),
+            'std': subdf['A'].std(),
+            'n': len(subdf)
+        })
+    
+    results_df = pd.DataFrame(results)
+    tbl_wide = results_df.pivot(index=group_col, columns='poll_level', 
+                                  values=['mean', 'se', 'p_value', 'median', 'std', 'n'])
     tbl_wide.columns = [f"{stat}_{level}" for stat, level in tbl_wide.columns]
     tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
 
-    print(f"\n{'='*85}")
+    print(f"\n{'='*110}")
     print(f"  method a accuracy by {label}")
     print(f"  (+ = republican bias, - = democratic bias)")
-    print(f"{'='*85}")
-    print(f"  {'':30} {'-------- state --------':>34} {'------- national -------':>34}")
-    print(f"  {group_col:<30} {'mean':>8} {'median':>8} {'std':>8} {'n':>5}   "
-          f"{'mean':>8} {'median':>8} {'std':>8} {'n':>5}")
-    print(f"  {'-'*85}")
+    print(f"{'='*110}")
+    print(f"  {'':30} {'-------------- state --------------':>42} {'------------ national ------------':>42}")
+    print(f"  {group_col:<30} {'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}   "
+          f"{'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}")
+    print(f"  {'-'*108}")
 
     for _, row in tbl_wide.iterrows():
-        # fmt_val: format a continuous value (mean/median/std) to 4dp, or dash if missing
         def fmt_val(val):
             return f"{val:.4f}" if pd.notna(val) else '   --'
-
-        # fmt_n: format n as integer, or dash if missing/zero
-        # n=0 shouldn't appear (groupby only produces rows with data) but guard anyway
+        def fmt_pval(val):
+            return f"{val:.3f}{sig_stars(val)}" if pd.notna(val) else '   --'
         def fmt_n(val):
-            if pd.isna(val) or val == 0:
-                return '   --'
-            return f"{int(val)}"
+            return f"{int(val)}" if pd.notna(val) and val > 0 else '--'
 
         print(
             f"  {str(row[group_col]):<30} "
             f"{fmt_val(row.get('mean_state')):>8} "
+            f"{fmt_val(row.get('se_state')):>8} "
+            f"{fmt_pval(row.get('p_value_state')):>8} "
             f"{fmt_val(row.get('median_state')):>8} "
             f"{fmt_val(row.get('std_state')):>8} "
             f"{fmt_n(row.get('n_state')):>5}   "
             f"{fmt_val(row.get('mean_national')):>8} "
+            f"{fmt_val(row.get('se_national')):>8} "
+            f"{fmt_pval(row.get('p_value_national')):>8} "
             f"{fmt_val(row.get('median_national')):>8} "
             f"{fmt_val(row.get('std_national')):>8} "
             f"{fmt_n(row.get('n_national')):>5}"
         )
 
-    print(f"{'='*85}\n")
+    print(f"{'='*110}\n")
 
 # Table: accuracy by polling mode
 print_accuracy_table(harris_trump_modes, 'base_mode', 'polling mode')
