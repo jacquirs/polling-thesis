@@ -27,9 +27,11 @@ state
 national    861
 
 Overall Method A accuracy (all Harris+Trump questions):
-  Mean A:   -0.0563  (+ = Republican bias, - = Democratic bias)
-  Median A: -0.0607
-  Std A:    0.0796
+  Mean:   -0.0563
+  SE:       0.0021
+  p-value:  0.0000 ***
+  Median: -0.0607
+  SD:    0.0796
   N:        2576
 
 Method A accuracy by period:

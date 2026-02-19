@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import sys
 import statsmodels.api as sm
+from scipy import stats
 
 # redirect all print output to a log file
 log_file = open('output/fiftyplusone_analysis_log.txt', 'w')
@@ -174,13 +175,38 @@ harris_trump_pivot['period'] = np.where(
 ########################################################################################
 ############################# General Accuracy Analysis ################################
 ########################################################################################
+# include SE
+def compute_clustered_se(df, value_col, cluster_col):
+    """
+    compute cluster-robust standard error of the mean, accounts for multiple questions per poll
+    """
+    df_clean = df[[value_col, cluster_col]].dropna()
+    cluster_means = df_clean.groupby(cluster_col)[value_col].mean()
+    n_clusters = len(cluster_means)
+    grand_mean = df_clean[value_col].mean()
+    cluster_var = ((cluster_means - grand_mean) ** 2).sum() / (n_clusters - 1)
+    se_robust = np.sqrt(cluster_var / n_clusters)
+    return se_robust, n_clusters
+
+def sig_stars(p):
+    if p < 0.01:   return '***'
+    elif p < 0.05: return '**'
+    elif p < 0.10: return '*'
+    else:          return ''
+
 
 ######## overall accuracy
+mean_A = harris_trump_pivot['A'].mean()
+se_A_robust, n_polls = compute_clustered_se(harris_trump_pivot, 'A', 'poll_id')
+t_stat = mean_A / se_A_robust
+p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
 
 print(f"\nOverall Method A accuracy (all Harris+Trump questions):")
-print(f"  Mean A:   {harris_trump_pivot['A'].mean():.4f}  (+ = Republican bias, - = Democratic bias)")
-print(f"  Median A: {harris_trump_pivot['A'].median():.4f}")
-print(f"  Std A:    {harris_trump_pivot['A'].std():.4f}")
+print(f"  Mean:   {mean_A:.4f}")
+print(f"  SE:       {se_A_robust:.4f}")
+print(f"  p-value:  {p_value:.4f} {sig_stars(p_value)}")
+print(f"  Median: {harris_trump_pivot['A'].median():.4f}")
+print(f"  SD:    {harris_trump_pivot['A'].std():.4f}")
 print(f"  N:        {len(harris_trump_pivot)}")
 
 ######## accuracy split before/after dropout
