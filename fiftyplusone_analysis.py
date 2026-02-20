@@ -11,6 +11,7 @@ log_file = open('output/fiftyplusone_analysis_log.txt', 'w')
 sys.stdout = log_file
 
 # THIS FILE ANALYZES POLL ACCURACY AND MODE EFFECTS FOR HARRIS+TRUMP POLLS
+# NOT LIMTIED BY DATE OVERALL, for limited to after biden dropout time see fiftyplusone_datelimited_analysis.py
 # using Martin, Traugott & Kennedy (2005) Method A accuracy measure
 # then runs multivariate ols regressions (state and national separately)
 # to understand what poll design factors predict accuracy
