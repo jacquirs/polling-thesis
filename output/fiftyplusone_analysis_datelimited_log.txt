@@ -1,0 +1,479 @@
+Questions with both Trump and Harris pct: 2613
+Questions dropped due to missing pct:     0
+
+Derived national true vote shares (confirmed against results yay!!):
+  Trump:  0.4981
+  Harris: 0.4834
+
+Questions unmatched after state + national merge: 37
+Unmatched states:
+state
+maine cd-2       11
+nebraska cd-2    11
+maine cd-1        8
+puerto rico       5
+nebraska cd-1     1
+nebraska cd-3     1
+
+Questions remaining for accuracy analysis: 2317
+
+poll_level counts after flagging:
+poll_level
+state       1635
+national     682
+
+state values flagged as national:
+state
+national    682
+
+Overall Method A accuracy (all Harris+Trump questions):
+  Mean:   -0.0698
+  SE:       0.0017
+  p-value:  0.0000 ***
+  Median: -0.0702
+  SD:    0.0656
+  N:        2317
+  Mean Harris Part:   -0.0064
+  Mean Trump Part:   -0.0762
+
+National Polls (N=682):
+Trump - True: 49.81%, Poll Mean: 45.77%, Error: -4.04
+Harris - True: 48.34%, Poll Mean: 47.91%, Error: -0.43
+
+All Battleground States Combined (N=1184):
+  Trump Component Mean: -0.0685
+  Harris Component Mean: -0.0100
+  Method A Mean: -0.0585
+  Trump Error Mean: -3.30
+  Harris Error Mean: -0.44
+
+By State:
+
+arizona (N=157):
+  Trump True: 52.23%, Poll Mean: 48.07%, Error: -4.16
+  Harris True: 46.70%, Poll Mean: 46.85%, Error: 0.15
+  Trump Component Mean: -0.0842
+  Harris Component Mean: 0.0022
+  Method A Mean: -0.0863
+
+georgia (N=152):
+  Trump True: 50.72%, Poll Mean: 48.06%, Error: -2.66
+  Harris True: 48.53%, Poll Mean: 47.22%, Error: -1.30
+  Trump Component Mean: -0.0546
+  Harris Component Mean: -0.0282
+  Method A Mean: -0.0264
+
+michigan (N=188):
+  Trump True: 49.73%, Poll Mean: 46.53%, Error: -3.20
+  Harris True: 48.31%, Poll Mean: 47.93%, Error: -0.38
+  Trump Component Mean: -0.0676
+  Harris Component Mean: -0.0091
+  Method A Mean: -0.0585
+
+nevada (N=116):
+  Trump True: 51.27%, Poll Mean: 46.78%, Error: -4.49
+  Harris True: 48.13%, Poll Mean: 47.56%, Error: -0.57
+  Trump Component Mean: -0.0929
+  Harris Component Mean: -0.0130
+  Method A Mean: -0.0800
+
+north carolina (N=158):
+  Trump True: 50.86%, Poll Mean: 47.93%, Error: -2.93
+  Harris True: 47.65%, Poll Mean: 47.45%, Error: -0.19
+  Trump Component Mean: -0.0601
+  Harris Component Mean: -0.0046
+  Method A Mean: -0.0555
+
+pennsylvania (N=229):
+  Trump True: 50.37%, Poll Mean: 47.23%, Error: -3.14
+  Harris True: 48.66%, Poll Mean: 47.98%, Error: -0.69
+  Trump Component Mean: -0.0652
+  Harris Component Mean: -0.0151
+  Method A Mean: -0.0502
+
+wisconsin (N=184):
+  Trump True: 49.60%, Poll Mean: 46.61%, Error: -2.98
+  Harris True: 48.74%, Poll Mean: 48.65%, Error: -0.09
+  Trump Component Mean: -0.0631
+  Harris Component Mean: -0.0025
+  Method A Mean: -0.0606
+
+Method A accuracy by poll level (state vs national):
+poll_level      mean    median       se  p_value       sd    n sig
+     state -0.067269 -0.063201 0.002162      0.0 0.069794 1635 ***
+  national -0.075919 -0.078199 0.002574      0.0 0.053659  682 ***
+
+Base mode breakdown (unique questions per mode):
+
+            base_mode  unique_questions
+  Online Opt-In Panel              1073
+           Live Phone               545
+          Text-to-Web               479
+                  IVR               185
+Online Matched Sample               166
+            Online Ad               130
+    Probability Panel               121
+                 Text                99
+            App Panel                85
+                Email                79
+          Mail-to-Web                28
+        Mail-to-Phone                11
+
+Method A accuracy by base mode
+            base_mode      mean    median       sd       se      p_value    n sig
+            Online Ad -0.013954 -0.003385 0.048213 0.005976 2.232627e-02  130  **
+                 Text -0.040820 -0.025441 0.055603 0.005656 1.616247e-10   99 ***
+                  IVR -0.051602 -0.041469 0.065985 0.004844 0.000000e+00  185 ***
+           Live Phone -0.053872 -0.051058 0.064143 0.003762 0.000000e+00  545 ***
+                Email -0.059035 -0.063201 0.057308 0.007277 3.147127e-11   79 ***
+          Text-to-Web -0.062132 -0.055496 0.057223 0.003296 0.000000e+00  479 ***
+            App Panel -0.069393 -0.075879 0.054882 0.006075 0.000000e+00   85 ***
+  Online Opt-In Panel -0.074454 -0.072564 0.062460 0.002301 0.000000e+00 1073 ***
+Online Matched Sample -0.085963 -0.084255 0.050044 0.005213 0.000000e+00  166 ***
+        Mail-to-Phone -0.085992 -0.097710 0.045783 0.013656 2.335061e-04   11 ***
+    Probability Panel -0.101812 -0.095962 0.056204 0.008544 2.220446e-16  121 ***
+          Mail-to-Web -0.108599 -0.092000 0.118977 0.031339 2.761660e-03   28 ***
+                  NaN       NaN       NaN      NaN      NaN          NaN    0    
+
+time variable diagnostics:
+  duration_days        -- mean: 6.2, min: 1, max: 43
+  days_before_election -- mean: 43.6, min: 1, max: 107
+
+regression sample sizes:
+  state-level questions:    1635
+  national-level questions: 682
+
+top questions by days before election:
+ poll_id                                        pollster         state start_date   end_date  days_before_election
+   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
+   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
+   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
+   87518                                  SoCal Research  pennsylvania 2024-07-20 2024-07-21                   107
+   87511                                  SoCal Research      national 2024-07-21 2024-07-21                   107
+   87509                             Praecones Analytica new hampshire 2024-07-19 2024-07-21                   107
+   87511                                  SoCal Research      national 2024-07-21 2024-07-21                   107
+   87521                                         HarrisX      national 2024-07-19 2024-07-21                   107
+   87520                                Echelon Insights      national 2024-07-19 2024-07-21                   107
+   87521                                         HarrisX      national 2024-07-19 2024-07-21                   107
+   87524                                      Quinnipiac      national 2024-07-19 2024-07-21                   107
+   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
+   87524                                      Quinnipiac      national 2024-07-19 2024-07-21                   107
+   87534                         Landmark Communications       georgia 2024-07-22 2024-07-22                   106
+   87609                                  Capitol Weekly    california 2024-07-19 2024-07-22                   106
+   87529                                          YouGov      national 2024-07-19 2024-07-22                   106
+   87531                                  Marist College      national 2024-07-22 2024-07-22                   106
+   87529                                          YouGov      national 2024-07-19 2024-07-22                   106
+   87531                                  Marist College      national 2024-07-22 2024-07-22                   106
+   87523                                 Morning Consult      national 2024-07-21 2024-07-22                   106
+
+======================================================================
+  ols regression: state-level polls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0017     0.0003    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0004     0.0010       
+  abs_margin                             -0.2059     0.0457    ***
+  const                                  -0.0366     0.0062    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0748
+  n:            1635
+======================================================================
+
+
+======================================================================
+  ols regression: national polls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0034     0.0009    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0028     0.0007    ***
+  abs_margin                             -0.0008     0.0001    ***
+  const                                  -0.0541     0.0063    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0614
+  n:            682
+======================================================================
+
+
+==============================================================================================================
+  method a accuracy by polling mode
+  (+ = republican bias, - = democratic bias)
+==============================================================================================================
+                                        -------------- state --------------         ------------ national ------------
+  base_mode                          mean       se    p-val   median      std     n       mean       se    p-val   median      std     n
+  ------------------------------------------------------------------------------------------------------------
+  Online Ad                       -0.0163   0.0060 0.009***  -0.0051   0.0448   111    -0.0003   0.0206    0.990   0.0041   0.0646    19
+  Text                            -0.0408   0.0060 0.000***  -0.0235   0.0577    91    -0.0407   0.0103  0.017**  -0.0383   0.0218     8
+  IVR                             -0.0523   0.0052 0.000***  -0.0361   0.0653   159    -0.0472   0.0144 0.006***  -0.0589   0.0712    26
+  Live Phone                      -0.0563   0.0041 0.000***  -0.0557   0.0660   469    -0.0390   0.0091 0.000***  -0.0300   0.0491    76
+  Email                           -0.0590   0.0073 0.000***  -0.0632   0.0573    79         --       --       --       --       --    --
+  Text-to-Web                     -0.0632   0.0035 0.000***  -0.0564   0.0581   421    -0.0545   0.0091 0.000***  -0.0511   0.0498    58
+  Online Opt-In Panel             -0.0703   0.0031 0.000***  -0.0652   0.0678   648    -0.0808   0.0030 0.000***  -0.0932   0.0528   425
+  App Panel                       -0.0758   0.0068 0.000***  -0.0802   0.0548    66    -0.0470   0.0131 0.003***  -0.0434   0.0501    19
+  Mail-to-Phone                   -0.0860   0.0137 0.000***  -0.0977   0.0458    11         --       --       --       --       --    --
+  Online Matched Sample           -0.0905   0.0074 0.000***  -0.0843   0.0558   107    -0.0778   0.0063 0.000***  -0.0765   0.0366    59
+  Mail-to-Web                     -0.1086   0.0313 0.003***  -0.0920   0.1190    28         --       --       --       --       --    --
+  Probability Panel               -0.1169   0.0159 0.000***  -0.0975   0.0798    35    -0.0957   0.0076 0.000***  -0.0960   0.0422    86
+==============================================================================================================
+
+
+==============================================================================================================
+  method a accuracy by target population
+  (+ = republican bias, - = democratic bias)
+==============================================================================================================
+                                        -------------- state --------------         ------------ national ------------
+  population                         mean       se    p-val   median      std     n       mean       se    p-val   median      std     n
+  ------------------------------------------------------------------------------------------------------------
+  v                               -0.0541       --       --  -0.0541       --     1         --       --       --       --       --    --
+  lv                              -0.0613   0.0021 0.000***  -0.0547   0.0653  1196    -0.0765   0.0029 0.000***  -0.0860   0.0543   393
+  rv                              -0.0807   0.0048 0.000***  -0.0820   0.0767   385    -0.0698   0.0037 0.000***  -0.0735   0.0528   242
+  a                               -0.1049   0.0123 0.000***  -0.0939   0.0889    53    -0.1026   0.0072 0.000***  -0.1134   0.0443    47
+==============================================================================================================
+
+
+  window: 200 days before election
+  state questions in window:    1635
+  national questions in window: 682
+
+======================================================================
+  ols regression: state-level polls - 200 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0017     0.0003    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0004     0.0010       
+  abs_margin                             -0.2059     0.0457    ***
+  const                                  -0.0366     0.0062    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0748
+  n:            1635
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 200 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0034     0.0009    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0028     0.0007    ***
+  abs_margin                             -0.0008     0.0001    ***
+  const                                  -0.0541     0.0063    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0614
+  n:            682
+======================================================================
+
+
+  window: 107 days before election
+  state questions in window:    1635
+  national questions in window: 682
+
+======================================================================
+  ols regression: state-level polls - 107 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0017     0.0003    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0004     0.0010       
+  abs_margin                             -0.2059     0.0457    ***
+  const                                  -0.0366     0.0062    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0748
+  n:            1635
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 107 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0034     0.0009    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0028     0.0007    ***
+  abs_margin                             -0.0008     0.0001    ***
+  const                                  -0.0541     0.0063    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0614
+  n:            682
+======================================================================
+
+
+  window: 90 days before election
+  state questions in window:    1513
+  national questions in window: 561
+
+======================================================================
+  ols regression: state-level polls - 90 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0016     0.0003    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                  0.0005     0.0011       
+  abs_margin                             -0.2096     0.0460    ***
+  const                                  -0.0325     0.0067    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0913
+  n:            1513
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 90 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0018     0.0007     **
+  days_before_election                   -0.0006     0.0001    ***
+  pct_dk                                 -0.0023     0.0006    ***
+  abs_margin                             -0.0006     0.0001    ***
+  const                                  -0.0418     0.0052    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1931
+  n:            561
+======================================================================
+
+
+  window: 60 days before election
+  state questions in window:    1205
+  national questions in window: 380
+
+======================================================================
+  ols regression: state-level polls - 60 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0019     0.0003    ***
+  days_before_election                   -0.0005     0.0001    ***
+  pct_dk                                 -0.0014     0.0012       
+  abs_margin                             -0.1991     0.0451    ***
+  const                                  -0.0229     0.0062    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1058
+  n:            1205
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 60 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0021     0.0010     **
+  days_before_election                   -0.0011     0.0002    ***
+  pct_dk                                 -0.0023     0.0007    ***
+  abs_margin                             -0.0004     0.0001    ***
+  const                                  -0.0296     0.0075    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.2217
+  n:            380
+======================================================================
+
+
+  window: 30 days before election
+  state questions in window:    751
+  national questions in window: 234
+
+======================================================================
+  ols regression: state-level polls - 30 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0019     0.0004    ***
+  days_before_election                   -0.0001     0.0003       
+  pct_dk                                 -0.0032     0.0015     **
+  abs_margin                             -0.1476     0.0462    ***
+  const                                  -0.0223     0.0067    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0991
+  n:            751
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 30 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0027     0.0009    ***
+  days_before_election                   -0.0013     0.0003    ***
+  pct_dk                                 -0.0027     0.0008    ***
+  abs_margin                             -0.0003     0.0001    ***
+  const                                  -0.0219     0.0069    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1583
+  n:            234
+======================================================================
+
+
+  window: 7 days before election
+  state questions in window:    296
+  national questions in window: 73
+
+======================================================================
+  ols regression: state-level polls - 7 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0023     0.0004    ***
+  days_before_election                    0.0019     0.0024       
+  pct_dk                                 -0.0053     0.0028      *
+  abs_margin                             -0.0955     0.0877       
+  const                                  -0.0208     0.0137       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1015
+  n:            296
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 7 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                           0.0019     0.0069       
+  days_before_election                    0.0013     0.0028       
+  pct_dk                                 -0.0025     0.0015      *
+  abs_margin                             -0.0007     0.0004       
+  const                                  -0.0466     0.0292       
+  ---------------------------------------------------------------
+  adjusted r2:  0.0072
+  n:            73
+======================================================================
+

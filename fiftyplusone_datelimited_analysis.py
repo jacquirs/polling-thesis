@@ -101,10 +101,7 @@ harris_trump_pivot = harris_trump_pivot.merge(
 
 
 ##### LIMIT THE DATES TO PERIOD WHEN HARRIS WAS NOMINEE
-harris_trump_pivot = harris_trump_pivot[harris_trump_pivot['end_date'] >  dropout_cutoff]
-print(harris_trump_pivot[harris_trump_pivot['poll_level'] == 'national']['state'].value_counts(dropna=False).to_string())
-print(harris_trump_pivot[harris_trump_pivot['poll_level'] != 'national']['state'].value_counts(dropna=False).to_string())
-
+harris_trump_pivot = harris_trump_pivot[harris_trump_pivot['end_date'] >=  dropout_cutoff] #maybe reeval this
 
 ######## compute national true vote shares as weighted average of state results
 national_true = pd.Series({
