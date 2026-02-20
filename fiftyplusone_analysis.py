@@ -238,6 +238,74 @@ print(f"  Mean Harris Part:   {mean_harris_part_A:.4f}")
 print(f"  Mean Trump Part:   {mean_trump_part_A:.4f}")
 
 
+### graph of trump and harris parts, all polls
+fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+
+
+# histograms of components vs method A
+axes[0, 0].hist(harris_trump_pivot['trump_part_A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
+axes[0, 0].axvline(harris_trump_pivot['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {harris_trump_pivot["trump_part_A"].mean():.4f}')
+axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 0].set_xlabel('Trump Component')
+axes[0, 0].set_ylabel('Frequency')
+axes[0, 0].set_title('Trump Component: ln(poll_trump) - ln(true_trump)')
+axes[0, 0].legend()
+
+
+axes[0, 1].hist(harris_trump_pivot['harris_part_A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
+axes[0, 1].axvline(harris_trump_pivot['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {harris_trump_pivot["harris_part_A"].mean():.4f}')
+axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 1].set_xlabel('Harris Component')
+axes[0, 1].set_ylabel('Frequency')
+axes[0, 1].set_title('Harris Component: ln(poll_harris) - ln(true_harris)')
+axes[0, 1].legend()
+
+
+axes[0, 2].hist(harris_trump_pivot['A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
+axes[0, 2].axvline(harris_trump_pivot['A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {harris_trump_pivot["A"].mean():.4f}')
+axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 2].set_xlabel('Method A')
+axes[0, 2].set_ylabel('Frequency')
+axes[0, 2].set_title('Method A: trump_part - harris_part')
+axes[0, 2].legend()
+
+
+# poll vs true scatter plots
+axes[1, 0].scatter(harris_trump_pivot['p_trump_true']*100, harris_trump_pivot['pct_trump_poll'], alpha=0.3, s=10)
+axes[1, 0].plot([0, 100], [0, 100], 'r--', linewidth=2, label='Perfect accuracy')
+axes[1, 0].set_xlabel('True Trump %')
+axes[1, 0].set_ylabel('Poll Trump %')
+axes[1, 0].set_title('Trump: Poll vs True')
+axes[1, 0].legend()
+axes[1, 0].grid(True, alpha=0.3)
+
+
+axes[1, 1].scatter(harris_trump_pivot['p_harris_true']*100, harris_trump_pivot['pct_harris_poll'], alpha=0.3, s=10)
+axes[1, 1].plot([0, 100], [0, 100], 'r--', linewidth=2, label='Perfect accuracy')
+axes[1, 1].set_xlabel('True Harris %')
+axes[1, 1].set_ylabel('Poll Harris %')
+axes[1, 1].set_title('Harris: Poll vs True')
+axes[1, 1].legend()
+axes[1, 1].grid(True, alpha=0.3)
+
+
+# simple errors
+axes[1, 2].hist(harris_trump_pivot['pct_trump_poll'] - harris_trump_pivot['p_trump_true']*100,
+                bins=50, alpha=0.5, label='Trump Error', edgecolor='black')
+axes[1, 2].hist(harris_trump_pivot['pct_harris_poll'] - harris_trump_pivot['p_harris_true']*100,
+                bins=50, alpha=0.5, label='Harris Error', edgecolor='black')
+axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[1, 2].set_xlabel('Simple Error (Poll - True)')
+axes[1, 2].set_ylabel('Frequency')
+axes[1, 2].set_title('Simple Errors: Poll % - True %')
+axes[1, 2].legend()
+
+
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_overall_methoda_errors_national", dpi=300)
+#plt.show()
+
+
 ######## accuracy split before/after dropout
 print(f"\nMethod A accuracy by period:")
 results = []
