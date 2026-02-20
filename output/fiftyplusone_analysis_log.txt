@@ -33,6 +33,8 @@ Overall Method A accuracy (all Harris+Trump questions):
   Median: -0.0607
   SD:    0.0796
   N:        2576
+  Mean Harris Part:   -0.0229
+  Mean Trump Part:   -0.0791
 
 Method A accuracy by period:
         period      mean    median       sd       se  p_value    n sig

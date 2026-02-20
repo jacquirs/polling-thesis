@@ -3,6 +3,8 @@ import numpy as np
 import sys
 import statsmodels.api as sm
 from scipy import stats
+import matplotlib.pyplot as plt
+
 
 # redirect all print output to a log file
 log_file = open('output/fiftyplusone_analysis_log.txt', 'w')
@@ -152,9 +154,13 @@ print(f"\nQuestions remaining for accuracy analysis: {len(harris_trump_pivot)}")
 # the log-odds ratio form is symmetric and scale-invariant, making it more appropriate than simple margin error for comparing polls across states with different competitive landscapes
 
 harris_trump_pivot['A'] = np.log(
-    (harris_trump_pivot['pct_trump_poll']  / harris_trump_pivot['pct_harris_poll']) /
+    ((harris_trump_pivot['pct_trump_poll'])  / (harris_trump_pivot['pct_harris_poll'])) /
     (harris_trump_pivot['p_trump_true'] / harris_trump_pivot['p_harris_true'])
 )
+
+# decompose into trump and harris parts
+harris_trump_pivot['trump_part_A'] = np.log(harris_trump_pivot['pct_trump_poll']/100) - np.log(harris_trump_pivot['p_trump_true'])
+harris_trump_pivot['harris_part_A'] = np.log(harris_trump_pivot['pct_harris_poll']/100) - np.log(harris_trump_pivot['p_harris_true'])
 
 # flag poll level (state vs national) used to split regressions
 harris_trump_pivot['poll_level'] = np.where(
@@ -218,6 +224,9 @@ se_A_robust, n_polls = compute_clustered_se(harris_trump_pivot, 'A', 'poll_id')
 t_stat = mean_A / se_A_robust
 p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
 
+mean_trump_part_A = harris_trump_pivot['trump_part_A'].mean()
+mean_harris_part_A = harris_trump_pivot['harris_part_A'].mean()
+
 print(f"\nOverall Method A accuracy (all Harris+Trump questions):")
 print(f"  Mean:   {mean_A:.4f}")
 print(f"  SE:       {se_A_robust:.4f}")
@@ -225,6 +234,9 @@ print(f"  p-value:  {p_value:.4f} {sig_stars(p_value)}")
 print(f"  Median: {harris_trump_pivot['A'].median():.4f}")
 print(f"  SD:    {harris_trump_pivot['A'].std():.4f}")
 print(f"  N:        {len(harris_trump_pivot)}")
+print(f"  Mean Harris Part:   {mean_harris_part_A:.4f}")
+print(f"  Mean Trump Part:   {mean_trump_part_A:.4f}")
+
 
 ######## accuracy split before/after dropout
 print(f"\nMethod A accuracy by period:")
