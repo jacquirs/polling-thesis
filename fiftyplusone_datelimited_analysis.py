@@ -899,7 +899,6 @@ results_national = run_ols_clustered(
 
 # later additions after build out
 # restricting to competitive states versus all states
-# split into time periods ( analysis using three different time frame, 90, 30, and 7 days before the elections)
 # how to say "mode X is more biased controlling for days before election and competitiveness"
 
 
@@ -998,9 +997,9 @@ print_accuracy_table(reg_df, 'population', 'target population')
 # re-run the same regression separately for five time windows prior to the election, where each window includes only polls whose end_date falls within that many days of election day
 # ex: the 30 day window includes polls ending 30 or fewer days before election day
 # lets us see whether the predictors of accuracy change as we get closer to election day, loses significance in shorter windows as found by harrison and desart/holbrook
-# windows chosen: 200, 107, 90, 60, 30, and 7 days.
+# windows chosen: 107, 90, 60, 30, and 7 days.
 
-time_windows = [200, 107, 90, 60, 30, 7]
+time_windows = [107, 90, 60, 30, 7]
 
 def run_window_regressions(reg_state_df, reg_national_df, x_vars, window_days):
     # filter each sample to polls ending within window_days of election day
