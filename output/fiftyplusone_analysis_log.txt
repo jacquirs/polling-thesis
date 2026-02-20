@@ -36,6 +36,10 @@ Overall Method A accuracy (all Harris+Trump questions):
   Mean Harris Part:   -0.0229
   Mean Trump Part:   -0.0791
 
+National Polls (N=861):
+Trump - True: 49.81%, Poll Mean: 45.48%, Error: -4.33
+Harris - True: 48.34%, Poll Mean: 46.30%, Error: -2.04
+
 Method A accuracy by period:
         period      mean    median       sd       se  p_value    n sig
 before_dropout  0.064959  0.058943 0.090820 0.006960      0.0  259 ***

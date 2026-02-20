@@ -306,6 +306,78 @@ plt.savefig("figures/fiftyplusone_overall_methoda_errors.png", dpi=300)
 #plt.show()
 
 
+### graphs of parts for NATIONAL polls only
+national_polls = harris_trump_pivot[harris_trump_pivot['state'] == 'national'].copy()
+fig, axes = plt.subplots(2, 3, figsize=(14, 10))
+
+# histograms of components vs method A
+axes[0, 0].hist(national_polls['trump_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7)
+axes[0, 0].axvline(national_polls['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {national_polls["trump_part_A"].mean():.4f}')
+axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 0].set_xlabel('Trump Component')
+axes[0, 0].set_ylabel('Frequency')
+axes[0, 0].set_title('Trump Component: ln(poll_trump) - ln(true_trump)')
+axes[0, 0].legend()
+
+
+axes[0, 1].hist(national_polls['harris_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7)
+axes[0, 1].axvline(national_polls['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {national_polls["harris_part_A"].mean():.4f}')
+axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 1].set_xlabel('Harris Component')
+axes[0, 1].set_ylabel('Frequency')
+axes[0, 1].set_title('Harris Component: ln(poll_harris) - ln(true_harris)')
+axes[0, 1].legend()
+
+axes[0, 2].hist(national_polls['A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
+axes[0, 2].axvline(national_polls['A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {national_polls["A"].mean():.4f}')
+axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 2].set_xlabel('Method A')
+axes[0, 2].set_ylabel('Frequency')
+axes[0, 2].set_title('Method A: trump_part - harris_part')
+axes[0, 2].legend()
+
+# Rpoll value histograms with true value line
+true_trump_national = national_polls['p_trump_true'].iloc[0] * 100
+true_harris_national = national_polls['p_harris_true'].iloc[0] * 100
+
+axes[1, 0].hist(national_polls['pct_trump_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7)
+axes[1, 0].axvline(true_trump_national, color='red', linestyle='--', linewidth=2, label=f'True: {true_trump_national:.2f}%')
+axes[1, 0].axvline(national_polls['pct_trump_poll'].mean(), color='blue', linestyle='--', linewidth=2, label=f'Poll Mean: {national_polls["pct_trump_poll"].mean():.2f}%')
+axes[1, 0].set_xlabel('Trump Poll %')
+axes[1, 0].set_ylabel('Frequency')
+axes[1, 0].set_title('Distribution of Trump Poll Values (National)')
+axes[1, 0].legend()
+
+axes[1, 1].hist(national_polls['pct_harris_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7)
+axes[1, 1].axvline(true_harris_national, color='red', linestyle='--', linewidth=2, label=f'True: {true_harris_national:.2f}%')
+axes[1, 1].axvline(national_polls['pct_harris_poll'].mean(), color='blue', linestyle='--', linewidth=2, label=f'Poll Mean: {national_polls["pct_harris_poll"].mean():.2f}%')
+axes[1, 1].set_xlabel('Harris Poll %')
+axes[1, 1].set_ylabel('Frequency')
+axes[1, 1].set_title('Distribution of Harris Poll Values (National)')
+axes[1, 1].legend()
+
+axes[1, 2].hist(national_polls['pct_trump_poll'] - national_polls['p_trump_true']*100,
+                bins=50, alpha=0.5, label='Trump Error', edgecolor='black')
+axes[1, 2].hist(national_polls['pct_harris_poll'] - national_polls['p_harris_true']*100,
+                bins=50, alpha=0.5, label='Harris Error', edgecolor='black')
+axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[1, 2].set_xlabel('Simple Error (Poll - True)')
+axes[1, 2].set_ylabel('Frequency')
+axes[1, 2].set_title('Simple Errors (National): Poll % - True %')
+axes[1, 2].legend()
+
+plt.suptitle('National Polls Only', fontsize=16, y=1.00)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_national_methoda_errors.png", dpi=300)
+#plt.show()
+
+
+print(f"\nNational Polls (N={len(national_polls)}):")
+print(f"Trump - True: {true_trump_national:.2f}%, Poll Mean: {national_polls['pct_trump_poll'].mean():.2f}%, Error: {national_polls['pct_trump_poll'].mean() - true_trump_national:.2f}")
+print(f"Harris - True: {true_harris_national:.2f}%, Poll Mean: {national_polls['pct_harris_poll'].mean():.2f}%, Error: {national_polls['pct_harris_poll'].mean() - true_harris_national:.2f}")
+
+
+
 ######## accuracy split before/after dropout
 print(f"\nMethod A accuracy by period:")
 results = []
