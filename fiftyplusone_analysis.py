@@ -614,6 +614,33 @@ plt.tight_layout()
 plt.savefig("figures/fiftyplusone_battlegroundsplit_simpleerr_methoda_errors.png", dpi=300)
 #plt.show()
 
+### battleground summary stats
+# battleground state summary statistics combined
+print(f"\nAll Battleground States Combined (N={len(bg_polls)}):")
+print(f"  Trump Component Mean: {bg_polls['trump_part_A'].mean():.4f}")
+print(f"  Harris Component Mean: {bg_polls['harris_part_A'].mean():.4f}")
+print(f"  Method A Mean: {bg_polls['A'].mean():.4f}")
+print(f"  Trump Error Mean: {trump_error_all.mean():.2f}")
+print(f"  Harris Error Mean: {harris_error_all.mean():.2f}")
+
+
+# battleground state summary statistics by state
+print(f"\nBy State:")
+for state in battleground_states:
+    state_data = bg_polls[bg_polls['state'] == state]
+    true_trump = state_data['p_trump_true'].iloc[0] * 100
+    true_harris = state_data['p_harris_true'].iloc[0] * 100
+    poll_trump = state_data['pct_trump_poll'].mean()
+    poll_harris = state_data['pct_harris_poll'].mean()
+    trump_error = poll_trump - true_trump
+    harris_error = poll_harris - true_harris
+   
+    print(f"\n{state} (N={len(state_data)}):")
+    print(f"  Trump True: {true_trump:.2f}%, Poll Mean: {poll_trump:.2f}%, Error: {trump_error:.2f}")
+    print(f"  Harris True: {true_harris:.2f}%, Poll Mean: {poll_harris:.2f}%, Error: {harris_error:.2f}")
+    print(f"  Trump Component Mean: {state_data['trump_part_A'].mean():.4f}")
+    print(f"  Harris Component Mean: {state_data['harris_part_A'].mean():.4f}")
+    print(f"  Method A Mean: {state_data['A'].mean():.4f}")
 
 
 ######## accuracy split before/after dropout

@@ -40,6 +40,64 @@ National Polls (N=861):
 Trump - True: 49.81%, Poll Mean: 45.48%, Error: -4.33
 Harris - True: 48.34%, Poll Mean: 46.30%, Error: -2.04
 
+All Battleground States Combined (N=1238):
+  Trump Component Mean: -0.0681
+  Harris Component Mean: -0.0149
+  Method A Mean: -0.0532
+  Trump Error Mean: -3.29
+  Harris Error Mean: -0.66
+
+By State:
+
+arizona (N=164):
+  Trump True: 52.23%, Poll Mean: 48.09%, Error: -4.14
+  Harris True: 46.70%, Poll Mean: 46.65%, Error: -0.06
+  Trump Component Mean: -0.0836
+  Harris Component Mean: -0.0024
+  Method A Mean: -0.0812
+
+georgia (N=166):
+  Trump True: 50.72%, Poll Mean: 48.01%, Error: -2.70
+  Harris True: 48.53%, Poll Mean: 46.70%, Error: -1.83
+  Trump Component Mean: -0.0555
+  Harris Component Mean: -0.0403
+  Method A Mean: -0.0152
+
+michigan (N=194):
+  Trump True: 49.73%, Poll Mean: 46.53%, Error: -3.19
+  Harris True: 48.31%, Poll Mean: 47.84%, Error: -0.47
+  Trump Component Mean: -0.0675
+  Harris Component Mean: -0.0110
+  Method A Mean: -0.0564
+
+nevada (N=121):
+  Trump True: 51.27%, Poll Mean: 46.85%, Error: -4.42
+  Harris True: 48.13%, Poll Mean: 47.31%, Error: -0.82
+  Trump Component Mean: -0.0914
+  Harris Component Mean: -0.0187
+  Method A Mean: -0.0727
+
+north carolina (N=161):
+  Trump True: 50.86%, Poll Mean: 47.95%, Error: -2.91
+  Harris True: 47.65%, Poll Mean: 47.34%, Error: -0.30
+  Trump Component Mean: -0.0596
+  Harris Component Mean: -0.0071
+  Method A Mean: -0.0525
+
+pennsylvania (N=241):
+  Trump True: 50.37%, Poll Mean: 47.22%, Error: -3.15
+  Harris True: 48.66%, Poll Mean: 47.73%, Error: -0.93
+  Trump Component Mean: -0.0655
+  Harris Component Mean: -0.0204
+  Method A Mean: -0.0451
+
+wisconsin (N=191):
+  Trump True: 49.60%, Poll Mean: 46.66%, Error: -2.93
+  Harris True: 48.74%, Poll Mean: 48.54%, Error: -0.20
+  Trump Component Mean: -0.0620
+  Harris Component Mean: -0.0048
+  Method A Mean: -0.0571
+
 Method A accuracy by period:
         period      mean    median       sd       se  p_value    n sig
 before_dropout  0.064959  0.058943 0.090820 0.006960      0.0  259 ***
