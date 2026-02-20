@@ -302,7 +302,7 @@ axes[1, 2].legend()
 
 
 plt.tight_layout()
-plt.savefig("figures/fiftyplusone_overall_methoda_errors_national", dpi=300)
+plt.savefig("figures/fiftyplusone_overall_methoda_errors.png", dpi=300)
 #plt.show()
 
 
