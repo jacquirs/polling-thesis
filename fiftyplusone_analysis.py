@@ -456,6 +456,166 @@ plt.savefig("figures/fiftyplusone_battlegroundcombined_methoda_errors.png", dpi=
 #plt.show()
 
 
+### trump component, seven panels for each individual state
+fig, axes = plt.subplots(2, 4, figsize=(20, 10))
+axes = axes.flatten()
+
+# loop through each battleground state
+for i, state in enumerate(battleground_states):
+    state_data = bg_polls[bg_polls['state'] == state]
+    axes[i].hist(state_data['trump_part_A'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
+    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
+    axes[i].axvline(state_data['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2,
+                   label=f'Mean: {state_data["trump_part_A"].mean():.4f}')
+    axes[i].set_xlabel('Trump Component')
+    axes[i].set_ylabel('Frequency')
+    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
+    axes[i].legend()
+
+# hide the extra subplot
+axes[7].axis('off')
+
+plt.suptitle('Trump Component by State: ln(poll_trump) - ln(true_trump)', fontsize=16)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_battlegroundsplit_trumpcomp_methoda_errors.png", dpi=300)
+#plt.show()
+
+
+### harris component, seven panels for each individual state
+fig, axes = plt.subplots(2, 4, figsize=(20, 10))
+axes = axes.flatten()
+
+# loop through each battleground state
+for i, state in enumerate(battleground_states):
+    state_data = bg_polls[bg_polls['state'] == state]
+    axes[i].hist(state_data['harris_part_A'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
+    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
+    axes[i].axvline(state_data['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2,
+                   label=f'Mean: {state_data["harris_part_A"].mean():.4f}')
+    axes[i].set_xlabel('Harris Component')
+    axes[i].set_ylabel('Frequency')
+    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
+    axes[i].legend()
+
+# hide the extra subplot
+axes[7].axis('off')
+
+plt.suptitle('Harris Component by State: ln(poll_harris) - ln(true_harris)', fontsize=16)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_battlegroundsplit_harriscomp_methoda_errors.png", dpi=300)
+#plt.show()
+
+
+### method a, seven panels for each individual state
+fig, axes = plt.subplots(2, 4, figsize=(20, 10))
+axes = axes.flatten()
+
+# loop through each battleground state
+for i, state in enumerate(battleground_states):
+    state_data = bg_polls[bg_polls['state'] == state]
+    axes[i].hist(state_data['A'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
+    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
+    axes[i].axvline(state_data['A'].mean(), color='red', linestyle='--', linewidth=2,
+                   label=f'Mean: {state_data["A"].mean():.4f}')
+    axes[i].set_xlabel('Method A')
+    axes[i].set_ylabel('Frequency')
+    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
+    axes[i].legend()
+
+
+# hide the extra subplot
+axes[7].axis('off')
+
+plt.suptitle('Method A by State: trump_part - harris_part', fontsize=16)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_battlegroundsplit_methoda_methoda_errors.png", dpi=300)
+#plt.show()
+
+
+### harris poll distribution, seven panels for each individual state
+fig, axes = plt.subplots(2, 4, figsize=(20, 10))
+axes = axes.flatten()
+
+# loop through each battleground state
+for i, state in enumerate(battleground_states):
+    state_data = bg_polls[bg_polls['state'] == state]
+    true_harris = state_data['p_harris_true'].iloc[0] * 100
+    axes[i].hist(state_data['pct_harris_poll'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
+    axes[i].axvline(true_harris, color='red', linestyle='--', linewidth=2,
+                   label=f'True: {true_harris:.2f}%')
+    axes[i].axvline(state_data['pct_harris_poll'].mean(), color='blue', linestyle='--', linewidth=2,
+                   label=f'Poll Mean: {state_data["pct_harris_poll"].mean():.2f}%')
+    axes[i].set_xlabel('Harris Poll %')
+    axes[i].set_ylabel('Frequency')
+    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
+    axes[i].legend()
+
+# hide the extra subplot
+axes[7].axis('off')
+
+plt.suptitle('Harris Poll Distribution by State', fontsize=16)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_battlegroundsplit_harrispoll_methoda_errors.png", dpi=300)
+#plt.show()
+
+
+### trump poll distribution, seven panels for each individual state
+fig, axes = plt.subplots(2, 4, figsize=(20, 10))
+axes = axes.flatten()
+
+# loop through each battleground state
+for i, state in enumerate(battleground_states):
+    state_data = bg_polls[bg_polls['state'] == state]
+    true_trump = state_data['p_trump_true'].iloc[0] * 100
+    axes[i].hist(state_data['pct_trump_poll'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
+    axes[i].axvline(true_trump, color='red', linestyle='--', linewidth=2,
+                   label=f'True: {true_trump:.2f}%')
+    axes[i].axvline(state_data['pct_trump_poll'].mean(), color='blue', linestyle='--', linewidth=2,
+                   label=f'Poll Mean: {state_data["pct_trump_poll"].mean():.2f}%')
+    axes[i].set_xlabel('Trump Poll %')
+    axes[i].set_ylabel('Frequency')
+    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
+    axes[i].legend()
+
+# hide the extra subplot
+axes[7].axis('off')
+
+plt.suptitle('Trump Poll Distribution by State', fontsize=16)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_battlegroundsplit_trumppoll_methoda_errors.png", dpi=300)
+#plt.show()
+
+
+### simple errors, seven panels for each individual state
+fig, axes = plt.subplots(2, 4, figsize=(20, 10))
+axes = axes.flatten()
+
+# loop through each battleground state
+for i, state in enumerate(battleground_states):
+    state_data = bg_polls[bg_polls['state'] == state]
+    trump_error = state_data['pct_trump_poll'] - state_data['p_trump_true'] * 100
+    harris_error = state_data['pct_harris_poll'] - state_data['p_harris_true'] * 100
+   
+    axes[i].hist(trump_error.dropna(), bins=20, alpha=0.5, label=f'Trump (mean={trump_error.mean():.2f})',
+                color='red', edgecolor='black')
+    axes[i].hist(harris_error.dropna(), bins=20, alpha=0.5, label=f'Harris (mean={harris_error.mean():.2f})',
+                color='blue', edgecolor='black')
+    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
+    axes[i].set_xlabel('Simple Error (Poll - True %)')
+    axes[i].set_ylabel('Frequency')
+    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
+    axes[i].legend()
+
+# hide the extra subplot
+axes[7].axis('off')
+
+plt.suptitle('Simple Errors by State', fontsize=16)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_battlegroundsplit_simpleerr_methoda_errors.png", dpi=300)
+#plt.show()
+
+
+
 ######## accuracy split before/after dropout
 print(f"\nMethod A accuracy by period:")
 results = []
