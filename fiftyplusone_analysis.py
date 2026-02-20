@@ -377,6 +377,84 @@ print(f"Trump - True: {true_trump_national:.2f}%, Poll Mean: {national_polls['pc
 print(f"Harris - True: {true_harris_national:.2f}%, Poll Mean: {national_polls['pct_harris_poll'].mean():.2f}%, Error: {national_polls['pct_harris_poll'].mean() - true_harris_national:.2f}")
 
 
+### battleground states combined treating all as one group
+battleground_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
+bg_polls = harris_trump_pivot[harris_trump_pivot['state'].isin(battleground_states)].copy()
+fig, axes = plt.subplots(2, 3, figsize=(20, 12))
+
+# trump component all battleground polls combined
+axes[0, 0].hist(bg_polls['trump_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
+axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=2)
+axes[0, 0].axvline(bg_polls['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2,
+                   label=f'Mean: {bg_polls["trump_part_A"].mean():.4f}')
+axes[0, 0].set_xlabel('Trump Component')
+axes[0, 0].set_ylabel('Frequency')
+axes[0, 0].set_title('Trump Component: ln(poll_trump) - ln(true_trump)')
+axes[0, 0].legend()
+
+# harris component all battleground polls combined
+axes[0, 1].hist(bg_polls['harris_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
+axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=2)
+axes[0, 1].axvline(bg_polls['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2,
+                   label=f'Mean: {bg_polls["harris_part_A"].mean():.4f}')
+axes[0, 1].set_xlabel('Harris Component')
+axes[0, 1].set_ylabel('Frequency')
+axes[0, 1].set_title('Harris Component: ln(poll_harris) - ln(true_harris)')
+axes[0, 1].legend()
+
+# method a all battleground polls combined
+axes[0, 2].hist(bg_polls['A'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
+axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=2)
+axes[0, 2].axvline(bg_polls['A'].mean(), color='red', linestyle='--', linewidth=2,
+                   label=f'Mean: {bg_polls["A"].mean():.4f}')
+axes[0, 2].set_xlabel('Method A')
+axes[0, 2].set_ylabel('Frequency')
+axes[0, 2].set_title('Method A: trump_part - harris_part')
+axes[0, 2].legend()
+
+# harris poll distribution mean true value across all battleground states
+mean_true_harris = (bg_polls['p_harris_true'] * 100).mean()
+axes[1, 0].hist(bg_polls['pct_harris_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
+axes[1, 0].axvline(mean_true_harris, color='red', linestyle='--', linewidth=2,
+                   label=f'Mean True Value: {mean_true_harris:.2f}%')
+axes[1, 0].axvline(bg_polls['pct_harris_poll'].mean(), color='blue', linestyle='--', linewidth=2,
+                   label=f'Poll Mean: {bg_polls["pct_harris_poll"].mean():.2f}%')
+axes[1, 0].set_xlabel('Harris Poll %')
+axes[1, 0].set_ylabel('Frequency')
+axes[1, 0].set_title('Harris Poll Distribution')
+axes[1, 0].legend()
+
+# trump poll distribution mean true value across all battleground states
+mean_true_trump = (bg_polls['p_trump_true'] * 100).mean()
+axes[1, 1].hist(bg_polls['pct_trump_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
+axes[1, 1].axvline(mean_true_trump, color='red', linestyle='--', linewidth=2,
+                   label=f'Mean True Value: {mean_true_trump:.2f}%')
+axes[1, 1].axvline(bg_polls['pct_trump_poll'].mean(), color='blue', linestyle='--', linewidth=2,
+                   label=f'Poll Mean: {bg_polls["pct_trump_poll"].mean():.2f}%')
+axes[1, 1].set_xlabel('Trump Poll %')
+axes[1, 1].set_ylabel('Frequency')
+axes[1, 1].set_title('Trump Poll Distribution')
+axes[1, 1].legend()
+
+# simple errors both candidates combined
+trump_error_all = bg_polls['pct_trump_poll'] - bg_polls['p_trump_true'] * 100
+harris_error_all = bg_polls['pct_harris_poll'] - bg_polls['p_harris_true'] * 100
+
+axes[1, 2].hist(trump_error_all.dropna(), bins=30, alpha=0.5, label=f'Trump (mean={trump_error_all.mean():.2f})',
+               color='red', edgecolor='black')
+axes[1, 2].hist(harris_error_all.dropna(), bins=30, alpha=0.5, label=f'Harris (mean={harris_error_all.mean():.2f})',
+               color='blue', edgecolor='black')
+axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=2)
+axes[1, 2].set_xlabel('Simple Error (Poll - True %)')
+axes[1, 2].set_ylabel('Frequency')
+axes[1, 2].set_title('Simple Errors')
+axes[1, 2].legend()
+
+plt.suptitle('All Battleground States Combined (AZ, GA, MI, NV, NC, PA, WI)', fontsize=16)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusone_battlegroundcombined_methoda_errors.png", dpi=300)
+#plt.show()
+
 
 ######## accuracy split before/after dropout
 print(f"\nMethod A accuracy by period:")
