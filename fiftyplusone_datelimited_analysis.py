@@ -1215,6 +1215,170 @@ for window in time_windows:
         swing_window_results_with_mode[window] = res_swing
 
 
+########################################################################################
+#################### summary table mode coefficients across samples ####################
+########################################################################################
+
+# redfine because before was in loops
+def stars(p):
+    if p < 0.01: return '***'
+    elif p < 0.05: return '**'
+    elif p < 0.10: return '*'
+    else: return ''
+
+# positive coefficients indicate more republican bias, compare across columns to see if mode effects differ by sample
+print("MODE COEFFICIENTS ACROSS SAMPLES")
+
+# create comparison table across the three mode regressions
+print(f"\n{'Mode':<20} {'National':>15} {'Swing':>15} {'All States':>15}")
+print("." * 70)
+
+for mode_var in sorted(mode_vars):
+    mode_name = mode_var.replace('mode_', '')
+    print(f"{mode_name:<20}", end='')
+    
+    # national
+    if results_national_mode is not None and mode_var in results_national_mode.params:
+        coef = results_national_mode.params[mode_var]
+        pval = results_national_mode.pvalues[mode_var]
+        sig = stars(pval)
+        print(f"{coef:>12.2f}{sig:<3}", end='')
+    else:
+        print(f"{'..':>15}", end='')
+    
+    # swing
+    if results_swing_mode is not None and mode_var in results_swing_mode.params:
+        coef = results_swing_mode.params[mode_var]
+        pval = results_swing_mode.pvalues[mode_var]
+        sig = stars(pval)
+        print(f"{coef:>12.2f}{sig:<3}", end='')
+    else:
+        print(f"{'..':>15}", end='')
+    
+    # all states
+    if results_all_states_mode is not None and mode_var in results_all_states_mode.params:
+        coef = results_all_states_mode.params[mode_var]
+        pval = results_all_states_mode.pvalues[mode_var]
+        sig = stars(pval)
+        print(f"{coef:>12.2f}{sig:<3}", end='')
+    else:
+        print(f"{'..':>15}", end='')
+    
+    print()
+
+print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
+print(f"all coefficients relative to {reference_mode} (reference category)")
+
+########################################################################################
+#################### Coefficients across time windows ##################################
+########################################################################################
+
+# compare across columns to see how predictors change over time, similar to harrison (2009) analysis of temporal dynamics
+print("COEFFICIENTS ACROSS TIME WINDOWS (swing states)")
+
+# variables to track across windows
+key_vars = ['duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct']
+
+print(f"\n{'Variable':<25}", end='')
+for window in time_windows:
+    print(f"{window:>12}d", end='')
+print()
+print("." * (25 + 12 * len(time_windows)))
+
+for var in key_vars:
+    print(f"{var:<25}", end='')
+    
+    for window in time_windows:
+        result = swing_window_results_no_mode[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>9.2f}{sig:<3}", end='')
+        else:
+            print(f"{'..':>12}", end='')
+    print()
+
+print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
+
+# print r squared and n for each window
+print("\n" + "." * (25 + 12 * len(time_windows)))
+print(f"{'adj r squared':<25}", end='')
+for window in time_windows:
+    result = swing_window_results_no_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>12.4f}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
+
+print(f"{'n':<25}", end='')
+for window in time_windows:
+    result = swing_window_results_no_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>12}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
+
+
+########################################################################################
+#################### summary table mode coefficients across time windows ###############
+########################################################################################
+
+# compare across columns to see if mode effects intensify over time, positive trend suggests mode bias worsens closer to election
+print("\n" + "="*70)
+print("MODE COEFFICIENTS ACROSS TIME WINDOWS (swing states)")
+print(f"Reference category: {reference_mode}")
+print("="*70)
+
+print(f"\n{'Mode':<20}", end='')
+for window in time_windows:
+    print(f"{window:>12}d", end='')
+print()
+print("." * (20 + 12 * len(time_windows)))
+
+for mode_var in sorted(mode_vars):
+    mode_name = mode_var.replace('mode_', '')
+    print(f"{mode_name:<20}", end='')
+    
+    for window in time_windows:
+        result = swing_window_results_with_mode[window]
+        if result is not None and mode_var in result.params:
+            coef = result.params[mode_var]
+            pval = result.pvalues[mode_var]
+            sig = stars(pval)
+            print(f"{coef:>9.2f}{sig:<3}", end='')
+        else:
+            print(f"{'..':>12}", end='')
+    print()
+
+print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
+print(f"all coefficients relative to {reference_mode} (reference category)")
+
+# print r squared and n for each window
+print("\n" + "." * (20 + 12 * len(time_windows)))
+print(f"{'adj r squared':<20}", end='')
+for window in time_windows:
+    result = swing_window_results_with_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>12.4f}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
+
+print(f"{'n':<20}", end='')
+for window in time_windows:
+    result = swing_window_results_with_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>12}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
+
+
+
+
 ######## save outputs
 # save question-level accuracy dataset for further analysis
 harris_trump_pivot.to_csv('data/harris_trump_datelimted_accuracy.csv', index=False)
