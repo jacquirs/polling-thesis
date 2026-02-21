@@ -733,6 +733,95 @@ print(results_df.to_string(index=False))
 
 
 ########################################################################################
+########################## Accuracy by mode and target population ######################
+########################################################################################
+
+# these two tables report mean, median, std, and n for method a broken out by (1) polling mode and (2) target population, each split by state vs national
+# mode and population are reported separately from the regression because they are categorical design choices better understood descriptively, and the multi-hot nature of mode makes regression coefficients hard to interpret cleanly (but i may go back to this later so i can say something like mode X is more biased controlling for days before election and competitiveness)
+
+# table print function
+def print_accuracy_table(df, group_col, label):
+    """
+    groups df by group_col and poll_level, computes mean/median/std/se/p-value/n of method a,
+    and prints a formatted table with state and national columns side by side
+    """
+    results = []
+    
+    for (group_val, level), subdf in df.groupby([group_col, 'poll_level']):
+        mean_A = subdf['A'].mean()
+        se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+        t_stat = mean_A / se_robust
+
+        # only compute p-value if SE is valid
+        if pd.notna(se_robust) and se_robust > 0:
+            t_stat = mean_A / se_robust
+            p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+        else:
+            p_value = np.nan
+
+        results.append({
+            group_col: group_val,
+            'poll_level': level,
+            'mean': mean_A,
+            'se': se_robust,
+            'p_value': p_value,
+            'median': subdf['A'].median(),
+            'std': subdf['A'].std(),
+            'n': len(subdf)
+        })
+    
+    results_df = pd.DataFrame(results)
+    tbl_wide = results_df.pivot(index=group_col, columns='poll_level', 
+                                  values=['mean', 'se', 'p_value', 'median', 'std', 'n'])
+    tbl_wide.columns = [f"{stat}_{level}" for stat, level in tbl_wide.columns]
+    tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
+
+    print(f"\n{'='*110}")
+    print(f"  method a accuracy by {label}")
+    print(f"  (+ = republican bias, - = democratic bias)")
+    print(f"{'='*110}")
+    print(f"  {'':30} {'-------------- state --------------':>42} {'------------ national ------------':>42}")
+    print(f"  {group_col:<30} {'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}   "
+          f"{'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}")
+    print(f"  {'-'*108}")
+
+    for _, row in tbl_wide.iterrows():
+        def fmt_val(val):
+            return f"{val:.4f}" if pd.notna(val) else '   --'
+        def fmt_pval(val):
+            return f"{val:.3f}{sig_stars(val)}" if pd.notna(val) else '   --'
+        def fmt_n(val):
+            return f"{int(val)}" if pd.notna(val) and val > 0 else '--'
+
+        print(
+            f"  {str(row[group_col]):<30} "
+            f"{fmt_val(row.get('mean_state')):>8} "
+            f"{fmt_val(row.get('se_state')):>8} "
+            f"{fmt_pval(row.get('p_value_state')):>8} "
+            f"{fmt_val(row.get('median_state')):>8} "
+            f"{fmt_val(row.get('std_state')):>8} "
+            f"{fmt_n(row.get('n_state')):>5}   "
+            f"{fmt_val(row.get('mean_national')):>8} "
+            f"{fmt_val(row.get('se_national')):>8} "
+            f"{fmt_pval(row.get('p_value_national')):>8} "
+            f"{fmt_val(row.get('median_national')):>8} "
+            f"{fmt_val(row.get('std_national')):>8} "
+            f"{fmt_n(row.get('n_national')):>5}"
+        )
+
+    print(f"{'='*110}\n")
+
+# Table: accuracy by polling mode
+print_accuracy_table(harris_trump_modes, 'base_mode', 'polling mode')
+
+
+# Table: accuracy by target population
+# shows whether polls targeting different populations are systematically more or less accurate, without controlling for other factors
+print_accuracy_table(harris_trump_pivot, 'population', 'target population')
+
+
+
+########################################################################################
 ###################### Multivariate Regression Analysis ################################
 ########################################################################################
 
@@ -910,94 +999,6 @@ results_national = run_ols_clustered(
 # later additions after build out
 # restricting to competitive states versus all states
 # how to say "mode X is more biased controlling for days before election and competitiveness"
-
-
-########################################################################################
-########################## Accuracy by mode and target population ######################
-########################################################################################
-
-# these two tables report mean, median, std, and n for method a broken out by (1) polling mode and (2) target population, each split by state vs national
-# mode and population are reported separately from the regression because they are categorical design choices better understood descriptively, and the multi-hot nature of mode makes regression coefficients hard to interpret cleanly (but i may go back to this later so i can say something like mode X is more biased controlling for days before election and competitiveness)
-
-# table print function
-def print_accuracy_table(df, group_col, label):
-    """
-    groups df by group_col and poll_level, computes mean/median/std/se/p-value/n of method a,
-    and prints a formatted table with state and national columns side by side
-    """
-    results = []
-    
-    for (group_val, level), subdf in df.groupby([group_col, 'poll_level']):
-        mean_A = subdf['A'].mean()
-        se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
-        t_stat = mean_A / se_robust
-
-        # only compute p-value if SE is valid
-        if pd.notna(se_robust) and se_robust > 0:
-            t_stat = mean_A / se_robust
-            p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
-        else:
-            p_value = np.nan
-
-        results.append({
-            group_col: group_val,
-            'poll_level': level,
-            'mean': mean_A,
-            'se': se_robust,
-            'p_value': p_value,
-            'median': subdf['A'].median(),
-            'std': subdf['A'].std(),
-            'n': len(subdf)
-        })
-    
-    results_df = pd.DataFrame(results)
-    tbl_wide = results_df.pivot(index=group_col, columns='poll_level', 
-                                  values=['mean', 'se', 'p_value', 'median', 'std', 'n'])
-    tbl_wide.columns = [f"{stat}_{level}" for stat, level in tbl_wide.columns]
-    tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
-
-    print(f"\n{'='*110}")
-    print(f"  method a accuracy by {label}")
-    print(f"  (+ = republican bias, - = democratic bias)")
-    print(f"{'='*110}")
-    print(f"  {'':30} {'-------------- state --------------':>42} {'------------ national ------------':>42}")
-    print(f"  {group_col:<30} {'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}   "
-          f"{'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}")
-    print(f"  {'-'*108}")
-
-    for _, row in tbl_wide.iterrows():
-        def fmt_val(val):
-            return f"{val:.4f}" if pd.notna(val) else '   --'
-        def fmt_pval(val):
-            return f"{val:.3f}{sig_stars(val)}" if pd.notna(val) else '   --'
-        def fmt_n(val):
-            return f"{int(val)}" if pd.notna(val) and val > 0 else '--'
-
-        print(
-            f"  {str(row[group_col]):<30} "
-            f"{fmt_val(row.get('mean_state')):>8} "
-            f"{fmt_val(row.get('se_state')):>8} "
-            f"{fmt_pval(row.get('p_value_state')):>8} "
-            f"{fmt_val(row.get('median_state')):>8} "
-            f"{fmt_val(row.get('std_state')):>8} "
-            f"{fmt_n(row.get('n_state')):>5}   "
-            f"{fmt_val(row.get('mean_national')):>8} "
-            f"{fmt_val(row.get('se_national')):>8} "
-            f"{fmt_pval(row.get('p_value_national')):>8} "
-            f"{fmt_val(row.get('median_national')):>8} "
-            f"{fmt_val(row.get('std_national')):>8} "
-            f"{fmt_n(row.get('n_national')):>5}"
-        )
-
-    print(f"{'='*110}\n")
-
-# Table: accuracy by polling mode
-print_accuracy_table(harris_trump_modes, 'base_mode', 'polling mode')
-
-
-# Table: accuracy by target population
-# shows whether polls targeting different populations are systematically more or less accurate, without controlling for other factors
-print_accuracy_table(reg_df, 'population', 'target population')
 
 
 ########################################################################################
