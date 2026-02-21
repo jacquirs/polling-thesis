@@ -1216,6 +1216,44 @@ for window in time_windows:
 
 
 ########################################################################################
+#################### national by time window and mode controls #########################
+########################################################################################
+
+national_window_results_with_mode = {}
+
+for window in time_windows:
+    print(f"\n{'='*70}")
+    print(f"WINDOW: {window} days before election (NATIONAL, WITH MODE)")
+    print(f"{'='*70}")
+    
+    # filter national polls to this time window
+    national_w = reg_national[
+        reg_national['days_before_election'] <= window
+    ].copy()
+    
+    print(f"  Questions in {window} day window: {len(national_w)}")
+    
+    # check if we have enough complete cases
+    national_complete = national_w[national_x_vars_with_mode + ['A', 'poll_id']].dropna()
+    
+    if len(national_complete) < 10:
+        print(f"  regression skipped, only {len(national_complete)} complete cases")
+        national_window_results_with_mode[window] = None
+    else:
+        print(f"  complete cases for regression: {len(national_complete)}")
+        
+        res_national = run_ols_clustered(
+            df          = national_w,
+            y_col       = 'A',
+            x_cols      = national_x_vars_with_mode,
+            cluster_col = 'poll_id',
+            label       = f'national {window} days before election (with mode)'
+        )
+        
+        national_window_results_with_mode[window] = res_national
+
+
+########################################################################################
 #################### summary table mode coefficients across samples ####################
 ########################################################################################
 
