@@ -841,14 +841,24 @@ print(f"  days_before_election -- mean: {reg_df['days_before_election'].mean():.
 # the absolute margin of victory (|trump_share - harris_share|) in the state, 
 # or nationally captures competitiveness polling dynamics than lopsided ones, and pollsters may expend more effort in competitive states
 
-
 # VAR: statewide turnout
-# TODO: load a dataset with registered voters per state
-# merge on state, compute: turnout_pct = total_votes_cast / registered_voters.
-# then merge turnout_pct into reg_df on 'state'.
-# note: this variable only makes sense for state-level regression; national
-# polls should use the national turnout figure.
-# reg_df = reg_df.merge(turnout_df[['state', 'turnout_pct']], on='state', how='left')
+# load turnout data
+turnout_data = pd.read_csv("data/Turnout_2024G_v0.3.csv")
+
+# standardize state names and select needed columns
+turnout_clean = turnout_data[['STATE', 'VEP_TURNOUT_RATE']].copy()
+turnout_clean['state'] = turnout_clean['STATE'].str.strip().str.lower()
+turnout_clean['turnout_pct'] = turnout_clean['VEP_TURNOUT_RATE'].str.rstrip('%').astype(float)
+
+# rename united states to national
+turnout_clean['state'] = turnout_clean['state'].replace('united states', 'national')
+
+# merge turnout into reg_df
+reg_df = reg_df.merge(
+    turnout_clean[['state', 'turnout_pct']],
+    on='state',
+    how='left'
+)
 
 
 # covariates for both regressions

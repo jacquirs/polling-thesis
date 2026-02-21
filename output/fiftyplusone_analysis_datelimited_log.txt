@@ -238,46 +238,6 @@ top questions by days before election:
 ==============================================================================================================
 
 
-  window: 200 days before election
-  state questions in window:    1635
-  national questions in window: 682
-
-======================================================================
-  ols regression: state-level polls - 200 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0017     0.0003    ***
-  days_before_election                   -0.0002     0.0001     **
-  pct_dk                                  0.0004     0.0010       
-  abs_margin                             -0.2059     0.0457    ***
-  const                                  -0.0366     0.0062    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0748
-  n:            1635
-======================================================================
-
-
-======================================================================
-  ols regression: national polls - 200 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0034     0.0009    ***
-  days_before_election                    0.0001     0.0001       
-  pct_dk                                 -0.0028     0.0007    ***
-  abs_margin                             -0.0008     0.0001    ***
-  const                                  -0.0541     0.0063    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0614
-  n:            682
-======================================================================
-
-
   window: 107 days before election
   state questions in window:    1635
   national questions in window: 682
