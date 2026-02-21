@@ -1144,13 +1144,11 @@ results_all_states_mode = run_ols_clustered(
 #################### Time Window Regressions, swing states only ########################
 ########################################################################################
 
-print("TIME WINDOW REGRESSIONS SWING STATES ONLY")
-
-competitive_window_results = {}
+competitive_window_results_no_mode = {}
 
 for window in time_windows:
     print(f"\n{'='*70}")
-    print(f"WINDOW: {window} days before election, swing states only")
+    print(f"WINDOW: {window} days before election (COMPETITIVE STATES, NO MODE)")
     print(f"{'='*70}")
     
     # filter competitive states to this time window
@@ -1158,26 +1156,26 @@ for window in time_windows:
         reg_state_competitive['days_before_election'] <= window
     ].copy()
     
-    print(f"  Questions in {window}-day window: {len(state_w)}")
+    print(f"  Questions in {window} day window: {len(state_w)}")
     
-    # Check if we have enough complete cases
-    state_complete = state_w[competitive_x_vars + ['A', 'poll_id']].dropna()
+    # check if we have enough complete cases
+    state_complete = state_w[state_x_vars_no_mode + ['A', 'poll_id']].dropna()
     
     if len(state_complete) < 10:
-        print(f"Regression skipped - only {len(state_complete)} complete cases")
-        competitive_window_results[window] = None
+        print(f"  ⚠ Regression skipped, only {len(state_complete)} complete cases")
+        competitive_window_results_no_mode[window] = None
     else:
-        print(f"Complete cases for regression: {len(state_complete)}")
+        print(f"  Complete cases for regression: {len(state_complete)}")
         
         res_competitive = run_ols_clustered(
             df          = state_w,
             y_col       = 'A',
-            x_cols      = competitive_x_vars,
+            x_cols      = state_x_vars_no_mode,
             cluster_col = 'poll_id',
-            label       = f'competitive states - {window} days before election'
+            label       = f'competitive states {window} days before election (no mode)'
         )
         
-        competitive_window_results[window] = res_competitive
+        competitive_window_results_no_mode[window] = res_competitive
 
 
 ######## save outputs
