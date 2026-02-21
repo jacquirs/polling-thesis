@@ -156,6 +156,20 @@ Online Matched Sample -0.085963 -0.084255 0.050044 0.005213 0.000000e+00  166 **
   Probability Panel               -0.1169   0.0159 0.000***  -0.0975   0.0798    35    -0.0957   0.0076 0.000***  -0.0960   0.0422    86
 ==============================================================================================================
 
+      question_id  pct_harris_poll  pct_trump_poll  poll_id             pollster          state  ... abs_margin         A trump_part_A harris_part_A  poll_level            base_mode
+0          203620             39.3            40.2    87509  Praecones Analytica  new hampshire  ...   0.027796  0.079082    -0.174689     -0.253770       state                  NaN
+1          203624             43.0            51.0    87511       SoCal Research       national  ...   0.014723  0.140621     0.023600     -0.117021    national            Online Ad
+2          203625             37.0            43.0    87511       SoCal Research       national  ...   0.014723  0.120278    -0.147026     -0.267303    national            Online Ad
+3          203665             46.0            50.0    87518       SoCal Research   pennsylvania  ...   0.017097  0.048850    -0.007423     -0.056274       state            Online Ad
+4          203669             47.0            49.0    87520     Echelon Insights       national  ...   0.014723  0.011668    -0.016405     -0.028074    national  Online Opt-In Panel
+...           ...              ...             ...      ...                  ...            ...  ...        ...       ...          ...           ...         ...                  ...
+2351       217351             48.0            47.0    88032      Z to A Research       michigan  ...   0.014142 -0.049905    -0.056403     -0.006498       state            Online Ad
+2352       217352             46.0            49.0    88033      Z to A Research   pennsylvania  ...   0.017097  0.028648    -0.027626     -0.056274       state          Text-to-Web
+2352       217352             46.0            49.0    88033      Z to A Research   pennsylvania  ...   0.017097  0.028648    -0.027626     -0.056274       state            Online Ad
+2353       217353             47.0            48.0    88034      Z to A Research      wisconsin  ...   0.008588  0.003585    -0.032707     -0.036292       state          Text-to-Web
+2353       217353             47.0            48.0    88034      Z to A Research      wisconsin  ...   0.008588  0.003585    -0.032707     -0.036292       state            Online Ad
+
+[3166 rows x 20 columns]
 
 ==============================================================================================================
   method a accuracy by target population

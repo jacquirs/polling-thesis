@@ -995,10 +995,6 @@ results_national = run_ols_clustered(
     label       = 'national polls'
 )
 
-# later additions after build out
-# restricting to competitive states versus all states
-# how to say "mode X is more biased controlling for days before election and competitiveness"
-
 
 ########################################################################################
 #################### Regression by time window (like in harrison 2009) #################
