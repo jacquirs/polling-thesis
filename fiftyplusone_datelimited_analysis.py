@@ -820,7 +820,6 @@ print_accuracy_table(harris_trump_modes, 'base_mode', 'polling mode')
 print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 
 
-
 ########################################################################################
 ###################### Multivariate Regression Analysis ################################
 ########################################################################################
