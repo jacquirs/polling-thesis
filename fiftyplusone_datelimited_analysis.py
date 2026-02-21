@@ -1100,6 +1100,44 @@ competitive_x_vars = time_vars + state_vars + mode_vars
 national_x_vars_with_mode = time_vars + national_vars + mode_vars
 
 
+########################################################################################
+#################### Regressions with Mode Controls ####################################
+########################################################################################
+
+print("REGRESSIONS WITH MODE CONTROLS")
+
+# all state polls with mode
+print("\n1. ALL STATE POLLS:")
+results_state_mode = run_ols_clustered(
+    df          = reg_state,
+    y_col       = 'A',
+    x_cols      = state_x_vars_with_mode,
+    cluster_col = 'poll_id',
+    label       = 'all state-level polls with mode controls'
+)
+
+# competitive states only with mode
+print("\n2. COMPETITIVE STATES ONLY:")
+results_competitive_mode = run_ols_clustered(
+    df          = reg_state_competitive,
+    y_col       = 'A',
+    x_cols      = competitive_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'competitive states only with mode controls'
+)
+
+# national regression with mode
+print("\n3. NATIONAL POLLS:")
+results_national_mode = run_ols_clustered(
+    df          = reg_national,
+    y_col       = 'A',
+    x_cols      = national_x_vars_with_mode,
+    cluster_col = 'poll_id',
+    label       = 'national polls with mode controls'
+)
+
+
+
 
 ######## save outputs
 # save question-level accuracy dataset for further analysis
