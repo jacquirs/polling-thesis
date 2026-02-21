@@ -987,7 +987,7 @@ results_national = run_ols_clustered(
 
 
 ########################################################################################
-#################### Regression by time window (like in harrison 2009) #################
+#################### Regression by time window, national (like harrison 2009) ##########
 ########################################################################################
 
 # re-run the same regression separately for five time windows prior to the election, where each window includes only polls whose end_date falls within that many days of election day
@@ -1043,6 +1043,62 @@ window_results = {}
 for window in time_windows:
     res_s, res_n = run_window_regressions(reg_state, reg_national, all_x_vars, window)
     window_results[window] = {'state': res_s, 'national': res_n}
+
+
+
+########################################################################################
+#################### Prepare Mode Variables with Live Phone as Reference ###############
+########################################################################################
+
+# Explode mode into base_mode
+reg_df['base_mode'] = reg_df['mode'].str.split('/')
+reg_df = reg_df.explode('base_mode')
+reg_df['base_mode'] = reg_df['base_mode'].str.strip()
+
+print("\nUnique base modes after exploding:")
+print(reg_df['base_mode'].value_counts())
+
+# set Live Phone as reference category (follows general literature conventions and was the gold standard)
+reference_mode = 'Live Phone'
+
+# create dummy variables for all modes
+mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=False)
+
+# drop Live Phone to use as reference
+mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
+print(f"\n✓ Reference category set to: {reference_mode} (polling literature standard)")
+
+reg_df = pd.concat([reg_df, mode_dummies], axis=1)
+mode_vars = [col for col in reg_df.columns if col.startswith('mode_')]
+
+print(f"Mode dummy variables created: {mode_vars}")
+print(f"\nAll coefficients will be interpreted relative to {reference_mode} polls")
+
+# resplit into state and national AFTER exploding
+reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
+reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
+
+# define competitive states and create subset
+competitive_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
+reg_state_competitive = reg_state[reg_state['state'].isin(competitive_states)].copy()
+
+print(f"\nSample sizes after exploding:")
+print(f"  All state quesitons: {len(reg_state)}")
+print(f"  Competitive state quesitons only: {len(reg_state_competitive)}")
+print(f"  National quesitons: {len(reg_national)}")
+
+print(f"\nMode distribution in competitive states:")
+mode_dist = reg_state_competitive['base_mode'].value_counts()
+for mode, count in mode_dist.items():
+    pct = 100 * count / len(reg_state_competitive)
+    marker = " (REFERENCE)" if mode == reference_mode else ""
+    print(f"  {mode}: {count} ({pct:.1f}%){marker}")
+
+# Update covariate lists to include mode
+state_x_vars_with_mode = time_vars + state_vars + mode_vars
+competitive_x_vars = time_vars + state_vars + mode_vars
+national_x_vars_with_mode = time_vars + national_vars + mode_vars
+
 
 
 ######## save outputs
