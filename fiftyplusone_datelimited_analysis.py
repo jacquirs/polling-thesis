@@ -863,9 +863,12 @@ reg_df = reg_df.merge(
 
 # covariates for both regressions
 time_vars  = ['duration_days', 'days_before_election']
-other_vars = ['pct_dk', 'abs_margin'] # once turnout is ready, add to other_vars
+state_vars = ['pct_dk', 'abs_margin','turnout_pct']
+national_vars = ['pct_dk', 'abs_margin']
 
-all_x_vars = time_vars + other_vars
+# final covariate lists per regression
+state_x_vars    = time_vars + state_vars
+all_x_vars = time_vars + national_vars
 
 # split into statelevel and national samples
 reg_state    = reg_df[reg_df['poll_level'] == 'state'].copy()
@@ -885,9 +888,6 @@ top_early = (
 )
 print(top_early.to_string(index=False))
 
-# final covariate lists per regression
-state_x_vars    = time_vars + other_vars
-national_x_vars = time_vars + other_vars
 
 # state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
 results_state = run_ols_clustered(
