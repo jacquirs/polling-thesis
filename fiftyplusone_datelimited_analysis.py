@@ -1178,6 +1178,43 @@ for window in time_windows:
         competitive_window_results_no_mode[window] = res_competitive
 
 
+########################################################################################
+#################### Competitive states by time window and mode controls ###############
+########################################################################################
+competitive_window_results_with_mode = {}
+
+for window in time_windows:
+    print(f"\n{'='*70}")
+    print(f"WINDOW: {window} days before election (COMPETITIVE STATES, WITH MODE)")
+    print(f"{'='*70}")
+    
+    # filter competitive states to this time window
+    state_w = reg_state_competitive[
+        reg_state_competitive['days_before_election'] <= window
+    ].copy()
+    
+    print(f"  Questions in {window} day window: {len(state_w)}")
+    
+    # check if have enough complete cases
+    state_complete = state_w[state_x_vars_with_mode + ['A', 'poll_id']].dropna()
+    
+    if len(state_complete) < 10:
+        print(f"Regression skipped, only {len(state_complete)} complete cases")
+        competitive_window_results_with_mode[window] = None
+    else:
+        print(f"Complete cases for regression: {len(state_complete)}")
+        
+        res_competitive = run_ols_clustered(
+            df          = state_w,
+            y_col       = 'A',
+            x_cols      = state_x_vars_with_mode,
+            cluster_col = 'poll_id',
+            label       = f'competitive states {window} days before election (with mode)'
+        )
+        
+        competitive_window_results_with_mode[window] = res_competitive
+
+
 ######## save outputs
 # save question-level accuracy dataset for further analysis
 harris_trump_pivot.to_csv('data/harris_trump_datelimted_accuracy.csv', index=False)
