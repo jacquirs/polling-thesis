@@ -156,20 +156,6 @@ Online Matched Sample -0.085963 -0.084255 0.050044 0.005213 0.000000e+00  166 **
   Probability Panel               -0.1169   0.0159 0.000***  -0.0975   0.0798    35    -0.0957   0.0076 0.000***  -0.0960   0.0422    86
 ==============================================================================================================
 
-      question_id  pct_harris_poll  pct_trump_poll  poll_id             pollster          state  ... abs_margin         A trump_part_A harris_part_A  poll_level            base_mode
-0          203620             39.3            40.2    87509  Praecones Analytica  new hampshire  ...   0.027796  0.079082    -0.174689     -0.253770       state                  NaN
-1          203624             43.0            51.0    87511       SoCal Research       national  ...   0.014723  0.140621     0.023600     -0.117021    national            Online Ad
-2          203625             37.0            43.0    87511       SoCal Research       national  ...   0.014723  0.120278    -0.147026     -0.267303    national            Online Ad
-3          203665             46.0            50.0    87518       SoCal Research   pennsylvania  ...   0.017097  0.048850    -0.007423     -0.056274       state            Online Ad
-4          203669             47.0            49.0    87520     Echelon Insights       national  ...   0.014723  0.011668    -0.016405     -0.028074    national  Online Opt-In Panel
-...           ...              ...             ...      ...                  ...            ...  ...        ...       ...          ...           ...         ...                  ...
-2351       217351             48.0            47.0    88032      Z to A Research       michigan  ...   0.014142 -0.049905    -0.056403     -0.006498       state            Online Ad
-2352       217352             46.0            49.0    88033      Z to A Research   pennsylvania  ...   0.017097  0.028648    -0.027626     -0.056274       state          Text-to-Web
-2352       217352             46.0            49.0    88033      Z to A Research   pennsylvania  ...   0.017097  0.028648    -0.027626     -0.056274       state            Online Ad
-2353       217353             47.0            48.0    88034      Z to A Research      wisconsin  ...   0.008588  0.003585    -0.032707     -0.036292       state          Text-to-Web
-2353       217353             47.0            48.0    88034      Z to A Research      wisconsin  ...   0.008588  0.003585    -0.032707     -0.036292       state            Online Ad
-
-[3166 rows x 20 columns]
 
 ==============================================================================================================
   method a accuracy by target population
@@ -192,29 +178,6 @@ time variable diagnostics:
 regression sample sizes:
   state-level questions:    1635
   national-level questions: 682
-
-top questions by days before election:
- poll_id                                        pollster         state start_date   end_date  days_before_election
-   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
-   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
-   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
-   87518                                  SoCal Research  pennsylvania 2024-07-20 2024-07-21                   107
-   87511                                  SoCal Research      national 2024-07-21 2024-07-21                   107
-   87509                             Praecones Analytica new hampshire 2024-07-19 2024-07-21                   107
-   87511                                  SoCal Research      national 2024-07-21 2024-07-21                   107
-   87521                                         HarrisX      national 2024-07-19 2024-07-21                   107
-   87520                                Echelon Insights      national 2024-07-19 2024-07-21                   107
-   87521                                         HarrisX      national 2024-07-19 2024-07-21                   107
-   87524                                      Quinnipiac      national 2024-07-19 2024-07-21                   107
-   87528 Florida Atlantic University/Mainstreet Research      national 2024-07-19 2024-07-21                   107
-   87524                                      Quinnipiac      national 2024-07-19 2024-07-21                   107
-   87534                         Landmark Communications       georgia 2024-07-22 2024-07-22                   106
-   87609                                  Capitol Weekly    california 2024-07-19 2024-07-22                   106
-   87529                                          YouGov      national 2024-07-19 2024-07-22                   106
-   87531                                  Marist College      national 2024-07-22 2024-07-22                   106
-   87529                                          YouGov      national 2024-07-19 2024-07-22                   106
-   87531                                  Marist College      national 2024-07-22 2024-07-22                   106
-   87523                                 Morning Consult      national 2024-07-21 2024-07-22                   106
 
 ======================================================================
   ols regression: state-level polls
@@ -452,3 +415,719 @@ top questions by days before election:
   n:            73
 ======================================================================
 
+
+Unique base modes after exploding:
+base_mode
+Online Opt-In Panel      1073
+Live Phone                545
+Text-to-Web               479
+IVR                       185
+Online Matched Sample     166
+Online Ad                 130
+Probability Panel         121
+Text                       99
+App Panel                  85
+Email                      79
+Mail-to-Web                28
+Mail-to-Phone              11
+Name: count, dtype: int64
+
+reference category set to: Live Phone
+mode dummy variables created: ['mode_App Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Online Ad', 'mode_Online Matched Sample', 'mode_Online Opt_In Panel', 'mode_Probability Panel', 'mode_Text', 'mode_Text_to_Web']
+
+all coefficients will be interpreted relative to Live Phone polls
+
+sample sizes after exploding:
+  all state polls: 2365
+  swing states only: 1736
+  national polls: 801
+
+swing states breakdown:
+state
+arizona           229
+georgia           226
+michigan          269
+nevada            166
+north carolina    235
+pennsylvania      345
+wisconsin         266
+Name: count, dtype: int64
+
+mode distribution in swing states:
+  Online Opt-In Panel: 485 (27.9%)
+  Live Phone: 343 (19.8%) (REFERENCE)
+  Text-to-Web: 287 (16.5%)
+  IVR: 119 (6.9%)
+  Online Ad: 94 (5.4%)
+  Text: 78 (4.5%)
+  Online Matched Sample: 74 (4.3%)
+  Email: 69 (4.0%)
+  Mail-to-Web: 25 (1.4%)
+  App Panel: 16 (0.9%)
+  Probability Panel: 16 (0.9%)
+  Mail-to-Phone: 11 (0.6%)
+REGRESSIONS WITH MODE CONTROLS
+
+======================================================================
+  ols regression: national polls with mode controls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0041     0.0009    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0021     0.0008    ***
+  abs_margin                             -0.0004     0.0002    ***
+  mode_App Panel                          0.0069     0.0135       
+  mode_Email                              0.0000     0.0000       
+  mode_IVR                               -0.0039     0.0258       
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000     **
+  mode_Online Ad                          0.0474     0.0175    ***
+  mode_Online Matched Sample             -0.0235     0.0096     **
+  mode_Online Opt_In Panel               -0.0334     0.0079    ***
+  mode_Probability Panel                 -0.0338     0.0114    ***
+  mode_Text                               0.0027     0.0127       
+  mode_Text_to_Web                       -0.0069     0.0086       
+  const                                  -0.0294     0.0107    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1630
+  n:            801
+======================================================================
+
+
+======================================================================
+  ols regression: swing states with mode controls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0030     0.0005    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0025     0.0009    ***
+  abs_margin                             -1.3046     0.3383    ***
+  turnout_pct                            -0.0024     0.0011     **
+  mode_App Panel                          0.0647     0.0136    ***
+  mode_Email                              0.0037     0.0081       
+  mode_IVR                                0.0206     0.0050    ***
+  mode_Mail_to_Phone                     -0.0228     0.0115     **
+  mode_Mail_to_Web                       -0.0018     0.0125       
+  mode_Online Ad                          0.0369     0.0068    ***
+  mode_Online Matched Sample             -0.0064     0.0093       
+  mode_Online Opt_In Panel               -0.0086     0.0050      *
+  mode_Probability Panel                 -0.0177     0.0127       
+  mode_Text                               0.0169     0.0048    ***
+  mode_Text_to_Web                        0.0050     0.0046       
+  const                                   0.1586     0.0884      *
+  ---------------------------------------------------------------
+  adjusted r2:  0.1885
+  n:            1736
+======================================================================
+
+
+======================================================================
+  ols regression: all state polls with mode controls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0021     0.0004    ***
+  days_before_election                   -0.0001     0.0001      *
+  pct_dk                                  0.0021     0.0009     **
+  abs_margin                             -0.1295     0.0476    ***
+  turnout_pct                             0.0026     0.0005    ***
+  mode_App Panel                          0.0533     0.0118    ***
+  mode_Email                              0.0008     0.0078       
+  mode_IVR                                0.0071     0.0067       
+  mode_Mail_to_Phone                     -0.0273     0.0127     **
+  mode_Mail_to_Web                       -0.0394     0.0248       
+  mode_Online Ad                          0.0377     0.0066    ***
+  mode_Online Matched Sample             -0.0176     0.0082     **
+  mode_Online Opt_In Panel               -0.0091     0.0049      *
+  mode_Probability Panel                 -0.0507     0.0164    ***
+  mode_Text                               0.0092     0.0066       
+  mode_Text_to_Web                       -0.0001     0.0044       
+  const                                  -0.2265     0.0359    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1555
+  n:            2365
+======================================================================
+
+
+======================================================================
+WINDOW: 107 days before election (SWING STATES, NO MODE)
+======================================================================
+  Questions in 107 day window: 1736
+  Complete cases for regression: 1736
+
+======================================================================
+  ols regression: swing states 107 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0031     0.0005    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0016     0.0009      *
+  abs_margin                             -1.3287     0.3468    ***
+  turnout_pct                            -0.0025     0.0012     **
+  const                                   0.1756     0.0909      *
+  ---------------------------------------------------------------
+  adjusted r2:  0.1328
+  n:            1736
+======================================================================
+
+
+======================================================================
+WINDOW: 90 days before election (SWING STATES, NO MODE)
+======================================================================
+  Questions in 90 day window: 1589
+  Complete cases for regression: 1589
+
+======================================================================
+  ols regression: swing states 90 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0029     0.0005    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                  0.0019     0.0009     **
+  abs_margin                             -1.1584     0.3494    ***
+  turnout_pct                            -0.0019     0.0012       
+  const                                   0.1338     0.0937       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1486
+  n:            1589
+======================================================================
+
+
+======================================================================
+WINDOW: 60 days before election (SWING STATES, NO MODE)
+======================================================================
+  Questions in 60 day window: 1254
+  Complete cases for regression: 1254
+
+======================================================================
+  ols regression: swing states 60 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0028     0.0005    ***
+  days_before_election                   -0.0005     0.0001    ***
+  pct_dk                                  0.0017     0.0011       
+  abs_margin                             -0.9713     0.3685    ***
+  turnout_pct                            -0.0013     0.0012       
+  const                                   0.0827     0.0949       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1553
+  n:            1254
+======================================================================
+
+
+======================================================================
+WINDOW: 30 days before election (SWING STATES, NO MODE)
+======================================================================
+  Questions in 30 day window: 789
+  Complete cases for regression: 789
+
+======================================================================
+  ols regression: swing states 30 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0027     0.0005    ***
+  days_before_election                    0.0003     0.0003       
+  pct_dk                                  0.0002     0.0014       
+  abs_margin                             -0.8891     0.4673      *
+  turnout_pct                            -0.0013     0.0015       
+  const                                   0.0813     0.1181       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1480
+  n:            789
+======================================================================
+
+
+======================================================================
+WINDOW: 7 days before election (SWING STATES, NO MODE)
+======================================================================
+  Questions in 7 day window: 303
+  Complete cases for regression: 303
+
+======================================================================
+  ols regression: swing states 7 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0029     0.0004    ***
+  days_before_election                   -0.0025     0.0022       
+  pct_dk                                 -0.0035     0.0024       
+  abs_margin                             -1.1592     0.5563     **
+  turnout_pct                            -0.0022     0.0018       
+  const                                   0.1787     0.1427       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2717
+  n:            303
+======================================================================
+
+
+======================================================================
+WINDOW: 107 days before election (SWING STATES, WITH MODE)
+======================================================================
+  Questions in 107 day window: 1736
+Complete cases for regression: 1736
+
+======================================================================
+  ols regression: swing states 107 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0030     0.0005    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0025     0.0009    ***
+  abs_margin                             -1.3046     0.3383    ***
+  turnout_pct                            -0.0024     0.0011     **
+  mode_App Panel                          0.0647     0.0136    ***
+  mode_Email                              0.0037     0.0081       
+  mode_IVR                                0.0206     0.0050    ***
+  mode_Mail_to_Phone                     -0.0228     0.0115     **
+  mode_Mail_to_Web                       -0.0018     0.0125       
+  mode_Online Ad                          0.0369     0.0068    ***
+  mode_Online Matched Sample             -0.0064     0.0093       
+  mode_Online Opt_In Panel               -0.0086     0.0050      *
+  mode_Probability Panel                 -0.0177     0.0127       
+  mode_Text                               0.0169     0.0048    ***
+  mode_Text_to_Web                        0.0050     0.0046       
+  const                                   0.1586     0.0884      *
+  ---------------------------------------------------------------
+  adjusted r2:  0.1885
+  n:            1736
+======================================================================
+
+
+======================================================================
+WINDOW: 90 days before election (SWING STATES, WITH MODE)
+======================================================================
+  Questions in 90 day window: 1589
+Complete cases for regression: 1589
+
+======================================================================
+  ols regression: swing states 90 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0028     0.0005    ***
+  days_before_election                   -0.0003     0.0001    ***
+  pct_dk                                  0.0029     0.0009    ***
+  abs_margin                             -1.1466     0.3407    ***
+  turnout_pct                            -0.0019     0.0012       
+  mode_App Panel                          0.0605     0.0133    ***
+  mode_Email                             -0.0005     0.0084       
+  mode_IVR                                0.0193     0.0050    ***
+  mode_Mail_to_Phone                     -0.0248     0.0119     **
+  mode_Mail_to_Web                       -0.0056     0.0123       
+  mode_Online Ad                          0.0336     0.0070    ***
+  mode_Online Matched Sample             -0.0091     0.0092       
+  mode_Online Opt_In Panel               -0.0108     0.0051     **
+  mode_Probability Panel                 -0.0166     0.0124       
+  mode_Text                               0.0162     0.0051    ***
+  mode_Text_to_Web                        0.0043     0.0047       
+  const                                   0.1206     0.0912       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2073
+  n:            1589
+======================================================================
+
+
+======================================================================
+WINDOW: 60 days before election (SWING STATES, WITH MODE)
+======================================================================
+  Questions in 60 day window: 1254
+Complete cases for regression: 1254
+
+======================================================================
+  ols regression: swing states 60 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0026     0.0005    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                  0.0025     0.0011     **
+  abs_margin                             -0.9590     0.3615    ***
+  turnout_pct                            -0.0011     0.0012       
+  mode_App Panel                          0.0503     0.0132    ***
+  mode_Email                             -0.0068     0.0092       
+  mode_IVR                                0.0160     0.0053    ***
+  mode_Mail_to_Phone                     -0.0315     0.0124     **
+  mode_Mail_to_Web                       -0.0096     0.0125       
+  mode_Online Ad                          0.0300     0.0077    ***
+  mode_Online Matched Sample             -0.0131     0.0101       
+  mode_Online Opt_In Panel               -0.0105     0.0051     **
+  mode_Probability Panel                 -0.0263     0.0120     **
+  mode_Text                               0.0105     0.0055      *
+  mode_Text_to_Web                       -0.0012     0.0045       
+  const                                   0.0663     0.0924       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2111
+  n:            1254
+======================================================================
+
+
+======================================================================
+WINDOW: 30 days before election (SWING STATES, WITH MODE)
+======================================================================
+  Questions in 30 day window: 789
+Complete cases for regression: 789
+
+======================================================================
+  ols regression: swing states 30 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0022     0.0005    ***
+  days_before_election                    0.0005     0.0003      *
+  pct_dk                                  0.0014     0.0014       
+  abs_margin                             -0.8992     0.4634      *
+  turnout_pct                            -0.0011     0.0015       
+  mode_App Panel                          0.0410     0.0137    ***
+  mode_Email                             -0.0102     0.0107       
+  mode_IVR                                0.0111     0.0068       
+  mode_Mail_to_Phone                     -0.0367     0.0144     **
+  mode_Mail_to_Web                       -0.0162     0.0127       
+  mode_Online Ad                          0.0351     0.0085    ***
+  mode_Online Matched Sample             -0.0144     0.0111       
+  mode_Online Opt_In Panel               -0.0075     0.0062       
+  mode_Probability Panel                 -0.0173     0.0115       
+  mode_Text                               0.0113     0.0067      *
+  mode_Text_to_Web                        0.0017     0.0052       
+  const                                   0.0585     0.1163       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2190
+  n:            789
+======================================================================
+
+
+======================================================================
+WINDOW: 7 days before election (SWING STATES, WITH MODE)
+======================================================================
+  Questions in 7 day window: 303
+Complete cases for regression: 303
+
+======================================================================
+  ols regression: swing states 7 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0024     0.0004    ***
+  days_before_election                   -0.0003     0.0019       
+  pct_dk                                 -0.0008     0.0025       
+  abs_margin                             -1.1460     0.5242     **
+  turnout_pct                            -0.0020     0.0017       
+  mode_App Panel                          0.0487     0.0152    ***
+  mode_Email                              0.0131     0.0143       
+  mode_IVR                                0.0058     0.0115       
+  mode_Mail_to_Phone                      0.0000     0.0000       
+  mode_Mail_to_Web                        0.0000     0.0000      *
+  mode_Online Ad                          0.0383     0.0125    ***
+  mode_Online Matched Sample             -0.0188     0.0163       
+  mode_Online Opt_In Panel               -0.0045     0.0108       
+  mode_Probability Panel                  0.0000     0.0000       
+  mode_Text                               0.0087     0.0117       
+  mode_Text_to_Web                       -0.0050     0.0073       
+  const                                   0.1391     0.1363       
+  ---------------------------------------------------------------
+  adjusted r2:  0.4083
+  n:            303
+======================================================================
+
+
+======================================================================
+WINDOW: 107 days before election (NATIONAL, WITH MODE)
+======================================================================
+  Questions in 107 day window: 801
+  complete cases for regression: 801
+
+======================================================================
+  ols regression: national 107 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0041     0.0009    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0021     0.0008    ***
+  abs_margin                             -0.0004     0.0002    ***
+  mode_App Panel                          0.0069     0.0135       
+  mode_Email                              0.0000     0.0000       
+  mode_IVR                               -0.0039     0.0258       
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000     **
+  mode_Online Ad                          0.0474     0.0175    ***
+  mode_Online Matched Sample             -0.0235     0.0096     **
+  mode_Online Opt_In Panel               -0.0334     0.0079    ***
+  mode_Probability Panel                 -0.0338     0.0114    ***
+  mode_Text                               0.0027     0.0127       
+  mode_Text_to_Web                       -0.0069     0.0086       
+  const                                  -0.0294     0.0107    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1630
+  n:            801
+======================================================================
+
+
+======================================================================
+WINDOW: 90 days before election (NATIONAL, WITH MODE)
+======================================================================
+  Questions in 90 day window: 645
+  complete cases for regression: 645
+
+======================================================================
+  ols regression: national 90 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0025     0.0006    ***
+  days_before_election                   -0.0006     0.0001    ***
+  pct_dk                                 -0.0020     0.0006    ***
+  abs_margin                             -0.0002     0.0001       
+  mode_App Panel                          0.0021     0.0143       
+  mode_Email                              0.0000     0.0000       
+  mode_IVR                               -0.0334     0.0105    ***
+  mode_Mail_to_Phone                      0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000       
+  mode_Online Ad                          0.0243     0.0131      *
+  mode_Online Matched Sample             -0.0298     0.0102    ***
+  mode_Online Opt_In Panel               -0.0359     0.0088    ***
+  mode_Probability Panel                 -0.0305     0.0105    ***
+  mode_Text                              -0.0035     0.0105       
+  mode_Text_to_Web                       -0.0135     0.0096       
+  const                                  -0.0124     0.0098       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2948
+  n:            645
+======================================================================
+
+
+======================================================================
+WINDOW: 60 days before election (NATIONAL, WITH MODE)
+======================================================================
+  Questions in 60 day window: 439
+  complete cases for regression: 439
+
+======================================================================
+  ols regression: national 60 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0035     0.0009    ***
+  days_before_election                   -0.0012     0.0002    ***
+  pct_dk                                 -0.0020     0.0007    ***
+  abs_margin                              0.0002     0.0002       
+  mode_App Panel                          0.0056     0.0153       
+  mode_Email                              0.0000     0.0000       
+  mode_IVR                               -0.0357     0.0116    ***
+  mode_Mail_to_Phone                      0.0000     0.0000      *
+  mode_Mail_to_Web                        0.0000     0.0000    ***
+  mode_Online Ad                          0.0217     0.0141       
+  mode_Online Matched Sample             -0.0407     0.0117    ***
+  mode_Online Opt_In Panel               -0.0462     0.0109    ***
+  mode_Probability Panel                 -0.0362     0.0128    ***
+  mode_Text                              -0.0215     0.0131       
+  mode_Text_to_Web                       -0.0191     0.0109      *
+  const                                   0.0109     0.0124       
+  ---------------------------------------------------------------
+  adjusted r2:  0.3776
+  n:            439
+======================================================================
+
+
+======================================================================
+WINDOW: 30 days before election (NATIONAL, WITH MODE)
+======================================================================
+  Questions in 30 day window: 276
+  complete cases for regression: 276
+
+======================================================================
+  ols regression: national 30 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0036     0.0009    ***
+  days_before_election                   -0.0012     0.0004    ***
+  pct_dk                                 -0.0027     0.0009    ***
+  abs_margin                              0.0002     0.0002       
+  mode_App Panel                          0.0231     0.0178       
+  mode_Email                             -0.0000     0.0000      *
+  mode_IVR                               -0.0331     0.0122    ***
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                        0.0000     0.0000    ***
+  mode_Online Ad                          0.0239     0.0160       
+  mode_Online Matched Sample             -0.0441     0.0128    ***
+  mode_Online Opt_In Panel               -0.0417     0.0117    ***
+  mode_Probability Panel                 -0.0269     0.0126     **
+  mode_Text                              -0.0207     0.0144       
+  mode_Text_to_Web                       -0.0156     0.0096       
+  const                                   0.0112     0.0154       
+  ---------------------------------------------------------------
+  adjusted r2:  0.3104
+  n:            276
+======================================================================
+
+
+======================================================================
+WINDOW: 7 days before election (NATIONAL, WITH MODE)
+======================================================================
+  Questions in 7 day window: 97
+  complete cases for regression: 97
+
+======================================================================
+  ols regression: national 7 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                           0.0104     0.0083       
+  days_before_election                    0.0032     0.0029       
+  pct_dk                                  0.0008     0.0016       
+  abs_margin                             -0.0013     0.0005    ***
+  mode_App Panel                         -0.0072     0.0376       
+  mode_Email                              0.0000     0.0000       
+  mode_IVR                               -0.0210     0.0164       
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000       
+  mode_Online Ad                          0.0458     0.0194     **
+  mode_Online Matched Sample             -0.0196     0.0251       
+  mode_Online Opt_In Panel               -0.0086     0.0163       
+  mode_Probability Panel                 -0.0537     0.0238     **
+  mode_Text                               0.0055     0.0195       
+  mode_Text_to_Web                        0.0130     0.0132       
+  const                                  -0.0851     0.0324    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.2443
+  n:            97
+======================================================================
+
+MODE COEFFICIENTS ACROSS SAMPLES
+
+Mode                        National           Swing      All States
+......................................................................
+App Panel                   0.01           0.06***        0.05***
+Email                       0.00           0.00           0.00   
+IVR                        -0.00           0.02***        0.01   
+Mail_to_Phone              -0.00          -0.02**        -0.03** 
+Mail_to_Web                -0.00**        -0.00          -0.04   
+Online Ad                   0.05***        0.04***        0.04***
+Online Matched Sample       -0.02**        -0.01          -0.02** 
+Online Opt_In Panel        -0.03***       -0.01*         -0.01*  
+Probability Panel          -0.03***       -0.02          -0.05***
+Text                        0.00           0.02***        0.01   
+Text_to_Web                -0.01           0.01          -0.00   
+
+note: *** p<0.01, ** p<0.05, * p<0.10
+all coefficients relative to Live Phone (reference category)
+COEFFICIENTS ACROSS TIME WINDOWS (swing states)
+
+Variable                          107d          90d          60d          30d           7d
+.....................................................................................
+duration_days                -0.00***    -0.00***    -0.00***    -0.00***    -0.00***
+days_before_election         -0.00**     -0.00***    -0.00***     0.00       -0.00   
+pct_dk                        0.00*       0.00**      0.00        0.00       -0.00   
+abs_margin                   -1.33***    -1.16***    -0.97***    -0.89*      -1.16** 
+turnout_pct                  -0.00**     -0.00       -0.00       -0.00       -0.00   
+
+note: *** p<0.01, ** p<0.05, * p<0.10
+
+.....................................................................................
+adj r squared                  0.1328      0.1486      0.1553      0.1480      0.2717
+n                                1736        1589        1254         789         303
+COEFFICIENTS ACROSS TIME WINDOWS (national)
+
+Variable                          107d          90d          60d          30d           7d
+.....................................................................................
+duration_days                -0.00***    -0.00**     -0.00**     -0.00***     0.00   
+days_before_election          0.00       -0.00***    -0.00***    -0.00***     0.00   
+pct_dk                       -0.00***    -0.00***    -0.00***    -0.00***    -0.00*  
+abs_margin                   -0.00***    -0.00***    -0.00***    -0.00***    -0.00   
+
+note: *** p<0.01, ** p<0.05, * p<0.10
+
+.....................................................................................
+adj r squared                  0.0614      0.1931      0.2217      0.1583      0.0072
+n                                 682         561         380         234          73
+
+======================================================================
+MODE COEFFICIENTS ACROSS TIME WINDOWS (swing states)
+Reference category: Live Phone
+======================================================================
+
+Mode                         107d          90d          60d          30d           7d
+................................................................................
+App Panel                0.06***     0.06***     0.05***     0.04***     0.05***
+Email                    0.00       -0.00       -0.01       -0.01        0.01   
+IVR                      0.02***     0.02***     0.02***     0.01        0.01   
+Mail_to_Phone           -0.02**     -0.02**     -0.03**     -0.04**      0.00   
+Mail_to_Web             -0.00       -0.01       -0.01       -0.02        0.00*  
+Online Ad                0.04***     0.03***     0.03***     0.04***     0.04***
+Online Matched Sample    -0.01       -0.01       -0.01       -0.01       -0.02   
+Online Opt_In Panel     -0.01*      -0.01**     -0.01**     -0.01       -0.00   
+Probability Panel       -0.02       -0.02       -0.03**     -0.02        0.00   
+Text                     0.02***     0.02***     0.01*       0.01*       0.01   
+Text_to_Web              0.01        0.00       -0.00        0.00       -0.01   
+
+note: *** p<0.01, ** p<0.05, * p<0.10
+all coefficients relative to Live Phone (reference category)
+
+................................................................................
+adj r squared             0.1885      0.2073      0.2111      0.2190      0.4083
+n                           1736        1589        1254         789         303
+MODE COEFFICIENTS ACROSS TIME WINDOWS (national)
+
+Mode                         107d          90d          60d          30d           7d
+................................................................................
+App Panel                0.01        0.00        0.01        0.02       -0.01   
+Email                    0.00        0.00        0.00       -0.00*       0.00   
+IVR                     -0.00       -0.03***    -0.04***    -0.03***    -0.02   
+Mail_to_Phone           -0.00        0.00        0.00*      -0.00       -0.00   
+Mail_to_Web             -0.00**     -0.00        0.00***     0.00***    -0.00   
+Online Ad                0.05***     0.02*       0.02        0.02        0.05** 
+Online Matched Sample    -0.02**     -0.03***    -0.04***    -0.04***    -0.02   
+Online Opt_In Panel     -0.03***    -0.04***    -0.05***    -0.04***    -0.01   
+Probability Panel       -0.03***    -0.03***    -0.04***    -0.03**     -0.05** 
+Text                     0.00       -0.00       -0.02       -0.02        0.01   
+Text_to_Web             -0.01       -0.01       -0.02*      -0.02        0.01   
+
+note: *** p<0.01, ** p<0.05, * p<0.10
+all coefficients relative to Live Phone (reference category)
+
+................................................................................
+adj r squared             0.1630      0.2948      0.3776      0.3104      0.2443
+n                            801         645         439         276          97

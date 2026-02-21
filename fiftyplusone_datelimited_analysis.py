@@ -1045,7 +1045,6 @@ for window in time_windows:
     window_results[window] = {'state': res_s, 'national': res_n}
 
 
-
 ########################################################################################
 #################### Prepare Mode Variables with Live Phone as Reference ###############
 ########################################################################################
@@ -1065,16 +1064,24 @@ reference_mode = 'Live Phone'
 mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=False)
 
 # drop live phone to use as reference (if it exists)
-mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
-print(f"\nReference category set to: {reference_mode}")
+if f'mode_{reference_mode}' in mode_dummies.columns:
+    mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
+    print(f"\nreference category set to: {reference_mode}")
+else:
+    print(f"\nwarning: {reference_mode} not found in modes")
 
+# convert boolean to int and clean column names by replace hyphens with underscores
+mode_dummies = mode_dummies.astype(int)
+mode_dummies.columns = mode_dummies.columns.str.replace('-', '_')
+
+# add mode dummies to reg_df
 reg_df = pd.concat([reg_df, mode_dummies], axis=1)
 mode_vars = [col for col in reg_df.columns if col.startswith('mode_')]
 
-print(f"Mode dummy variables created: {mode_vars}")
-print(f"\nAll coefficients will be interpreted relative to {reference_mode} polls")
+print(f"mode dummy variables created: {mode_vars}")
+print(f"\nall coefficients will be interpreted relative to {reference_mode} polls")
 
-# resplit into state and national after exploding
+# resplit into state and national after exploding and adding mode dummies
 reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
 reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
 
@@ -1083,15 +1090,15 @@ swing_states = ['arizona', 'georgia', 'michigan', 'nevada',
                       'north carolina', 'pennsylvania', 'wisconsin']
 reg_state_swing = reg_state[reg_state['state'].isin(swing_states)].copy()
 
-print(f"\nSample sizes after exploding:")
-print(f"  All state polls: {len(reg_state)}")
-print(f"  Competitive states only: {len(reg_state_swing)}")
-print(f"  National polls: {len(reg_national)}")
+print(f"\nsample sizes after exploding:")
+print(f"  all state polls: {len(reg_state)}")
+print(f"  swing states only: {len(reg_state_swing)}")
+print(f"  national polls: {len(reg_national)}")
 
-print(f"\nCompetitive states breakdown:")
+print(f"\nswing states breakdown:")
 print(reg_state_swing['state'].value_counts().sort_index())
 
-print(f"\nMode distribution in swing states:")
+print(f"\nmode distribution in swing states:")
 mode_dist = reg_state_swing['base_mode'].value_counts()
 for mode, count in mode_dist.items():
     pct = 100 * count / len(reg_state_swing)
