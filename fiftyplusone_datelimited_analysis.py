@@ -1270,7 +1270,7 @@ print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
 print(f"all coefficients relative to {reference_mode} (reference category)")
 
 ########################################################################################
-#################### Coefficients across time windows ##################################
+#################### Coefficients across time windows, swing ##################################
 ########################################################################################
 
 # compare across columns to see how predictors change over time, similar to harrison (2009) analysis of temporal dynamics
@@ -1323,7 +1323,60 @@ print()
 
 
 ########################################################################################
-#################### summary table mode coefficients across time windows ###############
+#################### Coefficients across time windows, national #######################
+########################################################################################
+
+# compare across columns to see how predictors change over time for national polls
+print("COEFFICIENTS ACROSS TIME WINDOWS (national)")
+
+# variables to track across windows for national (no turnout_pct)
+national_key_vars = ['duration_days', 'days_before_election', 'pct_dk', 'abs_margin']
+
+print(f"\n{'Variable':<25}", end='')
+for window in time_windows:
+    print(f"{window:>12}d", end='')
+print()
+print("." * (25 + 12 * len(time_windows)))
+
+for var in national_key_vars:
+    print(f"{var:<25}", end='')
+    
+    for window in time_windows:
+        result = window_results[window]['national']
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>9.2f}{sig:<3}", end='')
+        else:
+            print(f"{'..':>12}", end='')
+    print()
+
+print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
+
+# print r squared and n for each window
+print("\n" + "." * (25 + 12 * len(time_windows)))
+print(f"{'adj r squared':<25}", end='')
+for window in time_windows:
+    result = window_results[window]['national']
+    if result is not None:
+        print(f"{result.rsquared_adj:>12.4f}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
+
+print(f"{'n':<25}", end='')
+for window in time_windows:
+    result = window_results[window]['national']
+    if result is not None:
+        print(f"{int(result.nobs):>12}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
+
+
+########################################################################################
+#################### summary table mode coefficients across time windows, swing ###############
 ########################################################################################
 
 # compare across columns to see if mode effects intensify over time, positive trend suggests mode bias worsens closer to election
