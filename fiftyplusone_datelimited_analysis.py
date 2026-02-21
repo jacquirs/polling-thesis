@@ -1050,7 +1050,7 @@ for window in time_windows:
 #################### Prepare Mode Variables with Live Phone as Reference ###############
 ########################################################################################
 
-# Explode mode into base_mode
+# explode mode into base_mode (each mixed mode poll becomes multiple rows)
 reg_df['base_mode'] = reg_df['mode'].str.split('/')
 reg_df = reg_df.explode('base_mode')
 reg_df['base_mode'] = reg_df['base_mode'].str.strip()
@@ -1058,15 +1058,15 @@ reg_df['base_mode'] = reg_df['base_mode'].str.strip()
 print("\nUnique base modes after exploding:")
 print(reg_df['base_mode'].value_counts())
 
-# set Live Phone as reference category (follows general literature conventions and was the gold standard)
+# set live phone as reference category (following polling literature conventions and gold standard of live phone)
 reference_mode = 'Live Phone'
 
 # create dummy variables for all modes
 mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=False)
 
-# drop Live Phone to use as reference
+# drop live phone to use as reference (if it exists)
 mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
-print(f"\n✓ Reference category set to: {reference_mode} (polling literature standard)")
+print(f"\nReference category set to: {reference_mode}")
 
 reg_df = pd.concat([reg_df, mode_dummies], axis=1)
 mode_vars = [col for col in reg_df.columns if col.startswith('mode_')]
@@ -1074,18 +1074,22 @@ mode_vars = [col for col in reg_df.columns if col.startswith('mode_')]
 print(f"Mode dummy variables created: {mode_vars}")
 print(f"\nAll coefficients will be interpreted relative to {reference_mode} polls")
 
-# resplit into state and national AFTER exploding
+# resplit into state and national after exploding
 reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
 reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
 
 # define competitive states and create subset
-competitive_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
+competitive_states = ['arizona', 'georgia', 'michigan', 'nevada', 
+                      'north carolina', 'pennsylvania', 'wisconsin']
 reg_state_competitive = reg_state[reg_state['state'].isin(competitive_states)].copy()
 
 print(f"\nSample sizes after exploding:")
-print(f"  All state quesitons: {len(reg_state)}")
-print(f"  Competitive state quesitons only: {len(reg_state_competitive)}")
-print(f"  National quesitons: {len(reg_national)}")
+print(f"  All state polls: {len(reg_state)}")
+print(f"  Competitive states only: {len(reg_state_competitive)}")
+print(f"  National polls: {len(reg_national)}")
+
+print(f"\nCompetitive states breakdown:")
+print(reg_state_competitive['state'].value_counts().sort_index())
 
 print(f"\nMode distribution in competitive states:")
 mode_dist = reg_state_competitive['base_mode'].value_counts()
@@ -1094,11 +1098,14 @@ for mode, count in mode_dist.items():
     marker = " (REFERENCE)" if mode == reference_mode else ""
     print(f"  {mode}: {count} ({pct:.1f}%){marker}")
 
-# Update covariate lists to include mode
-state_x_vars_with_mode = time_vars + state_vars + mode_vars
-competitive_x_vars = time_vars + state_vars + mode_vars
-national_x_vars_with_mode = time_vars + national_vars + mode_vars
+# update covariate lists
+# without mode
+state_x_vars_no_mode = time_vars + state_vars
+national_x_vars_no_mode = time_vars + national_vars
 
+# with mode
+state_x_vars_with_mode = time_vars + state_vars + mode_vars
+national_x_vars_with_mode = time_vars + national_vars + mode_vars
 
 ########################################################################################
 #################### Regressions with Mode Controls ####################################
@@ -1106,28 +1113,7 @@ national_x_vars_with_mode = time_vars + national_vars + mode_vars
 
 print("REGRESSIONS WITH MODE CONTROLS")
 
-# all state polls with mode
-print("\n1. ALL STATE POLLS:")
-results_state_mode = run_ols_clustered(
-    df          = reg_state,
-    y_col       = 'A',
-    x_cols      = state_x_vars_with_mode,
-    cluster_col = 'poll_id',
-    label       = 'all state-level polls with mode controls'
-)
-
-# competitive states only with mode
-print("\n2. COMPETITIVE STATES ONLY:")
-results_competitive_mode = run_ols_clustered(
-    df          = reg_state_competitive,
-    y_col       = 'A',
-    x_cols      = competitive_x_vars,
-    cluster_col = 'poll_id',
-    label       = 'competitive states only with mode controls'
-)
-
-# national regression with mode
-print("\n3. NATIONAL POLLS:")
+# natioanl questions
 results_national_mode = run_ols_clustered(
     df          = reg_national,
     y_col       = 'A',
@@ -1136,6 +1122,23 @@ results_national_mode = run_ols_clustered(
     label       = 'national polls with mode controls'
 )
 
+# swing state questions
+results_competitive_mode = run_ols_clustered(
+    df          = reg_state_competitive,
+    y_col       = 'A',
+    x_cols      = state_x_vars_with_mode,
+    cluster_col = 'poll_id',
+    label       = 'competitive states with mode controls'
+)
+
+# all state questions
+results_all_states_mode = run_ols_clustered(
+    df          = reg_state,
+    y_col       = 'A',
+    x_cols      = state_x_vars_with_mode,
+    cluster_col = 'poll_id',
+    label       = 'all state polls with mode controls'
+)
 
 ########################################################################################
 #################### Time Window Regressions, swing states only ########################
