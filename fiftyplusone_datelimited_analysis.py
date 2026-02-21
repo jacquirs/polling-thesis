@@ -156,7 +156,7 @@ print(f"\nQuestions remaining for accuracy analysis: {len(harris_trump_pivot)}")
 # A = 0: perfect accuracy
 # A > 0: Republican bias (poll overestimates Trump relative to Harris)
 # A < 0: Democratic bias (poll overestimates Harris relative to Trump)
-# the log-odds ratio form is symmetric and scale-invariant, making it more appropriate than simple margin error for comparing polls across states with different competitive landscapes
+# the log-odds ratio form is symmetric and scale-invariant, making it more appropriate than simple margin error for comparing polls across states with different swing landscapes
 
 harris_trump_pivot['A'] = np.log(
     ((harris_trump_pivot['pct_trump_poll'])  / (harris_trump_pivot['pct_harris_poll'])) /
@@ -737,7 +737,7 @@ print(results_df.to_string(index=False))
 ########################################################################################
 
 # these two tables report mean, median, std, and n for method a broken out by (1) polling mode and (2) target population, each split by state vs national
-# mode and population are reported separately from the regression because they are categorical design choices better understood descriptively, and the multi-hot nature of mode makes regression coefficients hard to interpret cleanly (but i may go back to this later so i can say something like mode X is more biased controlling for days before election and competitiveness)
+# mode and population are reported separately from the regression because they are categorical design choices better understood descriptively, and the multi-hot nature of mode makes regression coefficients hard to interpret cleanly (but i may go back to this later so i can say something like mode X is more biased controlling for days before election and swingness)
 
 # table print function
 def print_accuracy_table(df, group_col, label):
@@ -927,7 +927,7 @@ print(f"  days_before_election -- mean: {reg_df['days_before_election'].mean():.
 
 # VAR: abs_margin
 # the absolute margin of victory (|trump_share - harris_share|) in the state, 
-# or nationally captures competitiveness polling dynamics than lopsided ones, and pollsters may expend more effort in competitive states
+# or nationally captures swingness polling dynamics than lopsided ones, and pollsters may expend more effort in swing states
 
 # VAR: statewide turnout
 # load turnout data
@@ -1078,23 +1078,23 @@ print(f"\nAll coefficients will be interpreted relative to {reference_mode} poll
 reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
 reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
 
-# define competitive states and create subset
-competitive_states = ['arizona', 'georgia', 'michigan', 'nevada', 
+# define swing states and create subset
+swing_states = ['arizona', 'georgia', 'michigan', 'nevada', 
                       'north carolina', 'pennsylvania', 'wisconsin']
-reg_state_competitive = reg_state[reg_state['state'].isin(competitive_states)].copy()
+reg_state_swing = reg_state[reg_state['state'].isin(swing_states)].copy()
 
 print(f"\nSample sizes after exploding:")
 print(f"  All state polls: {len(reg_state)}")
-print(f"  Competitive states only: {len(reg_state_competitive)}")
+print(f"  Competitive states only: {len(reg_state_swing)}")
 print(f"  National polls: {len(reg_national)}")
 
 print(f"\nCompetitive states breakdown:")
-print(reg_state_competitive['state'].value_counts().sort_index())
+print(reg_state_swing['state'].value_counts().sort_index())
 
-print(f"\nMode distribution in competitive states:")
-mode_dist = reg_state_competitive['base_mode'].value_counts()
+print(f"\nMode distribution in swing states:")
+mode_dist = reg_state_swing['base_mode'].value_counts()
 for mode, count in mode_dist.items():
-    pct = 100 * count / len(reg_state_competitive)
+    pct = 100 * count / len(reg_state_swing)
     marker = " (REFERENCE)" if mode == reference_mode else ""
     print(f"  {mode}: {count} ({pct:.1f}%){marker}")
 
@@ -1123,12 +1123,12 @@ results_national_mode = run_ols_clustered(
 )
 
 # swing state questions
-results_competitive_mode = run_ols_clustered(
-    df          = reg_state_competitive,
+results_swing_mode = run_ols_clustered(
+    df          = reg_state_swing,
     y_col       = 'A',
     x_cols      = state_x_vars_with_mode,
     cluster_col = 'poll_id',
-    label       = 'competitive states with mode controls'
+    label       = 'swing states with mode controls'
 )
 
 # all state questions
@@ -1144,16 +1144,16 @@ results_all_states_mode = run_ols_clustered(
 #################### Time Window Regressions, swing states only ########################
 ########################################################################################
 
-competitive_window_results_no_mode = {}
+swing_window_results_no_mode = {}
 
 for window in time_windows:
     print(f"\n{'='*70}")
-    print(f"WINDOW: {window} days before election (COMPETITIVE STATES, NO MODE)")
+    print(f"WINDOW: {window} days before election (SWING STATES, NO MODE)")
     print(f"{'='*70}")
     
-    # filter competitive states to this time window
-    state_w = reg_state_competitive[
-        reg_state_competitive['days_before_election'] <= window
+    # filter swing states to this time window
+    state_w = reg_state_swing[
+        reg_state_swing['days_before_election'] <= window
     ].copy()
     
     print(f"  Questions in {window} day window: {len(state_w)}")
@@ -1163,34 +1163,34 @@ for window in time_windows:
     
     if len(state_complete) < 10:
         print(f"  ⚠ Regression skipped, only {len(state_complete)} complete cases")
-        competitive_window_results_no_mode[window] = None
+        swing_window_results_no_mode[window] = None
     else:
         print(f"  Complete cases for regression: {len(state_complete)}")
         
-        res_competitive = run_ols_clustered(
+        res_swing = run_ols_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_no_mode,
             cluster_col = 'poll_id',
-            label       = f'competitive states {window} days before election (no mode)'
+            label       = f'swing states {window} days before election (no mode)'
         )
         
-        competitive_window_results_no_mode[window] = res_competitive
+        swing_window_results_no_mode[window] = res_swing
 
 
 ########################################################################################
 #################### Competitive states by time window and mode controls ###############
 ########################################################################################
-competitive_window_results_with_mode = {}
+swing_window_results_with_mode = {}
 
 for window in time_windows:
     print(f"\n{'='*70}")
-    print(f"WINDOW: {window} days before election (COMPETITIVE STATES, WITH MODE)")
+    print(f"WINDOW: {window} days before election (SWING STATES, WITH MODE)")
     print(f"{'='*70}")
     
-    # filter competitive states to this time window
-    state_w = reg_state_competitive[
-        reg_state_competitive['days_before_election'] <= window
+    # filter swing states to this time window
+    state_w = reg_state_swing[
+        reg_state_swing['days_before_election'] <= window
     ].copy()
     
     print(f"  Questions in {window} day window: {len(state_w)}")
@@ -1200,19 +1200,19 @@ for window in time_windows:
     
     if len(state_complete) < 10:
         print(f"Regression skipped, only {len(state_complete)} complete cases")
-        competitive_window_results_with_mode[window] = None
+        swing_window_results_with_mode[window] = None
     else:
         print(f"Complete cases for regression: {len(state_complete)}")
         
-        res_competitive = run_ols_clustered(
+        res_swing = run_ols_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_with_mode,
             cluster_col = 'poll_id',
-            label       = f'competitive states {window} days before election (with mode)'
+            label       = f'swing states {window} days before election (with mode)'
         )
         
-        competitive_window_results_with_mode[window] = res_competitive
+        swing_window_results_with_mode[window] = res_swing
 
 
 ######## save outputs
