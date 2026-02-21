@@ -1017,7 +1017,6 @@ results_national = run_ols_clustered(
 
 # later additions after build out
 # restricting to competitive states versus all states
-# split into time periods ( analysis using three different time frame, 90, 30, and 7 days before the elections)
 # how to say "mode X is more biased controlling for days before election and competitiveness"
 
 
