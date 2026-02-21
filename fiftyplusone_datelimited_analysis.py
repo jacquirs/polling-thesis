@@ -1468,6 +1468,56 @@ for window in time_windows:
 print()
 
 
+########################################################################################
+#################### summary table mode coefficients across time windows (national) ####
+########################################################################################
+
+# compare across columns to see if mode effects intensify over time for national polls
+print("MODE COEFFICIENTS ACROSS TIME WINDOWS (national)")
+
+print(f"\n{'Mode':<20}", end='')
+for window in time_windows:
+    print(f"{window:>12}d", end='')
+print()
+print("." * (20 + 12 * len(time_windows)))
+
+for mode_var in sorted(mode_vars):
+    mode_name = mode_var.replace('mode_', '')
+    print(f"{mode_name:<20}", end='')
+    
+    for window in time_windows:
+        result = national_window_results_with_mode[window]
+        if result is not None and mode_var in result.params:
+            coef = result.params[mode_var]
+            pval = result.pvalues[mode_var]
+            sig = stars(pval)
+            print(f"{coef:>9.2f}{sig:<3}", end='')
+        else:
+            print(f"{'..':>12}", end='')
+    print()
+
+print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
+print(f"all coefficients relative to {reference_mode} (reference category)")
+
+# print r squared and n for each window
+print("\n" + "." * (20 + 12 * len(time_windows)))
+print(f"{'adj r squared':<20}", end='')
+for window in time_windows:
+    result = national_window_results_with_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>12.4f}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
+
+print(f"{'n':<20}", end='')
+for window in time_windows:
+    result = national_window_results_with_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>12}", end='')
+    else:
+        print(f"{'..':>12}", end='')
+print()
 
 
 ######## save outputs
