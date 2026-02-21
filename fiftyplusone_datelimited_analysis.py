@@ -1137,6 +1137,44 @@ results_national_mode = run_ols_clustered(
 )
 
 
+########################################################################################
+#################### Time Window Regressions, swing states only ########################
+########################################################################################
+
+print("TIME WINDOW REGRESSIONS SWING STATES ONLY")
+
+competitive_window_results = {}
+
+for window in time_windows:
+    print(f"\n{'='*70}")
+    print(f"WINDOW: {window} days before election, swing states only")
+    print(f"{'='*70}")
+    
+    # filter competitive states to this time window
+    state_w = reg_state_competitive[
+        reg_state_competitive['days_before_election'] <= window
+    ].copy()
+    
+    print(f"  Questions in {window}-day window: {len(state_w)}")
+    
+    # Check if we have enough complete cases
+    state_complete = state_w[competitive_x_vars + ['A', 'poll_id']].dropna()
+    
+    if len(state_complete) < 10:
+        print(f"Regression skipped - only {len(state_complete)} complete cases")
+        competitive_window_results[window] = None
+    else:
+        print(f"Complete cases for regression: {len(state_complete)}")
+        
+        res_competitive = run_ols_clustered(
+            df          = state_w,
+            y_col       = 'A',
+            x_cols      = competitive_x_vars,
+            cluster_col = 'poll_id',
+            label       = f'competitive states - {window} days before election'
+        )
+        
+        competitive_window_results[window] = res_competitive
 
 
 ######## save outputs
