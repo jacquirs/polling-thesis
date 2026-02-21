@@ -821,7 +821,7 @@ print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 
 
 ########################################################################################
-###################### Multivariate Regression Analysis ################################
+###################### Multivariate Regression Analysis Set Up #########################
 ########################################################################################
 
 # unit of analysis: one row per question (question_id)
@@ -965,16 +965,6 @@ reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
 print(f"\nregression sample sizes:")
 print(f"  state-level questions:    {len(reg_state)}")
 print(f"  national-level questions: {len(reg_national)}")
-
-# these polls likely skewing the results given how far from election they are, therefore rely on ones run below split by time to election
-# print the top 10 polls by days_before_election to identify outliers
-print(f"\ntop questions by days before election:")
-top_early = (
-    reg_df[['poll_id', 'pollster', 'state', 'start_date', 'end_date', 'days_before_election']]
-    .sort_values('days_before_election', ascending=False)
-    .head(20)
-)
-print(top_early.to_string(index=False))
 
 
 # state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
