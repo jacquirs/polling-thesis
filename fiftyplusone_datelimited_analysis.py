@@ -962,10 +962,28 @@ all_x_vars = time_vars + national_vars
 reg_state    = reg_df[reg_df['poll_level'] == 'state'].copy()
 reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
 
-print(f"\nregression sample sizes:")
-print(f"  state-level questions:    {len(reg_state)}")
-print(f"  national-level questions: {len(reg_national)}")
+# define swing states and create subset
+swing_states = ['arizona', 'georgia', 'michigan', 'nevada', 
+                      'north carolina', 'pennsylvania', 'wisconsin']
+reg_state_swing = reg_state[reg_state['state'].isin(swing_states)].copy()
 
+print(f"\nregression sample sizes:")
+print(f"  national-level questions: {len(reg_national)}")
+print(f"  state-level questions:    {len(reg_state)}")
+print(f"  swing state questions: {len(reg_state_swing)}")
+
+########################################################################################
+######## BASE REGRESSIONS (NO TIME WINDOWS, NO MODE, SWING/NATIONAL/STATES) ############
+########################################################################################
+
+# national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
+results_national = run_ols_clustered(
+    df          = reg_national,
+    y_col       = 'A',
+    x_cols      = all_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'national polls'
+)
 
 # state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
 results_state = run_ols_clustered(
@@ -976,9 +994,9 @@ results_state = run_ols_clustered(
     label       = 'state-level polls'
 )
 
-# national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
+# swing state regression
 results_national = run_ols_clustered(
-    df          = reg_national,
+    df          = reg_state_swing,
     y_col       = 'A',
     x_cols      = all_x_vars,
     cluster_col = 'poll_id',
@@ -1084,11 +1102,6 @@ print(f"\nall coefficients will be interpreted relative to {reference_mode} poll
 # resplit into state and national after exploding and adding mode dummies
 reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
 reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
-
-# define swing states and create subset
-swing_states = ['arizona', 'georgia', 'michigan', 'nevada', 
-                      'north carolina', 'pennsylvania', 'wisconsin']
-reg_state_swing = reg_state[reg_state['state'].isin(swing_states)].copy()
 
 print(f"\nsample sizes after exploding:")
 print(f"  all state polls: {len(reg_state)}")
