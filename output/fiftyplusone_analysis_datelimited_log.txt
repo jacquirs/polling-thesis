@@ -218,7 +218,7 @@ regression sample sizes:
 
 
 ======================================================================
-  ols regression: national polls
+  ols regression: swing states
   dependent variable: method a  (+ = republican bias)
   standard errors: clustered by poll_id
 ======================================================================
@@ -226,11 +226,12 @@ regression sample sizes:
   ---------------------------------------------------------------
   duration_days                          -0.0029     0.0004    ***
   days_before_election                   -0.0003     0.0001    ***
-  pct_dk                                  0.0014     0.0009       
-  abs_margin                             -0.6969     0.1635    ***
-  const                                  -0.0154     0.0061     **
+  pct_dk                                  0.0012     0.0009       
+  abs_margin                             -1.5396     0.3665    ***
+  turnout_pct                            -0.0032     0.0013     **
+  const                                   0.2326     0.0994     **
   ---------------------------------------------------------------
-  adjusted r2:  0.1256
+  adjusted r2:  0.1368
   n:            1184
 ======================================================================
 

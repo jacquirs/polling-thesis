@@ -995,12 +995,12 @@ results_state = run_ols_clustered(
 )
 
 # swing state regression
-results_national = run_ols_clustered(
+results_swing = run_ols_clustered(
     df          = reg_state_swing,
     y_col       = 'A',
-    x_cols      = all_x_vars,
+    x_cols      = state_x_vars,
     cluster_col = 'poll_id',
-    label       = 'national polls'
+    label       = 'swing states'
 )
 
 ########################################################################################
