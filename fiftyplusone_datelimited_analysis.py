@@ -1003,6 +1003,104 @@ results_national = run_ols_clustered(
     label       = 'national polls'
 )
 
+########################################################################################
+#################### PREPARE MODE FOR REGRESSIONS (LIVE PHONE REFERENCE) ###############
+########################################################################################
+
+# explode mode into base_mode (each mixed mode poll becomes multiple rows)
+reg_df['base_mode'] = reg_df['mode'].str.split('/')
+reg_df = reg_df.explode('base_mode')
+reg_df['base_mode'] = reg_df['base_mode'].str.strip()
+
+print("\nUnique base modes after exploding:")
+print(reg_df['base_mode'].value_counts())
+
+# set live phone as reference category (following polling literature conventions and gold standard of live phone)
+reference_mode = 'Live Phone'
+
+# create dummy variables for all modes
+mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=False)
+
+# drop live phone to use as reference (if it exists)
+if f'mode_{reference_mode}' in mode_dummies.columns:
+    mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
+    print(f"\nreference category set to: {reference_mode}")
+else:
+    print(f"\nwarning: {reference_mode} not found in modes")
+
+# convert boolean to int and clean column names by replace hyphens with underscores
+mode_dummies = mode_dummies.astype(int)
+mode_dummies.columns = mode_dummies.columns.str.replace('-', '_')
+
+# add mode dummies to reg_df
+reg_df = pd.concat([reg_df, mode_dummies], axis=1)
+mode_vars = [col for col in reg_df.columns if col.startswith('mode_')]
+
+print(f"mode dummy variables created: {mode_vars}")
+print(f"\nall coefficients will be interpreted relative to {reference_mode} polls")
+
+# resplit into state and swing state and national after exploding and adding mode dummies
+reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
+reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
+reg_state_swing = reg_state[reg_state['state'].isin(swing_states)].copy()
+
+print(f"\nsample sizes after exploding:")
+print(f"  all state polls: {len(reg_state)}")
+print(f"  swing states only: {len(reg_state_swing)}")
+print(f"  national polls: {len(reg_national)}")
+
+print(f"\nswing states breakdown:")
+print(reg_state_swing['state'].value_counts().sort_index())
+
+print(f"\nmode distribution in swing states:")
+mode_dist = reg_state_swing['base_mode'].value_counts()
+for mode, count in mode_dist.items():
+    pct = 100 * count / len(reg_state_swing)
+    marker = " (REFERENCE)" if mode == reference_mode else ""
+    print(f"  {mode}: {count} ({pct:.1f}%){marker}")
+
+# update covariate lists
+# without mode
+state_x_vars_no_mode = time_vars + state_vars
+national_x_vars_no_mode = time_vars + national_vars
+
+# with mode
+state_x_vars_with_mode = time_vars + state_vars + mode_vars
+national_x_vars_with_mode = time_vars + national_vars + mode_vars
+
+########################################################################################
+#################### BASE REGRESSIONS (NO TIME, WITH MODE, SWING/STATES/NATIONAL) ####################################
+########################################################################################
+
+print("REGRESSIONS WITH MODE CONTROLS")
+
+# natioanl questions
+results_national_mode = run_ols_clustered(
+    df          = reg_national,
+    y_col       = 'A',
+    x_cols      = national_x_vars_with_mode,
+    cluster_col = 'poll_id',
+    label       = 'national polls with mode controls'
+)
+
+# all state questions
+results_all_states_mode = run_ols_clustered(
+    df          = reg_state,
+    y_col       = 'A',
+    x_cols      = state_x_vars_with_mode,
+    cluster_col = 'poll_id',
+    label       = 'all state polls with mode controls'
+)
+
+# swing state questions
+results_swing_mode = run_ols_clustered(
+    df          = reg_state_swing,
+    y_col       = 'A',
+    x_cols      = state_x_vars_with_mode,
+    cluster_col = 'poll_id',
+    label       = 'swing states with mode controls'
+)
+
 
 ########################################################################################
 #################### Regression by time window, national (like harrison 2009) ##########
@@ -1062,103 +1160,6 @@ for window in time_windows:
     res_s, res_n = run_window_regressions(reg_state, reg_national, all_x_vars, window)
     window_results[window] = {'state': res_s, 'national': res_n}
 
-
-########################################################################################
-#################### Prepare Mode Variables with Live Phone as Reference ###############
-########################################################################################
-
-# explode mode into base_mode (each mixed mode poll becomes multiple rows)
-reg_df['base_mode'] = reg_df['mode'].str.split('/')
-reg_df = reg_df.explode('base_mode')
-reg_df['base_mode'] = reg_df['base_mode'].str.strip()
-
-print("\nUnique base modes after exploding:")
-print(reg_df['base_mode'].value_counts())
-
-# set live phone as reference category (following polling literature conventions and gold standard of live phone)
-reference_mode = 'Live Phone'
-
-# create dummy variables for all modes
-mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=False)
-
-# drop live phone to use as reference (if it exists)
-if f'mode_{reference_mode}' in mode_dummies.columns:
-    mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
-    print(f"\nreference category set to: {reference_mode}")
-else:
-    print(f"\nwarning: {reference_mode} not found in modes")
-
-# convert boolean to int and clean column names by replace hyphens with underscores
-mode_dummies = mode_dummies.astype(int)
-mode_dummies.columns = mode_dummies.columns.str.replace('-', '_')
-
-# add mode dummies to reg_df
-reg_df = pd.concat([reg_df, mode_dummies], axis=1)
-mode_vars = [col for col in reg_df.columns if col.startswith('mode_')]
-
-print(f"mode dummy variables created: {mode_vars}")
-print(f"\nall coefficients will be interpreted relative to {reference_mode} polls")
-
-# resplit into state and national after exploding and adding mode dummies
-reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
-reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
-
-print(f"\nsample sizes after exploding:")
-print(f"  all state polls: {len(reg_state)}")
-print(f"  swing states only: {len(reg_state_swing)}")
-print(f"  national polls: {len(reg_national)}")
-
-print(f"\nswing states breakdown:")
-print(reg_state_swing['state'].value_counts().sort_index())
-
-print(f"\nmode distribution in swing states:")
-mode_dist = reg_state_swing['base_mode'].value_counts()
-for mode, count in mode_dist.items():
-    pct = 100 * count / len(reg_state_swing)
-    marker = " (REFERENCE)" if mode == reference_mode else ""
-    print(f"  {mode}: {count} ({pct:.1f}%){marker}")
-
-# update covariate lists
-# without mode
-state_x_vars_no_mode = time_vars + state_vars
-national_x_vars_no_mode = time_vars + national_vars
-
-# with mode
-state_x_vars_with_mode = time_vars + state_vars + mode_vars
-national_x_vars_with_mode = time_vars + national_vars + mode_vars
-
-########################################################################################
-#################### Regressions with Mode Controls ####################################
-########################################################################################
-
-print("REGRESSIONS WITH MODE CONTROLS")
-
-# natioanl questions
-results_national_mode = run_ols_clustered(
-    df          = reg_national,
-    y_col       = 'A',
-    x_cols      = national_x_vars_with_mode,
-    cluster_col = 'poll_id',
-    label       = 'national polls with mode controls'
-)
-
-# swing state questions
-results_swing_mode = run_ols_clustered(
-    df          = reg_state_swing,
-    y_col       = 'A',
-    x_cols      = state_x_vars_with_mode,
-    cluster_col = 'poll_id',
-    label       = 'swing states with mode controls'
-)
-
-# all state questions
-results_all_states_mode = run_ols_clustered(
-    df          = reg_state,
-    y_col       = 'A',
-    x_cols      = state_x_vars_with_mode,
-    cluster_col = 'poll_id',
-    label       = 'all state polls with mode controls'
-)
 
 ########################################################################################
 #################### Time Window Regressions, swing states only ########################

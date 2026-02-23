@@ -176,8 +176,27 @@ time variable diagnostics:
   days_before_election -- mean: 43.6, min: 1, max: 107
 
 regression sample sizes:
-  state-level questions:    1635
   national-level questions: 682
+  state-level questions:    1635
+  swing state questions: 1184
+
+======================================================================
+  ols regression: national polls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0034     0.0009    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0028     0.0007    ***
+  abs_margin                             -0.0008     0.0001    ***
+  const                                  -0.0541     0.0063    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0614
+  n:            682
+======================================================================
+
 
 ======================================================================
   ols regression: state-level polls
@@ -205,214 +224,14 @@ regression sample sizes:
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0034     0.0009    ***
-  days_before_election                    0.0001     0.0001       
-  pct_dk                                 -0.0028     0.0007    ***
-  abs_margin                             -0.0008     0.0001    ***
-  const                                  -0.0541     0.0063    ***
+  duration_days                          -0.0029     0.0004    ***
+  days_before_election                   -0.0003     0.0001    ***
+  pct_dk                                  0.0014     0.0009       
+  abs_margin                             -0.6969     0.1635    ***
+  const                                  -0.0154     0.0061     **
   ---------------------------------------------------------------
-  adjusted r2:  0.0614
-  n:            682
-======================================================================
-
-
-  window: 107 days before election
-  state questions in window:    1635
-  national questions in window: 682
-
-======================================================================
-  ols regression: state-level polls - 107 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0017     0.0003    ***
-  days_before_election                   -0.0002     0.0001     **
-  pct_dk                                  0.0004     0.0010       
-  abs_margin                             -0.2059     0.0457    ***
-  const                                  -0.0366     0.0062    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0748
-  n:            1635
-======================================================================
-
-
-======================================================================
-  ols regression: national polls - 107 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0034     0.0009    ***
-  days_before_election                    0.0001     0.0001       
-  pct_dk                                 -0.0028     0.0007    ***
-  abs_margin                             -0.0008     0.0001    ***
-  const                                  -0.0541     0.0063    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0614
-  n:            682
-======================================================================
-
-
-  window: 90 days before election
-  state questions in window:    1513
-  national questions in window: 561
-
-======================================================================
-  ols regression: state-level polls - 90 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0016     0.0003    ***
-  days_before_election                   -0.0004     0.0001    ***
-  pct_dk                                  0.0005     0.0011       
-  abs_margin                             -0.2096     0.0460    ***
-  const                                  -0.0325     0.0067    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0913
-  n:            1513
-======================================================================
-
-
-======================================================================
-  ols regression: national polls - 90 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0018     0.0007     **
-  days_before_election                   -0.0006     0.0001    ***
-  pct_dk                                 -0.0023     0.0006    ***
-  abs_margin                             -0.0006     0.0001    ***
-  const                                  -0.0418     0.0052    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.1931
-  n:            561
-======================================================================
-
-
-  window: 60 days before election
-  state questions in window:    1205
-  national questions in window: 380
-
-======================================================================
-  ols regression: state-level polls - 60 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0019     0.0003    ***
-  days_before_election                   -0.0005     0.0001    ***
-  pct_dk                                 -0.0014     0.0012       
-  abs_margin                             -0.1991     0.0451    ***
-  const                                  -0.0229     0.0062    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.1058
-  n:            1205
-======================================================================
-
-
-======================================================================
-  ols regression: national polls - 60 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0021     0.0010     **
-  days_before_election                   -0.0011     0.0002    ***
-  pct_dk                                 -0.0023     0.0007    ***
-  abs_margin                             -0.0004     0.0001    ***
-  const                                  -0.0296     0.0075    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.2217
-  n:            380
-======================================================================
-
-
-  window: 30 days before election
-  state questions in window:    751
-  national questions in window: 234
-
-======================================================================
-  ols regression: state-level polls - 30 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0019     0.0004    ***
-  days_before_election                   -0.0001     0.0003       
-  pct_dk                                 -0.0032     0.0015     **
-  abs_margin                             -0.1476     0.0462    ***
-  const                                  -0.0223     0.0067    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0991
-  n:            751
-======================================================================
-
-
-======================================================================
-  ols regression: national polls - 30 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0027     0.0009    ***
-  days_before_election                   -0.0013     0.0003    ***
-  pct_dk                                 -0.0027     0.0008    ***
-  abs_margin                             -0.0003     0.0001    ***
-  const                                  -0.0219     0.0069    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.1583
-  n:            234
-======================================================================
-
-
-  window: 7 days before election
-  state questions in window:    296
-  national questions in window: 73
-
-======================================================================
-  ols regression: state-level polls - 7 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0023     0.0004    ***
-  days_before_election                    0.0019     0.0024       
-  pct_dk                                 -0.0053     0.0028      *
-  abs_margin                             -0.0955     0.0877       
-  const                                  -0.0208     0.0137       
-  ---------------------------------------------------------------
-  adjusted r2:  0.1015
-  n:            296
-======================================================================
-
-
-======================================================================
-  ols regression: national polls - 7 days before election
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                           0.0019     0.0069       
-  days_before_election                    0.0013     0.0028       
-  pct_dk                                 -0.0025     0.0015      *
-  abs_margin                             -0.0007     0.0004       
-  const                                  -0.0466     0.0292       
-  ---------------------------------------------------------------
-  adjusted r2:  0.0072
-  n:            73
+  adjusted r2:  0.1256
+  n:            1184
 ======================================================================
 
 
@@ -554,6 +373,206 @@ REGRESSIONS WITH MODE CONTROLS
   ---------------------------------------------------------------
   adjusted r2:  0.1555
   n:            2365
+======================================================================
+
+
+  window: 107 days before election
+  state questions in window:    2365
+  national questions in window: 801
+
+======================================================================
+  ols regression: state-level polls - 107 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0018     0.0003    ***
+  days_before_election                   -0.0002     0.0001      *
+  pct_dk                                  0.0011     0.0009       
+  abs_margin                             -0.2194     0.0426    ***
+  const                                  -0.0376     0.0054    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0836
+  n:            2365
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 107 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0036     0.0008    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0029     0.0008    ***
+  abs_margin                             -0.0007     0.0001    ***
+  const                                  -0.0509     0.0069    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0690
+  n:            801
+======================================================================
+
+
+  window: 90 days before election
+  state questions in window:    2176
+  national questions in window: 645
+
+======================================================================
+  ols regression: state-level polls - 90 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0017     0.0003    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                  0.0014     0.0010       
+  abs_margin                             -0.2212     0.0429    ***
+  const                                  -0.0346     0.0059    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0969
+  n:            2176
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 90 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0017     0.0006    ***
+  days_before_election                   -0.0006     0.0001    ***
+  pct_dk                                 -0.0024     0.0006    ***
+  abs_margin                             -0.0006     0.0001    ***
+  const                                  -0.0387     0.0057    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.2085
+  n:            645
+======================================================================
+
+
+  window: 60 days before election
+  state questions in window:    1745
+  national questions in window: 439
+
+======================================================================
+  ols regression: state-level polls - 60 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0018     0.0004    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                  0.0003     0.0011       
+  abs_margin                             -0.1989     0.0426    ***
+  const                                  -0.0299     0.0061    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0987
+  n:            1745
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 60 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0020     0.0011      *
+  days_before_election                   -0.0011     0.0002    ***
+  pct_dk                                 -0.0023     0.0007    ***
+  abs_margin                             -0.0004     0.0001    ***
+  const                                  -0.0277     0.0082    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.2333
+  n:            439
+======================================================================
+
+
+  window: 30 days before election
+  state questions in window:    1106
+  national questions in window: 276
+
+======================================================================
+  ols regression: state-level polls - 30 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0018     0.0004    ***
+  days_before_election                   -0.0002     0.0004       
+  pct_dk                                 -0.0004     0.0014       
+  abs_margin                             -0.1720     0.0480    ***
+  const                                  -0.0310     0.0065    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0935
+  n:            1106
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 30 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0028     0.0009    ***
+  days_before_election                   -0.0012     0.0004    ***
+  pct_dk                                 -0.0028     0.0009    ***
+  abs_margin                             -0.0003     0.0001     **
+  const                                  -0.0198     0.0079     **
+  ---------------------------------------------------------------
+  adjusted r2:  0.1512
+  n:            276
+======================================================================
+
+
+  window: 7 days before election
+  state questions in window:    391
+  national questions in window: 97
+
+======================================================================
+  ols regression: state-level polls - 7 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0021     0.0005    ***
+  days_before_election                    0.0012     0.0024       
+  pct_dk                                 -0.0023     0.0027       
+  abs_margin                             -0.0990     0.0964       
+  const                                  -0.0298     0.0137     **
+  ---------------------------------------------------------------
+  adjusted r2:  0.0757
+  n:            391
+======================================================================
+
+
+======================================================================
+  ols regression: national polls - 7 days before election
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                           0.0041     0.0076       
+  days_before_election                    0.0037     0.0032       
+  pct_dk                                 -0.0023     0.0016       
+  abs_margin                             -0.0009     0.0005      *
+  const                                  -0.0639     0.0339      *
+  ---------------------------------------------------------------
+  adjusted r2:  0.0561
+  n:            97
 ======================================================================
 
 
@@ -1073,16 +1092,16 @@ COEFFICIENTS ACROSS TIME WINDOWS (national)
 
 Variable                          107d          90d          60d          30d           7d
 .....................................................................................
-duration_days                -0.00***    -0.00**     -0.00**     -0.00***     0.00   
+duration_days                -0.00***    -0.00***    -0.00*      -0.00***     0.00   
 days_before_election          0.00       -0.00***    -0.00***    -0.00***     0.00   
-pct_dk                       -0.00***    -0.00***    -0.00***    -0.00***    -0.00*  
-abs_margin                   -0.00***    -0.00***    -0.00***    -0.00***    -0.00   
+pct_dk                       -0.00***    -0.00***    -0.00***    -0.00***    -0.00   
+abs_margin                   -0.00***    -0.00***    -0.00***    -0.00**     -0.00*  
 
 note: *** p<0.01, ** p<0.05, * p<0.10
 
 .....................................................................................
-adj r squared                  0.0614      0.1931      0.2217      0.1583      0.0072
-n                                 682         561         380         234          73
+adj r squared                  0.0690      0.2085      0.2333      0.1512      0.0561
+n                                 801         645         439         276          97
 
 ======================================================================
 MODE COEFFICIENTS ACROSS TIME WINDOWS (swing states)
