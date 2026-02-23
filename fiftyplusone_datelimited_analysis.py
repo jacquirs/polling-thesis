@@ -1261,7 +1261,7 @@ for window in time_windows:
 
 
 ########################################################################################
-#################### summary table mode coefficients across samples ####################
+###### summary table: no time windows, mode coefficients only, national and swing and all states ######
 ########################################################################################
 
 # redfine because before was in loops
@@ -1315,7 +1315,7 @@ print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
 print(f"all coefficients relative to {reference_mode} (reference category)")
 
 ########################################################################################
-#################### Coefficients across time windows, swing ##################################
+#################### Summary table: across time windows, no mode, swing ##################################
 ########################################################################################
 
 # compare across columns to see how predictors change over time, similar to harrison (2009) analysis of temporal dynamics
@@ -1368,7 +1368,7 @@ print()
 
 
 ########################################################################################
-#################### Coefficients across time windows, national #######################
+#################### Summary table: across time windows, no mode, national #######################
 ########################################################################################
 
 # compare across columns to see how predictors change over time for national polls
@@ -1421,7 +1421,7 @@ print()
 
 
 ########################################################################################
-#################### summary table mode coefficients across time windows, swing ###############
+#################### Summary table: across time windows, mode only, swing ###############
 ########################################################################################
 
 # compare across columns to see if mode effects intensify over time, positive trend suggests mode bias worsens closer to election
@@ -1476,7 +1476,7 @@ print()
 
 
 ########################################################################################
-#################### summary table mode coefficients across time windows (national) ####
+#################### Summary table: across time windows, mode only, national ####
 ########################################################################################
 
 # compare across columns to see if mode effects intensify over time for national polls
