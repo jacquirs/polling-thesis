@@ -1,5 +1,0 @@
-kalman filter with house effects analysis — swing states
-started: 2026-02-17 23:40:09
-log file: output/kalman_house_effects_swingstates_log_20260217_234009.txt
-states: ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
-time windows: [None, 200, 107]
