@@ -1,0 +1,372 @@
+kalman filtering & smoothing analysis
+started: 2026-02-23 17:22:54
+log file: output/kalman/kalman_analysis_log_20260223_172254.txt
+time windows: [None, 200, 107]
+
+======================================================================
+======================================================================
+ANALYZING TIME WINDOW: ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (ALL DATA)
+======================================================================
+
+Polls missing sample_size:
+      question_id  poll_id        pollster   end_date
+466        205606    87710    RMG Research 2024-08-07
+840        207599    87999  ABC News/Ipsos 2024-08-27
+841        207600    87999  ABC News/Ipsos 2024-08-27
+843        207602    87999  ABC News/Ipsos 2024-08-27
+1725       212854    88713            PRRI 2024-09-04
+1726       212855    88713            PRRI 2024-09-04
+2338       215690    89217            TIPP 2024-11-01
+2339       215691    89217            TIPP 2024-11-01
+national polls loaded: 853 questions from 515 polls
+date range: 2021-05-18 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -15.0 to 13.0 pp
+mean poll margin: -0.801 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+election result appended: margin = 1.472 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.419433 per day
+  interpretation: true opinion can move ~0.648 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — national (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.472 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.801 pp
+  mean total error:          -2.273 pp
+  sd of total error:         3.840 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -2.661 pp
+  mean |sampling noise|:     1.673 pp
+
+--- variance decomposition ---
+  var(total error):          14.7433
+  var(systematic bias):      10.4585  (70.9%)
+  var(sampling noise):       4.9379  (33.5%)
+
+figure saved to: figures/kalman_bias_anchored_all_data.png
+results exported to: data/kalman_results_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (ALL DATA)
+======================================================================
+
+Polls missing sample_size:
+      question_id  poll_id        pollster   end_date
+466        205606    87710    RMG Research 2024-08-07
+840        207599    87999  ABC News/Ipsos 2024-08-27
+841        207600    87999  ABC News/Ipsos 2024-08-27
+843        207602    87999  ABC News/Ipsos 2024-08-27
+1725       212854    88713            PRRI 2024-09-04
+1726       212855    88713            PRRI 2024-09-04
+2338       215690    89217            TIPP 2024-11-01
+2339       215691    89217            TIPP 2024-11-01
+national polls loaded: 853 questions from 515 polls
+date range: 2021-05-18 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -15.0 to 13.0 pp
+mean poll margin: -0.801 pp
+
+skipping election result anchor (unanchored mode)
+true margin: 1.472 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.377500 per day
+  interpretation: true opinion can move ~0.614 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — national (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.472 pp
+
+--- overall poll error ---
+  mean poll margin:          -0.801 pp
+  mean total error:          -2.273 pp
+  sd of total error:         3.840 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.801 pp
+  mean smoothed-poll gap:    1.682 pp
+  mean |sampling noise|:     1.682 pp
+
+figure saved to: figures/kalman_trajectory_unanchored_all_data.png
+results exported to: data/kalman_results_unanchored_all_data.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (ALL DATA)
+======================================================================
+sigma2_u (anchored):   0.419433
+sigma2_u (unanchored): 0.377500
+ratio (anchored/unanchored): 1.111
+
+final smoothed estimate (anchored):   0.620 pp
+final smoothed estimate (unanchored): -0.328 pp
+true margin:                          1.472 pp
+unanchored forecast error:            -1.801 pp
+anchored terminal adjustment:         0.852 pp
+
+======================================================================
+======================================================================
+ANALYZING TIME WINDOW: LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 861
+  polls after filter:  718
+  polls dropped:       143
+
+Polls missing sample_size:
+      question_id  poll_id        pollster   end_date
+466        205606    87710    RMG Research 2024-08-07
+840        207599    87999  ABC News/Ipsos 2024-08-27
+841        207600    87999  ABC News/Ipsos 2024-08-27
+843        207602    87999  ABC News/Ipsos 2024-08-27
+1725       212854    88713            PRRI 2024-09-04
+1726       212855    88713            PRRI 2024-09-04
+2338       215690    89217            TIPP 2024-11-01
+2339       215691    89217            TIPP 2024-11-01
+national polls loaded: 710 questions from 412 polls
+date range: 2024-04-22 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 11.0 pp
+mean poll margin: -1.840 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+election result appended: margin = 1.472 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.420318 per day
+  interpretation: true opinion can move ~0.648 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — national (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.472 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.840 pp
+  mean total error:          -3.312 pp
+  sd of total error:         2.805 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -3.791 pp
+  mean |sampling noise|:     1.517 pp
+
+--- variance decomposition ---
+  var(total error):          7.8680
+  var(systematic bias):      4.3230  (54.9%)
+  var(sampling noise):       3.7749  (48.0%)
+
+figure saved to: figures/kalman_bias_anchored_last_200_days.png
+results exported to: data/kalman_results_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 861
+  polls after filter:  718
+  polls dropped:       143
+
+Polls missing sample_size:
+      question_id  poll_id        pollster   end_date
+466        205606    87710    RMG Research 2024-08-07
+840        207599    87999  ABC News/Ipsos 2024-08-27
+841        207600    87999  ABC News/Ipsos 2024-08-27
+843        207602    87999  ABC News/Ipsos 2024-08-27
+1725       212854    88713            PRRI 2024-09-04
+1726       212855    88713            PRRI 2024-09-04
+2338       215690    89217            TIPP 2024-11-01
+2339       215691    89217            TIPP 2024-11-01
+national polls loaded: 710 questions from 412 polls
+date range: 2024-04-22 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 11.0 pp
+mean poll margin: -1.840 pp
+
+skipping election result anchor (unanchored mode)
+true margin: 1.472 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.376887 per day
+  interpretation: true opinion can move ~0.614 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — national (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.472 pp
+
+--- overall poll error ---
+  mean poll margin:          -1.840 pp
+  mean total error:          -3.312 pp
+  sd of total error:         2.805 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.801 pp
+  mean smoothed-poll gap:    1.522 pp
+  mean |sampling noise|:     1.522 pp
+
+figure saved to: figures/kalman_trajectory_unanchored_last_200_days.png
+results exported to: data/kalman_results_unanchored_last_200_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (LAST 200 DAYS)
+======================================================================
+sigma2_u (anchored):   0.420318
+sigma2_u (unanchored): 0.376887
+ratio (anchored/unanchored): 1.115
+
+final smoothed estimate (anchored):   0.620 pp
+final smoothed estimate (unanchored): -0.329 pp
+true margin:                          1.472 pp
+unanchored forecast error:            -1.801 pp
+anchored terminal adjustment:         0.853 pp
+
+======================================================================
+======================================================================
+ANALYZING TIME WINDOW: LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE: bias decomposition conditional on known outcome (LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 861
+  polls after filter:  682
+  polls dropped:       179
+
+Polls missing sample_size:
+      question_id  poll_id        pollster   end_date
+466        205606    87710    RMG Research 2024-08-07
+840        207599    87999  ABC News/Ipsos 2024-08-27
+841        207600    87999  ABC News/Ipsos 2024-08-27
+843        207602    87999  ABC News/Ipsos 2024-08-27
+1725       212854    88713            PRRI 2024-09-04
+1726       212855    88713            PRRI 2024-09-04
+2338       215690    89217            TIPP 2024-11-01
+2339       215691    89217            TIPP 2024-11-01
+national polls loaded: 674 questions from 384 polls
+date range: 2024-07-21 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 8.0 pp
+mean poll margin: -2.129 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+election result appended: margin = 1.472 pp on 2024-11-05
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.453180 per day
+  interpretation: true opinion can move ~0.673 pp/day (1 sd)
+
+============================================================
+polling bias decomposition — national (trump margin, anchored)
+============================================================
+
+true margin (certified result): 1.472 pp
+
+--- overall poll error ---
+  mean poll margin:          -2.129 pp
+  mean total error:          -3.601 pp
+  sd of total error:         2.487 pp
+
+--- decomposition (means) ---
+  mean systematic bias:      -4.107 pp
+  mean |sampling noise|:     1.483 pp
+
+--- variance decomposition ---
+  var(total error):          6.1854
+  var(systematic bias):      2.5510  (41.2%)
+  var(sampling noise):       3.5654  (57.6%)
+
+figure saved to: figures/kalman_bias_anchored_last_107_days.png
+results exported to: data/kalman_results_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE: real-time opinion trajectory from polls alone (LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 861
+  polls after filter:  682
+  polls dropped:       179
+
+Polls missing sample_size:
+      question_id  poll_id        pollster   end_date
+466        205606    87710    RMG Research 2024-08-07
+840        207599    87999  ABC News/Ipsos 2024-08-27
+841        207600    87999  ABC News/Ipsos 2024-08-27
+843        207602    87999  ABC News/Ipsos 2024-08-27
+1725       212854    88713            PRRI 2024-09-04
+1726       212855    88713            PRRI 2024-09-04
+2338       215690    89217            TIPP 2024-11-01
+2339       215691    89217            TIPP 2024-11-01
+national polls loaded: 674 questions from 384 polls
+date range: 2024-07-21 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 8.0 pp
+mean poll margin: -2.129 pp
+
+skipping election result anchor (unanchored mode)
+true margin: 1.472 pp (not used as constraint)
+
+estimating sigma2_u via grid search mle...
+  sigma2_u estimated (two-stage grid mle): 0.405775 per day
+  interpretation: true opinion can move ~0.637 pp/day (1 sd)
+
+============================================================
+polling opinion trajectory — national (trump margin, unanchored)
+============================================================
+
+true margin (certified result): 1.472 pp
+
+--- overall poll error ---
+  mean poll margin:          -2.129 pp
+  mean total error:          -3.601 pp
+  sd of total error:         2.487 pp
+
+--- decomposition (means) ---
+  final forecast error:      -1.782 pp
+  mean smoothed-poll gap:    1.488 pp
+  mean |sampling noise|:     1.488 pp
+
+figure saved to: figures/kalman_trajectory_unanchored_last_107_days.png
+results exported to: data/kalman_results_unanchored_last_107_days.csv
+
+======================================================================
+COMPARISON: anchored vs unanchored (LAST 107 DAYS)
+======================================================================
+sigma2_u (anchored):   0.453180
+sigma2_u (unanchored): 0.405775
+ratio (anchored/unanchored): 1.117
+
+final smoothed estimate (anchored):   0.610 pp
+final smoothed estimate (unanchored): -0.310 pp
+true margin:                          1.472 pp
+unanchored forecast error:            -1.782 pp
+anchored terminal adjustment:         0.862 pp
+
+======================================================================
+analysis completed: 2026-02-23 17:23:27
+log saved to: output/kalman/kalman_analysis_log_20260223_172254.txt

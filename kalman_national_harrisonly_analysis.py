@@ -90,6 +90,11 @@ def load_and_prepare(filepath: str, election_date: str = '2024-11-05', days_befo
     pH = df['pct_harris_poll'] / 100.0
     df['sampling_var'] = (pT + pH - (pT - pH) ** 2) / df['sample_size'] * 10000
 
+    # show which polls are missing sample_size
+    if df['sample_size'].isna().sum() > 0:
+        missing_polls = df[df['sample_size'].isna()][['question_id', 'poll_id', 'pollster', 'end_date']]
+        print(f"\nPolls missing sample_size:")
+        print(missing_polls)
 
     # drop rows missing any required value
     df = df.dropna(subset=['end_date', 'poll_margin', 'sampling_var', 'sample_size'])
