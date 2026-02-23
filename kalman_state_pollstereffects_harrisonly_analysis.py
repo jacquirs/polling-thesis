@@ -772,7 +772,7 @@ if __name__ == '__main__':
 
     # set up logging
     timestamp    = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_filename = f'output/kalman_house_effects_swingstates_log_{timestamp}.txt'
+    log_filename = f'output/kalman/kalman_house_effects_swingstates_log_{timestamp}.txt'
     logger       = Logger(log_filename)
     sys.stdout   = logger
 
