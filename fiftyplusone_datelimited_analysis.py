@@ -1103,7 +1103,7 @@ results_swing_mode = run_ols_clustered(
 
 
 ########################################################################################
-#################### Regression by time window, national (like harrison 2009) ##########
+#################### TIME WINDOW REGRESSIONS (NO MODE, SWING/STATES/NATIONAL) ##########
 ########################################################################################
 
 # re-run the same regression separately for five time windows prior to the election, where each window includes only polls whose end_date falls within that many days of election day
@@ -1113,81 +1113,23 @@ results_swing_mode = run_ols_clustered(
 
 time_windows = [107, 90, 60, 30, 7]
 
-def run_window_regressions(reg_state_df, reg_national_df, x_vars, window_days):
-    # filter each sample to polls ending within window_days of election day
-    state_w    = reg_state_df[reg_state_df['days_before_election'] <= window_days].copy()
-    national_w = reg_national_df[reg_national_df['days_before_election'] <= window_days].copy()
-
-    print(f"\n  window: {window_days} days before election")
-    print(f"  state questions in window:    {len(state_w)}")
-    print(f"  national questions in window: {len(national_w)}")
-
-    # state regression
-    # skip if fewer than 10 complete cases to avoid degenerate models
-    state_complete = state_w[x_vars + ['A', 'poll_id']].dropna()
-    if len(state_complete) < 10:
-        print(f"  state regression skipped - only {len(state_complete)} complete cases")
-        res_state = None
-    else:
-        res_state = run_ols_clustered(
-            df          = state_w,
-            y_col       = 'A',
-            x_cols      = x_vars,
-            cluster_col = 'poll_id',
-            label       = f'state-level polls - {window_days} days before election'
-        )
-
-    # national regression 
-    # skip if fewer than 10 complete cases
-    national_complete = national_w[x_vars + ['A', 'poll_id']].dropna()
-    if len(national_complete) < 10:
-        print(f"  national regression skipped - only {len(national_complete)} complete cases")
-        res_national = None
-    else:
-        res_national = run_ols_clustered(
-            df          = national_w,
-            y_col       = 'A',
-            x_cols      = x_vars,
-            cluster_col = 'poll_id',
-            label       = f'national polls - {window_days} days before election'
-        )
-
-    return res_state, res_national
-
-# run and store results for each window
-window_results = {}
-for window in time_windows:
-    res_s, res_n = run_window_regressions(reg_state, reg_national, all_x_vars, window)
-    window_results[window] = {'state': res_s, 'national': res_n}
-
-
-########################################################################################
-#################### Time Window Regressions, swing states only ########################
-########################################################################################
-
+# swing states by time window (no mode)
 swing_window_results_no_mode = {}
 
 for window in time_windows:
-    print(f"\n{'='*70}")
-    print(f"WINDOW: {window} days before election (SWING STATES, NO MODE)")
-    print(f"{'='*70}")
-    
     # filter swing states to this time window
-    state_w = reg_state_swing[
-        reg_state_swing['days_before_election'] <= window
-    ].copy()
+    state_w = reg_state_swing[reg_state_swing['days_before_election'] <= window].copy()
     
-    print(f"  Questions in {window} day window: {len(state_w)}")
+    print(f"\n  window: {window} days before election")
+    print(f"  swing state questions in window: {len(state_w)}")
     
     # check if we have enough complete cases
     state_complete = state_w[state_x_vars_no_mode + ['A', 'poll_id']].dropna()
     
     if len(state_complete) < 10:
-        print(f"  ⚠ Regression skipped, only {len(state_complete)} complete cases")
+        print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
         swing_window_results_no_mode[window] = None
     else:
-        print(f"  Complete cases for regression: {len(state_complete)}")
-        
         res_swing = run_ols_clustered(
             df          = state_w,
             y_col       = 'A',
@@ -1195,36 +1137,82 @@ for window in time_windows:
             cluster_col = 'poll_id',
             label       = f'swing states {window} days before election (no mode)'
         )
-        
         swing_window_results_no_mode[window] = res_swing
 
+# all states by time window (no mode)
+all_states_window_results_no_mode = {}
+
+for window in time_windows:
+    # filter all states to this time window
+    state_w = reg_state[reg_state['days_before_election'] <= window].copy()
+    
+    print(f"\n  window: {window} days before election")
+    print(f"  all state questions in window: {len(state_w)}")
+    
+    # check if we have enough complete cases
+    state_complete = state_w[state_x_vars_no_mode + ['A', 'poll_id']].dropna()
+    
+    if len(state_complete) < 10:
+        print(f"  all state regression skipped, only {len(state_complete)} complete cases")
+        all_states_window_results_no_mode[window] = None
+    else:
+        res_state = run_ols_clustered(
+            df          = state_w,
+            y_col       = 'A',
+            x_cols      = state_x_vars_no_mode,
+            cluster_col = 'poll_id',
+            label       = f'all states {window} days before election (no mode)'
+        )
+        all_states_window_results_no_mode[window] = res_state
+
+# national by time window (no mode)
+national_window_results_no_mode = {}
+
+for window in time_windows:
+    # filter national to this time window
+    national_w = reg_national[reg_national['days_before_election'] <= window].copy()
+    
+    print(f"\n  window: {window} days before election")
+    print(f"  national questions in window: {len(national_w)}")
+    
+    # check if we have enough complete cases
+    national_complete = national_w[national_x_vars_no_mode + ['A', 'poll_id']].dropna()
+    
+    if len(national_complete) < 10:
+        print(f"  national regression skipped, only {len(national_complete)} complete cases")
+        national_window_results_no_mode[window] = None
+    else:
+        res_national = run_ols_clustered(
+            df          = national_w,
+            y_col       = 'A',
+            x_cols      = national_x_vars_no_mode,
+            cluster_col = 'poll_id',
+            label       = f'national {window} days before election (no mode)'
+        )
+        national_window_results_no_mode[window] = res_national
+
 
 ########################################################################################
-#################### Competitive states by time window and mode controls ###############
+#################### TIME WINDOW REGRESSIONS (WITH MODE, SWING/STATES/NATIONAL) ##########
 ########################################################################################
+
+# swing states by time window (with mode)
 swing_window_results_with_mode = {}
 
 for window in time_windows:
-    print(f"\n{'='*70}")
-    print(f"WINDOW: {window} days before election (SWING STATES, WITH MODE)")
-    print(f"{'='*70}")
-    
     # filter swing states to this time window
-    state_w = reg_state_swing[
-        reg_state_swing['days_before_election'] <= window
-    ].copy()
+    state_w = reg_state_swing[reg_state_swing['days_before_election'] <= window].copy()
     
-    print(f"  Questions in {window} day window: {len(state_w)}")
+    print(f"\n  window: {window} days before election")
+    print(f"  swing state questions in window: {len(state_w)}")
     
-    # check if have enough complete cases
+    # check if we have enough complete cases
     state_complete = state_w[state_x_vars_with_mode + ['A', 'poll_id']].dropna()
     
     if len(state_complete) < 10:
-        print(f"Regression skipped, only {len(state_complete)} complete cases")
+        print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
         swing_window_results_with_mode[window] = None
     else:
-        print(f"Complete cases for regression: {len(state_complete)}")
-        
         res_swing = run_ols_clustered(
             df          = state_w,
             y_col       = 'A',
@@ -1232,37 +1220,51 @@ for window in time_windows:
             cluster_col = 'poll_id',
             label       = f'swing states {window} days before election (with mode)'
         )
-        
         swing_window_results_with_mode[window] = res_swing
 
+# all states by time window (with mode)
+all_states_window_results_with_mode = {}
 
-########################################################################################
-#################### national by time window and mode controls #########################
-########################################################################################
+for window in time_windows:
+    # filter all states to this time window
+    state_w = reg_state[reg_state['days_before_election'] <= window].copy()
+    
+    print(f"\n  window: {window} days before election")
+    print(f"  all state questions in window: {len(state_w)}")
+    
+    # check if we have enough complete cases
+    state_complete = state_w[state_x_vars_with_mode + ['A', 'poll_id']].dropna()
+    
+    if len(state_complete) < 10:
+        print(f"  all state regression skipped, only {len(state_complete)} complete cases")
+        all_states_window_results_with_mode[window] = None
+    else:
+        res_state = run_ols_clustered(
+            df          = state_w,
+            y_col       = 'A',
+            x_cols      = state_x_vars_with_mode,
+            cluster_col = 'poll_id',
+            label       = f'all states {window} days before election (with mode)'
+        )
+        all_states_window_results_with_mode[window] = res_state
 
+# national by time window (with mode)
 national_window_results_with_mode = {}
 
 for window in time_windows:
-    print(f"\n{'='*70}")
-    print(f"WINDOW: {window} days before election (NATIONAL, WITH MODE)")
-    print(f"{'='*70}")
+    # filter national to this time window
+    national_w = reg_national[reg_national['days_before_election'] <= window].copy()
     
-    # filter national polls to this time window
-    national_w = reg_national[
-        reg_national['days_before_election'] <= window
-    ].copy()
-    
-    print(f"  Questions in {window} day window: {len(national_w)}")
+    print(f"\n  window: {window} days before election")
+    print(f"  national questions in window: {len(national_w)}")
     
     # check if we have enough complete cases
     national_complete = national_w[national_x_vars_with_mode + ['A', 'poll_id']].dropna()
     
     if len(national_complete) < 10:
-        print(f"  regression skipped, only {len(national_complete)} complete cases")
+        print(f"  national regression skipped, only {len(national_complete)} complete cases")
         national_window_results_with_mode[window] = None
     else:
-        print(f"  complete cases for regression: {len(national_complete)}")
-        
         res_national = run_ols_clustered(
             df          = national_w,
             y_col       = 'A',
@@ -1270,13 +1272,15 @@ for window in time_windows:
             cluster_col = 'poll_id',
             label       = f'national {window} days before election (with mode)'
         )
-        
         national_window_results_with_mode[window] = res_national
 
+###############################################################################
 
-########################################################################################
-###### summary table: no time windows, mode coefficients only, national and swing and all states ######
-########################################################################################
+
+### SUMMARY TABLES
+
+
+######################################################################################
 
 # redfine because before was in loops
 def stars(p):
@@ -1284,6 +1288,455 @@ def stars(p):
     elif p < 0.05: return '**'
     elif p < 0.10: return '*'
     else: return ''
+
+########################################################################################
+#################### NATIONAL, ACROSS TIME WINDOWS, NO MODE #######################
+########################################################################################
+
+# compare across columns to see how predictors change over time for national polls
+print("\n" + "="*110)
+print("NATIONAL, ACROSS TIME WINDOWS, NO MODE")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+national_vars_ordered = ['duration_days', 'days_before_election', 'pct_dk', 'abs_margin']
+
+for var in national_vars_ordered:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = national_window_results_no_mode[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = national_window_results_no_mode[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = national_window_results_no_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = national_window_results_no_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+
+########################################################################################
+#################### NATIONAL, ACROSS TIME WINDOWS, WITH MODE ################
+########################################################################################
+
+print("\n" + "="*110)
+print("NATIONAL, ACROSS TIME WINDOWS, WITH MODE")
+print(f"reference mode: {reference_mode}")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+national_vars_with_mode = national_vars_ordered + sorted(mode_vars)
+
+for var in national_vars_with_mode:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = national_window_results_with_mode[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = national_window_results_with_mode[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = national_window_results_with_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = national_window_results_with_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+print(f"all coefficients relative to {reference_mode} (reference category)")
+
+
+########################################################################################
+#################### ALL STATES, ACROSS TIME WINDOWS, NO MODE ##################################
+########################################################################################
+
+print("\n" + "="*110)
+print("ALL STATES, ACROSS TIME WINDOWS, NO MODE")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+swing_vars_ordered = ['duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct']
+
+for var in swing_vars_ordered:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = all_states_window_results_no_mode[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = all_states_window_results_no_mode[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = all_states_window_results_no_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = all_states_window_results_no_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+########################################################################################
+#################### ALL STATES, ACROSS TIME WINDOWS, WITH MODE ##################################
+########################################################################################
+
+print("\n" + "="*110)
+print("ALL STATES, ACROSS TIME WINDOWS, WITH MODE")
+print(f"reference mode: {reference_mode}")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+swing_vars_with_mode = swing_vars_ordered + sorted(mode_vars)
+
+for var in swing_vars_with_mode:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = all_states_window_results_with_mode[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = all_states_window_results_with_mode[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = all_states_window_results_with_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = all_states_window_results_with_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+print(f"all coefficients relative to {reference_mode} (reference category)")
+
+
+########################################################################################
+#################### SWING, ACROSS TIME WINDOWS, NO MODE ##################################
+########################################################################################
+
+# compare across columns to see how predictors change over time, similar to harrison (2009) analysis of temporal dynamics
+print("\n" + "="*110)
+print("SWING, ACROSS TIME WINDOWS, NO MODE")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+for var in swing_vars_ordered:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = swing_window_results_no_mode[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = swing_window_results_no_mode[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = swing_window_results_no_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = swing_window_results_no_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+########################################################################################
+#################### SWING, ACROSS TIME WINDOWS< WITH MODE #############################
+########################################################################################
+
+print("\n" + "="*110)
+print("SWING, ACROSS TIME WINDOWS< WITH MODE")
+print(f"reference mode: {reference_mode}")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+for var in swing_vars_with_mode:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = swing_window_results_with_mode[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = swing_window_results_with_mode[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = swing_window_results_with_mode[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = swing_window_results_with_mode[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+
+########################################################################################
+###### NO TIME WINDOWS, MODE ONLY, ALL SUBSETS ######
+########################################################################################
 
 # positive coefficients indicate more republican bias, compare across columns to see if mode effects differ by sample
 print("MODE COEFFICIENTS ACROSS SAMPLES")
@@ -1305,6 +1758,15 @@ for mode_var in sorted(mode_vars):
     else:
         print(f"{'..':>15}", end='')
     
+    # all states
+    if results_all_states_mode is not None and mode_var in results_all_states_mode.params:
+        coef = results_all_states_mode.params[mode_var]
+        pval = results_all_states_mode.pvalues[mode_var]
+        sig = stars(pval)
+        print(f"{coef:>12.2f}{sig:<3}", end='')
+    else:
+        print(f"{'..':>15}", end='')
+
     # swing
     if results_swing_mode is not None and mode_var in results_swing_mode.params:
         coef = results_swing_mode.params[mode_var]
@@ -1314,231 +1776,10 @@ for mode_var in sorted(mode_vars):
     else:
         print(f"{'..':>15}", end='')
     
-    # all states
-    if results_all_states_mode is not None and mode_var in results_all_states_mode.params:
-        coef = results_all_states_mode.params[mode_var]
-        pval = results_all_states_mode.pvalues[mode_var]
-        sig = stars(pval)
-        print(f"{coef:>12.2f}{sig:<3}", end='')
-    else:
-        print(f"{'..':>15}", end='')
-    
     print()
 
 print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
 print(f"all coefficients relative to {reference_mode} (reference category)")
-
-########################################################################################
-#################### Summary table: across time windows, no mode, swing ##################################
-########################################################################################
-
-# compare across columns to see how predictors change over time, similar to harrison (2009) analysis of temporal dynamics
-print("COEFFICIENTS ACROSS TIME WINDOWS (swing states)")
-
-# variables to track across windows
-key_vars = ['duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct']
-
-print(f"\n{'Variable':<25}", end='')
-for window in time_windows:
-    print(f"{window:>12}d", end='')
-print()
-print("." * (25 + 12 * len(time_windows)))
-
-for var in key_vars:
-    print(f"{var:<25}", end='')
-    
-    for window in time_windows:
-        result = swing_window_results_no_mode[window]
-        if result is not None and var in result.params:
-            coef = result.params[var]
-            pval = result.pvalues[var]
-            sig = stars(pval)
-            print(f"{coef:>9.2f}{sig:<3}", end='')
-        else:
-            print(f"{'..':>12}", end='')
-    print()
-
-print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
-
-# print r squared and n for each window
-print("\n" + "." * (25 + 12 * len(time_windows)))
-print(f"{'adj r squared':<25}", end='')
-for window in time_windows:
-    result = swing_window_results_no_mode[window]
-    if result is not None:
-        print(f"{result.rsquared_adj:>12.4f}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
-
-print(f"{'n':<25}", end='')
-for window in time_windows:
-    result = swing_window_results_no_mode[window]
-    if result is not None:
-        print(f"{int(result.nobs):>12}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
-
-
-########################################################################################
-#################### Summary table: across time windows, no mode, national #######################
-########################################################################################
-
-# compare across columns to see how predictors change over time for national polls
-print("COEFFICIENTS ACROSS TIME WINDOWS (national)")
-
-# variables to track across windows for national (no turnout_pct)
-national_key_vars = ['duration_days', 'days_before_election', 'pct_dk', 'abs_margin']
-
-print(f"\n{'Variable':<25}", end='')
-for window in time_windows:
-    print(f"{window:>12}d", end='')
-print()
-print("." * (25 + 12 * len(time_windows)))
-
-for var in national_key_vars:
-    print(f"{var:<25}", end='')
-    
-    for window in time_windows:
-        result = window_results[window]['national']
-        if result is not None and var in result.params:
-            coef = result.params[var]
-            pval = result.pvalues[var]
-            sig = stars(pval)
-            print(f"{coef:>9.2f}{sig:<3}", end='')
-        else:
-            print(f"{'..':>12}", end='')
-    print()
-
-print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
-
-# print r squared and n for each window
-print("\n" + "." * (25 + 12 * len(time_windows)))
-print(f"{'adj r squared':<25}", end='')
-for window in time_windows:
-    result = window_results[window]['national']
-    if result is not None:
-        print(f"{result.rsquared_adj:>12.4f}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
-
-print(f"{'n':<25}", end='')
-for window in time_windows:
-    result = window_results[window]['national']
-    if result is not None:
-        print(f"{int(result.nobs):>12}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
-
-
-########################################################################################
-#################### Summary table: across time windows, mode only, swing ###############
-########################################################################################
-
-# compare across columns to see if mode effects intensify over time, positive trend suggests mode bias worsens closer to election
-print("\n" + "="*70)
-print("MODE COEFFICIENTS ACROSS TIME WINDOWS (swing states)")
-print(f"Reference category: {reference_mode}")
-print("="*70)
-
-print(f"\n{'Mode':<20}", end='')
-for window in time_windows:
-    print(f"{window:>12}d", end='')
-print()
-print("." * (20 + 12 * len(time_windows)))
-
-for mode_var in sorted(mode_vars):
-    mode_name = mode_var.replace('mode_', '')
-    print(f"{mode_name:<20}", end='')
-    
-    for window in time_windows:
-        result = swing_window_results_with_mode[window]
-        if result is not None and mode_var in result.params:
-            coef = result.params[mode_var]
-            pval = result.pvalues[mode_var]
-            sig = stars(pval)
-            print(f"{coef:>9.2f}{sig:<3}", end='')
-        else:
-            print(f"{'..':>12}", end='')
-    print()
-
-print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
-print(f"all coefficients relative to {reference_mode} (reference category)")
-
-# print r squared and n for each window
-print("\n" + "." * (20 + 12 * len(time_windows)))
-print(f"{'adj r squared':<20}", end='')
-for window in time_windows:
-    result = swing_window_results_with_mode[window]
-    if result is not None:
-        print(f"{result.rsquared_adj:>12.4f}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
-
-print(f"{'n':<20}", end='')
-for window in time_windows:
-    result = swing_window_results_with_mode[window]
-    if result is not None:
-        print(f"{int(result.nobs):>12}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
-
-
-########################################################################################
-#################### Summary table: across time windows, mode only, national ####
-########################################################################################
-
-# compare across columns to see if mode effects intensify over time for national polls
-print("MODE COEFFICIENTS ACROSS TIME WINDOWS (national)")
-
-print(f"\n{'Mode':<20}", end='')
-for window in time_windows:
-    print(f"{window:>12}d", end='')
-print()
-print("." * (20 + 12 * len(time_windows)))
-
-for mode_var in sorted(mode_vars):
-    mode_name = mode_var.replace('mode_', '')
-    print(f"{mode_name:<20}", end='')
-    
-    for window in time_windows:
-        result = national_window_results_with_mode[window]
-        if result is not None and mode_var in result.params:
-            coef = result.params[mode_var]
-            pval = result.pvalues[mode_var]
-            sig = stars(pval)
-            print(f"{coef:>9.2f}{sig:<3}", end='')
-        else:
-            print(f"{'..':>12}", end='')
-    print()
-
-print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
-print(f"all coefficients relative to {reference_mode} (reference category)")
-
-# print r squared and n for each window
-print("\n" + "." * (20 + 12 * len(time_windows)))
-print(f"{'adj r squared':<20}", end='')
-for window in time_windows:
-    result = national_window_results_with_mode[window]
-    if result is not None:
-        print(f"{result.rsquared_adj:>12.4f}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
-
-print(f"{'n':<20}", end='')
-for window in time_windows:
-    result = national_window_results_with_mode[window]
-    if result is not None:
-        print(f"{int(result.nobs):>12}", end='')
-    else:
-        print(f"{'..':>12}", end='')
-print()
 
 
 ######## save outputs
