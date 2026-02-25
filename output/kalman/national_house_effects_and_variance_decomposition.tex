@@ -1,0 +1,45 @@
+% Part A: House Effects
+\begin{table}
+\caption{Top 20 Pollster House Effects (EM Anchored, All Data)}
+\begin{tabular}{lrr}
+\toprule
+Pollster & House Effect (pp) & N Polls \\
+\midrule
+Harris Poll & 5.516000 & 6 \\
+HarrisX/Harris Poll & 4.273000 & 25 \\
+McLaughlin & 3.928000 & 34 \\
+J.L. Partners & 3.198000 & 7 \\
+AtlasIntel & 3.036000 & 14 \\
+Siena/NYT & 2.049000 & 20 \\
+Beacon/Shaw & 1.807000 & 9 \\
+Quinnipiac & 1.798000 & 6 \\
+Fabrizio/GBAO & 1.751000 & 6 \\
+Big Data Poll & 1.482000 & 15 \\
+CNN/SSRS & 1.296000 & 5 \\
+Hart/POS & 1.046000 & 9 \\
+ActiVote & 0.911000 & 16 \\
+HarrisX & 0.874000 & 47 \\
+RMG Research & 0.849000 & 15 \\
+Cygnal & 0.430000 & 8 \\
+TIPP & 0.379000 & 36 \\
+Florida Atlantic University/Mainstreet Research & 0.306000 & 14 \\
+Noble Predictive Insights & 0.071000 & 9 \\
+Redfield & Wilton Strategies & 0.066000 & 79 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% Part B: Variance Decomposition
+\begin{table}
+\caption{Variance Decomposition Across Time Windows (EM Anchored)}
+\begin{tabular}{lrrr}
+\toprule
+Time Window & var(House Effects) \% & var(Sampling Noise) \% & var(Residual Bias) \% \\
+\midrule
+All Data & 24.300000 & 18.100000 & 38.300000 \\
+Last 200 Days & 28.800000 & 24.700000 & 38.600000 \\
+Last 107 Days & 36.300000 & 29.300000 & 24.900000 \\
+\bottomrule
+\end{tabular}
+\end{table}

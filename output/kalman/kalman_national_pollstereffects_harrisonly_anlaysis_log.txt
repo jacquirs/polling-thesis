@@ -1,0 +1,630 @@
+kalman filter with house effects analysis
+started: 2026-02-25 13:31:53
+log file: output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt
+time windows: [None, 200, 107]
+
+======================================================================
+======================================================================
+ANALYZING TIME WINDOW: ALL DATA
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE (ALL DATA)
+======================================================================
+national polls loaded: 853 questions from 515 polls, 81 pollsters
+date range: 2021-05-18 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -15.0 to 13.0 pp
+mean poll margin: -0.801 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+election result appended: margin = 1.472 pp on 2024-11-05
+
+initializing sigma2_u from raw (uncorrected) margins...
+  initial sigma2_u: 0.419433
+
+starting em algorithm (max_iter=50, tol=0.0001)
+ iter   max_he_change    sigma2_u   mean_|he|
+--------------------------------------------------
+    1        7.574489    0.419433      1.5268
+    2        1.108154    0.190734      1.6424
+    3        0.891067    0.178742      1.6878
+    4        0.447539    0.164359      1.7022
+    5        0.294975    0.156509      1.7129
+    6        0.242351    0.151053      1.7233
+    7        0.193771    0.147403      1.7311
+    8        0.152350    0.144839      1.7369
+    9        0.118748    0.143078      1.7414
+   10        0.091967    0.141781      1.7447
+   11        0.071036    0.140886      1.7472
+   12        0.054683    0.140204      1.7491
+   13        0.042080    0.139717      1.7506
+   14        0.032329    0.139360      1.7518
+   15        0.024824    0.139100      1.7530
+   16        0.019049    0.138905      1.7539
+   17        0.014620    0.138742      1.7546
+   18        0.011240    0.138613      1.7551
+   19        0.008649    0.138548      1.7555
+   20        0.006614    0.138483      1.7558
+   21        0.005083    0.138434      1.7561
+   22        0.003904    0.138371      1.7562
+   23        0.003031    0.138339      1.7564
+   24        0.002328    0.138339      1.7565
+   25        0.001762    0.138307      1.7566
+   26        0.001376    0.138307      1.7566
+   27        0.001041    0.138276      1.7567
+   28        0.000828    0.138276      1.7567
+   29        0.000624    0.138276      1.7568
+   30        0.000474    0.138276      1.7568
+   31        0.000360    0.138276      1.7568
+   32        0.000274    0.138276      1.7568
+   33        0.000209    0.138276      1.7568
+   34        0.000160    0.138276      1.7568
+   35        0.000122    0.138276      1.7568
+   36        0.000093    0.138244      1.7568
+
+em converged at iteration 36 (max change 9.32e-05 < tol 1.00e-04)
+
+======================================================================
+polling bias decomposition with house effects — national (trump margin, anchored)
+======================================================================
+
+true margin (certified result): 1.472 pp
+estimated sigma2_u:             0.138244 per day
+interpretation: true opinion can move ~0.372 pp/day (1 sd)
+
+--- overall poll error ---
+  mean poll margin:              -0.801 pp
+  mean total error:              -2.273 pp
+  sd of total error:             3.840 pp
+
+--- three-component decomposition ---
+  mean |house effect|:           1.425 pp
+  mean |sampling noise|:         1.186 pp
+  mean residual systematic bias: -2.315 pp
+
+--- variance decomposition ---
+  var(total error):              14.7433
+  var(house effects):            3.5860  (24.3%)
+  var(sampling noise):           2.6620  (18.1%)
+  var(residual systematic bias): 5.6493  (38.3%)
+
+--- house effects (top 20 by absolute effect, min 5 polls) ---
+            pollster  house_effect  n_polls
+         Harris Poll         5.516        6
+ HarrisX/Harris Poll         4.273       25
+          McLaughlin         3.928       34
+       J.L. Partners         3.198        7
+          AtlasIntel         3.036       14
+Outward Intelligence        -2.989       12
+ ABC/Washington Post        -2.749        6
+Marquette Law School        -2.149        8
+           Siena/NYT         2.049       20
+         Beacon/Shaw         1.807        9
+          Quinnipiac         1.798        6
+       Fabrizio/GBAO         1.751        6
+         Big Village        -1.629       35
+          Angus Reid        -1.616        5
+     Morning Consult        -1.566      146
+               Leger        -1.504        7
+       Big Data Poll         1.482       15
+            CNN/SSRS         1.296        5
+      Marist College        -1.204       12
+               Ipsos        -1.135       41
+
+figure saved to: figures/kalman_he_anchored_all_data.png
+poll results exported to: data/kalman_he_polls_anchored_all_data.csv
+house effects exported to: data/kalman_he_effects_anchored_all_data.csv
+
+======================================================================
+UNANCHORED MODE (ALL DATA)
+======================================================================
+national polls loaded: 853 questions from 515 polls, 81 pollsters
+date range: 2021-05-18 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -15.0 to 13.0 pp
+mean poll margin: -0.801 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+skipping election result anchor (unanchored mode)
+true margin: 1.472 pp (not used as constraint)
+
+initializing sigma2_u from raw (uncorrected) margins...
+  initial sigma2_u: 0.377500
+
+starting em algorithm (max_iter=50, tol=0.0001)
+ iter   max_he_change    sigma2_u   mean_|he|
+--------------------------------------------------
+    1        7.636212    0.377500      1.5274
+    2        1.104525    0.140074      1.6397
+    3        0.864325    0.123267      1.6837
+    4        0.403760    0.107820      1.6978
+    5        0.330361    0.100939      1.7111
+    6        0.258525    0.096926      1.7213
+    7        0.196400    0.094671      1.7285
+    8        0.146767    0.093327      1.7335
+    9        0.109013    0.092491      1.7372
+   10        0.080845    0.091976      1.7398
+   11        0.059951    0.091633      1.7417
+   12        0.044556    0.091397      1.7431
+   13        0.033201    0.091261      1.7442
+   14        0.024753    0.091135      1.7449
+   15        0.018567    0.091073      1.7455
+   16        0.013947    0.091010      1.7459
+   17        0.010717    0.090968      1.7463
+   18        0.008193    0.090947      1.7465
+   19        0.006240    0.090926      1.7467
+   20        0.004782    0.090905      1.7468
+   21        0.003669    0.090884      1.7469
+   22        0.002818    0.090884      1.7470
+   23        0.002113    0.090884      1.7471
+   24        0.001610    0.090863      1.7471
+   25        0.001283    0.090863      1.7471
+   26        0.000944    0.090863      1.7472
+   27        0.000717    0.090863      1.7472
+   28        0.000547    0.090863      1.7472
+   29        0.000417    0.090863      1.7472
+   30        0.000319    0.090863      1.7472
+   31        0.000243    0.090863      1.7472
+   32        0.000185    0.090863      1.7472
+   33        0.000142    0.090863      1.7472
+   34        0.000108    0.090863      1.7472
+   35        0.000082    0.090863      1.7472
+
+em converged at iteration 35 (max change 8.23e-05 < tol 1.00e-04)
+
+======================================================================
+polling opinion trajectory with house effects — national (trump margin, unanchored)
+======================================================================
+
+true margin (certified result): 1.472 pp
+estimated sigma2_u:             0.090863 per day
+interpretation: true opinion can move ~0.301 pp/day (1 sd)
+
+--- overall poll error ---
+  mean poll margin:              -0.801 pp
+  mean total error:              -2.273 pp
+  sd of total error:             3.840 pp
+
+--- three-component decomposition ---
+  mean |house effect|:           1.436 pp
+  mean |sampling noise|:         1.203 pp
+
+--- house effects (top 20 by absolute effect, min 5 polls) ---
+            pollster  house_effect  n_polls
+         Harris Poll         5.403        6
+ HarrisX/Harris Poll         4.166       25
+          McLaughlin         3.817       34
+          AtlasIntel         3.464       14
+       J.L. Partners         3.182        7
+Outward Intelligence        -3.032       12
+ ABC/Washington Post        -2.747        6
+Marquette Law School        -2.170        8
+           Siena/NYT         2.011       20
+          Quinnipiac         1.832        6
+         Beacon/Shaw         1.782        9
+       Fabrizio/GBAO         1.712        6
+          Angus Reid        -1.693        5
+         Big Village        -1.653       35
+     Morning Consult        -1.614      146
+       Big Data Poll         1.456       15
+               Leger        -1.372        7
+            CNN/SSRS         1.257        5
+            Hart/POS         1.205        9
+    Echelon Insights        -1.130       13
+
+figure saved to: figures/kalman_he_unanchored_all_data.png
+poll results exported to: data/kalman_he_polls_unanchored_all_data.csv
+house effects exported to: data/kalman_he_effects_unanchored_all_data.csv
+
+======================================================================
+======================================================================
+ANALYZING TIME WINDOW: LAST 200 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE (LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 861
+  polls after filter:  718
+  polls dropped:       143
+national polls loaded: 710 questions from 412 polls, 76 pollsters
+date range: 2024-04-22 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 11.0 pp
+mean poll margin: -1.840 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+election result appended: margin = 1.472 pp on 2024-11-05
+
+initializing sigma2_u from raw (uncorrected) margins...
+  initial sigma2_u: 0.420318
+
+starting em algorithm (max_iter=50, tol=0.0001)
+ iter   max_he_change    sigma2_u   mean_|he|
+--------------------------------------------------
+    1        4.380458    0.420318      1.4153
+    2        0.730152    0.253660      1.4810
+    3        0.378198    0.241656      1.5014
+    4        0.226205    0.228923      1.5081
+    5        0.163346    0.222568      1.5125
+    6        0.117025    0.218448      1.5162
+    7        0.083645    0.215830      1.5187
+    8        0.059562    0.214155      1.5205
+    9        0.042277    0.213072      1.5217
+   10        0.029933    0.212334      1.5225
+   11        0.021162    0.211892      1.5231
+   12        0.014928    0.211547      1.5235
+   13        0.010533    0.211301      1.5238
+   14        0.007430    0.211154      1.5240
+   15        0.005233    0.211055      1.5241
+   16        0.003683    0.210957      1.5242
+   17        0.002600    0.210908      1.5243
+   18        0.001830    0.210859      1.5243
+   19        0.001291    0.210859      1.5243
+   20        0.000903    0.210809      1.5244
+   21        0.000643    0.210809      1.5244
+   22        0.000450    0.210809      1.5244
+   23        0.000314    0.210809      1.5244
+   24        0.000220    0.210809      1.5244
+   25        0.000153    0.210809      1.5244
+   26        0.000107    0.210809      1.5244
+   27        0.000075    0.210809      1.5244
+
+em converged at iteration 27 (max change 7.48e-05 < tol 1.00e-04)
+
+======================================================================
+polling bias decomposition with house effects — national (trump margin, anchored)
+======================================================================
+
+true margin (certified result): 1.472 pp
+estimated sigma2_u:             0.210809 per day
+interpretation: true opinion can move ~0.459 pp/day (1 sd)
+
+--- overall poll error ---
+  mean poll margin:              -1.840 pp
+  mean total error:              -3.312 pp
+  sd of total error:             2.805 pp
+
+--- three-component decomposition ---
+  mean |house effect|:           1.265 pp
+  mean |sampling noise|:         1.034 pp
+  mean residual systematic bias: -3.352 pp
+
+--- variance decomposition ---
+  var(total error):              7.8680
+  var(house effects):            2.2666  (28.8%)
+  var(sampling noise):           1.9449  (24.7%)
+  var(residual systematic bias): 3.0353  (38.6%)
+
+--- house effects (top 20 by absolute effect, min 5 polls) ---
+            pollster  house_effect  n_polls
+       J.L. Partners         3.503        7
+          AtlasIntel         3.350       14
+Outward Intelligence        -2.742       12
+ ABC/Washington Post        -2.501        6
+ HarrisX/Harris Poll         2.409        9
+          McLaughlin         2.383        8
+           Siena/NYT         2.328       18
+         Beacon/Shaw         2.293        7
+       Fabrizio/GBAO         2.037        6
+          Quinnipiac         2.014        6
+Marquette Law School        -1.943        8
+       Big Data Poll         1.660       15
+            CNN/SSRS         1.565        5
+         Big Village        -1.356       33
+            Hart/POS         1.350        9
+     Morning Consult        -1.299      146
+          Angus Reid        -1.289        5
+               Leger        -1.206        7
+            ActiVote         1.189       16
+             HarrisX         1.151       47
+
+figure saved to: figures/kalman_he_anchored_last_200_days.png
+poll results exported to: data/kalman_he_polls_anchored_last_200_days.csv
+house effects exported to: data/kalman_he_effects_anchored_last_200_days.csv
+
+======================================================================
+UNANCHORED MODE (LAST 200 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-04-19 onward
+  polls before filter: 861
+  polls after filter:  718
+  polls dropped:       143
+national polls loaded: 710 questions from 412 polls, 76 pollsters
+date range: 2024-04-22 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 11.0 pp
+mean poll margin: -1.840 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+skipping election result anchor (unanchored mode)
+true margin: 1.472 pp (not used as constraint)
+
+initializing sigma2_u from raw (uncorrected) margins...
+  initial sigma2_u: 0.376887
+
+starting em algorithm (max_iter=50, tol=0.0001)
+ iter   max_he_change    sigma2_u   mean_|he|
+--------------------------------------------------
+    1        4.433732    0.376887      1.4126
+    2        0.749216    0.189200      1.4750
+    3        0.454712    0.164855      1.4961
+    4        0.268172    0.146995      1.5065
+    5        0.187944    0.138840      1.5142
+    6        0.126859    0.134347      1.5189
+    7        0.084408    0.131919      1.5218
+    8        0.055555    0.130585      1.5237
+    9        0.036316    0.129797      1.5249
+   10        0.023661    0.129343      1.5256
+   11        0.015371    0.129058      1.5261
+   12        0.009975    0.128881      1.5263
+   13        0.006468    0.128762      1.5265
+   14        0.004195    0.128703      1.5267
+   15        0.002711    0.128644      1.5267
+   16        0.001763    0.128614      1.5268
+   17        0.001141    0.128614      1.5268
+   18        0.000729    0.128584      1.5268
+   19        0.000481    0.128584      1.5269
+   20        0.000307    0.128584      1.5269
+   21        0.000197    0.128584      1.5269
+   22        0.000126    0.128584      1.5269
+   23        0.000081    0.128584      1.5269
+
+em converged at iteration 23 (max change 8.06e-05 < tol 1.00e-04)
+
+======================================================================
+polling opinion trajectory with house effects — national (trump margin, unanchored)
+======================================================================
+
+true margin (certified result): 1.472 pp
+estimated sigma2_u:             0.128584 per day
+interpretation: true opinion can move ~0.359 pp/day (1 sd)
+
+--- overall poll error ---
+  mean poll margin:              -1.840 pp
+  mean total error:              -3.312 pp
+  sd of total error:             2.805 pp
+
+--- three-component decomposition ---
+  mean |house effect|:           1.289 pp
+  mean |sampling noise|:         1.041 pp
+
+--- house effects (top 20 by absolute effect, min 5 polls) ---
+            pollster  house_effect  n_polls
+          AtlasIntel         3.728       14
+       J.L. Partners         3.455        7
+Outward Intelligence        -2.794       12
+ ABC/Washington Post        -2.513        6
+ HarrisX/Harris Poll         2.333        9
+          McLaughlin         2.325        8
+           Siena/NYT         2.268       18
+         Beacon/Shaw         2.233        7
+          Quinnipiac         2.048        6
+Marquette Law School        -1.977        8
+       Fabrizio/GBAO         1.971        6
+       Big Data Poll         1.621       15
+            CNN/SSRS         1.501        5
+            Hart/POS         1.457        9
+         Big Village        -1.405       33
+          Angus Reid        -1.396        5
+     Morning Consult        -1.365      146
+             HarrisX         1.165       47
+            ActiVote         1.159       16
+               Leger        -1.095        7
+
+figure saved to: figures/kalman_he_unanchored_last_200_days.png
+poll results exported to: data/kalman_he_polls_unanchored_last_200_days.csv
+house effects exported to: data/kalman_he_effects_unanchored_last_200_days.csv
+
+======================================================================
+======================================================================
+ANALYZING TIME WINDOW: LAST 107 DAYS
+======================================================================
+======================================================================
+
+======================================================================
+ANCHORED MODE (LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 861
+  polls after filter:  682
+  polls dropped:       179
+national polls loaded: 674 questions from 384 polls, 73 pollsters
+date range: 2024-07-21 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 8.0 pp
+mean poll margin: -2.129 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+election result appended: margin = 1.472 pp on 2024-11-05
+
+initializing sigma2_u from raw (uncorrected) margins...
+  initial sigma2_u: 0.453180
+
+starting em algorithm (max_iter=50, tol=0.0001)
+ iter   max_he_change    sigma2_u   mean_|he|
+--------------------------------------------------
+    1        3.751346    0.453180      1.3509
+    2        0.785404    0.249899      1.4214
+    3        0.640836    0.234212      1.4536
+    4        0.233831    0.219254      1.4637
+    5        0.168540    0.212187      1.4697
+    6        0.120026    0.207684      1.4733
+    7        0.085193    0.204920      1.4758
+    8        0.060175    0.203135      1.4775
+    9        0.042361    0.202007      1.4786
+   10        0.029733    0.201256      1.4794
+   11        0.020833    0.200739      1.4799
+   12        0.014581    0.200410      1.4803
+   13        0.010191    0.200201      1.4806
+   14        0.007115    0.200017      1.4808
+   15        0.004974    0.199925      1.4809
+   16        0.003469    0.199833      1.4810
+   17        0.002425    0.199787      1.4810
+   18        0.001691    0.199741      1.4811
+   19        0.001182    0.199741      1.4811
+   20        0.000819    0.199696      1.4811
+   21        0.000578    0.199696      1.4811
+   22        0.000400    0.199696      1.4812
+   23        0.000277    0.199696      1.4812
+   24        0.000192    0.199696      1.4812
+   25        0.000133    0.199696      1.4812
+   26        0.000092    0.199696      1.4812
+
+em converged at iteration 26 (max change 9.20e-05 < tol 1.00e-04)
+
+======================================================================
+polling bias decomposition with house effects — national (trump margin, anchored)
+======================================================================
+
+true margin (certified result): 1.472 pp
+estimated sigma2_u:             0.199696 per day
+interpretation: true opinion can move ~0.447 pp/day (1 sd)
+
+--- overall poll error ---
+  mean poll margin:              -2.129 pp
+  mean total error:              -3.601 pp
+  sd of total error:             2.487 pp
+
+--- three-component decomposition ---
+  mean |house effect|:           1.257 pp
+  mean |sampling noise|:         1.001 pp
+  mean residual systematic bias: -3.652 pp
+
+--- variance decomposition ---
+  var(total error):              6.1854
+  var(house effects):            2.2465  (36.3%)
+  var(sampling noise):           1.8137  (29.3%)
+  var(residual systematic bias): 1.5425  (24.9%)
+
+--- house effects (top 20 by absolute effect, min 5 polls) ---
+            pollster  house_effect  n_polls
+          AtlasIntel         3.338       14
+         Beacon/Shaw         3.054        6
+       J.L. Partners         2.783        6
+Outward Intelligence        -2.748       12
+          McLaughlin         2.511        6
+ HarrisX/Harris Poll         2.415        9
+           Siena/NYT         2.329       18
+          Quinnipiac         2.152        6
+       Fabrizio/GBAO         2.045        6
+Marquette Law School        -1.930        8
+ ABC/Washington Post        -1.881        5
+            Hart/POS         1.669        8
+         Big Village        -1.661       30
+       Big Data Poll         1.650       15
+          Angus Reid        -1.298        5
+     Morning Consult        -1.290      145
+               Leger        -1.214        7
+            ActiVote         1.192       16
+             HarrisX         1.154       43
+        RMG Research         1.128       15
+
+figure saved to: figures/kalman_he_anchored_last_107_days.png
+poll results exported to: data/kalman_he_polls_anchored_last_107_days.csv
+house effects exported to: data/kalman_he_effects_anchored_last_107_days.csv
+
+======================================================================
+UNANCHORED MODE (LAST 107 DAYS)
+======================================================================
+date filter applied: keeping polls from 2024-07-21 onward
+  polls before filter: 861
+  polls after filter:  682
+  polls dropped:       179
+national polls loaded: 674 questions from 384 polls, 73 pollsters
+date range: 2024-07-21 to 2024-11-04
+true margin (constant across rows): 1.472 pp
+poll margin range: -8.0 to 8.0 pp
+mean poll margin: -2.129 pp
+
+sanity check — unique true_margin values: [1.47233556]
+
+skipping election result anchor (unanchored mode)
+true margin: 1.472 pp (not used as constraint)
+
+initializing sigma2_u from raw (uncorrected) margins...
+  initial sigma2_u: 0.405775
+
+starting em algorithm (max_iter=50, tol=0.0001)
+ iter   max_he_change    sigma2_u   mean_|he|
+--------------------------------------------------
+    1        3.774989    0.405775      1.3486
+    2        0.769501    0.173400      1.4165
+    3        0.818528    0.141881      1.4522
+    4        0.288637    0.118990      1.4660
+    5        0.201599    0.109206      1.4746
+    6        0.131760    0.104041      1.4795
+    7        0.084052    0.101480      1.4825
+    8        0.052661    0.100130      1.4843
+    9        0.032712    0.099395      1.4853
+   10        0.020223    0.099004      1.4859
+   11        0.012455    0.098775      1.4863
+   12        0.007664    0.098637      1.4865
+   13        0.004713    0.098568      1.4867
+   14        0.002889    0.098522      1.4868
+   15        0.001774    0.098499      1.4868
+   16        0.001086    0.098476      1.4868
+   17        0.000670    0.098476      1.4869
+   18        0.000405    0.098453      1.4869
+   19        0.000258    0.098453      1.4869
+   20        0.000155    0.098453      1.4869
+   21        0.000094    0.098453      1.4869
+
+em converged at iteration 21 (max change 9.42e-05 < tol 1.00e-04)
+
+======================================================================
+polling opinion trajectory with house effects — national (trump margin, unanchored)
+======================================================================
+
+true margin (certified result): 1.472 pp
+estimated sigma2_u:             0.098453 per day
+interpretation: true opinion can move ~0.314 pp/day (1 sd)
+
+--- overall poll error ---
+  mean poll margin:              -2.129 pp
+  mean total error:              -3.601 pp
+  sd of total error:             2.487 pp
+
+--- three-component decomposition ---
+  mean |house effect|:           1.288 pp
+  mean |sampling noise|:         1.012 pp
+
+--- house effects (top 20 by absolute effect, min 5 polls) ---
+            pollster  house_effect  n_polls
+          AtlasIntel         3.732       14
+         Beacon/Shaw         2.970        6
+Outward Intelligence        -2.794       12
+       J.L. Partners         2.714        6
+          McLaughlin         2.405        6
+ HarrisX/Harris Poll         2.338        9
+           Siena/NYT         2.289       18
+          Quinnipiac         2.265        6
+       Fabrizio/GBAO         1.982        6
+Marquette Law School        -1.959        8
+ ABC/Washington Post        -1.905        5
+            Hart/POS         1.799        8
+         Big Village        -1.748       30
+       Big Data Poll         1.621       15
+          Angus Reid        -1.420        5
+     Morning Consult        -1.363      145
+             HarrisX         1.182       43
+            ActiVote         1.164       16
+               Leger        -1.104        7
+        RMG Research         1.062       15
+
+figure saved to: figures/kalman_he_unanchored_last_107_days.png
+poll results exported to: data/kalman_he_polls_unanchored_last_107_days.csv
+house effects exported to: data/kalman_he_effects_unanchored_last_107_days.csv
+
+======================================================================
+analysis completed: 2026-02-25 13:36:36
+log saved to: output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt

@@ -1,0 +1,13 @@
+Window,Implementation,N_obs,True_margin,Mean_poll_margin,Mean_total_error,SD_total_error,Mean_abs_house_effect,Mean_residual_bias,Sigma2_u,Final_smoothed,Final_forecast_error,Var_systematic_pct
+All Data,Em Anchored,853,1.472,-0.801,-2.273,3.84,1.425,-2.315,0.138244,0.609,,38.3
+All Data,Em Unanchored,853,1.472,-0.801,-2.273,3.84,1.425,-2.315,0.138244,0.609,,38.3
+All Data,Agg Anchored,226,1.472,1.067,-0.406,5.035,,-0.507,0.419433,0.62,,65.1
+All Data,Agg Unanchored,226,1.472,1.067,-0.406,5.035,,-0.507,0.419433,0.62,,65.1
+Last 200 Days,Em Anchored,710,1.472,-1.84,-3.312,2.805,1.265,-3.352,0.210809,0.367,,38.6
+Last 200 Days,Em Unanchored,710,1.472,-1.84,-3.312,2.805,1.265,-3.352,0.210809,0.367,,38.6
+Last 200 Days,Agg Anchored,126,1.472,-2.022,-3.494,3.009,,-3.422,0.420318,0.62,,85.7
+Last 200 Days,Agg Unanchored,126,1.472,-2.022,-3.494,3.009,,-3.422,0.420318,0.62,,85.7
+Last 107 Days,Em Anchored,674,1.472,-2.129,-3.601,2.487,1.257,-3.652,0.199696,0.379,,24.9
+Last 107 Days,Em Unanchored,674,1.472,-2.129,-3.601,2.487,1.257,-3.652,0.199696,0.379,,24.9
+Last 107 Days,Agg Anchored,107,1.472,-3.036,-4.508,1.647,,-4.444,0.448094,0.611,,75.2
+Last 107 Days,Agg Unanchored,107,1.472,-3.036,-4.508,1.647,,-4.444,0.448094,0.611,,75.2

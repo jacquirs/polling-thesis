@@ -1,0 +1,8 @@
+State,N Polls,True Margin (pp),Mean Poll Margin (pp),Mean Total Error (pp),Mean |House Effect| (pp),Mean Residual Bias (pp),$\sigma^2_u$ (per day),var(HE)/var(Total) \%,Forecast Error (pp),Rank
+Arizona,163,5.53,1.45,-4.08,1.35,-3.95,0.29979,33.6,-3.71,7
+Nevada,120,3.14,-0.38,-3.52,1.9,-3.28,0.266569,56.3,-3.51,6
+Michigan,190,1.41,-1.31,-2.72,1.72,-2.54,0.20552,54.4,-2.72,5
+North Carolina,160,3.21,0.63,-2.58,0.95,-2.49,0.195455,31.3,-2.67,4
+Wisconsin,188,0.86,-1.82,-2.67,1.49,-2.47,0.126482,46.7,-2.25,3
+Pennsylvania,238,1.71,-0.5,-2.21,1.47,-2.09,0.123182,46.8,-2.22,2
+Georgia,164,2.19,1.32,-0.88,1.43,-0.75,0.085002,41.9,-1.56,1
