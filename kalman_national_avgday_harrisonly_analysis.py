@@ -615,7 +615,7 @@ def plot_results(df: pd.DataFrame, anchored: bool = True, save_path: str = None)
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
         print(f"\nfigure saved to: {save_path}")
 
-    plt.show()
+    #plt.show()
     return fig
 
 
