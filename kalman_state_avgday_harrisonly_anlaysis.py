@@ -639,7 +639,7 @@ def export_results(df: pd.DataFrame, out_path: str = 'kalman_results.csv') -> pd
         'filtered',    'filtered_se',
         'smoothed',    'smoothed_se',
         'total_error', 'sampling_noise', 'systematic_bias',
-        'weight',
+        'weight', 'sigma2_u',
     ]
     # keep only columns that actually exist (guards against missing optional cols)
     cols = [c for c in cols if c in df.columns]
@@ -670,8 +670,7 @@ if __name__ == '__main__':
     SWING_STATES = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
 
     # set up logging to capture all terminal output
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_filename = f'output/kalman/kalman_daily_aggregated_swingstates_log_{timestamp}.txt'
+    log_filename = f'output/kalman/kalman_state_avgday_harrisonly_anlaysis_log.txt'
     logger = Logger(log_filename)
     sys.stdout = logger
     

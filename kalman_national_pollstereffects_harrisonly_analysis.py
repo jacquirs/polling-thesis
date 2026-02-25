@@ -725,7 +725,7 @@ def export_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
         'poll_margin', 'corrected_margin', 'true_margin',
         'filtered', 'filtered_se', 'smoothed', 'smoothed_se',
         'house_effect_assigned', 'total_error', 'sampling_noise',
-        'residual_systematic_bias', 'weight',
+        'residual_systematic_bias', 'weight', 'sigma2_u',
     ]
     if 'period' in df.columns:
         poll_cols.append('period')
@@ -749,8 +749,7 @@ if __name__ == '__main__':
     TIME_WINDOWS  = [None, 200, 107]
 
     # set up logging
-    timestamp    = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_filename = f'output/kalman/kalman_house_effects_log_{timestamp}.txt'
+    log_filename = f'output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt'
     logger       = Logger(log_filename)
     sys.stdout   = logger
 
