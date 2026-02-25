@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 
 # THIS FILE ANALYZES POLLS USING KALMAN FILTERING/SMOOTHING WITH WITHIN-DAY AGGREGATION BEFORE FILTERING
 # swing state version: analyzes each swing state separately (arizona, georgia, michigan, nevada, north carolina, pennsylvania, wisconsin)
-# direct copy of kalman_national_harrisonly_analysis.py with addition of within-day aggregation step (aggregate_by_day) inserted between load_and_prepare and append_election_result
+# direct copy of kalman_national_harrisonly_analysis.py but for states and with addition of within-day aggregation step (aggregate_by_day) inserted between load_and_prepare and append_election_result
 
 ########################################################################################
 ##################################### Logging Setup ####################################
