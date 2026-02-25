@@ -55,7 +55,7 @@ def create_figure2_national_bias_comparison():
     plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')
     
     plt.tight_layout()
-    plt.savefig('figures/national_bias_comparison_four_implementations.png', dpi=300, bbox_inches='tight')
+    plt.savefig('figures/kalman_national_bias_comparison_four_implementations.png', dpi=300, bbox_inches='tight')
     plt.close()
 
 
@@ -127,7 +127,7 @@ def create_figure3_swing_states_bias_trajectories():
                 fontsize=14, fontweight='bold', y=0.98)
     
     plt.tight_layout(rect=[0.03, 0.03, 1, 0.96])
-    plt.savefig('figures/swing_states_bias_trajectories_over_time.png', dpi=300, bbox_inches='tight')
+    plt.savefig('figures/kalman_swing_states_bias_trajectories_over_time.png', dpi=300, bbox_inches='tight')
     plt.close()
 
 
@@ -225,7 +225,7 @@ def create_figure4_swing_states_error_decomposition():
     ax2.grid(True, alpha=0.3, axis='x')
     
     plt.tight_layout()
-    plt.savefig('figures/swing_states_forecast_error_and_variance_decomposition.png', dpi=300, bbox_inches='tight')
+    plt.savefig('figures/kalman_swing_states_forecast_error_and_variance_decomposition.png', dpi=300, bbox_inches='tight')
     plt.close()
 
 
@@ -320,7 +320,7 @@ def create_figure5_national_stability_temporal():
                 ha='center', fontsize=9, fontweight='bold')
     
     plt.tight_layout()
-    plt.savefig('figures/national_house_effect_stability_and_temporal_dynamics.png', dpi=300, bbox_inches='tight')
+    plt.savefig('figures/kalman_national_house_effect_stability_and_temporal_dynamics.png', dpi=300, bbox_inches='tight')
     plt.close()
 
 
