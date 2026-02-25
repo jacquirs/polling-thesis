@@ -495,6 +495,8 @@ def em_kalman_house_effects(df: pd.DataFrame, pollster_names: list,
     for idx, pid in zip(poll_idx, pollster_ids):
         df.loc[idx, 'house_effect_assigned'] = house_effects[pid]
 
+    df['sigma2_u'] = sigma2_u
+
     # bias decomposition — now three components instead of two:
     #
     # total_error          = poll_margin - true_margin

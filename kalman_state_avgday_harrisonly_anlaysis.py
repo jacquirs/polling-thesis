@@ -426,6 +426,8 @@ def kalman_filter_smoother(df: pd.DataFrame,sigma2_u_per_day: float = None) -> t
     df['smoothed_se'] = np.sqrt(np.maximum(PS, 0))
     df['weight']      = W
 
+    df['sigma2_u'] = sigma2_u_per_day
+
     ######## bias decomposition
     # total_error = observed poll margin minus certified true margin (everything wrong with any given poll)
     # sampling_noise = observed poll margin minus smoothed estimate (the part the filter attributed to random sampling fluctuation, averages to zero across many polls if the model is correctly specified)
