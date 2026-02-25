@@ -588,8 +588,7 @@ if __name__ == '__main__':
     TIME_WINDOWS = [None, 200, 107]
 
     # set up logging to capture all terminal output
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    log_filename = f'output/kalman/kalman_analysis_log_{timestamp}.txt'
+    log_filename = f'output/kalman/kalman_national_harrisonly_analysis_log.txt'
     logger = Logger(log_filename)
     sys.stdout = logger
     
