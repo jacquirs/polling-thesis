@@ -677,11 +677,122 @@ print(results_df.to_string(index=False))
 
 
 ########################################################################################
+################################# SIMPLE MODE ANALSYIS PREP ############################
+########################################################################################
+
+# fix typo
+harris_trump_pivot['mode'] = harris_trump_pivot['mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
+
+# classify modes as self-administered vs interviewer-administered
+self_admin_modes = [
+    'Online Opt-In Panel', 'Text-to-Web', 'Online Matched Sample', 
+    'Online Ad', 'Probability Panel', 'Text', 'App Panel', 
+    'Email', 'Mail-to-Web'
+]
+
+interviewer_modes = ['Live Phone', 'IVR']
+
+# mixed modes that combine self-admin and interviewer
+explicit_mixed_modes = ['Mail-to-Phone']
+
+# create mode component indicators in the non exploded dataset
+harris_trump_pivot['has_self_admin'] = harris_trump_pivot['mode'].apply(
+    lambda x: any(mode.strip() in self_admin_modes for mode in str(x).split('/'))
+)
+
+harris_trump_pivot['has_interviewer'] = harris_trump_pivot['mode'].apply(
+    lambda x: any(mode.strip() in interviewer_modes for mode in str(x).split('/'))
+)
+
+harris_trump_pivot['has_explicit_mixed'] = harris_trump_pivot['mode'].apply(
+    lambda x: any(mode.strip() in explicit_mixed_modes for mode in str(x).split('/'))
+)
+
+# check for modes that don't fall into any category (the "Other" cases)
+harris_trump_pivot['has_other'] = ~(
+    harris_trump_pivot['has_self_admin'] | 
+    harris_trump_pivot['has_interviewer'] | 
+    harris_trump_pivot['has_explicit_mixed']
+)
+
+# print others
+other_examples = harris_trump_pivot[harris_trump_pivot['has_other']]['mode'].value_counts()
+
+print(f"\nOther category (N = {len(harris_trump_pivot[harris_trump_pivot['has_other']])} questions):")
+print("  All modes in this category:")
+for mode, count in other_examples.items():
+    print(f"    '{mode}': {count} questions")
+
+# exclude other (these all don't have a mode), keep everything else
+harris_trump_simple_mode_analysis = harris_trump_pivot[
+    ~harris_trump_pivot['has_other']
+].copy()
+
+# create three mutually exclusive binary indicators
+# mixed = either has both components or is the explicit mixed mode Mail-to-Phone, others are solely one type
+harris_trump_simple_mode_analysis['interviewer_only'] = (
+    (harris_trump_simple_mode_analysis['has_interviewer']) & 
+    (~harris_trump_simple_mode_analysis['has_self_admin']) &
+    (~harris_trump_simple_mode_analysis['has_explicit_mixed'])
+).astype(int)
+
+harris_trump_simple_mode_analysis['self_admin_only'] = (
+    (harris_trump_simple_mode_analysis['has_self_admin']) & 
+    (~harris_trump_simple_mode_analysis['has_interviewer']) &
+    (~harris_trump_simple_mode_analysis['has_explicit_mixed'])
+).astype(int)
+
+harris_trump_simple_mode_analysis['mixed_mode'] = (
+    ((harris_trump_simple_mode_analysis['has_self_admin']) & 
+     (harris_trump_simple_mode_analysis['has_interviewer'])) |
+    harris_trump_simple_mode_analysis['has_explicit_mixed']
+).astype(int)
+
+# verify they sum to 1 for each row 
+mode_sum = (harris_trump_simple_mode_analysis['interviewer_only'] + 
+            harris_trump_simple_mode_analysis['self_admin_only'] + 
+            harris_trump_simple_mode_analysis['mixed_mode'])
+
+# was not necessary
+if not (mode_sum == 1).all():
+    print("\nWARNING: Mode categories are not mutually exclusive!")
+
+print("MODE ANALYSIS DATAFRAME")
+print(f"\nTotal questions: {len(harris_trump_simple_mode_analysis)}")
+print(f"Excluded from original: {len(harris_trump_pivot) - len(harris_trump_simple_mode_analysis)}")
+print(f"  Interviewer-only: {harris_trump_simple_mode_analysis['interviewer_only'].sum()}")
+print(f"  Self-admin-only: {harris_trump_simple_mode_analysis['self_admin_only'].sum()}")
+print(f"  Mixed mode: {harris_trump_simple_mode_analysis['mixed_mode'].sum()}")
+
+print(f"\nMixed mode composition:")
+mixed_polls = harris_trump_simple_mode_analysis[harris_trump_simple_mode_analysis['mixed_mode'] == 1]
+slash_mixed = ((mixed_polls['has_self_admin']) & (mixed_polls['has_interviewer'])).sum()
+explicit_mixed = mixed_polls['has_explicit_mixed'].sum()
+print(f"  Slash-separated (e.g., 'Live Phone/Online'): {slash_mixed}")
+print(f"  Explicit mixed (Mail-to-Phone): {explicit_mixed}")
+
+# subset for pure binary analysis (excludes mixed)
+harris_trump_simple_mode_analysis_pure = harris_trump_simple_mode_analysis[
+    harris_trump_simple_mode_analysis['mixed_mode'] == 0
+].copy()
+
+print(f"\nPure mode subset (excludes mixed):")
+print(f"  Total questions: {len(harris_trump_simple_mode_analysis_pure)}")
+print(f"  Self-admin-only: {harris_trump_simple_mode_analysis_pure['self_admin_only'].sum()}")
+print(f"  Interviewer-only: {harris_trump_simple_mode_analysis_pure['interviewer_only'].sum()}")
+
+# save the full three-way dataset (interviewer-only, self-admin-only, mixed)
+harris_trump_simple_mode_analysis.to_csv('data/harris_trump_datelimited_no_partisan_simple_mode_analysis_threeway.csv', index=False)
+
+# save the pure binary dataset (excludes mixed)
+harris_trump_simple_mode_analysis_pure.to_csv('data/harris_trump_datelimited_no_partisan_simple_mode_analysis_pure.csv', index=False)
+
+
+########################################################################################
 ##################################### Mode Analysis ####################################
 ########################################################################################
 
-######## fix typo and explode slash-separated modes into base modes
-harris_trump_pivot['mode'] = harris_trump_pivot['mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
+######## explode slash-separated modes into base modes
 
 # each mode with a slash will count in both listed
 # explode slash-separated mode strings so a question with 'live phone/online' appears in counts and accuracy stats for both modes
