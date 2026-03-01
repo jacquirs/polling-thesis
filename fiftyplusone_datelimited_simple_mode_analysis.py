@@ -36,3 +36,8 @@ for df in [df_threeway, df_pure]:
 
 # swing states
 swing_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
+
+# understand the questions we have, will be less than the exploded ones because those split much more
+print(f"\nDatasets loaded:")
+print(f"  Three-way (includes mixed): {len(df_threeway)} questions")
+print(f"  Pure binary (excludes mixed): {len(df_pure)} questions")
