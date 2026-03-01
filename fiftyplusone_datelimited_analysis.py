@@ -751,6 +751,7 @@ mode_sum = (harris_trump_simple_mode_analysis['interviewer_only'] +
             harris_trump_simple_mode_analysis['self_admin_only'] + 
             harris_trump_simple_mode_analysis['mixed_mode'])
 
+# was not necessary
 if not (mode_sum == 1).all():
     print("\nWARNING: Mode categories are not mutually exclusive!")
 
