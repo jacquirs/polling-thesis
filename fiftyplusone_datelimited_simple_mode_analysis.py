@@ -25,3 +25,14 @@ df_threeway = pd.read_csv('data/harris_trump_datelimited_simple_mode_analysis_th
 
 # load the pure binary dataset
 df_pure = pd.read_csv('data/harris_trump_datelimited_simple_mode_analysis_pure.csv')
+
+# election date for time window analysis
+election_date = pd.Timestamp('2024-11-05')
+
+# convert dates
+for df in [df_threeway, df_pure]:
+    df['end_date'] = pd.to_datetime(df['end_date'])
+    df['start_date'] = pd.to_datetime(df['start_date'])
+
+# swing states
+swing_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
