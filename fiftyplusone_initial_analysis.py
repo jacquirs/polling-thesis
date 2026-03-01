@@ -316,6 +316,27 @@ print(f"  {harris_trump_full_df['question_id'].nunique()} unique questions")
 
 harris_trump_full_df.to_csv('data/fiftyplusone_cleaned_harris_trump_questions.csv', index=False)
 
+
+########################################################################################
+#################### Harris+Trump Dataset WITHOUT PARTISAN #############################
+########################################################################################
+
+harris_trump_full_df_no_partisan = df.merge(
+    harris_trump_questions,
+    on=['poll_id', 'question_id'],
+    how='inner'
+)
+
+harris_trump_full_df_no_partisan = harris_trump_full_df_no_partisan[harris_trump_full_df_no_partisan['partisan'].isna()]
+
+print(f"\nHarris+Trump Polls dataset WITHOUT PARTISAN:")
+print(f"  {len(harris_trump_full_df_no_partisan)} rows")
+print(f"  {harris_trump_full_df_no_partisan['poll_id'].nunique()} unique polls")
+print(f"  {harris_trump_full_df_no_partisan['question_id'].nunique()} unique questions")
+
+harris_trump_full_df_no_partisan.to_csv('data/fiftyplusone_cleaned_harris_trump_questions_no_partisan.csv', index=False)
+
+
 # close log file and restore terminal output
 log_file.close()
 sys.stdout = sys.__stdout__
