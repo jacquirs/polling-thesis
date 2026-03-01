@@ -18,7 +18,7 @@ sys.stdout = log_file
 # then runs multivariate ols regressions (state and national separately)
 # to understand what poll design factors predict accuracy
 
-# load cleaned harris+trump questions dataset (output from fiftyplusone_initial_analysis.py)
+# load cleaned harris+trump questions dataset (output from fiftyplusone_initial_analysis.py) FOR NON PARTISAN
 harris_trump_full_df = pd.read_csv("data/fiftyplusone_cleaned_harris_trump_questions_no_partisan.csv")
 
 # load actual 2024 results
