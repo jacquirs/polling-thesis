@@ -229,7 +229,7 @@ p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
 mean_trump_part_A = harris_trump_pivot['trump_part_A'].mean()
 mean_harris_part_A = harris_trump_pivot['harris_part_A'].mean()
 
-print(f"\nOverall Method A accuracy (all Harris+Trump questions):")
+print(f"\nOverall Method A accuracy (all Harris+Trump questions) NON PARTISAN:")
 print(f"  Mean:   {mean_A:.4f}")
 print(f"  SE:       {se_A_robust:.4f}")
 print(f"  p-value:  {p_value:.4f} {sig_stars(p_value)}")
@@ -250,7 +250,7 @@ axes[0, 0].axvline(harris_trump_pivot['trump_part_A'].mean(), color='red', lines
 axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=1)
 axes[0, 0].set_xlabel('Trump Component')
 axes[0, 0].set_ylabel('Frequency')
-axes[0, 0].set_title('Trump Component: ln(poll_trump) - ln(true_trump)')
+axes[0, 0].set_title('Trump Component, Non Partisan: ln(poll_trump) - ln(true_trump)')
 axes[0, 0].legend()
 
 
@@ -259,7 +259,7 @@ axes[0, 1].axvline(harris_trump_pivot['harris_part_A'].mean(), color='red', line
 axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=1)
 axes[0, 1].set_xlabel('Harris Component')
 axes[0, 1].set_ylabel('Frequency')
-axes[0, 1].set_title('Harris Component: ln(poll_harris) - ln(true_harris)')
+axes[0, 1].set_title('Harris Component, Non Partisan: ln(poll_harris) - ln(true_harris)')
 axes[0, 1].legend()
 
 
@@ -268,7 +268,7 @@ axes[0, 2].axvline(harris_trump_pivot['A'].mean(), color='red', linestyle='--', 
 axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=1)
 axes[0, 2].set_xlabel('Method A')
 axes[0, 2].set_ylabel('Frequency')
-axes[0, 2].set_title('Method A: trump_part - harris_part')
+axes[0, 2].set_title('Method A, Non Partisan: trump_part - harris_part')
 axes[0, 2].legend()
 
 
@@ -277,7 +277,7 @@ axes[1, 0].scatter(harris_trump_pivot['p_trump_true']*100, harris_trump_pivot['p
 axes[1, 0].plot([0, 100], [0, 100], 'r--', linewidth=2, label='Perfect accuracy')
 axes[1, 0].set_xlabel('True Trump %')
 axes[1, 0].set_ylabel('Poll Trump %')
-axes[1, 0].set_title('Trump: Poll vs True')
+axes[1, 0].set_title('Trump, Non Partisan: Poll vs True')
 axes[1, 0].legend()
 axes[1, 0].grid(True, alpha=0.3)
 
@@ -286,7 +286,7 @@ axes[1, 1].scatter(harris_trump_pivot['p_harris_true']*100, harris_trump_pivot['
 axes[1, 1].plot([0, 100], [0, 100], 'r--', linewidth=2, label='Perfect accuracy')
 axes[1, 1].set_xlabel('True Harris %')
 axes[1, 1].set_ylabel('Poll Harris %')
-axes[1, 1].set_title('Harris: Poll vs True')
+axes[1, 1].set_title('Harris, Non Partisan: Poll vs True')
 axes[1, 1].legend()
 axes[1, 1].grid(True, alpha=0.3)
 
@@ -299,7 +299,7 @@ axes[1, 2].hist(harris_trump_pivot['pct_harris_poll'] - harris_trump_pivot['p_ha
 axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=1)
 axes[1, 2].set_xlabel('Simple Error (Poll - True)')
 axes[1, 2].set_ylabel('Frequency')
-axes[1, 2].set_title('Simple Errors: Poll % - True %')
+axes[1, 2].set_title('Simple Errors, Non Partisan: Poll % - True %')
 axes[1, 2].legend()
 
 
@@ -368,15 +368,15 @@ axes[1, 2].set_ylabel('Frequency')
 axes[1, 2].set_title('Simple Errors (National): Poll % - True %')
 axes[1, 2].legend()
 
-plt.suptitle('National Polls Only', fontsize=16, y=1.00)
+plt.suptitle('National Polls Only, Non Partisan', fontsize=16, y=1.00)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_national_methoda_errors.png", dpi=300)
 #plt.show()
 
 
-print(f"\nNational Polls (N={len(national_polls)}):")
-print(f"Trump - True: {true_trump_national:.2f}%, Poll Mean: {national_polls['pct_trump_poll'].mean():.2f}%, Error: {national_polls['pct_trump_poll'].mean() - true_trump_national:.2f}")
-print(f"Harris - True: {true_harris_national:.2f}%, Poll Mean: {national_polls['pct_harris_poll'].mean():.2f}%, Error: {national_polls['pct_harris_poll'].mean() - true_harris_national:.2f}")
+print(f"\nNational Polls, Non Partisan (N={len(national_polls)}):")
+print(f"Trump - True:, Non Partisan {true_trump_national:.2f}%, Poll Mean: {national_polls['pct_trump_poll'].mean():.2f}%, Error: {national_polls['pct_trump_poll'].mean() - true_trump_national:.2f}")
+print(f"Harris - True, Non Partisan: {true_harris_national:.2f}%, Poll Mean: {national_polls['pct_harris_poll'].mean():.2f}%, Error: {national_polls['pct_harris_poll'].mean() - true_harris_national:.2f}")
 
 
 ### battleground states combined treating all as one group
@@ -452,7 +452,7 @@ axes[1, 2].set_ylabel('Frequency')
 axes[1, 2].set_title('Simple Errors')
 axes[1, 2].legend()
 
-plt.suptitle('All Battleground States Combined (AZ, GA, MI, NV, NC, PA, WI)', fontsize=16)
+plt.suptitle('All Battleground States Combined (AZ, GA, MI, NV, NC, PA, WI), Non Partisan', fontsize=16)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundcombined_methoda_errors.png", dpi=300)
 #plt.show()
@@ -477,7 +477,7 @@ for i, state in enumerate(battleground_states):
 # hide the extra subplot
 axes[7].axis('off')
 
-plt.suptitle('Trump Component by State: ln(poll_trump) - ln(true_trump)', fontsize=16)
+plt.suptitle('Trump Component by State: ln(poll_trump) - ln(true_trump), Non Partisan', fontsize=16)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumpcomp_methoda_errors.png", dpi=300)
 #plt.show()
@@ -502,7 +502,7 @@ for i, state in enumerate(battleground_states):
 # hide the extra subplot
 axes[7].axis('off')
 
-plt.suptitle('Harris Component by State: ln(poll_harris) - ln(true_harris)', fontsize=16)
+plt.suptitle('Harris Component by State, Non Partisan: ln(poll_harris) - ln(true_harris)', fontsize=16)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harriscomp_methoda_errors.png", dpi=300)
 #plt.show()
@@ -528,7 +528,7 @@ for i, state in enumerate(battleground_states):
 # hide the extra subplot
 axes[7].axis('off')
 
-plt.suptitle('Method A by State: trump_part - harris_part', fontsize=16)
+plt.suptitle('Method A by State, Non Partisan: trump_part - harris_part', fontsize=16)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_methoda_methoda_errors.png", dpi=300)
 #plt.show()
@@ -555,7 +555,7 @@ for i, state in enumerate(battleground_states):
 # hide the extra subplot
 axes[7].axis('off')
 
-plt.suptitle('Harris Poll Distribution by State', fontsize=16)
+plt.suptitle('Harris Poll Distribution by State, Non Partisan', fontsize=16)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harrispoll_methoda_errors.png", dpi=300)
 #plt.show()
@@ -582,7 +582,7 @@ for i, state in enumerate(battleground_states):
 # hide the extra subplot
 axes[7].axis('off')
 
-plt.suptitle('Trump Poll Distribution by State', fontsize=16)
+plt.suptitle('Trump Poll Distribution by State, Non Partisan', fontsize=16)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumppoll_methoda_errors.png", dpi=300)
 #plt.show()
@@ -611,14 +611,14 @@ for i, state in enumerate(battleground_states):
 # hide the extra subplot
 axes[7].axis('off')
 
-plt.suptitle('Simple Errors by State', fontsize=16)
+plt.suptitle('Simple Errors by State, Non Partisan', fontsize=16)
 plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_simpleerr_methoda_errors.png", dpi=300)
 #plt.show()
 
 ### battleground summary stats
 # battleground state summary statistics combined
-print(f"\nAll Battleground States Combined (N={len(bg_polls)}):")
+print(f"\nAll Battleground States Combined (N={len(bg_polls)}), Non Partisan:")
 print(f"  Trump Component Mean: {bg_polls['trump_part_A'].mean():.4f}")
 print(f"  Harris Component Mean: {bg_polls['harris_part_A'].mean():.4f}")
 print(f"  Method A Mean: {bg_polls['A'].mean():.4f}")
@@ -627,7 +627,7 @@ print(f"  Harris Error Mean: {harris_error_all.mean():.2f}")
 
 
 # battleground state summary statistics by state
-print(f"\nBy State:")
+print(f"\nBy State, Non Partisan:")
 for state in battleground_states:
     state_data = bg_polls[bg_polls['state'] == state]
     true_trump = state_data['p_trump_true'].iloc[0] * 100
@@ -646,7 +646,7 @@ for state in battleground_states:
 
 
 ######## accuracy split by state vs national
-print(f"\nMethod A accuracy by poll level (state vs national):")
+print(f"\nMethod A accuracy by poll level (state vs national), Non Partisan:")
 results = []
 for level in harris_trump_pivot['poll_level'].unique():
     subdf = harris_trump_pivot[harris_trump_pivot['poll_level'] == level]
@@ -700,7 +700,7 @@ mode_counts = (
     .reset_index(drop=True)
 )
 
-print(f"\nBase mode breakdown (unique questions per mode):\n")
+print(f"\nBase mode breakdown (unique questions per mode), Non Partisan:\n")
 print(mode_counts.to_string(index=False))
 
 ######## accuracy by base mode
@@ -779,7 +779,7 @@ def print_accuracy_table(df, group_col, label):
     tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
 
     print(f"\n{'='*110}")
-    print(f"  method a accuracy by {label}")
+    print(f"  method a accuracy by {label}, Non Partisan")
     print(f"  (+ = republican bias, - = democratic bias)")
     print(f"{'='*110}")
     print(f"  {'':30} {'-------------- state --------------':>42} {'------------ national ------------':>42}")
@@ -969,7 +969,7 @@ swing_states = ['arizona', 'georgia', 'michigan', 'nevada',
                       'north carolina', 'pennsylvania', 'wisconsin']
 reg_state_swing = reg_state[reg_state['state'].isin(swing_states)].copy()
 
-print(f"\nregression sample sizes:")
+print(f"\nregression sample sizes, Non Partisan:")
 print(f"  national-level questions: {len(reg_national)}")
 print(f"  state-level questions:    {len(reg_state)}")
 print(f"  swing state questions: {len(reg_state_swing)}")
@@ -984,7 +984,7 @@ results_national = run_ols_clustered(
     y_col       = 'A',
     x_cols      = all_x_vars,
     cluster_col = 'poll_id',
-    label       = 'national polls'
+    label       = 'national polls, Non Partisan'
 )
 
 # state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
@@ -993,7 +993,7 @@ results_state = run_ols_clustered(
     y_col       = 'A',
     x_cols      = state_x_vars,
     cluster_col = 'poll_id',
-    label       = 'state-level polls'
+    label       = 'state-level polls, Non Partisan'
 )
 
 # swing state regression
@@ -1002,7 +1002,7 @@ results_swing = run_ols_clustered(
     y_col       = 'A',
     x_cols      = state_x_vars,
     cluster_col = 'poll_id',
-    label       = 'swing states'
+    label       = 'swing states, Non Partisan'
 )
 
 ########################################################################################
@@ -1027,8 +1027,7 @@ mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=Fal
 if f'mode_{reference_mode}' in mode_dummies.columns:
     mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
     print(f"\nreference category set to: {reference_mode}")
-else:
-    print(f"\nwarning: {reference_mode} not found in modes")
+
 
 # convert boolean to int and clean column names by replace hyphens with underscores
 mode_dummies = mode_dummies.astype(int)
@@ -1082,7 +1081,7 @@ results_national_mode = run_ols_clustered(
     y_col       = 'A',
     x_cols      = national_x_vars_with_mode,
     cluster_col = 'poll_id',
-    label       = 'national polls with mode controls'
+    label       = 'national polls with mode controls, Non Partisan'
 )
 
 # all state questions
@@ -1091,7 +1090,7 @@ results_all_states_mode = run_ols_clustered(
     y_col       = 'A',
     x_cols      = state_x_vars_with_mode,
     cluster_col = 'poll_id',
-    label       = 'all state polls with mode controls'
+    label       = 'all state polls with mode controls, Non Partisan'
 )
 
 # swing state questions
@@ -1100,7 +1099,7 @@ results_swing_mode = run_ols_clustered(
     y_col       = 'A',
     x_cols      = state_x_vars_with_mode,
     cluster_col = 'poll_id',
-    label       = 'swing states with mode controls'
+    label       = 'swing states with mode controls, Non Partisan'
 )
 
 
@@ -1137,7 +1136,7 @@ for window in time_windows:
             y_col       = 'A',
             x_cols      = state_x_vars_no_mode,
             cluster_col = 'poll_id',
-            label       = f'swing states {window} days before election (no mode)'
+            label       = f'swing states {window} days before election (no mode), Non Partisan'
         )
         swing_window_results_no_mode[window] = res_swing
 
@@ -1163,7 +1162,7 @@ for window in time_windows:
             y_col       = 'A',
             x_cols      = state_x_vars_no_mode,
             cluster_col = 'poll_id',
-            label       = f'all states {window} days before election (no mode)'
+            label       = f'all states {window} days before election (no mode), Non Partisan'
         )
         all_states_window_results_no_mode[window] = res_state
 
@@ -1189,7 +1188,7 @@ for window in time_windows:
             y_col       = 'A',
             x_cols      = national_x_vars_no_mode,
             cluster_col = 'poll_id',
-            label       = f'national {window} days before election (no mode)'
+            label       = f'national {window} days before election (no mode), Non Partisan'
         )
         national_window_results_no_mode[window] = res_national
 
@@ -1220,7 +1219,7 @@ for window in time_windows:
             y_col       = 'A',
             x_cols      = state_x_vars_with_mode,
             cluster_col = 'poll_id',
-            label       = f'swing states {window} days before election (with mode)'
+            label       = f'swing states {window} days before election (with mode), Non Partisan'
         )
         swing_window_results_with_mode[window] = res_swing
 
@@ -1246,7 +1245,7 @@ for window in time_windows:
             y_col       = 'A',
             x_cols      = state_x_vars_with_mode,
             cluster_col = 'poll_id',
-            label       = f'all states {window} days before election (with mode)'
+            label       = f'all states {window} days before election (with mode), Non Partisan'
         )
         all_states_window_results_with_mode[window] = res_state
 
@@ -1272,7 +1271,7 @@ for window in time_windows:
             y_col       = 'A',
             x_cols      = national_x_vars_with_mode,
             cluster_col = 'poll_id',
-            label       = f'national {window} days before election (with mode)'
+            label       = f'national {window} days before election (with mode), Non Partisan'
         )
         national_window_results_with_mode[window] = res_national
 
@@ -1297,7 +1296,7 @@ def stars(p):
 
 # compare across columns to see how predictors change over time for national polls
 print("\n" + "="*110)
-print("NATIONAL, ACROSS TIME WINDOWS, NO MODE")
+print("NATIONAL, ACROSS TIME WINDOWS, NO MODE, NON PARTISAN")
 print("="*110)
 
 print(f"\n{'Variable':<30}", end='')
@@ -1371,7 +1370,7 @@ print("Sig: *<.10; **<.05; ***<.01")
 ########################################################################################
 
 print("\n" + "="*110)
-print("NATIONAL, ACROSS TIME WINDOWS, WITH MODE")
+print("NATIONAL, ACROSS TIME WINDOWS, WITH MODE, NON PARTISAN")
 print(f"reference mode: {reference_mode}")
 print("="*110)
 
@@ -1447,7 +1446,7 @@ print(f"all coefficients relative to {reference_mode} (reference category)")
 ########################################################################################
 
 print("\n" + "="*110)
-print("ALL STATES, ACROSS TIME WINDOWS, NO MODE")
+print("ALL STATES, ACROSS TIME WINDOWS, NO MODE, NON PARTISAN")
 print("="*110)
 
 print(f"\n{'Variable':<30}", end='')
@@ -1520,7 +1519,7 @@ print("Sig: *<.10; **<.05; ***<.01")
 ########################################################################################
 
 print("\n" + "="*110)
-print("ALL STATES, ACROSS TIME WINDOWS, WITH MODE")
+print("ALL STATES, ACROSS TIME WINDOWS, WITH MODE, NON PARTISAN")
 print(f"reference mode: {reference_mode}")
 print("="*110)
 
@@ -1597,7 +1596,7 @@ print(f"all coefficients relative to {reference_mode} (reference category)")
 
 # compare across columns to see how predictors change over time, similar to harrison (2009) analysis of temporal dynamics
 print("\n" + "="*110)
-print("SWING, ACROSS TIME WINDOWS, NO MODE")
+print("SWING, ACROSS TIME WINDOWS, NO MODE, NON PARTISAN")
 print("="*110)
 
 print(f"\n{'Variable':<30}", end='')
@@ -1668,7 +1667,7 @@ print("Sig: *<.10; **<.05; ***<.01")
 ########################################################################################
 
 print("\n" + "="*110)
-print("SWING, ACROSS TIME WINDOWS< WITH MODE")
+print("SWING, ACROSS TIME WINDOWS< WITH MODE, NON PARTISAN")
 print(f"reference mode: {reference_mode}")
 print("="*110)
 
@@ -1741,7 +1740,7 @@ print("Sig: *<.10; **<.05; ***<.01")
 ########################################################################################
 
 # positive coefficients indicate more republican bias, compare across columns to see if mode effects differ by sample
-print("MODE COEFFICIENTS ACROSS SAMPLES")
+print("MODE COEFFICIENTS ACROSS SAMPLES, NON PARTISAN")
 
 # create comparison table across the three mode regressions
 print(f"\n{'Mode':<20} {'National':>15} {'Swing':>15} {'All States':>15}")
