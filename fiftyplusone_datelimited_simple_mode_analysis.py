@@ -210,3 +210,7 @@ print_accuracy_table(df_threeway, 'mode_category', 'mode (three-way: interviewer
 
 # pure binary comparison (excludes mixed)
 print_accuracy_table(df_pure, 'mode_category', 'mode (pure: self-admin-only vs interviewer-only, excludes mixed), datelimmited, with partisan')
+
+# close log and restore terminal
+log_file.close()
+sys.stdout = sys.__stdout__
