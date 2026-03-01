@@ -678,6 +678,9 @@ print(results_df.to_string(index=False))
 ################################# SIMPLE MODE ANALSYIS PREP ############################
 ########################################################################################
 
+# fix typo
+harris_trump_pivot['mode'] = harris_trump_pivot['mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
+
 # classify modes as self-administered vs interviewer-administered
 self_admin_modes = [
     'Online Opt-In Panel', 'Text-to-Web', 'Online Matched Sample', 
@@ -780,8 +783,7 @@ print(f"  Interviewer-only: {harris_trump_simple_mode_analysis_pure['interviewer
 ##################################### MANY Mode Analysis ####################################
 ########################################################################################
 
-######## fix typo and explode slash-separated modes into base modes
-harris_trump_pivot['mode'] = harris_trump_pivot['mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
+######## explode slash-separated modes into base modes
 
 # each mode with a slash will count in both listed
 # explode slash-separated mode strings so a question with 'live phone/online' appears in counts and accuracy stats for both modes
