@@ -1393,3 +1393,8 @@ Harris+Trump Polls dataset:
   7731 rows
   1664 unique polls
   2613 unique questions
+
+Harris+Trump Polls dataset WITHOUT PARTISAN:
+  7299 rows
+  1508 unique polls
+  2438 unique questions
