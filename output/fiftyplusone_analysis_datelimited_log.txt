@@ -103,6 +103,25 @@ poll_level      mean    median       se  p_value       sd    n sig
      state -0.067269 -0.063201 0.002162      0.0 0.069794 1635 ***
   national -0.075919 -0.078199 0.002574      0.0 0.053659  682 ***
 
+Other category (N = 165 questions):
+  All modes in this category:
+MODE ANALYSIS DATAFRAME
+
+Total questions: 2152
+Excluded from original: 165
+  Interviewer-only: 250
+  Self-admin-only: 1456
+  Mixed mode: 446
+
+Mixed mode composition:
+  Slash-separated (e.g., 'Live Phone/Online'): 441
+  Explicit mixed (Mail-to-Phone): 11
+
+Pure mode subset (excludes mixed):
+  Total questions: 1706
+  Self-admin-only: 1456
+  Interviewer-only: 250
+
 Base mode breakdown (unique questions per mode):
 
             base_mode  unique_questions
