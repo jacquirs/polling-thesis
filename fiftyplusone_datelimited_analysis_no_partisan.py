@@ -19,7 +19,7 @@ sys.stdout = log_file
 # to understand what poll design factors predict accuracy
 
 # load cleaned harris+trump questions dataset (output from fiftyplusone_initial_analysis.py)
-harris_trump_full_df = pd.read_csv("data/fiftyplusone_cleaned_harris_trump_questions.csv")
+harris_trump_full_df = pd.read_csv("data/fiftyplusone_cleaned_harris_trump_questions_no_partisan.csv")
 
 # load actual 2024 results
 true_votes = pd.read_csv("data/true_votes_by_state_mengrep.csv")
