@@ -206,9 +206,7 @@ df_pure['mode_category'] = df_pure.apply(get_mode_label, axis=1)
 ########################################################################################
 
 # three-way comparison (includes mixed)
-print_accuracy_table(df_threeway, 'mode_category', 
-                    'mode (three-way: interviewer-only vs self-admin-only vs mixed)')
+print_accuracy_table(df_threeway, 'mode_category', 'mode (three-way: interviewer-only vs self-admin-only vs mixed), datelimmited, with partisan')
 
 # pure binary comparison (excludes mixed)
-print_accuracy_table(df_pure, 'mode_category', 
-                    'mode (pure: self-admin-only vs interviewer-only, excludes mixed)')
+print_accuracy_table(df_pure, 'mode_category', 'mode (pure: self-admin-only vs interviewer-only, excludes mixed), datelimmited, with partisan')
