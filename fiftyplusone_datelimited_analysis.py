@@ -779,6 +779,11 @@ print(f"  Total questions: {len(harris_trump_simple_mode_analysis_pure)}")
 print(f"  Self-admin-only: {harris_trump_simple_mode_analysis_pure['self_admin_only'].sum()}")
 print(f"  Interviewer-only: {harris_trump_simple_mode_analysis_pure['interviewer_only'].sum()}")
 
+# save the full three-way dataset (interviewer-only, self-admin-only, mixed)
+harris_trump_simple_mode_analysis.to_csv('data/harris_trump_simple_mode_analysis_threeway.csv', index=False)
+
+# save the pure binary dataset (excludes mixed)
+harris_trump_simple_mode_analysis_pure.to_csv('data/harris_trump_simple_mode_analysis_pure.csv', index=False)
 
 ########################################################################################
 ##################################### MANY Mode Analysis ####################################
