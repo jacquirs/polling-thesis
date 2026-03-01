@@ -304,7 +304,7 @@ axes[1, 2].legend()
 
 
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_overall_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_overall_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -370,7 +370,7 @@ axes[1, 2].legend()
 
 plt.suptitle('National Polls Only, Non Partisan', fontsize=16, y=1.00)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_national_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_national_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -454,7 +454,7 @@ axes[1, 2].legend()
 
 plt.suptitle('All Battleground States Combined (AZ, GA, MI, NV, NC, PA, WI), Non Partisan', fontsize=16)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundcombined_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundcombined_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -479,7 +479,7 @@ axes[7].axis('off')
 
 plt.suptitle('Trump Component by State: ln(poll_trump) - ln(true_trump), Non Partisan', fontsize=16)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumpcomp_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumpcomp_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -504,7 +504,7 @@ axes[7].axis('off')
 
 plt.suptitle('Harris Component by State, Non Partisan: ln(poll_harris) - ln(true_harris)', fontsize=16)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harriscomp_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harriscomp_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -530,7 +530,7 @@ axes[7].axis('off')
 
 plt.suptitle('Method A by State, Non Partisan: trump_part - harris_part', fontsize=16)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_methoda_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_methoda_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -557,7 +557,7 @@ axes[7].axis('off')
 
 plt.suptitle('Harris Poll Distribution by State, Non Partisan', fontsize=16)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harrispoll_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harrispoll_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -584,7 +584,7 @@ axes[7].axis('off')
 
 plt.suptitle('Trump Poll Distribution by State, Non Partisan', fontsize=16)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumppoll_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumppoll_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 
@@ -613,7 +613,7 @@ axes[7].axis('off')
 
 plt.suptitle('Simple Errors by State, Non Partisan', fontsize=16)
 plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_simpleerr_methoda_errors.png", dpi=300)
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_simpleerr_methoda_errors_non_partisan.png", dpi=300)
 #plt.show()
 
 ### battleground summary stats
@@ -1785,10 +1785,10 @@ print(f"all coefficients relative to {reference_mode} (reference category)")
 
 ######## save outputs
 # save question-level accuracy dataset for further analysis
-harris_trump_pivot.to_csv('data/harris_trump_datelimted_accuracy.csv', index=False)
+harris_trump_pivot.to_csv('data/harris_trump_datelimted_accuracy_non_partisan.csv', index=False)
 
 # save regression-ready dataset withs constructed covariates
-reg_df.to_csv('data/harris_trump_datelimted_regression.csv', index=False)
+reg_df.to_csv('data/harris_trump_datelimted_regression_non_partisan.csv', index=False)
 
 # close log and restore terminal
 log_file.close()
