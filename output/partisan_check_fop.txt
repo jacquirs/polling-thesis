@@ -1,0 +1,127 @@
+partisan flag consistency by pollster
+
+total pollsters: 247
+always flagged (all polls have partisan value): 34
+never flagged (no polls have partisan value): 189
+sometimes flagged (inconsistent): 24
+
+pollsters with inconsistent partisan flagging:
+
+24 pollsters have some polls flagged and some not:
+
+                   pollster  total_polls  polls_with_partisan_flag  all_polls_flagged  no_polls_flagged
+                    Emerson          261                        21              False             False
+           Echelon Insights           73                         1              False             False
+      John Zogby Strategies           57                        53              False             False
+                     Cygnal           52                        11              False             False
+                 McLaughlin           51                        14              False             False
+                  SurveyUSA           40                         1              False             False
+                    HarrisX           40                         2              False             False
+  Public Opinion Strategies           28                        17              False             False
+                  Rasmussen           27                         5              False             False
+            Change Research           22                        13              False             False
+              J.L. Partners           20                         2              False             False
+                  Remington           18                        13              False             False
+             OnMessage Inc.           11                         7              False             False
+North Star Opinion Research           10                         5              False             False
+             SoCal Research            9                         1              False             False
+            Spry Strategies            9                         5              False             False
+                 St. Anselm            9                         1              False             False
+                       WPAi            7                         1              False             False
+     Quantus Polls and News            7                         6              False             False
+                YouGov Blue            5                         3              False             False
+                        GQR            4                         3              False             False
+              Axis Research            4                         3              False             False
+              Lake Research            3                         2              False             False
+                   Tarrance            3                         2              False             False
+
+pollsters always flagged as partisan:
+
+pollster summary:
+                         pollster  total_polls partisan
+                              PPP           40      DEM
+                              PPP           40 DEM, IND
+                  Trafalgar Group           36      REP
+                      Prime Group           16      DEM
+                 SoCal Strategies           14      REP
+                      P2 Insights           10      REP
+                     co/efficient            9      REP
+                           Civiqs            8      DEM
+                         Fabrizio            8      REP
+                 Quantus Insights            7      REP
+       PEM Management Corporation            7      REP
+              Fabrizio/McLaughlin            7      REP
+      OnMessage Public Strategies            6      REP
+            Cherry Communications            4      REP
+            Global Strategy Group            4      DEM
+            Global Strategy Group            4      IND
+            Torchlight Strategies            4      REP
+                  Z to A Research            3      DEM
+                      3W Insights            3      DEM
+                     CWS Research            3      REP
+                       Iron Light            3      REP
+                 KAConsulting LLC            3      DEM
+                    RG Strategies            3      DEM
+                     1892 Polling            1      REP
+                     Arc Insights            1      REP
+                  Differentiators            1      REP
+          Meeting Street Insights            1      REP
+Let's Preserve the American Dream            1      REP
+                  Impact Research            1      IND
+     Gravis Marketing (post 2020)            1      LIB
+         Hart Research Associates            1      DEM
+               Causeway Solutions            1      REP
+                    Peak Insights            1      REP
+                National Research            1      REP
+ Trafalgar Group/InsiderAdvantage            1      REP
+                       VCreek/AMG            1      REP
+
+sponsor breakdown:
+                   pollster                                                                                         sponsors  num_polls
+               1892 Polling                                                                                             NRSC          1
+                3W Insights                                                                                       WelcomePAC          3
+               Arc Insights                                                                                Fields of Freedom          1
+               CWS Research                                                            Defend Texas Liberty PAC (hybrid PAC)          1
+               CWS Research                                                                 Texans for Fiscal Responsibility          1
+               CWS Research                                                                                 Texas Gun Rights          1
+         Causeway Solutions                                                                      Conservative Energy Network          1
+      Cherry Communications                                                                      Florida Chamber of Commerce          4
+                     Civiqs                                                                                        Daily Kos          5
+                     Civiqs                                                                                 Rust Belt Rising          3
+            Differentiators Susan B. Anthony Pro-Life America, North Carolina Faith & Freedom Coalition, NC Values Coalition          1
+                   Fabrizio                                                   Trump Make America Great Again Committee (PAC)          5
+                   Fabrizio                                                                    Early Vote Action (super PAC)          1
+                   Fabrizio                                                           More Jobs, Less Government (super PAC)          1
+      Global Strategy Group                                                                             ProgressNow Colorado          2
+      Global Strategy Group                                                           Nebraska Railroaders for Public Safety          1
+      Global Strategy Group                                                            Retire Career Politicians (super PAC)          1
+   Hart Research Associates                                                                         National Security Action          1
+                 Iron Light                                                                       League of American Workers          3
+           KAConsulting LLC                                                                     Vapor Technology Association          3
+    Meeting Street Insights                                   Carolina Partnership for Reform, Carolina Leadership Coalition          1
+          National Research                                                Democracy Defense Project, Echo Canyon Consulting          1
+OnMessage Public Strategies                                                                              Article III Project          6
+                P2 Insights                                                                        Building America's Future         10
+ PEM Management Corporation                                                                            John Bolton Super PAC          7
+                        PPP                                                               Clean and Prosperous America (PAC)          8
+                        PPP                                                                             Progress Action Fund          8
+                        PPP                                                                  Northwest Progressive Institute          7
+                        PPP                                                                      Save My Country Action Fund          3
+                        PPP                                                                      New Mexico Political Report          2
+                        PPP                                                                                 Carolina Forward          1
+                        PPP                                                        Chicago Sun-Times, WBEZ-FM 91.5 (Chicago)          1
+                        PPP                                                                               EMILY's List (PAC)          1
+                        PPP                                                                                Progress Michigan          1
+                        PPP                                                                                 Protect Our Care          1
+              Peak Insights                                                                                             NRSC          1
+                Prime Group                                                        Citizens to Save Our Republic (super PAC)         16
+           Quantus Insights                                                                                 TrendingPolitics          7
+              RG Strategies                                                                           Focus on Rural America          3
+           SoCal Strategies                                                            On Point Politics, Red Eagle Politics         14
+      Torchlight Strategies                                                                   Common Sense for America (PAC)          1
+                 VCreek/AMG                                                                         Americas PAC (super PAC)          1
+            Z to A Research                                                                                 Rust Belt Rising          3
+               co/efficient                                                                                Americans for IVF          4
+               co/efficient                                                                              American Unity Fund          1
+               co/efficient                                                                                       NH Journal          1
+               co/efficient                                                                               Spirit of Virginia          1

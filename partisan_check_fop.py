@@ -1,4 +1,9 @@
 import pandas as pd
+import sys
+
+# log file
+log_file = open('output/partisan_check_fop.txt', 'w')
+sys.stdout = log_file
 
 # load the data
 df = pd.read_csv("data/president_2024_general.csv")
@@ -91,3 +96,7 @@ if len(always_flagged_df) > 0:
     
     print("\nsponsor breakdown:")
     print(sponsor_breakdown.to_string(index=False))
+
+# close log file and restore terminal output
+log_file.close()
+sys.stdout = sys.__stdout__
