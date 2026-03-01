@@ -188,3 +188,27 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
     print(f"{'='*70}\n")
 
     return result
+
+##### add new function to name cateogories in tables 
+def get_mode_label(row):
+    if row['interviewer_only']:
+        return 'Interviewer-Only'
+    elif row['self_admin_only']:
+        return 'Self-Admin-Only'
+    elif row['mixed_mode']:
+        return 'Mixed Mode'
+
+df_threeway['mode_category'] = df_threeway.apply(get_mode_label, axis=1)
+df_pure['mode_category'] = df_pure.apply(get_mode_label, axis=1)
+
+########################################################################################
+#################### DESCRIPTIVE ACCURACY TABLES #######################################
+########################################################################################
+
+# three-way comparison (includes mixed)
+print_accuracy_table(df_threeway, 'mode_category', 
+                    'mode (three-way: interviewer-only vs self-admin-only vs mixed)')
+
+# pure binary comparison (excludes mixed)
+print_accuracy_table(df_pure, 'mode_category', 
+                    'mode (pure: self-admin-only vs interviewer-only, excludes mixed)')
