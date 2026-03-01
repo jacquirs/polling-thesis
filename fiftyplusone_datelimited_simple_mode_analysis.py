@@ -41,3 +41,150 @@ swing_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'p
 print(f"\nDatasets loaded:")
 print(f"  Three-way (includes mixed): {len(df_threeway)} questions")
 print(f"  Pure binary (excludes mixed): {len(df_pure)} questions")
+
+########################################################################################
+#################### HELPER FUNCTIONS FROM ORIGINAL FILE ###############################
+########################################################################################
+
+# from fiftyplusone_datelimited_analysis.py and fiftyplusone_analysis.py
+
+def compute_clustered_se(df, value_col, cluster_col):
+    """compute cluster-robust standard error of the mean"""
+    df_clean = df[[value_col, cluster_col]].dropna()
+    
+    if len(df_clean) == 0:
+        return np.nan, 0
+    
+    cluster_means = df_clean.groupby(cluster_col)[value_col].mean()
+    n_clusters = len(cluster_means)
+    
+    if n_clusters < 2:
+        return np.nan, n_clusters
+    
+    grand_mean = df_clean[value_col].mean()
+    cluster_var = ((cluster_means - grand_mean) ** 2).sum() / (n_clusters - 1)
+    se_robust = np.sqrt(cluster_var / n_clusters)
+    
+    return se_robust, n_clusters
+
+def sig_stars(p):
+    if p < 0.01:   return '***'
+    elif p < 0.05: return '**'
+    elif p < 0.10: return '*'
+    else:          return ''
+
+def print_accuracy_table(df, group_col, label):
+    """
+    groups df by group_col and poll_level, computes mean/median/std/se/p-value/n of method a,
+    and prints a formatted table with state and national columns side by side
+    """
+    results = []
+    
+    for (group_val, level), subdf in df.groupby([group_col, 'poll_level']):
+        mean_A = subdf['A'].mean()
+        se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
+
+        if pd.notna(se_robust) and se_robust > 0:
+            t_stat = mean_A / se_robust
+            p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
+        else:
+            p_value = np.nan
+
+        results.append({
+            group_col: group_val,
+            'poll_level': level,
+            'mean': mean_A,
+            'se': se_robust,
+            'p_value': p_value,
+            'median': subdf['A'].median(),
+            'std': subdf['A'].std(),
+            'n': len(subdf)
+        })
+    
+    results_df = pd.DataFrame(results)
+    tbl_wide = results_df.pivot(index=group_col, columns='poll_level', 
+                                  values=['mean', 'se', 'p_value', 'median', 'std', 'n'])
+    tbl_wide.columns = [f"{stat}_{level}" for stat, level in tbl_wide.columns]
+    tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
+
+    print(f"\n{'='*110}")
+    print(f"  method a accuracy by {label}")
+    print(f"  (+ = republican bias, - = democratic bias)")
+    print(f"{'='*110}")
+    print(f"  {'':30} {'-------------- state --------------':>42} {'------------ national ------------':>42}")
+    print(f"  {group_col:<30} {'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}   "
+          f"{'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}")
+    print(f"  {'-'*108}")
+
+    for _, row in tbl_wide.iterrows():
+        def fmt_val(val):
+            return f"{val:.4f}" if pd.notna(val) else '   --'
+        def fmt_pval(val):
+            return f"{val:.3f}{sig_stars(val)}" if pd.notna(val) else '   --'
+        def fmt_n(val):
+            return f"{int(val)}" if pd.notna(val) and val > 0 else '--'
+
+        print(
+            f"  {str(row[group_col]):<30} "
+            f"{fmt_val(row.get('mean_state')):>8} "
+            f"{fmt_val(row.get('se_state')):>8} "
+            f"{fmt_pval(row.get('p_value_state')):>8} "
+            f"{fmt_val(row.get('median_state')):>8} "
+            f"{fmt_val(row.get('std_state')):>8} "
+            f"{fmt_n(row.get('n_state')):>5}   "
+            f"{fmt_val(row.get('mean_national')):>8} "
+            f"{fmt_val(row.get('se_national')):>8} "
+            f"{fmt_pval(row.get('p_value_national')):>8} "
+            f"{fmt_val(row.get('median_national')):>8} "
+            f"{fmt_val(row.get('std_national')):>8} "
+            f"{fmt_n(row.get('n_national')):>5}"
+        )
+
+    print(f"{'='*110}\n")
+
+def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
+    """
+    fits ols on df using x_cols to predict y_col.
+    standard errors are clustered on cluster_col (huber-white sandwich).
+    prints a formatted regression table with stars, adj-r2, constant, and n.
+    returns the fitted statsmodels results object.
+    """
+    df_reg = df[x_cols + [y_col, cluster_col]].dropna()
+
+    X      = sm.add_constant(df_reg[x_cols], has_constant='add')
+    y      = df_reg[y_col]
+    groups = df_reg[cluster_col]
+
+    model  = sm.OLS(y, X)
+    result = model.fit(cov_type='cluster', cov_kwds={'groups': groups})
+
+    def stars(p):
+        if p < 0.01:   return '***'
+        elif p < 0.05: return '**'
+        elif p < 0.10: return '*'
+        else:          return ''
+
+    print(f"\n{'='*70}")
+    print(f"  ols regression: {label}")
+    print(f"  dependent variable: method a  (+ = republican bias)")
+    print(f"  standard errors: clustered by {cluster_col}")
+    print(f"{'='*70}")
+    print(f"  {'variable':<35} {'coef':>10} {'se':>10} {'sig':>6}")
+    print(f"  {'-'*63}")
+
+    params  = result.params
+    bse     = result.bse
+    pvalues = result.pvalues
+
+    intercept_name = next((v for v in params.index if v.lower() in ('const', 'intercept')), None)
+
+    var_order = [v for v in params.index if v != intercept_name] + ([intercept_name] if intercept_name else [])
+    for var in var_order:
+        print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars(pvalues[var]):>6}")
+
+    print(f"  {'-'*63}")
+    print(f"  adjusted r2:  {result.rsquared_adj:.4f}")
+    print(f"  n:            {int(result.nobs)}")
+    print(f"{'='*70}\n")
+
+    return result
