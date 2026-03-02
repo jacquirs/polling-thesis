@@ -215,6 +215,32 @@ print_accuracy_table(df_pure, 'mode_category', 'mode (pure: self-admin-only vs i
 #################### PREPARE VARIABLES FOR REGRESSIONS #################################
 ########################################################################################
 
+# VAR: statewide turnout
+# load turnout data
+turnout_data = pd.read_csv("data/Turnout_2024G_v0.3.csv")
+
+# standardize state names and select needed columns
+turnout_clean = turnout_data[['STATE', 'VEP_TURNOUT_RATE']].copy()
+turnout_clean['state'] = turnout_clean['STATE'].str.strip().str.lower()
+turnout_clean['turnout_pct'] = turnout_clean['VEP_TURNOUT_RATE'].str.rstrip('%').astype(float)
+
+# rename united states to national
+turnout_clean['state'] = turnout_clean['state'].replace('united states', 'national')
+
+# merge turnout into df_threeway
+df_threeway = df_threeway.merge(
+    turnout_clean[['state', 'turnout_pct']],
+    on='state',
+    how='left'
+)
+
+# merge turnout into df_pure
+df_threeway = df_threeway.merge(
+    turnout_clean[['state', 'turnout_pct']],
+    on='state',
+    how='left'
+)
+
 # time variables
 for df in [df_threeway, df_pure]:
     df['duration_days'] = (df['end_date'] - df['start_date']).dt.days + 1
