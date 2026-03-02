@@ -414,6 +414,491 @@ for window in time_windows:
     )
   
 
+########################################################################################
+#################### SUMMARY TABLES PURE BINARY ########################################
+########################################################################################
+def stars_for_table(p):
+    if p < 0.01: return '***'
+    elif p < 0.05: return '**'
+    elif p < 0.10: return '*'
+    else: return ''
+
+# NATIONAL PURE BINARY
+print("\n" + "="*110)
+print("NATIONAL PURE BINARY MODE ACROSS TIME WINDOWS, DATELIMITED, WITH PARTISAN")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+national_vars_pure = time_vars + national_vars + pure_mode_var
+
+for var in national_vars_pure:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = pure_national_windows[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars_for_table(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = pure_national_windows[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = pure_national_windows[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = pure_national_windows[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+# ALL STATES PURE BINARY
+print("\n" + "="*110)
+print("ALL STATES PURE BINARY MODE ACROSS TIME WINDOWS, DATELIMITED, WITH PARTISAN")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+state_vars_pure = time_vars + state_vars + pure_mode_var
+
+for var in state_vars_pure:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = pure_state_windows[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars_for_table(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = pure_state_windows[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = pure_state_windows[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = pure_state_windows[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+# SWING STATES PURE BINARY
+print("\n" + "="*110)
+print("SWING STATES PURE BINARY MODE ACROSS TIME WINDOWS, DATELIMITED, WITH PARTISAN")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+for var in state_vars_pure:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = pure_swing_windows[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars_for_table(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = pure_swing_windows[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = pure_swing_windows[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = pure_swing_windows[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+
+########################################################################################
+#################### SUMMARY TABLES THREE WAY ##########################################
+########################################################################################
+
+print("\n" + "="*110)
+print("NATIONAL THREE-WAY MODE ACROSS TIME WINDOWS, DATELIMITED, WITH PARTISAN")
+print("Reference: Interviewer-Only")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+national_vars_ordered = time_vars + national_vars + threeway_mode_vars
+
+for var in national_vars_ordered:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = threeway_national_windows[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars_for_table(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = threeway_national_windows[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = threeway_national_windows[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = threeway_national_windows[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+# ALL STATES THREE-WAY
+print("\n" + "="*110)
+print("ALL STATES THREE-WAY MODE ACROSS TIME WINDOWS, DATELIMITED, WITH PARTISAN")
+print("Reference: interviewer only")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+state_vars_ordered = time_vars + state_vars + threeway_mode_vars
+
+for var in state_vars_ordered:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = threeway_state_windows[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars_for_table(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = threeway_state_windows[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = threeway_state_windows[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = threeway_state_windows[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+# SWING STATES THREE-WAY
+print("\n" + "="*110)
+print("SWING STATES THREE WAY MODE ACROSS TIME WINDOWS, DATELIMITED, WITH PARTISAN")
+print("Reference: Interviewer-Only")
+print("="*110)
+
+print(f"\n{'Variable':<30}", end='')
+for window in time_windows:
+    print(f"{'Coef.':>10} {'Std. Err.':>10} {'Sig.':>5}", end='')
+print()
+print(f"{'':30}", end='')
+for window in time_windows:
+    print(f"{window:>10}d{' '*15}", end='')
+print()
+print("." * 110)
+
+for var in state_vars_ordered:
+    print(f"{var:<30}", end='')
+    
+    for window in time_windows:
+        result = threeway_swing_windows[window]
+        if result is not None and var in result.params:
+            coef = result.params[var]
+            se = result.bse[var]
+            pval = result.pvalues[var]
+            sig = stars_for_table(pval)
+            print(f"{coef:>10.3f} {se:>10.3f} {sig:>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    print()
+
+print()
+print(f"{'Constant':<30}", end='')
+for window in time_windows:
+    result = threeway_swing_windows[window]
+    if result is not None:
+        intercept_name = next((v for v in result.params.index if v.lower() in ('const', 'intercept')), None)
+        if intercept_name:
+            coef = result.params[intercept_name]
+            se = result.bse[intercept_name]
+            print(f"{coef:>10.3f} {se:>10.3f} {'':>5}", end='')
+        else:
+            print(f"{'':>10} {'':>10} {'':>5}", end='')
+    else:
+        print(f"{'':>10} {'':>10} {'':>5}", end='')
+print()
+
+print()
+print(f"{'Adjusted R Square':<30}", end='')
+for window in time_windows:
+    result = threeway_swing_windows[window]
+    if result is not None:
+        print(f"{result.rsquared_adj:>10.2f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print(f"{'N':<30}", end='')
+for window in time_windows:
+    result = threeway_swing_windows[window]
+    if result is not None:
+        print(f"{int(result.nobs):>10.0f} {'':>15}", end='')
+    else:
+        print(f"{'':>25}", end='')
+print()
+
+print("\nNote: Robust Standard Errors Reported")
+print("Sig: *<.10; **<.05; ***<.01")
+
+
+########################################################################################
+#################### MODE COEFFICIENT COMPARISON TABLES ################################
+########################################################################################
+
+print("\n" + "="*80)
+print("MODE COEFFICIENT COMPARISON THREE WAY MODE")
+print("Relative to interviewer-only")
+print("="*80)
+
+print(f"\n{'Sample':<20} {'Variable':<20} {'Coef.':>12} {'SE':>12} {'Sig':>6} {'N':>8}")
+print("." * 80)
+
+for label, result in [
+    ('National', results_threeway_national),
+    ('All States', results_threeway_state),
+    ('Swing States', results_threeway_swing)
+]:
+    if result is not None:
+        for var in ['self_admin_only', 'mixed_mode']:
+            if var in result.params:
+                coef = result.params[var]
+                se = result.bse[var]
+                pval = result.pvalues[var]
+                sig = stars_for_table(pval)
+                n = int(result.nobs)
+                print(f"{label:<20} {var:<20} {coef:>12.3f} {se:>12.3f} {sig:>6} {n:>8}")
+
+print("\nNote: *** p<0.01, ** p<0.05, * p<0.10")
+
+print("\n" + "="*80)
+print("MODE COEFFICIENT COMPARISON PURE BINARY MODE")
+print("="*80)
+
+print(f"\n{'Sample':<20} {'Coef.':>12} {'SE':>12} {'Sig':>6} {'N':>8}")
+print("." * 70)
+
+for label, result in [
+    ('National', results_pure_national),
+    ('All States', results_pure_state),
+    ('Swing States', results_pure_swing)
+]:
+    if result is not None and 'self_admin_only' in result.params:
+        coef = result.params['self_admin_only']
+        se = result.bse['self_admin_only']
+        pval = result.pvalues['self_admin_only']
+        sig = stars_for_table(pval)
+        n = int(result.nobs)
+        print(f"{label:<20} {coef:>12.3f} {se:>12.3f} {sig:>6} {n:>8}")
+
+print("\nNote: *** p<0.01, ** p<0.05, * p<0.10")
+
+
 # close log and restore terminal
 log_file.close()
 sys.stdout = sys.__stdout__
