@@ -4,6 +4,7 @@ import sys
 import statsmodels.api as sm
 from scipy import stats
 import matplotlib.pyplot as plt
+from statsmodels.stats.sandwich_covariance import cov_cluster_2groups
 
 # redirect all print output to a log file
 log_file = open('output/fiftyplusone_analysis_datelimited_clustertwoway_log.txt', 'w')
@@ -951,60 +952,82 @@ print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 # variables to create: duration in field (difference between start_date and end_date), days before election (end_date to november 5 2025), final absolute margin of victory (state or national depending on regression), percent of don't know (100 - total for all candidates in a question), total statewide turnout percent (i will need to find you a dataset with the number of people registered to vote in each state)
 
 # function to run ols with clustered ses and print a formatted table
-def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
+from statsmodels.stats.sandwich_covariance import cov_cluster_2groups
+
+def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, label):
     """
     fits ols on df using x_cols to predict y_col.
-    standard errors are clustered on cluster_col (huber-white sandwich).
+    standard errors are two-way clustered on cluster_col1 and cluster_col2.
     prints a formatted regression table with stars, adj-r2, constant, and n.
     returns the fitted statsmodels results object.
     """
     # drop rows with any missing values in the variables used
-    df_reg = df[x_cols + [y_col, cluster_col]].dropna()
+    df_reg = df[x_cols + [y_col, cluster_col1, cluster_col2]].dropna()
 
-    # add intercept column with has_constant='add' to force it even if data
-    # appears to already contain a constant — sm.add_constant names it 'const'
-    X      = sm.add_constant(df_reg[x_cols], has_constant='add')
-    y      = df_reg[y_col]
-    groups = df_reg[cluster_col]
-
-    # fit ols with cluster-robust covariance
-    model  = sm.OLS(y, X)
-    result = model.fit(cov_type='cluster', cov_kwds={'groups': groups})
+    # add intercept column
+    X = sm.add_constant(df_reg[x_cols], has_constant='add')
+    y = df_reg[y_col]
+    
+    # fit OLS first (without clustering)
+    model = sm.OLS(y, X)
+    result = model.fit()
+    
+    # compute two-way clustered standard errors
+    cluster1 = df_reg[cluster_col1].values
+    cluster2 = df_reg[cluster_col2].values
+    
+    # get two-way clustered covariance matrix
+    cov_twoway = cov_cluster_2groups(result, cluster1, cluster2)
+    
+    # compute standard errors from the two-way clustered covariance matrix
+    bse_twoway = np.sqrt(np.diag(cov_twoway))
+    
+    # compute t-statistics and p-values with two-way clustered SEs
+    tvalues = result.params / bse_twoway
+    # use conservative df (minimum of two cluster counts minus 1)
+    df_resid = min(len(np.unique(cluster1)), len(np.unique(cluster2))) - 1
+    pvalues = 2 * stats.t.sf(np.abs(tvalues), df_resid)
 
     # significance stars based on two-tailed p-values
-    def stars(p):
+    def stars_local(p):
         if p < 0.01:   return '***'
         elif p < 0.05: return '**'
         elif p < 0.10: return '*'
         else:          return ''
 
     # print formatted table
-    print(f"\n{'='*70}")
+    print(f"\n{'='*75}")
     print(f"  ols regression: {label}")
     print(f"  dependent variable: method a  (+ = republican bias)")
-    print(f"  standard errors: clustered by {cluster_col}")
-    print(f"{'='*70}")
+    print(f"  standard errors: two-way clustered ({cluster_col1} & {cluster_col2})")
+    print(f"{'='*75}")
     print(f"  {'variable':<35} {'coef':>10} {'se':>10} {'sig':>6}")
-    print(f"  {'-'*63}")
+    print(f"  {'-'*68}")
 
-    params  = result.params
-    bse     = result.bse
-    pvalues = result.pvalues
-
-    # identify the intercept name defensively — add_constant uses 'const' by
-    # default but older statsmodels versions may use 'Intercept' or 'intercept'
+    params = result.params
+    
+    # identify the intercept name
     intercept_name = next((v for v in params.index if v.lower() in ('const', 'intercept')), None)
 
     # print all covariates first, then intercept at the bottom
     var_order = [v for v in params.index if v != intercept_name] + ([intercept_name] if intercept_name else [])
-    for var in var_order:
-        print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars(pvalues[var]):>6}")
+    
+    for i, var in enumerate(var_order):
+        print(f"  {var:<35} {params[var]:>10.4f} {bse_twoway[i]:>10.4f} {stars_local(pvalues[i]):>6}")
 
-    print(f"  {'-'*63}")
+    print(f"  {'-'*68}")
     print(f"  adjusted r2:  {result.rsquared_adj:.4f}")
     print(f"  n:            {int(result.nobs)}")
-    print(f"{'='*70}\n")
+    n_cluster1 = len(np.unique(cluster1))
+    n_cluster2 = len(np.unique(cluster2))
+    print(f"  clusters:     {n_cluster1} {cluster_col1}, {n_cluster2} {cluster_col2}")
+    print(f"{'='*75}\n")
 
+    # store two-way clustered results for later use
+    result.bse_twoway = bse_twoway
+    result.pvalues_twoway = pvalues
+    result.cov_params_twoway = cov_twoway
+    
     return result
 
 # build regression dataset from from the pivoted question-level accuracy dataset
@@ -1086,29 +1109,32 @@ print(f"  swing state questions: {len(reg_state_swing)}")
 ########################################################################################
 
 # national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
-results_national = run_ols_clustered(
+results_national = run_ols_twoway_clustered(
     df          = reg_national,
     y_col       = 'A',
     x_cols      = all_x_vars,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'national polls'
 )
 
 # state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
-results_state = run_ols_clustered(
+results_state = run_ols_twoway_clustered(
     df          = reg_state,
     y_col       = 'A',
     x_cols      = state_x_vars,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'state-level polls'
 )
 
 # swing state regression
-results_swing = run_ols_clustered(
+results_swing = run_ols_twoway_clustered(
     df          = reg_state_swing,
     y_col       = 'A',
     x_cols      = state_x_vars,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'swing states'
 )
 
@@ -1184,29 +1210,32 @@ national_x_vars_with_mode = time_vars + national_vars + mode_vars
 print("REGRESSIONS WITH MODE CONTROLS")
 
 # natioanl questions
-results_national_mode = run_ols_clustered(
+results_national_mode = run_ols_twoway_clustered(
     df          = reg_national,
     y_col       = 'A',
     x_cols      = national_x_vars_with_mode,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'national polls with mode controls'
 )
 
 # all state questions
-results_all_states_mode = run_ols_clustered(
+results_all_states_mode = run_ols_twoway_clustered(
     df          = reg_state,
     y_col       = 'A',
     x_cols      = state_x_vars_with_mode,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'all state polls with mode controls'
 )
 
 # swing state questions
-results_swing_mode = run_ols_clustered(
+results_swing_mode = run_ols_twoway_clustered(
     df          = reg_state_swing,
     y_col       = 'A',
     x_cols      = state_x_vars_with_mode,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'swing states with mode controls'
 )
 
@@ -1239,11 +1268,12 @@ for window in time_windows:
         print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
         swing_window_results_no_mode[window] = None
     else:
-        res_swing = run_ols_clustered(
+        res_swing = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_no_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'swing states {window} days before election (no mode)'
         )
         swing_window_results_no_mode[window] = res_swing
@@ -1265,11 +1295,12 @@ for window in time_windows:
         print(f"  all state regression skipped, only {len(state_complete)} complete cases")
         all_states_window_results_no_mode[window] = None
     else:
-        res_state = run_ols_clustered(
+        res_state = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_no_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'all states {window} days before election (no mode)'
         )
         all_states_window_results_no_mode[window] = res_state
@@ -1291,11 +1322,12 @@ for window in time_windows:
         print(f"  national regression skipped, only {len(national_complete)} complete cases")
         national_window_results_no_mode[window] = None
     else:
-        res_national = run_ols_clustered(
+        res_national = run_ols_twoway_clustered(
             df          = national_w,
             y_col       = 'A',
             x_cols      = national_x_vars_no_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'national {window} days before election (no mode)'
         )
         national_window_results_no_mode[window] = res_national
@@ -1322,11 +1354,12 @@ for window in time_windows:
         print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
         swing_window_results_with_mode[window] = None
     else:
-        res_swing = run_ols_clustered(
+        res_swing = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_with_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'swing states {window} days before election (with mode)'
         )
         swing_window_results_with_mode[window] = res_swing
@@ -1348,11 +1381,12 @@ for window in time_windows:
         print(f"  all state regression skipped, only {len(state_complete)} complete cases")
         all_states_window_results_with_mode[window] = None
     else:
-        res_state = run_ols_clustered(
+        res_state = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_with_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'all states {window} days before election (with mode)'
         )
         all_states_window_results_with_mode[window] = res_state
@@ -1374,11 +1408,12 @@ for window in time_windows:
         print(f"  national regression skipped, only {len(national_complete)} complete cases")
         national_window_results_with_mode[window] = None
     else:
-        res_national = run_ols_clustered(
+        res_national = run_ols_twoway_clustered(
             df          = national_w,
             y_col       = 'A',
             x_cols      = national_x_vars_with_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'national {window} days before election (with mode)'
         )
         national_window_results_with_mode[window] = res_national
