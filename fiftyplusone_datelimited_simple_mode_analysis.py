@@ -261,6 +261,50 @@ print(f"  All states: {len(df_pure_state)}")
 print(f"  Swing states: {len(df_pure_swing)}")
 
 
+########################################################################################
+#################### BASE REGRESSIONS THREE WAY ########################################
+########################################################################################
+
+print("BASE REGRESSIONS, THREE WAY, DATELIMITED, WITH PARTISAN")
+print("Reference category: Interviewer-Only")
+
+results_threeway_national = run_ols_clustered(
+    df=df_threeway_national, y_col='A', x_cols=national_x_threeway,
+    cluster_col='poll_id', label='National three way mode'
+)
+
+results_threeway_state = run_ols_clustered(
+    df=df_threeway_state, y_col='A', x_cols=state_x_threeway,
+    cluster_col='poll_id', label='All states three way mode'
+)
+
+results_threeway_swing = run_ols_clustered(
+    df=df_threeway_swing, y_col='A', x_cols=state_x_threeway,
+    cluster_col='poll_id', label='Swing states three way mode'
+)
+
+########################################################################################
+#################### BASE REGRESSIONS PURE BINARY ######################################
+########################################################################################
+
+print("BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN")
+
+results_pure_national = run_ols_clustered(
+    df=df_pure_national, y_col='A', x_cols=national_x_pure,
+    cluster_col='poll_id', label='National pure binary mode'
+)
+
+results_pure_state = run_ols_clustered(
+    df=df_pure_state, y_col='A', x_cols=state_x_pure,
+    cluster_col='poll_id', label='All states pure binary mode'
+)
+
+results_pure_swing = run_ols_clustered(
+    df=df_pure_swing, y_col='A', x_cols=state_x_pure,
+    cluster_col='poll_id', label='Swing states pure binary mode'
+)
+
+
 # close log and restore terminal
 log_file.close()
 sys.stdout = sys.__stdout__
