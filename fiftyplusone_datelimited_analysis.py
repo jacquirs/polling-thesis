@@ -952,15 +952,29 @@ print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 # variables to create: duration in field (difference between start_date and end_date), days before election (end_date to november 5 2025), final absolute margin of victory (state or national depending on regression), percent of don't know (100 - total for all candidates in a question), total statewide turnout percent (i will need to find you a dataset with the number of people registered to vote in each state)
 
 # function to run ols with clustered ses and print a formatted table
-def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
+def run_ols_clustered(df, y_col, x_cols, cluster_col, label, min_obs_threshold=10):
     """
     fits ols on df using x_cols to predict y_col.
     standard errors are clustered on cluster_col (huber-white sandwich).
     prints a formatted regression table with stars, adj-r2, constant, and n.
     returns the fitted statsmodels results object.
+    
+    if any variable has fewer than min_obs_threshold observations with variation,
+    it will be displayed as '----' instead of a coefficient.
     """
     # drop rows with any missing values in the variables used
     df_reg = df[x_cols + [y_col, cluster_col]].dropna()
+
+    # check for low-variance variables (modes with very few observations)
+    # these will cause numerical issues
+    low_variance_vars = []
+    for col in x_cols:
+        if col in df_reg.columns:
+            # for dummy variables, check if we have enough observations in each category
+            if df_reg[col].nunique() == 2:  # binary variable
+                value_counts = df_reg[col].value_counts()
+                if value_counts.min() < min_obs_threshold:
+                    low_variance_vars.append(col)
 
     # add intercept column with has_constant='add' to force it even if data
     # appears to already contain a constant — sm.add_constant names it 'const'
@@ -973,7 +987,7 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
     result = model.fit(cov_type='cluster', cov_kwds={'groups': groups})
 
     # significance stars based on two-tailed p-values
-    def stars(p):
+    def stars_local(p):
         if p < 0.01:   return '***'
         elif p < 0.05: return '**'
         elif p < 0.10: return '*'
@@ -998,14 +1012,24 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
 
     # print all covariates first, then intercept at the bottom
     var_order = [v for v in params.index if v != intercept_name] + ([intercept_name] if intercept_name else [])
+    
     for var in var_order:
-        print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars(pvalues[var]):>6}")
+        # check if this variable should be suppressed due to low observations
+        if var in low_variance_vars:
+            print(f"  {var:<35} {'----':>10} {'----':>10} {'':>6}")
+        else:
+            print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars_local(pvalues[var]):>6}")
 
     print(f"  {'-'*63}")
     print(f"  adjusted r2:  {result.rsquared_adj:.4f}")
     print(f"  n:            {int(result.nobs)}")
+    if low_variance_vars:
+        print(f"  note:         ---- indicates <{min_obs_threshold} observations in category")
     print(f"{'='*70}\n")
 
+    # store low variance vars for later reference
+    result.low_variance_vars = low_variance_vars
+    
     return result
 
 # build regression dataset from from the pivoted question-level accuracy dataset
