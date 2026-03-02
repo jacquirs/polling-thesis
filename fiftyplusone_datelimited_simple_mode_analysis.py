@@ -402,7 +402,6 @@ for window in time_windows:
         cluster_col='poll_id', label=f'All states three way, {window} day window'
     )
   
-
 # swing states
 threeway_swing_windows = {}
 for window in time_windows:
