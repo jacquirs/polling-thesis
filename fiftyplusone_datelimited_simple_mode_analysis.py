@@ -288,6 +288,28 @@ print(f"  Swing states: {len(df_pure_swing)}")
 
 
 ########################################################################################
+#################### BASE REGRESSIONS PURE BINARY ######################################
+########################################################################################
+
+print("BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN")
+
+results_pure_national = run_ols_clustered(
+    df=df_pure_national, y_col='A', x_cols=national_x_pure,
+    cluster_col='poll_id', label='National pure binary mode'
+)
+
+results_pure_state = run_ols_clustered(
+    df=df_pure_state, y_col='A', x_cols=state_x_pure,
+    cluster_col='poll_id', label='All states pure binary mode'
+)
+
+results_pure_swing = run_ols_clustered(
+    df=df_pure_swing, y_col='A', x_cols=state_x_pure,
+    cluster_col='poll_id', label='Swing states pure binary mode'
+)
+
+
+########################################################################################
 #################### BASE REGRESSIONS THREE WAY ########################################
 ########################################################################################
 
@@ -309,27 +331,89 @@ results_threeway_swing = run_ols_clustered(
     cluster_col='poll_id', label='Swing states three way mode'
 )
 
+
 ########################################################################################
-#################### BASE REGRESSIONS PURE BINARY ######################################
+#################### TIME WINDOW REGRESSIONS - PURE BINARY #############################
+########################################################################################
+time_windows = [107, 90, 60, 30, 7]
+
+print("TIME WINDOW REGRESSIONS, PURE BINARY MODE, DATELIMITED,WITH PARTISAN")
+
+# national
+pure_national_windows = {}
+for window in time_windows:
+    df_w = df_pure_national[df_pure_national['days_before_election'] <= window].copy()
+    print(f"\nWindow: {window} days, National, N={len(df_w)}")
+    
+    pure_national_windows[window] = run_ols_clustered(
+        df=df_w, y_col='A', x_cols=national_x_pure,
+        cluster_col='poll_id', label=f'National pure binary mode, {window} dya window'
+    )
+  
+# all states
+pure_state_windows = {}
+for window in time_windows:
+    df_w = df_pure_state[df_pure_state['days_before_election'] <= window].copy()
+    print(f"\nWindow: {window} days, All states, N={len(df_w)}")
+    
+    pure_state_windows[window] = run_ols_clustered(
+        df=df_w, y_col='A', x_cols=state_x_pure,
+        cluster_col='poll_id', label=f'All states pure binary mode, {window} day window'
+    )
+   
+# swing states
+pure_swing_windows = {}
+for window in time_windows:
+    df_w = df_pure_swing[df_pure_swing['days_before_election'] <= window].copy()
+    print(f"\nWindow: {window} days, Swing States, N={len(df_w)}")
+    
+    pure_swing_windows[window] = run_ols_clustered(
+        df=df_w, y_col='A', x_cols=state_x_pure,
+        cluster_col='poll_id', label=f'Swing states pure binary mode, {window} day window'
+    )
+
+
+########################################################################################
+#################### TIME WINDOW REGRESSIONS THREEWAY ##################################
 ########################################################################################
 
-print("BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN")
+print("TIME WINDOW REGRESSIONS, THREE WAY MODE, DATELIMITED,WITH PARTISAN")
 
-results_pure_national = run_ols_clustered(
-    df=df_pure_national, y_col='A', x_cols=national_x_pure,
-    cluster_col='poll_id', label='National pure binary mode'
-)
+# national
+threeway_national_windows = {}
+for window in time_windows:
+    df_w = df_threeway_national[df_threeway_national['days_before_election'] <= window].copy()
+    print(f"\nWindow: {window} days, National, N={len(df_w)}")
+    
+    threeway_national_windows[window] = run_ols_clustered(
+        df=df_w, y_col='A', x_cols=national_x_threeway,
+        cluster_col='poll_id', label=f'National three way mode, {window} day window'
+    )
+  
 
-results_pure_state = run_ols_clustered(
-    df=df_pure_state, y_col='A', x_cols=state_x_pure,
-    cluster_col='poll_id', label='All states pure binary mode'
-)
+# all states
+threeway_state_windows = {}
+for window in time_windows:
+    df_w = df_threeway_state[df_threeway_state['days_before_election'] <= window].copy()
+    print(f"\nWindow: {window} days, All states, N={len(df_w)}")
+    
+    threeway_state_windows[window] = run_ols_clustered(
+        df=df_w, y_col='A', x_cols=state_x_threeway,
+        cluster_col='poll_id', label=f'All states three way, {window} day window'
+    )
+  
 
-results_pure_swing = run_ols_clustered(
-    df=df_pure_swing, y_col='A', x_cols=state_x_pure,
-    cluster_col='poll_id', label='Swing states pure binary mode'
-)
-
+# swing states
+threeway_swing_windows = {}
+for window in time_windows:
+    df_w = df_threeway_swing[df_threeway_swing['days_before_election'] <= window].copy()
+    print(f"\nWindow: {window} days, Swing States, N={len(df_w)}")
+    
+    threeway_swing_windows[window] = run_ols_clustered(
+        df=df_w, y_col='A', x_cols=state_x_threeway,
+        cluster_col='poll_id', label=f'Swing states three way, {window} day window'
+    )
+  
 
 # close log and restore terminal
 log_file.close()
