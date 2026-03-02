@@ -39,6 +39,66 @@ Pure binary (excludes mixed):
   National: 596
   All states: 1110
   Swing states: 791
+BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN
+
+======================================================================
+  ols regression: National pure binary mode
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0038     0.0010    ***
+  days_before_election                    0.0000     0.0001       
+  pct_dk                                 -0.0026     0.0008    ***
+  abs_margin                             -0.0000     0.0002       
+  self_admin_only                        -0.0544     0.0101    ***
+  const                                  -0.0008     0.0114       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1280
+  n:            596
+======================================================================
+
+
+======================================================================
+  ols regression: All states pure binary mode
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0014     0.0003    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                 -0.0005     0.0013       
+  abs_margin                             -0.1055     0.0668       
+  turnout_pct                             0.0020     0.0006    ***
+  self_admin_only                        -0.0105     0.0085       
+  const                                  -0.1747     0.0482    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0839
+  n:            1110
+======================================================================
+
+
+======================================================================
+  ols regression: Swing states pure binary mode
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0024     0.0004    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                  0.0006     0.0011       
+  abs_margin                             -1.8776     0.4513    ***
+  turnout_pct                            -0.0044     0.0015    ***
+  self_admin_only                        -0.0061     0.0088       
+  const                                   0.3288     0.1197    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1360
+  n:            791
+======================================================================
+
 BASE REGRESSIONS, THREE WAY, DATELIMITED, WITH PARTISAN
 Reference category: Interviewer-Only
 
@@ -103,10 +163,12 @@ Reference category: Interviewer-Only
   n:            1065
 ======================================================================
 
-BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN
+TIME WINDOW REGRESSIONS, PURE BINARY MODE, DATELIMITED,WITH PARTISAN
+
+Window: 107 days, National, N=596
 
 ======================================================================
-  ols regression: National pure binary mode
+  ols regression: National pure binary mode, 107 dya window
   dependent variable: method a  (+ = republican bias)
   standard errors: clustered by poll_id
 ======================================================================
@@ -124,8 +186,94 @@ BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN
 ======================================================================
 
 
+Window: 90 days, National, N=499
+
 ======================================================================
-  ols regression: All states pure binary mode
+  ols regression: National pure binary mode, 90 dya window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0024     0.0006    ***
+  days_before_election                   -0.0006     0.0001    ***
+  pct_dk                                 -0.0021     0.0006    ***
+  abs_margin                              0.0001     0.0002       
+  self_admin_only                        -0.0539     0.0126    ***
+  const                                   0.0094     0.0127       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2802
+  n:            499
+======================================================================
+
+
+Window: 60 days, National, N=338
+
+======================================================================
+  ols regression: National pure binary mode, 60 dya window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0029     0.0008    ***
+  days_before_election                   -0.0013     0.0002    ***
+  pct_dk                                 -0.0023     0.0006    ***
+  abs_margin                              0.0006     0.0002     **
+  self_admin_only                        -0.0663     0.0165    ***
+  const                                   0.0375     0.0161     **
+  ---------------------------------------------------------------
+  adjusted r2:  0.3626
+  n:            338
+======================================================================
+
+
+Window: 30 days, National, N=216
+
+======================================================================
+  ols regression: National pure binary mode, 30 dya window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0029     0.0008    ***
+  days_before_election                   -0.0014     0.0003    ***
+  pct_dk                                 -0.0028     0.0009    ***
+  abs_margin                              0.0003     0.0002      *
+  self_admin_only                        -0.0423     0.0090    ***
+  const                                   0.0195     0.0109      *
+  ---------------------------------------------------------------
+  adjusted r2:  0.2285
+  n:            216
+======================================================================
+
+
+Window: 7 days, National, N=65
+
+======================================================================
+  ols regression: National pure binary mode, 7 dya window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0014     0.0075       
+  days_before_election                    0.0001     0.0029       
+  pct_dk                                 -0.0029     0.0015      *
+  abs_margin                             -0.0001     0.0005       
+  self_admin_only                        -0.0257     0.0095    ***
+  const                                  -0.0056     0.0337       
+  ---------------------------------------------------------------
+  adjusted r2:  0.0036
+  n:            65
+======================================================================
+
+
+Window: 107 days, All states, N=1110
+
+======================================================================
+  ols regression: All states pure binary mode, 107 day window
   dependent variable: method a  (+ = republican bias)
   standard errors: clustered by poll_id
 ======================================================================
@@ -144,8 +292,98 @@ BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN
 ======================================================================
 
 
+Window: 90 days, All states, N=1030
+
 ======================================================================
-  ols regression: Swing states pure binary mode
+  ols regression: All states pure binary mode, 90 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0014     0.0004    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                 -0.0011     0.0015       
+  abs_margin                             -0.1088     0.0662       
+  turnout_pct                             0.0020     0.0006    ***
+  self_admin_only                        -0.0102     0.0087       
+  const                                  -0.1656     0.0484    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1016
+  n:            1030
+======================================================================
+
+
+Window: 60 days, All states, N=831
+
+======================================================================
+  ols regression: All states pure binary mode, 60 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0019     0.0003    ***
+  days_before_election                   -0.0006     0.0002    ***
+  pct_dk                                 -0.0051     0.0014    ***
+  abs_margin                             -0.0884     0.0560       
+  turnout_pct                             0.0022     0.0006    ***
+  self_admin_only                        -0.0196     0.0088     **
+  const                                  -0.1527     0.0459    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1560
+  n:            831
+======================================================================
+
+
+Window: 30 days, All states, N=551
+
+======================================================================
+  ols regression: All states pure binary mode, 30 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0022     0.0004    ***
+  days_before_election                   -0.0003     0.0004       
+  pct_dk                                 -0.0085     0.0018    ***
+  abs_margin                             -0.0193     0.0619       
+  turnout_pct                             0.0023     0.0007    ***
+  self_admin_only                        -0.0195     0.0115      *
+  const                                  -0.1551     0.0551    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1637
+  n:            551
+======================================================================
+
+
+Window: 7 days, All states, N=243
+
+======================================================================
+  ols regression: All states pure binary mode, 7 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0025     0.0004    ***
+  days_before_election                    0.0014     0.0027       
+  pct_dk                                 -0.0107     0.0028    ***
+  abs_margin                             -0.0821     0.0982       
+  turnout_pct                             0.0009     0.0011       
+  self_admin_only                        -0.0160     0.0196       
+  const                                  -0.0510     0.0836       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1469
+  n:            243
+======================================================================
+
+
+Window: 107 days, Swing States, N=791
+
+======================================================================
+  ols regression: Swing states pure binary mode, 107 day window
   dependent variable: method a  (+ = republican bias)
   standard errors: clustered by poll_id
 ======================================================================
@@ -161,5 +399,434 @@ BASE REGRESSIONS, PURE BINARY, DATELIMITED, WITH PARTISAN
   ---------------------------------------------------------------
   adjusted r2:  0.1360
   n:            791
+======================================================================
+
+
+Window: 90 days, Swing States, N=734
+
+======================================================================
+  ols regression: Swing states pure binary mode, 90 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0024     0.0004    ***
+  days_before_election                   -0.0005     0.0001    ***
+  pct_dk                                 -0.0001     0.0012       
+  abs_margin                             -1.5942     0.4696    ***
+  turnout_pct                            -0.0036     0.0016     **
+  self_admin_only                        -0.0103     0.0091       
+  const                                   0.2716     0.1252     **
+  ---------------------------------------------------------------
+  adjusted r2:  0.1579
+  n:            734
+======================================================================
+
+
+Window: 60 days, Swing States, N=583
+
+======================================================================
+  ols regression: Swing states pure binary mode, 60 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0027     0.0004    ***
+  days_before_election                   -0.0006     0.0002    ***
+  pct_dk                                 -0.0027     0.0014      *
+  abs_margin                             -1.4314     0.4735    ***
+  turnout_pct                            -0.0030     0.0016      *
+  self_admin_only                        -0.0167     0.0097      *
+  const                                   0.2472     0.1228     **
+  ---------------------------------------------------------------
+  adjusted r2:  0.1940
+  n:            583
+======================================================================
+
+
+Window: 30 days, Swing States, N=384
+
+======================================================================
+  ols regression: Swing states pure binary mode, 30 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0029     0.0004    ***
+  days_before_election                   -0.0005     0.0004       
+  pct_dk                                 -0.0055     0.0018    ***
+  abs_margin                             -1.2446     0.5245     **
+  turnout_pct                            -0.0026     0.0017       
+  self_admin_only                        -0.0079     0.0127       
+  const                                   0.2135     0.1341       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2352
+  n:            384
+======================================================================
+
+
+Window: 7 days, Swing States, N=189
+
+======================================================================
+  ols regression: Swing states pure binary mode, 7 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0033     0.0003    ***
+  days_before_election                   -0.0019     0.0020       
+  pct_dk                                 -0.0070     0.0023    ***
+  abs_margin                             -1.0345     0.6910       
+  turnout_pct                            -0.0026     0.0022       
+  self_admin_only                        -0.0054     0.0145       
+  const                                   0.2218     0.1747       
+  ---------------------------------------------------------------
+  adjusted r2:  0.3778
+  n:            189
+======================================================================
+
+TIME WINDOW REGRESSIONS, THREE WAY MODE, DATELIMITED,WITH PARTISAN
+
+Window: 107 days, National, N=657
+
+======================================================================
+  ols regression: National three way mode, 107 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0037     0.0009    ***
+  days_before_election                    0.0001     0.0001       
+  pct_dk                                 -0.0025     0.0008    ***
+  abs_margin                             -0.0000     0.0002       
+  self_admin_only                        -0.0544     0.0101    ***
+  mixed_mode                             -0.0233     0.0159       
+  const                                  -0.0032     0.0115       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1348
+  n:            657
+======================================================================
+
+
+Window: 90 days, National, N=540
+
+======================================================================
+  ols regression: National three way mode, 90 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0022     0.0006    ***
+  days_before_election                   -0.0006     0.0001    ***
+  pct_dk                                 -0.0021     0.0006    ***
+  abs_margin                              0.0001     0.0002       
+  self_admin_only                        -0.0537     0.0126    ***
+  mixed_mode                             -0.0339     0.0152     **
+  const                                   0.0090     0.0128       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2797
+  n:            540
+======================================================================
+
+
+Window: 60 days, National, N=367
+
+======================================================================
+  ols regression: National three way mode, 60 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0028     0.0008    ***
+  days_before_election                   -0.0013     0.0002    ***
+  pct_dk                                 -0.0023     0.0006    ***
+  abs_margin                              0.0005     0.0002     **
+  self_admin_only                        -0.0660     0.0165    ***
+  mixed_mode                             -0.0415     0.0192     **
+  const                                   0.0362     0.0162     **
+  ---------------------------------------------------------------
+  adjusted r2:  0.3603
+  n:            367
+======================================================================
+
+
+Window: 30 days, National, N=234
+
+======================================================================
+  ols regression: National three way mode, 30 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0029     0.0008    ***
+  days_before_election                   -0.0013     0.0003    ***
+  pct_dk                                 -0.0028     0.0009    ***
+  abs_margin                              0.0003     0.0002       
+  self_admin_only                        -0.0419     0.0091    ***
+  mixed_mode                             -0.0191     0.0174       
+  const                                   0.0174     0.0108       
+  ---------------------------------------------------------------
+  adjusted r2:  0.2175
+  n:            234
+======================================================================
+
+
+Window: 7 days, National, N=73
+
+======================================================================
+  ols regression: National three way mode, 7 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                           0.0010     0.0072       
+  days_before_election                    0.0016     0.0029       
+  pct_dk                                 -0.0026     0.0015      *
+  abs_margin                             -0.0003     0.0005       
+  self_admin_only                        -0.0258     0.0092    ***
+  mixed_mode                             -0.0222     0.0210       
+  const                                  -0.0202     0.0329       
+  ---------------------------------------------------------------
+  adjusted r2:  -0.0081
+  n:            73
+======================================================================
+
+
+Window: 107 days, All states, N=1495
+
+======================================================================
+  ols regression: All states three way, 107 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0014     0.0003    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0001     0.0010       
+  abs_margin                             -0.0957     0.0507      *
+  turnout_pct                             0.0024     0.0005    ***
+  self_admin_only                        -0.0094     0.0084       
+  mixed_mode                              0.0024     0.0089       
+  const                                  -0.2049     0.0394    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0934
+  n:            1495
+======================================================================
+
+
+Window: 90 days, All states, N=1388
+
+======================================================================
+  ols regression: All states three way, 90 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0013     0.0003    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                  0.0001     0.0011       
+  abs_margin                             -0.0976     0.0500      *
+  turnout_pct                             0.0024     0.0005    ***
+  self_admin_only                        -0.0083     0.0085       
+  mixed_mode                              0.0028     0.0089       
+  const                                  -0.1984     0.0398    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1068
+  n:            1388
+======================================================================
+
+
+Window: 60 days, All states, N=1122
+
+======================================================================
+  ols regression: All states three way, 60 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0017     0.0003    ***
+  days_before_election                   -0.0004     0.0001    ***
+  pct_dk                                 -0.0021     0.0011      *
+  abs_margin                             -0.0662     0.0445       
+  turnout_pct                             0.0026     0.0005    ***
+  self_admin_only                        -0.0138     0.0087       
+  mixed_mode                             -0.0012     0.0094       
+  const                                  -0.2020     0.0398    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1298
+  n:            1122
+======================================================================
+
+
+Window: 30 days, All states, N=735
+
+======================================================================
+  ols regression: All states three way, 30 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0019     0.0004    ***
+  days_before_election                   -0.0002     0.0003       
+  pct_dk                                 -0.0043     0.0015    ***
+  abs_margin                             -0.0239     0.0537       
+  turnout_pct                             0.0027     0.0006    ***
+  self_admin_only                        -0.0118     0.0115       
+  mixed_mode                             -0.0053     0.0120       
+  const                                  -0.2027     0.0482    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1283
+  n:            735
+======================================================================
+
+
+Window: 7 days, All states, N=296
+
+======================================================================
+  ols regression: All states three way, 7 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0023     0.0005    ***
+  days_before_election                    0.0017     0.0024       
+  pct_dk                                 -0.0054     0.0028      *
+  abs_margin                             -0.0558     0.1010       
+  turnout_pct                             0.0011     0.0010       
+  self_admin_only                         0.0000     0.0199       
+  mixed_mode                             -0.0013     0.0214       
+  const                                  -0.0956     0.0756       
+  ---------------------------------------------------------------
+  adjusted r2:  0.0970
+  n:            296
+======================================================================
+
+
+Window: 107 days, Swing States, N=1065
+
+======================================================================
+  ols regression: Swing states three way, 107 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0025     0.0004    ***
+  days_before_election                   -0.0003     0.0001    ***
+  pct_dk                                  0.0009     0.0009       
+  abs_margin                             -1.6138     0.3629    ***
+  turnout_pct                            -0.0035     0.0012    ***
+  self_admin_only                        -0.0052     0.0088       
+  mixed_mode                              0.0062     0.0090       
+  const                                   0.2567     0.0972    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1301
+  n:            1065
+======================================================================
+
+
+Window: 90 days, Swing States, N=985
+
+======================================================================
+  ols regression: Swing states three way, 90 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0024     0.0004    ***
+  days_before_election                   -0.0005     0.0001    ***
+  pct_dk                                  0.0008     0.0009       
+  abs_margin                             -1.4117     0.3712    ***
+  turnout_pct                            -0.0030     0.0013     **
+  self_admin_only                        -0.0085     0.0090       
+  mixed_mode                              0.0016     0.0092       
+  const                                   0.2188     0.1010     **
+  ---------------------------------------------------------------
+  adjusted r2:  0.1506
+  n:            985
+======================================================================
+
+
+Window: 60 days, Swing States, N=783
+
+======================================================================
+  ols regression: Swing states three way, 60 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0027     0.0004    ***
+  days_before_election                   -0.0005     0.0001    ***
+  pct_dk                                 -0.0005     0.0011       
+  abs_margin                             -1.2354     0.3842    ***
+  turnout_pct                            -0.0024     0.0013      *
+  self_admin_only                        -0.0120     0.0095       
+  mixed_mode                             -0.0046     0.0098       
+  const                                   0.1836     0.1022      *
+  ---------------------------------------------------------------
+  adjusted r2:  0.1650
+  n:            783
+======================================================================
+
+
+Window: 30 days, Swing States, N=512
+
+======================================================================
+  ols regression: Swing states three way, 30 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0027     0.0004    ***
+  days_before_election                    0.0000     0.0003       
+  pct_dk                                 -0.0024     0.0015      *
+  abs_margin                             -1.1173     0.4405     **
+  turnout_pct                            -0.0021     0.0014       
+  self_admin_only                        -0.0019     0.0126       
+  mixed_mode                              0.0010     0.0132       
+  const                                   0.1568     0.1136       
+  ---------------------------------------------------------------
+  adjusted r2:  0.1814
+  n:            512
+======================================================================
+
+
+Window: 7 days, Swing States, N=228
+
+======================================================================
+  ols regression: Swing states three way, 7 day window
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0033     0.0003    ***
+  days_before_election                   -0.0016     0.0019       
+  pct_dk                                 -0.0059     0.0020    ***
+  abs_margin                             -1.1343     0.6037      *
+  turnout_pct                            -0.0025     0.0020       
+  self_admin_only                        -0.0025     0.0151       
+  mixed_mode                             -0.0187     0.0160       
+  const                                   0.2103     0.1525       
+  ---------------------------------------------------------------
+  adjusted r2:  0.3343
+  n:            228
 ======================================================================
 
