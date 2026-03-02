@@ -211,6 +211,56 @@ print_accuracy_table(df_threeway, 'mode_category', 'mode (three-way: interviewer
 # pure binary comparison (excludes mixed)
 print_accuracy_table(df_pure, 'mode_category', 'mode (pure: self-admin-only vs interviewer-only, excludes mixed), datelimmited, with partisan')
 
+########################################################################################
+#################### PREPARE VARIABLES FOR REGRESSIONS #################################
+########################################################################################
+
+# time variables
+for df in [df_threeway, df_pure]:
+    df['duration_days'] = (df['end_date'] - df['start_date']).dt.days + 1
+    df['days_before_election'] = (election_date - df['end_date']).dt.days
+
+# variable lists
+time_vars = ['duration_days', 'days_before_election']
+state_vars = ['pct_dk', 'abs_margin', 'turnout_pct']
+national_vars = ['pct_dk', 'abs_margin']
+
+# mode variables for each analysis type
+# for three-way: use two dummies (drop interviewer_only as reference because that is the way polls traditionally were)
+# CONSIDER COMING BACK AND CHANGING THIS
+threeway_mode_vars = ['self_admin_only', 'mixed_mode']
+
+# for pure binary: use one dummy (self_admin_only, with interviewer_only as reference)
+pure_mode_var = ['self_admin_only']
+
+# full covariate lists
+state_x_threeway = time_vars + state_vars + threeway_mode_vars
+national_x_threeway = time_vars + national_vars + threeway_mode_vars
+
+state_x_pure = time_vars + state_vars + pure_mode_var
+national_x_pure = time_vars + national_vars + pure_mode_var
+
+# split by poll level
+df_threeway_national = df_threeway[df_threeway['poll_level'] == 'national'].copy()
+df_threeway_state = df_threeway[df_threeway['poll_level'] == 'state'].copy()
+df_threeway_swing = df_threeway_state[df_threeway_state['state'].isin(swing_states)].copy()
+
+df_pure_national = df_pure[df_pure['poll_level'] == 'national'].copy()
+df_pure_state = df_pure[df_pure['poll_level'] == 'state'].copy()
+df_pure_swing = df_pure_state[df_pure_state['state'].isin(swing_states)].copy()
+
+print(f"\nSample sizes for regressions:")
+print(f"\nThree-way (includes mixed):")
+print(f"  National: {len(df_threeway_national)}")
+print(f"  All states: {len(df_threeway_state)}")
+print(f"  Swing states: {len(df_threeway_swing)}")
+
+print(f"\nPure binary (excludes mixed):")
+print(f"  National: {len(df_pure_national)}")
+print(f"  All states: {len(df_pure_state)}")
+print(f"  Swing states: {len(df_pure_swing)}")
+
+
 # close log and restore terminal
 log_file.close()
 sys.stdout = sys.__stdout__
