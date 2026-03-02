@@ -263,15 +263,16 @@ mode_counts = (
 # variables to include: base_mode / mode indicators, population indicators (have a, lv, rv)
 # variables to create: duration in field (difference between start_date and end_date), days before election (end_date to november 5 2025), final absolute margin of victory (state or national depending on regression), percent of don't know (100 - total for all candidates in a question), total statewide turnout percent (i will need to find you a dataset with the number of people registered to vote in each state)
 
-# function to run ols with clustered ses and print a formatted table
-from statsmodels.stats.sandwich_covariance import cov_cluster_2groups
-
-def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, label):
+# function to run ols with two way clustered ses and print a formatted table
+def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, label, min_obs_threshold=10):
     """
     fits ols on df using x_cols to predict y_col.
     standard errors are two-way clustered on cluster_col1 and cluster_col2.
     prints a formatted regression table with stars, adj-r2, constant, and n.
     returns the fitted statsmodels results object.
+    
+    if any variable has fewer than min_obs_threshold observations with variation,
+    it will be displayed as '----' instead of a coefficient.
     """
     # drop rows with any missing values in the variables used
     df_reg = df[x_cols + [y_col, cluster_col1, cluster_col2]].dropna()
@@ -280,24 +281,55 @@ def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, labe
     X = sm.add_constant(df_reg[x_cols], has_constant='add')
     y = df_reg[y_col]
     
-    # fit OLS first (without clustering)
+    # check for low-variance variables (modes with very few observations)
+    # these will cause numerical issues
+    low_variance_vars = []
+    for col in x_cols:
+        if col in df_reg.columns:
+            # for dummy variables, check if we have enough observations in each category
+            if df_reg[col].nunique() == 2:  # binary variable
+                value_counts = df_reg[col].value_counts()
+                if value_counts.min() < min_obs_threshold:
+                    low_variance_vars.append(col)
+    
+    # fit ols first (without clustering)
     model = sm.OLS(y, X)
     result = model.fit()
     
-    # compute two-way clustered standard errors
-    cluster1 = df_reg[cluster_col1].values
-    cluster2 = df_reg[cluster_col2].values
+    # convert cluster variables to categorical codes to get integer cluster ids
+    # statsmodels requires integer cluster identifiers for two-way clustering
+    cluster1_cat = pd.Categorical(df_reg[cluster_col1])
+    cluster2_cat = pd.Categorical(df_reg[cluster_col2])
     
-    # get two-way clustered covariance matrix
-    cov_twoway = cov_cluster_2groups(result, cluster1, cluster2)
+    # extract integer codes and ensure proper dtype
+    cluster1 = cluster1_cat.codes.astype(np.int64)
+    cluster2 = cluster2_cat.codes.astype(np.int64)
     
-    # compute standard errors from the two-way clustered covariance matrix
+    # stack cluster ids into 2d array format required by cov_cluster_2groups
+    groups = np.column_stack([cluster1, cluster2])
+    
+    # compute two-way clustered covariance matrix using statsmodels function
+    # cov_cluster_2groups returns a tuple (cov_matrix, ...), so extract first element
+    cov_result = cov_cluster_2groups(result, groups)
+    
+    # check if it's a tuple and extract the covariance matrix
+    if isinstance(cov_result, tuple):
+        cov_twoway = cov_result[0]
+    else:
+        cov_twoway = cov_result
+    
+    # extract standard errors from diagonal of covariance matrix
     bse_twoway = np.sqrt(np.diag(cov_twoway))
     
-    # compute t-statistics and p-values with two-way clustered SEs
+    # compute t-statistics and p-values using two-way clustered standard errors
     tvalues = result.params / bse_twoway
-    # use conservative df (minimum of two cluster counts minus 1)
-    df_resid = min(len(np.unique(cluster1)), len(np.unique(cluster2))) - 1
+    
+    # use conservative degrees of freedom: minimum cluster count minus 1
+    n_cluster1 = len(cluster1_cat.categories)
+    n_cluster2 = len(cluster2_cat.categories)
+    df_resid = min(n_cluster1, n_cluster2) - 1
+    
+    # compute two-tailed p-values
     pvalues = 2 * stats.t.sf(np.abs(tvalues), df_resid)
 
     # significance stars based on two-tailed p-values
@@ -307,7 +339,7 @@ def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, labe
         elif p < 0.10: return '*'
         else:          return ''
 
-    # print formatted table
+    # print formatted regression table
     print(f"\n{'='*75}")
     print(f"  ols regression: {label}")
     print(f"  dependent variable: method a  (+ = republican bias)")
@@ -318,27 +350,36 @@ def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, labe
 
     params = result.params
     
-    # identify the intercept name
+    # identify the intercept name (could be 'const', 'Intercept', or 'intercept')
     intercept_name = next((v for v in params.index if v.lower() in ('const', 'intercept')), None)
 
     # print all covariates first, then intercept at the bottom
     var_order = [v for v in params.index if v != intercept_name] + ([intercept_name] if intercept_name else [])
     
+    # loop through variables and print coefficients with two-way clustered standard errors
     for i, var in enumerate(var_order):
-        print(f"  {var:<35} {params[var]:>10.4f} {bse_twoway[i]:>10.4f} {stars_local(pvalues[i]):>6}")
+        # get correct index position for this variable in the arrays
+        idx = result.params.index.get_loc(var)
+        
+        # check if this variable should be suppressed due to low observations
+        if var in low_variance_vars:
+            print(f"  {var:<35} {'----':>10} {'----':>10} {'':>6}")
+        else:
+            print(f"  {var:<35} {params[var]:>10.4f} {bse_twoway[idx]:>10.4f} {stars_local(pvalues[idx]):>6}")
 
     print(f"  {'-'*68}")
     print(f"  adjusted r2:  {result.rsquared_adj:.4f}")
     print(f"  n:            {int(result.nobs)}")
-    n_cluster1 = len(np.unique(cluster1))
-    n_cluster2 = len(np.unique(cluster2))
     print(f"  clusters:     {n_cluster1} {cluster_col1}, {n_cluster2} {cluster_col2}")
+    if low_variance_vars:
+        print(f"  note:         ---- indicates <{min_obs_threshold} observations in category")
     print(f"{'='*75}\n")
 
-    # store two-way clustered results for later use
+    # store two-way clustered results in the result object for later use
     result.bse_twoway = bse_twoway
     result.pvalues_twoway = pvalues
     result.cov_params_twoway = cov_twoway
+    result.low_variance_vars = low_variance_vars  # store for later reference
     
     return result
 
@@ -461,6 +502,8 @@ reg_df['base_mode'] = reg_df['base_mode'].str.strip()
 
 print("\nUnique base modes after exploding:")
 print(reg_df['base_mode'].value_counts())
+
+reg_df['base_mode'] = reg_df['base_mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
 
 # set live phone as reference category (following polling literature conventions and gold standard of live phone)
 reference_mode = 'Live Phone'
@@ -1239,11 +1282,8 @@ print(f"all coefficients relative to {reference_mode} (reference category)")
 
 
 ######## save outputs
-# save question-level accuracy dataset for further analysis
-harris_trump_pivot.to_csv('data/harris_trump_datelimted_accuracy.csv', index=False)
-
 # save regression-ready dataset withs constructed covariates
-reg_df.to_csv('data/harris_trump_datelimted_regression.csv', index=False)
+reg_df.to_csv('data/harris_trump_datelimted_clustertwoway_regression.csv', index=False)
 
 # close log and restore terminal
 log_file.close()
