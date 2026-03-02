@@ -84,6 +84,9 @@ def print_accuracy_table(df, group_col, label):
         mean_A = subdf['A'].mean()
         se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
 
+        mean_trump_part_A = subdf['trump_part_A'].mean()
+        mean_harris_part_A = subdf['harris_part_A'].mean()
+
         if pd.notna(se_robust) and se_robust > 0:
             t_stat = mean_A / se_robust
             p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
@@ -98,23 +101,26 @@ def print_accuracy_table(df, group_col, label):
             'p_value': p_value,
             'median': subdf['A'].median(),
             'std': subdf['A'].std(),
-            'n': len(subdf)
+            'n': len(subdf),
+            'mean_harris_part': mean_harris_part_A,
+            'mean_trump_part': mean_trump_part_A
         })
     
     results_df = pd.DataFrame(results)
     tbl_wide = results_df.pivot(index=group_col, columns='poll_level', 
-                                  values=['mean', 'se', 'p_value', 'median', 'std', 'n'])
+                                  values=['mean', 'se', 'p_value', 'median', 'std', 'n', 
+                                         'mean_harris_part', 'mean_trump_part'])
     tbl_wide.columns = [f"{stat}_{level}" for stat, level in tbl_wide.columns]
     tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
 
-    print(f"\n{'='*110}")
+    print(f"\n{'='*150}")
     print(f"  method a accuracy by {label}")
     print(f"  (+ = republican bias, - = democratic bias)")
-    print(f"{'='*110}")
+    print(f"{'='*150}")
     print(f"  {'':30} {'-------------- state --------------':>42} {'------------ national ------------':>42}")
     print(f"  {group_col:<30} {'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}   "
           f"{'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}")
-    print(f"  {'-'*108}")
+    print(f"  {'-'*148}")
 
     for _, row in tbl_wide.iterrows():
         def fmt_val(val):
@@ -140,8 +146,24 @@ def print_accuracy_table(df, group_col, label):
             f"{fmt_n(row.get('n_national')):>5}"
         )
 
-    print(f"{'='*110}\n")
+    # Print component breakdown section
+    print(f"\n  {'COMPONENT BREAKDOWN (Harris and Trump Parts)':^148}")
+    print(f"  {'-'*148}")
+    print(f"  {'':30} {'------- state -------':>21} {'------ national ------':>21}")
+    print(f"  {group_col:<30} {'Harris':>10} {'Trump':>10}   {'Harris':>10} {'Trump':>10}")
+    print(f"  {'-'*148}")
+    
+    for _, row in tbl_wide.iterrows():
+        print(
+            f"  {str(row[group_col]):<30} "
+            f"{fmt_val(row.get('mean_harris_part_state')):>10} "
+            f"{fmt_val(row.get('mean_trump_part_state')):>10}   "
+            f"{fmt_val(row.get('mean_harris_part_national')):>10} "
+            f"{fmt_val(row.get('mean_trump_part_national')):>10}"
+        )
 
+    print(f"{'='*150}\n")
+    
 def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
     """
     fits ols on df using x_cols to predict y_col.
