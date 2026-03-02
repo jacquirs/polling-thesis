@@ -235,7 +235,7 @@ df_threeway = df_threeway.merge(
 )
 
 # merge turnout into df_pure
-df_threeway = df_threeway.merge(
+df_pure = df_pure.merge(
     turnout_clean[['state', 'turnout_pct']],
     on='state',
     how='left'
