@@ -1,0 +1,38 @@
+Questions with both Trump and Harris pct: 2438
+Questions dropped due to missing pct:     0
+
+Derived national true vote shares (confirmed against results yay!!):
+  Trump:  0.4981
+  Harris: 0.4834
+
+Questions unmatched after state + national merge: 33
+Unmatched states:
+state
+nebraska cd-2    10
+maine cd-1        8
+maine cd-2        8
+puerto rico       5
+nebraska cd-1     1
+nebraska cd-3     1
+
+Questions remaining for accuracy analysis: 2405
+Total number of polls: 1483
+
+poll_level counts after flagging:
+poll_level
+state       1563
+national     842
+
+state values flagged as national:
+state
+national    842
+
+Overall Method A accuracy (all Harris+Trump questions) NON PARTISAN:
+  Mean:   -0.0570
+  SE:       0.0022
+  p-value:  0.0000 ***
+  Median: -0.0632
+  SD:    0.0800
+  N:        2405
+  Mean Harris Part:   -0.0231
+  Mean Trump Part:   -0.0800
