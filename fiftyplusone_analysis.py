@@ -86,9 +86,6 @@ n_before_drop = harris_trump_pivot['question_id'].nunique()
 harris_trump_pivot = harris_trump_pivot.dropna(subset=['pct_trump_poll', 'pct_harris_poll'])
 n_after_drop = harris_trump_pivot['question_id'].nunique()
 
-# convert end_date to datetime after pivot
-harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
-
 print(f"Questions with both Trump and Harris pct: {n_after_drop}")
 print(f"Questions dropped due to missing pct:     {n_before_drop - n_after_drop}")
 
