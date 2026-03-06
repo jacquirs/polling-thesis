@@ -297,6 +297,7 @@ for var in metadata_vars:
     if na_question_count > 0:
         print(f"  (+ {na_question_count} questions with null/empty {var})")
 
+dropout_cutoff = pd.Timestamp('2024-07-21')
 
 ########################################################################################
 ##################################### Harris+Trump Dataset #############################
@@ -315,6 +316,15 @@ print(f"  {harris_trump_full_df['poll_id'].nunique()} unique polls")
 print(f"  {harris_trump_full_df['question_id'].nunique()} unique questions")
 
 harris_trump_full_df.to_csv('data/fiftyplusone_cleaned_harris_trump_questions.csv', index=False)
+
+# check what happens when switch end date to start date
+print(f"  cutoff (start_date >= dropout_cutoff): "
+      f"{harris_trump_full_df.loc[harris_trump_full_df['start_date'] >= dropout_cutoff, 'poll_id'].nunique()} polls, "
+      f"{harris_trump_full_df.loc[harris_trump_full_df['start_date'] >= dropout_cutoff, 'question_id'].nunique()} questions")
+
+print(f"  cutoff (end_date   >= dropout_cutoff): "
+      f"{harris_trump_full_df.loc[harris_trump_full_df['end_date'] >= dropout_cutoff, 'poll_id'].nunique()} polls, "
+      f"{harris_trump_full_df.loc[harris_trump_full_df['end_date'] >= dropout_cutoff, 'question_id'].nunique()} questions")
 
 
 ########################################################################################
@@ -336,6 +346,14 @@ print(f"  {harris_trump_full_df_no_partisan['question_id'].nunique()} unique que
 
 harris_trump_full_df_no_partisan.to_csv('data/fiftyplusone_cleaned_harris_trump_questions_no_partisan.csv', index=False)
 
+# check what happens when switch end date to start date
+print(f"  cutoff (start_date >= dropout_cutoff): "
+      f"{harris_trump_full_df_no_partisan.loc[harris_trump_full_df_no_partisan['start_date'] >= dropout_cutoff, 'poll_id'].nunique()} polls, "
+      f"{harris_trump_full_df_no_partisan.loc[harris_trump_full_df_no_partisan['start_date'] >= dropout_cutoff, 'question_id'].nunique()} questions")
+
+print(f"  cutoff (end_date   >= dropout_cutoff): "
+      f"{harris_trump_full_df_no_partisan.loc[harris_trump_full_df_no_partisan['end_date'] >= dropout_cutoff, 'poll_id'].nunique()} polls, "
+      f"{harris_trump_full_df_no_partisan.loc[harris_trump_full_df_no_partisan['end_date'] >= dropout_cutoff, 'question_id'].nunique()} questions")
 
 # close log file and restore terminal output
 log_file.close()
