@@ -173,7 +173,7 @@ print(harris_trump_pivot[harris_trump_pivot['poll_level'] == 'national']['state'
 
 # flag period (before/after biden dropout) used for descriptive splits
 harris_trump_pivot['period'] = np.where(
-    harris_trump_pivot['end_date'] < dropout_cutoff, 'before_dropout', 'after_dropout'
+    harris_trump_pivot['start_date'] < dropout_cutoff, 'before_dropout', 'after_dropout'
 )
 
 ########################################################################################

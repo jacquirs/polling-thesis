@@ -100,8 +100,8 @@ wisconsin (N=191):
 
 Method A accuracy by period:
         period      mean    median       sd       se  p_value    n sig
-before_dropout  0.064959  0.058943 0.090820 0.006960      0.0  259 ***
- after_dropout -0.069815 -0.070210 0.065566 0.001735      0.0 2317 ***
+before_dropout  0.062960  0.058943 0.090224 0.006726      0.0  276 ***
+ after_dropout -0.070571 -0.070524 0.064900 0.001729      0.0 2300 ***
 
 Method A accuracy by poll level (state vs national):
 poll_level      mean    median       se  p_value       sd    n sig
@@ -110,10 +110,10 @@ poll_level      mean    median       se  p_value       sd    n sig
 
 Method A accuracy by poll level and period:
 poll_level         period      mean    median       sd       se      p_value    n sig
-  national  after_dropout -0.075919 -0.078199 0.053659 0.002574 0.000000e+00  682 ***
-  national before_dropout  0.068712  0.070079 0.090153 0.008140 5.329071e-14  179 ***
-     state  after_dropout -0.067269 -0.063201 0.069794 0.002162 0.000000e+00 1635 ***
-     state before_dropout  0.056561  0.039542 0.092311 0.013234 7.689708e-05   80 ***
+  national  after_dropout -0.078179 -0.086019 0.050687 0.002477 0.000000e+00  671 ***
+  national before_dropout  0.068322  0.070079 0.088313 0.007886 1.243450e-14  190 ***
+     state  after_dropout -0.067438 -0.063201 0.069692 0.002163 0.000000e+00 1629 ***
+     state before_dropout  0.051114  0.036006 0.093747 0.012570 1.411559e-04   86 ***
 
 Base mode breakdown (unique questions per mode):
 
@@ -152,18 +152,18 @@ Method A accuracy by base mode and period:
             App Panel  after_dropout -0.069393 -0.075879 0.054882 0.006075 0.000000e+00   85 ***
                 Email  after_dropout -0.059035 -0.063201 0.057308 0.007277 3.147127e-11   79 ***
                 Email before_dropout  0.110368  0.116690 0.054923 0.019418 7.478097e-04    8 ***
-                  IVR  after_dropout -0.051602 -0.041469 0.065985 0.004844 0.000000e+00  185 ***
-                  IVR before_dropout  0.085305  0.086218 0.095985 0.019857 2.152602e-04   39 ***
-           Live Phone  after_dropout -0.053872 -0.051058 0.064143 0.003762 0.000000e+00  545 ***
-           Live Phone before_dropout  0.006941  0.013870 0.097023 0.024425 7.789302e-01   36    
+                  IVR  after_dropout -0.054881 -0.043181 0.062807 0.004792 0.000000e+00  181 ***
+                  IVR before_dropout  0.086374  0.086218 0.091501 0.019157 1.139842e-04   43 ***
+           Live Phone  after_dropout -0.054325 -0.051412 0.064004 0.003768 0.000000e+00  542 ***
+           Live Phone before_dropout  0.008553  0.013481 0.093548 0.022488 7.070255e-01   39    
         Mail-to-Phone  after_dropout -0.085992 -0.097710 0.045783 0.013656 2.335061e-04   11 ***
           Mail-to-Web  after_dropout -0.108599 -0.092000 0.118977 0.031339 2.761660e-03   28 ***
-            Online Ad  after_dropout -0.013954 -0.003385 0.048213 0.005976 2.232627e-02  130  **
-            Online Ad before_dropout  0.065762  0.017494 0.095084 0.035938 1.170104e-01    7    
-Online Matched Sample  after_dropout -0.085963 -0.084255 0.050044 0.005213 0.000000e+00  166 ***
-Online Matched Sample before_dropout -0.001461  0.002975 0.062752 0.023980 9.531282e-01   10    
-  Online Opt-In Panel  after_dropout -0.074454 -0.072564 0.062460 0.002301 0.000000e+00 1073 ***
-  Online Opt-In Panel before_dropout  0.083758  0.086438 0.082796 0.007090 0.000000e+00  189 ***
+            Online Ad  after_dropout -0.014441 -0.003696 0.048079 0.005992 1.853209e-02  129  **
+            Online Ad before_dropout  0.063648  0.033172 0.088234 0.031195 8.067480e-02    8   *
+Online Matched Sample  after_dropout -0.086936 -0.085055 0.049489 0.005200 0.000000e+00  164 ***
+Online Matched Sample before_dropout -0.002249  0.002975 0.057692 0.021190 9.180890e-01   12    
+  Online Opt-In Panel  after_dropout -0.075426 -0.073310 0.061185 0.002283 0.000000e+00 1064 ***
+  Online Opt-In Panel before_dropout  0.081793  0.085577 0.083925 0.007093 0.000000e+00  198 ***
     Probability Panel  after_dropout -0.101812 -0.095962 0.056204 0.008544 2.220446e-16  121 ***
     Probability Panel before_dropout -0.017232 -0.005580 0.030060 0.018374 4.175081e-01    6    
                  Text  after_dropout -0.040820 -0.025441 0.055603 0.005656 1.616247e-10   99 ***
