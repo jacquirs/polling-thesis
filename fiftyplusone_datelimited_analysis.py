@@ -86,8 +86,9 @@ n_before_drop = harris_trump_pivot['question_id'].nunique()
 harris_trump_pivot = harris_trump_pivot.dropna(subset=['pct_trump_poll', 'pct_harris_poll'])
 n_after_drop = harris_trump_pivot['question_id'].nunique()
 
-# convert end_date to datetime after pivot
+# convert end_date and start_date to datetime after pivot
 harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
+harris_trump_pivot['start_date'] = pd.to_datetime(harris_trump_pivot['start_date'])
 
 print(f"Questions with both Trump and Harris pct: {n_after_drop}")
 print(f"Questions dropped due to missing pct:     {n_before_drop - n_after_drop}")
@@ -101,7 +102,7 @@ harris_trump_pivot = harris_trump_pivot.merge(
 
 
 ##### LIMIT THE DATES TO PERIOD WHEN HARRIS WAS NOMINEE
-harris_trump_pivot = harris_trump_pivot[harris_trump_pivot['end_date'] >=  dropout_cutoff] #maybe reeval this
+harris_trump_pivot = harris_trump_pivot[harris_trump_pivot['start_date'] >=  dropout_cutoff] 
 
 ######## compute national true vote shares as weighted average of state results
 national_true = pd.Series({
