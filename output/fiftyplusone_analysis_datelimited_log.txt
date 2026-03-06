@@ -15,37 +15,37 @@ puerto rico       5
 nebraska cd-1     1
 nebraska cd-3     1
 
-Questions remaining for accuracy analysis: 2317
+Questions remaining for accuracy analysis: 2300
 
 poll_level counts after flagging:
 poll_level
-state       1635
-national     682
+state       1629
+national     671
 
 state values flagged as national:
 state
-national    682
+national    671
 
 Overall Method A accuracy (all Harris+Trump questions):
-  Mean:   -0.0698
+  Mean:   -0.0706
   SE:       0.0017
   p-value:  0.0000 ***
-  Median: -0.0702
-  SD:    0.0656
-  N:        2317
-  Mean Harris Part:   -0.0064
-  Mean Trump Part:   -0.0762
+  Median: -0.0705
+  SD:    0.0649
+  N:        2300
+  Mean Harris Part:   -0.0057
+  Mean Trump Part:   -0.0763
 
-National Polls (N=682):
-Trump - True: 49.81%, Poll Mean: 45.77%, Error: -4.04
-Harris - True: 48.34%, Poll Mean: 47.91%, Error: -0.43
+National Polls (N=671):
+Trump - True: 49.81%, Poll Mean: 45.74%, Error: -4.07
+Harris - True: 48.34%, Poll Mean: 47.98%, Error: -0.36
 
-All Battleground States Combined (N=1184):
+All Battleground States Combined (N=1182):
   Trump Component Mean: -0.0685
-  Harris Component Mean: -0.0100
-  Method A Mean: -0.0585
-  Trump Error Mean: -3.30
-  Harris Error Mean: -0.44
+  Harris Component Mean: -0.0099
+  Method A Mean: -0.0586
+  Trump Error Mean: -3.31
+  Harris Error Mean: -0.43
 
 By State:
 
@@ -84,12 +84,12 @@ north carolina (N=158):
   Harris Component Mean: -0.0046
   Method A Mean: -0.0555
 
-pennsylvania (N=229):
-  Trump True: 50.37%, Poll Mean: 47.23%, Error: -3.14
-  Harris True: 48.66%, Poll Mean: 47.98%, Error: -0.69
-  Trump Component Mean: -0.0652
-  Harris Component Mean: -0.0151
-  Method A Mean: -0.0502
+pennsylvania (N=227):
+  Trump True: 50.37%, Poll Mean: 47.22%, Error: -3.16
+  Harris True: 48.66%, Poll Mean: 48.00%, Error: -0.67
+  Trump Component Mean: -0.0655
+  Harris Component Mean: -0.0146
+  Method A Mean: -0.0509
 
 wisconsin (N=184):
   Trump True: 49.60%, Poll Mean: 46.61%, Error: -2.98
@@ -100,37 +100,37 @@ wisconsin (N=184):
 
 Method A accuracy by poll level (state vs national):
 poll_level      mean    median       se  p_value       sd    n sig
-     state -0.067269 -0.063201 0.002162      0.0 0.069794 1635 ***
-  national -0.075919 -0.078199 0.002574      0.0 0.053659  682 ***
+  national -0.078179 -0.086019 0.002477      0.0 0.050687  671 ***
+     state -0.067438 -0.063201 0.002163      0.0 0.069692 1629 ***
 
-Other category (N = 165 questions):
+Other category (N = 163 questions):
   All modes in this category:
 MODE ANALYSIS DATAFRAME
 
-Total questions: 2152
-Excluded from original: 165
-  Interviewer-only: 250
-  Self-admin-only: 1456
-  Mixed mode: 446
+Total questions: 2137
+Excluded from original: 163
+  Interviewer-only: 247
+  Self-admin-only: 1448
+  Mixed mode: 442
 
 Mixed mode composition:
-  Slash-separated (e.g., 'Live Phone/Online'): 441
+  Slash-separated (e.g., 'Live Phone/Online'): 437
   Explicit mixed (Mail-to-Phone): 11
 
 Pure mode subset (excludes mixed):
-  Total questions: 1706
-  Self-admin-only: 1456
-  Interviewer-only: 250
+  Total questions: 1695
+  Self-admin-only: 1448
+  Interviewer-only: 247
 
 Base mode breakdown (unique questions per mode):
 
             base_mode  unique_questions
-  Online Opt-In Panel              1073
-           Live Phone               545
+  Online Opt-In Panel              1064
+           Live Phone               542
           Text-to-Web               479
-                  IVR               185
-Online Matched Sample               166
-            Online Ad               130
+                  IVR               181
+Online Matched Sample               164
+            Online Ad               129
     Probability Panel               121
                  Text                99
             App Panel                85
@@ -140,16 +140,16 @@ Online Matched Sample               166
 
 Method A accuracy by base mode
             base_mode      mean    median       sd       se      p_value    n sig
-            Online Ad -0.013954 -0.003385 0.048213 0.005976 2.232627e-02  130  **
+            Online Ad -0.014441 -0.003696 0.048079 0.005992 1.853209e-02  129  **
                  Text -0.040820 -0.025441 0.055603 0.005656 1.616247e-10   99 ***
-                  IVR -0.051602 -0.041469 0.065985 0.004844 0.000000e+00  185 ***
-           Live Phone -0.053872 -0.051058 0.064143 0.003762 0.000000e+00  545 ***
+           Live Phone -0.054325 -0.051412 0.064004 0.003768 0.000000e+00  542 ***
+                  IVR -0.054881 -0.043181 0.062807 0.004792 0.000000e+00  181 ***
                 Email -0.059035 -0.063201 0.057308 0.007277 3.147127e-11   79 ***
           Text-to-Web -0.062132 -0.055496 0.057223 0.003296 0.000000e+00  479 ***
             App Panel -0.069393 -0.075879 0.054882 0.006075 0.000000e+00   85 ***
-  Online Opt-In Panel -0.074454 -0.072564 0.062460 0.002301 0.000000e+00 1073 ***
-Online Matched Sample -0.085963 -0.084255 0.050044 0.005213 0.000000e+00  166 ***
+  Online Opt-In Panel -0.075426 -0.073310 0.061185 0.002283 0.000000e+00 1064 ***
         Mail-to-Phone -0.085992 -0.097710 0.045783 0.013656 2.335061e-04   11 ***
+Online Matched Sample -0.086936 -0.085055 0.049489 0.005200 0.000000e+00  164 ***
     Probability Panel -0.101812 -0.095962 0.056204 0.008544 2.220446e-16  121 ***
           Mail-to-Web -0.108599 -0.092000 0.118977 0.031339 2.761660e-03   28 ***
                   NaN       NaN       NaN      NaN      NaN          NaN    0    
@@ -161,16 +161,16 @@ Online Matched Sample -0.085963 -0.084255 0.050044 0.005213 0.000000e+00  166 **
                                         -------------- state --------------         ------------ national ------------
   base_mode                          mean       se    p-val   median      std     n       mean       se    p-val   median      std     n
   ------------------------------------------------------------------------------------------------------------
-  Online Ad                       -0.0163   0.0060 0.009***  -0.0051   0.0448   111    -0.0003   0.0206    0.990   0.0041   0.0646    19
+  Online Ad                       -0.0169   0.0060 0.007***  -0.0058   0.0446   110    -0.0003   0.0206    0.990   0.0041   0.0646    19
   Text                            -0.0408   0.0060 0.000***  -0.0235   0.0577    91    -0.0407   0.0103  0.017**  -0.0383   0.0218     8
-  IVR                             -0.0523   0.0052 0.000***  -0.0361   0.0653   159    -0.0472   0.0144 0.006***  -0.0589   0.0712    26
-  Live Phone                      -0.0563   0.0041 0.000***  -0.0557   0.0660   469    -0.0390   0.0091 0.000***  -0.0300   0.0491    76
+  IVR                             -0.0523   0.0052 0.000***  -0.0361   0.0653   159    -0.0734   0.0093 0.000***  -0.0649   0.0362    22
+  Live Phone                      -0.0564   0.0041 0.000***  -0.0560   0.0660   468    -0.0410   0.0090 0.000***  -0.0300   0.0479    74
   Email                           -0.0590   0.0073 0.000***  -0.0632   0.0573    79         --       --       --       --       --    --
   Text-to-Web                     -0.0632   0.0035 0.000***  -0.0564   0.0581   421    -0.0545   0.0091 0.000***  -0.0511   0.0498    58
-  Online Opt-In Panel             -0.0703   0.0031 0.000***  -0.0652   0.0678   648    -0.0808   0.0030 0.000***  -0.0932   0.0528   425
+  Online Opt-In Panel             -0.0701   0.0031 0.000***  -0.0652   0.0678   646    -0.0837   0.0028 0.000***  -0.0932   0.0482   418
   App Panel                       -0.0758   0.0068 0.000***  -0.0802   0.0548    66    -0.0470   0.0131 0.003***  -0.0434   0.0501    19
   Mail-to-Phone                   -0.0860   0.0137 0.000***  -0.0977   0.0458    11         --       --       --       --       --    --
-  Online Matched Sample           -0.0905   0.0074 0.000***  -0.0843   0.0558   107    -0.0778   0.0063 0.000***  -0.0765   0.0366    59
+  Online Matched Sample           -0.0905   0.0074 0.000***  -0.0843   0.0558   107    -0.0803   0.0062 0.000***  -0.0906   0.0343    57
   Mail-to-Web                     -0.1086   0.0313 0.003***  -0.0920   0.1190    28         --       --       --       --       --    --
   Probability Panel               -0.1169   0.0159 0.000***  -0.0975   0.0798    35    -0.0957   0.0076 0.000***  -0.0960   0.0422    86
 ==============================================================================================================
@@ -184,20 +184,20 @@ Online Matched Sample -0.085963 -0.084255 0.050044 0.005213 0.000000e+00  166 **
   population                         mean       se    p-val   median      std     n       mean       se    p-val   median      std     n
   ------------------------------------------------------------------------------------------------------------
   v                               -0.0541       --       --  -0.0541       --     1         --       --       --       --       --    --
-  lv                              -0.0613   0.0021 0.000***  -0.0547   0.0653  1196    -0.0765   0.0029 0.000***  -0.0860   0.0543   393
-  rv                              -0.0807   0.0048 0.000***  -0.0820   0.0767   385    -0.0698   0.0037 0.000***  -0.0735   0.0528   242
+  lv                              -0.0614   0.0021 0.000***  -0.0547   0.0653  1192    -0.0782   0.0028 0.000***  -0.0906   0.0519   389
+  rv                              -0.0810   0.0048 0.000***  -0.0820   0.0765   383    -0.0733   0.0035 0.000***  -0.0735   0.0486   235
   a                               -0.1049   0.0123 0.000***  -0.0939   0.0889    53    -0.1026   0.0072 0.000***  -0.1134   0.0443    47
 ==============================================================================================================
 
 
 time variable diagnostics:
   duration_days        -- mean: 6.2, min: 1, max: 43
-  days_before_election -- mean: 43.6, min: 1, max: 107
+  days_before_election -- mean: 43.2, min: 1, max: 107
 
 regression sample sizes:
-  national-level questions: 682
-  state-level questions:    1635
-  swing state questions: 1184
+  national-level questions: 671
+  state-level questions:    1629
+  swing state questions: 1182
 
 ======================================================================
   ols regression: national polls
@@ -206,14 +206,14 @@ regression sample sizes:
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0034     0.0009    ***
-  days_before_election                    0.0001     0.0001       
-  pct_dk                                 -0.0028     0.0007    ***
+  duration_days                          -0.0032     0.0008    ***
+  days_before_election                   -0.0000     0.0001       
+  pct_dk                                 -0.0026     0.0007    ***
   abs_margin                             -0.0008     0.0001    ***
-  const                                  -0.0541     0.0063    ***
+  const                                  -0.0519     0.0059    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.0614
-  n:            682
+  adjusted r2:  0.0637
+  n:            671
 ======================================================================
 
 
@@ -225,14 +225,14 @@ regression sample sizes:
   variable                                  coef         se    sig
   ---------------------------------------------------------------
   duration_days                          -0.0017     0.0003    ***
-  days_before_election                   -0.0002     0.0001     **
-  pct_dk                                  0.0004     0.0010       
-  abs_margin                             -0.1113     0.0539     **
-  turnout_pct                             0.0023     0.0005    ***
-  const                                  -0.1985     0.0395    ***
+  days_before_election                   -0.0002     0.0001    ***
+  pct_dk                                  0.0005     0.0010       
+  abs_margin                             -0.1124     0.0541     **
+  turnout_pct                             0.0022     0.0005    ***
+  const                                  -0.1978     0.0394    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.0928
-  n:            1635
+  adjusted r2:  0.0933
+  n:            1629
 ======================================================================
 
 
@@ -246,23 +246,23 @@ regression sample sizes:
   duration_days                          -0.0029     0.0004    ***
   days_before_election                   -0.0003     0.0001    ***
   pct_dk                                  0.0012     0.0009       
-  abs_margin                             -1.5396     0.3665    ***
+  abs_margin                             -1.5236     0.3667    ***
   turnout_pct                            -0.0032     0.0013     **
-  const                                   0.2326     0.0994     **
+  const                                   0.2294     0.0994     **
   ---------------------------------------------------------------
-  adjusted r2:  0.1368
-  n:            1184
+  adjusted r2:  0.1372
+  n:            1182
 ======================================================================
 
 
 Unique base modes after exploding:
 base_mode
-Online Opt-In Panel      1073
-Live Phone                545
+Online Opt-In Panel      1064
+Live Phone                542
 Text-to-Web               479
-IVR                       185
-Online Matched Sample     166
-Online Ad                 130
+IVR                       181
+Online Matched Sample     164
+Online Ad                 129
 Probability Panel         121
 Text                       99
 App Panel                  85
@@ -277,9 +277,9 @@ mode dummy variables created: ['mode_App Panel', 'mode_Email', 'mode_IVR', 'mode
 all coefficients will be interpreted relative to Live Phone polls
 
 sample sizes after exploding:
-  all state polls: 2365
-  swing states only: 1736
-  national polls: 801
+  all state polls: 2359
+  swing states only: 1734
+  national polls: 786
 
 swing states breakdown:
 state
@@ -288,16 +288,16 @@ georgia           226
 michigan          269
 nevada            166
 north carolina    235
-pennsylvania      345
+pennsylvania      343
 wisconsin         266
 Name: count, dtype: int64
 
 mode distribution in swing states:
-  Online Opt-In Panel: 485 (27.9%)
-  Live Phone: 343 (19.8%) (REFERENCE)
-  Text-to-Web: 287 (16.5%)
+  Online Opt-In Panel: 485 (28.0%)
+  Live Phone: 342 (19.7%) (REFERENCE)
+  Text-to-Web: 287 (16.6%)
   IVR: 119 (6.9%)
-  Online Ad: 94 (5.4%)
+  Online Ad: 93 (5.4%)
   Text: 78 (4.5%)
   Online Matched Sample: 74 (4.3%)
   Email: 69 (4.0%)
@@ -314,25 +314,25 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0041     0.0009    ***
-  days_before_election                    0.0001     0.0001       
-  pct_dk                                 -0.0021     0.0008    ***
-  abs_margin                             -0.0004     0.0002    ***
-  mode_App Panel                          0.0069     0.0135       
-  mode_Email                              0.0000     0.0000       
-  mode_IVR                               -0.0039     0.0258       
+  duration_days                          -0.0040     0.0009    ***
+  days_before_election                   -0.0000     0.0001       
+  pct_dk                                 -0.0022     0.0008    ***
+  abs_margin                             -0.0004     0.0001     **
+  mode_App Panel                          0.0086     0.0137       
+  mode_Email                              0.0000     0.0000      *
+  mode_IVR                               -0.0289     0.0125     **
   mode_Mail_to_Phone                     -0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000     **
-  mode_Online Ad                          0.0474     0.0175    ***
-  mode_Online Matched Sample             -0.0235     0.0096     **
-  mode_Online Opt_In Panel               -0.0334     0.0079    ***
-  mode_Probability Panel                 -0.0338     0.0114    ***
+  mode_Mail_to_Web                        0.0000     0.0000       
+  mode_Online Ad                          0.0475     0.0179    ***
+  mode_Online Matched Sample             -0.0256     0.0094    ***
+  mode_Online Opt_In Panel               -0.0348     0.0077    ***
+  mode_Probability Panel                 -0.0331     0.0111    ***
   mode_Text                                 ----       ----       
-  mode_Text_to_Web                       -0.0069     0.0086       
-  const                                  -0.0294     0.0107    ***
+  mode_Text_to_Web                       -0.0064     0.0085       
+  const                                  -0.0243     0.0096     **
   ---------------------------------------------------------------
-  adjusted r2:  0.1630
-  n:            801
+  adjusted r2:  0.1892
+  n:            786
   note:         ---- indicates <10 observations in category
 ======================================================================
 
@@ -347,23 +347,23 @@ REGRESSIONS WITH MODE CONTROLS
   duration_days                          -0.0021     0.0004    ***
   days_before_election                   -0.0001     0.0001      *
   pct_dk                                  0.0021     0.0009     **
-  abs_margin                             -0.1295     0.0476    ***
+  abs_margin                             -0.1307     0.0477    ***
   turnout_pct                             0.0026     0.0005    ***
-  mode_App Panel                          0.0533     0.0118    ***
-  mode_Email                              0.0008     0.0078       
-  mode_IVR                                0.0071     0.0067       
-  mode_Mail_to_Phone                     -0.0273     0.0127     **
-  mode_Mail_to_Web                       -0.0394     0.0248       
-  mode_Online Ad                          0.0377     0.0066    ***
-  mode_Online Matched Sample             -0.0176     0.0082     **
-  mode_Online Opt_In Panel               -0.0091     0.0049      *
-  mode_Probability Panel                 -0.0507     0.0164    ***
-  mode_Text                               0.0092     0.0066       
-  mode_Text_to_Web                       -0.0001     0.0044       
-  const                                  -0.2265     0.0359    ***
+  mode_App Panel                          0.0538     0.0118    ***
+  mode_Email                              0.0012     0.0078       
+  mode_IVR                                0.0077     0.0067       
+  mode_Mail_to_Phone                     -0.0269     0.0127     **
+  mode_Mail_to_Web                       -0.0392     0.0248       
+  mode_Online Ad                          0.0376     0.0066    ***
+  mode_Online Matched Sample             -0.0173     0.0082     **
+  mode_Online Opt_In Panel               -0.0085     0.0049      *
+  mode_Probability Panel                 -0.0500     0.0165    ***
+  mode_Text                               0.0096     0.0066       
+  mode_Text_to_Web                        0.0005     0.0044       
+  const                                  -0.2265     0.0360    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1555
-  n:            2365
+  adjusted r2:  0.1554
+  n:            2359
 ======================================================================
 
 
@@ -376,29 +376,29 @@ REGRESSIONS WITH MODE CONTROLS
   ---------------------------------------------------------------
   duration_days                          -0.0030     0.0005    ***
   days_before_election                   -0.0002     0.0001     **
-  pct_dk                                  0.0025     0.0009    ***
-  abs_margin                             -1.3046     0.3383    ***
+  pct_dk                                  0.0024     0.0009    ***
+  abs_margin                             -1.2983     0.3385    ***
   turnout_pct                            -0.0024     0.0011     **
-  mode_App Panel                          0.0647     0.0136    ***
-  mode_Email                              0.0037     0.0081       
-  mode_IVR                                0.0206     0.0050    ***
+  mode_App Panel                          0.0646     0.0136    ***
+  mode_Email                              0.0038     0.0081       
+  mode_IVR                                0.0208     0.0050    ***
   mode_Mail_to_Phone                     -0.0228     0.0115     **
   mode_Mail_to_Web                       -0.0018     0.0125       
-  mode_Online Ad                          0.0369     0.0068    ***
+  mode_Online Ad                          0.0362     0.0068    ***
   mode_Online Matched Sample             -0.0064     0.0093       
-  mode_Online Opt_In Panel               -0.0086     0.0050      *
+  mode_Online Opt_In Panel               -0.0085     0.0050      *
   mode_Probability Panel                 -0.0177     0.0127       
-  mode_Text                               0.0169     0.0048    ***
-  mode_Text_to_Web                        0.0050     0.0046       
-  const                                   0.1586     0.0884      *
+  mode_Text                               0.0170     0.0048    ***
+  mode_Text_to_Web                        0.0051     0.0046       
+  const                                   0.1575     0.0884      *
   ---------------------------------------------------------------
-  adjusted r2:  0.1885
-  n:            1736
+  adjusted r2:  0.1873
+  n:            1734
 ======================================================================
 
 
   window: 107 days before election
-  swing state questions in window: 1736
+  swing state questions in window: 1734
 
 ======================================================================
   ols regression: swing states 107 days before election (no mode)
@@ -408,14 +408,14 @@ REGRESSIONS WITH MODE CONTROLS
   variable                                  coef         se    sig
   ---------------------------------------------------------------
   duration_days                          -0.0031     0.0005    ***
-  days_before_election                   -0.0002     0.0001     **
+  days_before_election                   -0.0002     0.0001    ***
   pct_dk                                  0.0016     0.0009      *
-  abs_margin                             -1.3287     0.3468    ***
+  abs_margin                             -1.3193     0.3470    ***
   turnout_pct                            -0.0025     0.0012     **
-  const                                   0.1756     0.0909      *
+  const                                   0.1738     0.0909      *
   ---------------------------------------------------------------
-  adjusted r2:  0.1328
-  n:            1736
+  adjusted r2:  0.1327
+  n:            1734
 ======================================================================
 
 
@@ -508,7 +508,7 @@ REGRESSIONS WITH MODE CONTROLS
 
 
   window: 107 days before election
-  all state questions in window: 2365
+  all state questions in window: 2359
 
 ======================================================================
   ols regression: all states 107 days before election (no mode)
@@ -519,13 +519,13 @@ REGRESSIONS WITH MODE CONTROLS
   ---------------------------------------------------------------
   duration_days                          -0.0018     0.0003    ***
   days_before_election                   -0.0002     0.0001     **
-  pct_dk                                  0.0010     0.0009       
-  abs_margin                             -0.1188     0.0478     **
+  pct_dk                                  0.0011     0.0009       
+  abs_margin                             -0.1196     0.0480     **
   turnout_pct                             0.0025     0.0005    ***
-  const                                  -0.2139     0.0371    ***
+  const                                  -0.2133     0.0371    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1069
-  n:            2365
+  adjusted r2:  0.1073
+  n:            2359
 ======================================================================
 
 
@@ -618,7 +618,7 @@ REGRESSIONS WITH MODE CONTROLS
 
 
   window: 107 days before election
-  national questions in window: 801
+  national questions in window: 786
 
 ======================================================================
   ols regression: national 107 days before election (no mode)
@@ -627,14 +627,14 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0036     0.0008    ***
-  days_before_election                    0.0001     0.0001       
-  pct_dk                                 -0.0029     0.0008    ***
+  duration_days                          -0.0033     0.0007    ***
+  days_before_election                   -0.0000     0.0001       
+  pct_dk                                 -0.0029     0.0007    ***
   abs_margin                             -0.0007     0.0001    ***
-  const                                  -0.0509     0.0069    ***
+  const                                  -0.0479     0.0063    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.0690
-  n:            801
+  adjusted r2:  0.0768
+  n:            786
 ======================================================================
 
 
@@ -723,7 +723,7 @@ REGRESSIONS WITH MODE CONTROLS
 
 
   window: 107 days before election
-  swing state questions in window: 1736
+  swing state questions in window: 1734
 
 ======================================================================
   ols regression: swing states 107 days before election (with mode)
@@ -734,24 +734,24 @@ REGRESSIONS WITH MODE CONTROLS
   ---------------------------------------------------------------
   duration_days                          -0.0030     0.0005    ***
   days_before_election                   -0.0002     0.0001     **
-  pct_dk                                  0.0025     0.0009    ***
-  abs_margin                             -1.3046     0.3383    ***
+  pct_dk                                  0.0024     0.0009    ***
+  abs_margin                             -1.2983     0.3385    ***
   turnout_pct                            -0.0024     0.0011     **
-  mode_App Panel                          0.0647     0.0136    ***
-  mode_Email                              0.0037     0.0081       
-  mode_IVR                                0.0206     0.0050    ***
+  mode_App Panel                          0.0646     0.0136    ***
+  mode_Email                              0.0038     0.0081       
+  mode_IVR                                0.0208     0.0050    ***
   mode_Mail_to_Phone                     -0.0228     0.0115     **
   mode_Mail_to_Web                       -0.0018     0.0125       
-  mode_Online Ad                          0.0369     0.0068    ***
+  mode_Online Ad                          0.0362     0.0068    ***
   mode_Online Matched Sample             -0.0064     0.0093       
-  mode_Online Opt_In Panel               -0.0086     0.0050      *
+  mode_Online Opt_In Panel               -0.0085     0.0050      *
   mode_Probability Panel                 -0.0177     0.0127       
-  mode_Text                               0.0169     0.0048    ***
-  mode_Text_to_Web                        0.0050     0.0046       
-  const                                   0.1586     0.0884      *
+  mode_Text                               0.0170     0.0048    ***
+  mode_Text_to_Web                        0.0051     0.0046       
+  const                                   0.1575     0.0884      *
   ---------------------------------------------------------------
-  adjusted r2:  0.1885
-  n:            1736
+  adjusted r2:  0.1873
+  n:            1734
 ======================================================================
 
 
@@ -890,7 +890,7 @@ REGRESSIONS WITH MODE CONTROLS
 
 
   window: 107 days before election
-  all state questions in window: 2365
+  all state questions in window: 2359
 
 ======================================================================
   ols regression: all states 107 days before election (with mode)
@@ -902,23 +902,23 @@ REGRESSIONS WITH MODE CONTROLS
   duration_days                          -0.0021     0.0004    ***
   days_before_election                   -0.0001     0.0001      *
   pct_dk                                  0.0021     0.0009     **
-  abs_margin                             -0.1295     0.0476    ***
+  abs_margin                             -0.1307     0.0477    ***
   turnout_pct                             0.0026     0.0005    ***
-  mode_App Panel                          0.0533     0.0118    ***
-  mode_Email                              0.0008     0.0078       
-  mode_IVR                                0.0071     0.0067       
-  mode_Mail_to_Phone                     -0.0273     0.0127     **
-  mode_Mail_to_Web                       -0.0394     0.0248       
-  mode_Online Ad                          0.0377     0.0066    ***
-  mode_Online Matched Sample             -0.0176     0.0082     **
-  mode_Online Opt_In Panel               -0.0091     0.0049      *
-  mode_Probability Panel                 -0.0507     0.0164    ***
-  mode_Text                               0.0092     0.0066       
-  mode_Text_to_Web                       -0.0001     0.0044       
-  const                                  -0.2265     0.0359    ***
+  mode_App Panel                          0.0538     0.0118    ***
+  mode_Email                              0.0012     0.0078       
+  mode_IVR                                0.0077     0.0067       
+  mode_Mail_to_Phone                     -0.0269     0.0127     **
+  mode_Mail_to_Web                       -0.0392     0.0248       
+  mode_Online Ad                          0.0376     0.0066    ***
+  mode_Online Matched Sample             -0.0173     0.0082     **
+  mode_Online Opt_In Panel               -0.0085     0.0049      *
+  mode_Probability Panel                 -0.0500     0.0165    ***
+  mode_Text                               0.0096     0.0066       
+  mode_Text_to_Web                        0.0005     0.0044       
+  const                                  -0.2265     0.0360    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1555
-  n:            2365
+  adjusted r2:  0.1554
+  n:            2359
 ======================================================================
 
 
@@ -1057,7 +1057,7 @@ REGRESSIONS WITH MODE CONTROLS
 
 
   window: 107 days before election
-  national questions in window: 801
+  national questions in window: 786
 
 ======================================================================
   ols regression: national 107 days before election (with mode)
@@ -1066,25 +1066,25 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0041     0.0009    ***
-  days_before_election                    0.0001     0.0001       
-  pct_dk                                 -0.0021     0.0008    ***
-  abs_margin                             -0.0004     0.0002    ***
-  mode_App Panel                          0.0069     0.0135       
-  mode_Email                              0.0000     0.0000       
-  mode_IVR                               -0.0039     0.0258       
+  duration_days                          -0.0040     0.0009    ***
+  days_before_election                   -0.0000     0.0001       
+  pct_dk                                 -0.0022     0.0008    ***
+  abs_margin                             -0.0004     0.0001     **
+  mode_App Panel                          0.0086     0.0137       
+  mode_Email                              0.0000     0.0000      *
+  mode_IVR                               -0.0289     0.0125     **
   mode_Mail_to_Phone                     -0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000     **
-  mode_Online Ad                          0.0474     0.0175    ***
-  mode_Online Matched Sample             -0.0235     0.0096     **
-  mode_Online Opt_In Panel               -0.0334     0.0079    ***
-  mode_Probability Panel                 -0.0338     0.0114    ***
+  mode_Mail_to_Web                        0.0000     0.0000       
+  mode_Online Ad                          0.0475     0.0179    ***
+  mode_Online Matched Sample             -0.0256     0.0094    ***
+  mode_Online Opt_In Panel               -0.0348     0.0077    ***
+  mode_Probability Panel                 -0.0331     0.0111    ***
   mode_Text                                 ----       ----       
-  mode_Text_to_Web                       -0.0069     0.0086       
-  const                                  -0.0294     0.0107    ***
+  mode_Text_to_Web                       -0.0064     0.0085       
+  const                                  -0.0243     0.0096     **
   ---------------------------------------------------------------
-  adjusted r2:  0.1630
-  n:            801
+  adjusted r2:  0.1892
+  n:            786
   note:         ---- indicates <10 observations in category
 ======================================================================
 
@@ -1228,15 +1228,15 @@ NATIONAL, ACROSS TIME WINDOWS, NO MODE
 Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
                                      107d                       90d                       60d                       30d                        7d               
 ..............................................................................................................
-duration_days                     -0.004      0.001   ***    -0.002      0.001   ***    -0.002      0.001     *    -0.003      0.001   ***     0.004      0.008      
-days_before_election               0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.004      0.003      
+duration_days                     -0.003      0.001   ***    -0.002      0.001   ***    -0.002      0.001     *    -0.003      0.001   ***     0.004      0.008      
+days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.004      0.003      
 pct_dk                            -0.003      0.001   ***    -0.002      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***    -0.002      0.002      
 abs_margin                        -0.001      0.000   ***    -0.001      0.000   ***    -0.000      0.000   ***    -0.000      0.000    **    -0.001      0.000     *
 
-Constant                          -0.051      0.007          -0.039      0.006          -0.028      0.008          -0.020      0.008          -0.064      0.034      
+Constant                          -0.048      0.006          -0.039      0.006          -0.028      0.008          -0.020      0.008          -0.064      0.034      
 
-Adjusted R Square                   0.07                      0.21                      0.23                      0.15                      0.06                
-N                                    801                       645                       439                       276                        97                
+Adjusted R Square                   0.08                      0.21                      0.23                      0.15                      0.06                
+N                                    786                       645                       439                       276                        97                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1250,25 +1250,25 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
                                      107d                       90d                       60d                       30d                        7d               
 ..............................................................................................................
 duration_days                     -0.004      0.001   ***    -0.003      0.001   ***    -0.003      0.001   ***    -0.004      0.001   ***     0.010      0.008      
-days_before_election               0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.003      0.003      
+days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.003      0.003      
 pct_dk                            -0.002      0.001   ***    -0.002      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***     0.001      0.002      
-abs_margin                        -0.000      0.000   ***    -0.000      0.000           0.000      0.000           0.000      0.000          -0.001      0.000   ***
-mode_App Panel                     0.007      0.014           0.002      0.014           0.006      0.015           0.023      0.018          -0.007      0.038      
-mode_Email                         0.000      0.000           0.000      0.000           0.000      0.000          -0.000      0.000     *     0.000      0.000      
-mode_IVR                          -0.004      0.026          -0.033      0.010   ***    -0.036      0.012   ***    -0.033      0.012   ***    -0.021      0.016      
+abs_margin                        -0.000      0.000    **    -0.000      0.000           0.000      0.000           0.000      0.000          -0.001      0.000   ***
+mode_App Panel                     0.009      0.014           0.002      0.014           0.006      0.015           0.023      0.018          -0.007      0.038      
+mode_Email                         0.000      0.000     *     0.000      0.000           0.000      0.000          -0.000      0.000     *     0.000      0.000      
+mode_IVR                          -0.029      0.013    **    -0.033      0.010   ***    -0.036      0.012   ***    -0.033      0.012   ***    -0.021      0.016      
 mode_Mail_to_Phone                -0.000      0.000           0.000      0.000           0.000      0.000     *    -0.000      0.000          -0.000      0.000      
-mode_Mail_to_Web                  -0.000      0.000    **    -0.000      0.000           0.000      0.000   ***     0.000      0.000   ***    -0.000      0.000      
-mode_Online Ad                     0.047      0.017   ***     0.024      0.013     *     0.022      0.014           0.024      0.016           0.046      0.019    **
-mode_Online Matched Sample        -0.024      0.010    **    -0.030      0.010   ***    -0.041      0.012   ***    -0.044      0.013   ***    -0.020      0.025      
-mode_Online Opt_In Panel          -0.033      0.008   ***    -0.036      0.009   ***    -0.046      0.011   ***    -0.042      0.012   ***    -0.009      0.016      
-mode_Probability Panel            -0.034      0.011   ***    -0.031      0.011   ***    -0.036      0.013   ***    -0.027      0.013    **    -0.054      0.024    **
-mode_Text                          0.003      0.013          -0.003      0.010          -0.022      0.013          -0.021      0.014           0.006      0.020      
-mode_Text_to_Web                  -0.007      0.009          -0.013      0.010          -0.019      0.011     *    -0.016      0.010           0.013      0.013      
+mode_Mail_to_Web                   0.000      0.000          -0.000      0.000           0.000      0.000   ***     0.000      0.000   ***    -0.000      0.000      
+mode_Online Ad                     0.047      0.018   ***     0.024      0.013     *     0.022      0.014           0.024      0.016           0.046      0.019    **
+mode_Online Matched Sample        -0.026      0.009   ***    -0.030      0.010   ***    -0.041      0.012   ***    -0.044      0.013   ***    -0.020      0.025      
+mode_Online Opt_In Panel          -0.035      0.008   ***    -0.036      0.009   ***    -0.046      0.011   ***    -0.042      0.012   ***    -0.009      0.016      
+mode_Probability Panel            -0.033      0.011   ***    -0.031      0.011   ***    -0.036      0.013   ***    -0.027      0.013    **    -0.054      0.024    **
+mode_Text                          0.000      0.012          -0.003      0.010          -0.022      0.013          -0.021      0.014           0.006      0.020      
+mode_Text_to_Web                  -0.006      0.008          -0.013      0.010          -0.019      0.011     *    -0.016      0.010           0.013      0.013      
 
-Constant                          -0.029      0.011          -0.012      0.010           0.011      0.012           0.011      0.015          -0.085      0.032      
+Constant                          -0.024      0.010          -0.012      0.010           0.011      0.012           0.011      0.015          -0.085      0.032      
 
-Adjusted R Square                   0.16                      0.29                      0.38                      0.31                      0.24                
-N                                    801                       645                       439                       276                        97                
+Adjusted R Square                   0.19                      0.29                      0.38                      0.31                      0.24                
+N                                    786                       645                       439                       276                        97                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1284,13 +1284,13 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
 duration_days                     -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***
 days_before_election              -0.000      0.000    **    -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000           0.001      0.002      
 pct_dk                             0.001      0.001           0.001      0.001           0.000      0.001          -0.001      0.001          -0.003      0.003      
-abs_margin                        -0.119      0.048    **    -0.120      0.048    **    -0.093      0.047    **    -0.061      0.055          -0.050      0.109      
+abs_margin                        -0.120      0.048    **    -0.120      0.048    **    -0.093      0.047    **    -0.061      0.055          -0.050      0.109      
 turnout_pct                        0.002      0.001   ***     0.002      0.001   ***     0.003      0.001   ***     0.003      0.001   ***     0.001      0.001      
 
-Constant                          -0.214      0.037          -0.212      0.037          -0.225      0.040          -0.231      0.048          -0.118      0.069      
+Constant                          -0.213      0.037          -0.212      0.037          -0.225      0.040          -0.231      0.048          -0.118      0.069      
 
 Adjusted R Square                   0.11                      0.12                      0.13                      0.13                      0.08                
-N                                   2365                      2176                      1745                      1106                       391                
+N                                   2359                      2176                      1745                      1106                       391                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1306,24 +1306,24 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
 duration_days                     -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.001   ***
 days_before_election              -0.000      0.000     *    -0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000           0.002      0.002      
 pct_dk                             0.002      0.001    **     0.002      0.001    **     0.001      0.001           0.001      0.001           0.004      0.003      
-abs_margin                        -0.129      0.048   ***    -0.133      0.048   ***    -0.107      0.047    **    -0.087      0.055          -0.144      0.112      
+abs_margin                        -0.131      0.048   ***    -0.133      0.048   ***    -0.107      0.047    **    -0.087      0.055          -0.144      0.112      
 turnout_pct                        0.003      0.000   ***     0.003      0.000   ***     0.003      0.001   ***     0.003      0.001   ***     0.001      0.001      
-mode_App Panel                     0.053      0.012   ***     0.052      0.012   ***     0.046      0.012   ***     0.043      0.014   ***     0.088      0.022   ***
+mode_App Panel                     0.054      0.012   ***     0.052      0.012   ***     0.046      0.012   ***     0.043      0.014   ***     0.088      0.022   ***
 mode_Email                         0.001      0.008          -0.001      0.008          -0.004      0.009          -0.008      0.010           0.015      0.014      
-mode_IVR                           0.007      0.007           0.006      0.007           0.008      0.007           0.010      0.008           0.022      0.012     *
+mode_IVR                           0.008      0.007           0.006      0.007           0.008      0.007           0.010      0.008           0.022      0.012     *
 mode_Mail_to_Phone                -0.027      0.013    **    -0.028      0.013    **    -0.033      0.014    **    -0.037      0.016    **     0.000      0.000   ***
 mode_Mail_to_Web                  -0.039      0.025          -0.042      0.025     *    -0.044      0.026     *    -0.051      0.028     *    -0.509      0.012   ***
 mode_Online Ad                     0.038      0.007   ***     0.035      0.007   ***     0.032      0.007   ***     0.039      0.008   ***     0.055      0.013   ***
-mode_Online Matched Sample        -0.018      0.008    **    -0.019      0.008    **    -0.021      0.009    **    -0.025      0.010    **    -0.012      0.017      
-mode_Online Opt_In Panel          -0.009      0.005     *    -0.009      0.005     *    -0.010      0.005    **    -0.009      0.006          -0.001      0.012      
-mode_Probability Panel            -0.051      0.016   ***    -0.047      0.016   ***    -0.051      0.019   ***    -0.038      0.030           0.038      0.028      
-mode_Text                          0.009      0.007           0.010      0.007           0.004      0.007           0.012      0.007           0.015      0.012      
-mode_Text_to_Web                  -0.000      0.004           0.001      0.004          -0.001      0.004          -0.001      0.005           0.008      0.010      
+mode_Online Matched Sample        -0.017      0.008    **    -0.019      0.008    **    -0.021      0.009    **    -0.025      0.010    **    -0.012      0.017      
+mode_Online Opt_In Panel          -0.008      0.005     *    -0.009      0.005     *    -0.010      0.005    **    -0.009      0.006          -0.001      0.012      
+mode_Probability Panel            -0.050      0.016   ***    -0.047      0.016   ***    -0.051      0.019   ***    -0.038      0.030           0.038      0.028      
+mode_Text                          0.010      0.007           0.010      0.007           0.004      0.007           0.012      0.007           0.015      0.012      
+mode_Text_to_Web                   0.001      0.004           0.001      0.004          -0.001      0.004          -0.001      0.005           0.008      0.010      
 
-Constant                          -0.227      0.036          -0.225      0.036          -0.236      0.039          -0.246      0.045          -0.151      0.062      
+Constant                          -0.226      0.036          -0.225      0.036          -0.236      0.039          -0.246      0.045          -0.151      0.062      
 
 Adjusted R Square                   0.16                      0.17                      0.18                      0.20                      0.40                
-N                                   2365                      2176                      1745                      1106                       391                
+N                                   2359                      2176                      1745                      1106                       391                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1337,15 +1337,15 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
                                      107d                       90d                       60d                       30d                        7d               
 ..............................................................................................................
 duration_days                     -0.003      0.000   ***    -0.003      0.000   ***    -0.003      0.000   ***    -0.003      0.000   ***    -0.003      0.000   ***
-days_before_election              -0.000      0.000    **    -0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000          -0.002      0.002      
+days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000          -0.002      0.002      
 pct_dk                             0.002      0.001     *     0.002      0.001    **     0.002      0.001           0.000      0.001          -0.004      0.002      
-abs_margin                        -1.329      0.347   ***    -1.158      0.349   ***    -0.971      0.368   ***    -0.889      0.467     *    -1.159      0.556    **
+abs_margin                        -1.319      0.347   ***    -1.158      0.349   ***    -0.971      0.368   ***    -0.889      0.467     *    -1.159      0.556    **
 turnout_pct                       -0.002      0.001    **    -0.002      0.001          -0.001      0.001          -0.001      0.002          -0.002      0.002      
 
-Constant                           0.176      0.091           0.134      0.094           0.083      0.095           0.081      0.118           0.179      0.143      
+Constant                           0.174      0.091           0.134      0.094           0.083      0.095           0.081      0.118           0.179      0.143      
 
 Adjusted R Square                   0.13                      0.15                      0.16                      0.15                      0.27                
-N                                   1736                      1589                      1254                       789                       303                
+N                                   1734                      1589                      1254                       789                       303                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1361,24 +1361,24 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
 duration_days                     -0.003      0.001   ***    -0.003      0.001   ***    -0.003      0.001   ***    -0.002      0.001   ***    -0.002      0.000   ***
 days_before_election              -0.000      0.000    **    -0.000      0.000   ***    -0.000      0.000   ***     0.001      0.000     *    -0.000      0.002      
 pct_dk                             0.002      0.001   ***     0.003      0.001   ***     0.002      0.001    **     0.001      0.001          -0.001      0.002      
-abs_margin                        -1.305      0.338   ***    -1.147      0.341   ***    -0.959      0.362   ***    -0.899      0.463     *    -1.146      0.524    **
+abs_margin                        -1.298      0.338   ***    -1.147      0.341   ***    -0.959      0.362   ***    -0.899      0.463     *    -1.146      0.524    **
 turnout_pct                       -0.002      0.001    **    -0.002      0.001          -0.001      0.001          -0.001      0.001          -0.002      0.002      
 mode_App Panel                     0.065      0.014   ***     0.060      0.013   ***     0.050      0.013   ***     0.041      0.014   ***     0.049      0.015   ***
 mode_Email                         0.004      0.008          -0.000      0.008          -0.007      0.009          -0.010      0.011           0.013      0.014      
 mode_IVR                           0.021      0.005   ***     0.019      0.005   ***     0.016      0.005   ***     0.011      0.007           0.006      0.011      
 mode_Mail_to_Phone                -0.023      0.012    **    -0.025      0.012    **    -0.031      0.012    **    -0.037      0.014    **     0.000      0.000      
 mode_Mail_to_Web                  -0.002      0.013          -0.006      0.012          -0.010      0.012          -0.016      0.013           0.000      0.000     *
-mode_Online Ad                     0.037      0.007   ***     0.034      0.007   ***     0.030      0.008   ***     0.035      0.008   ***     0.038      0.013   ***
+mode_Online Ad                     0.036      0.007   ***     0.034      0.007   ***     0.030      0.008   ***     0.035      0.008   ***     0.038      0.013   ***
 mode_Online Matched Sample        -0.006      0.009          -0.009      0.009          -0.013      0.010          -0.014      0.011          -0.019      0.016      
 mode_Online Opt_In Panel          -0.009      0.005     *    -0.011      0.005    **    -0.010      0.005    **    -0.007      0.006          -0.004      0.011      
 mode_Probability Panel            -0.018      0.013          -0.017      0.012          -0.026      0.012    **    -0.017      0.012           0.000      0.000      
 mode_Text                          0.017      0.005   ***     0.016      0.005   ***     0.010      0.005     *     0.011      0.007     *     0.009      0.012      
 mode_Text_to_Web                   0.005      0.005           0.004      0.005          -0.001      0.005           0.002      0.005          -0.005      0.007      
 
-Constant                           0.159      0.088           0.121      0.091           0.066      0.092           0.058      0.116           0.139      0.136      
+Constant                           0.158      0.088           0.121      0.091           0.066      0.092           0.058      0.116           0.139      0.136      
 
 Adjusted R Square                   0.19                      0.21                      0.21                      0.22                      0.41                
-N                                   1736                      1589                      1254                       789                       303                
+N                                   1734                      1589                      1254                       789                       303                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1387,16 +1387,16 @@ MODE COEFFICIENTS ACROSS SAMPLES
 Mode                        National           Swing      All States
 ......................................................................
 App Panel                   0.01           0.05***        0.06***
-Email                       0.00           0.00           0.00   
-IVR                        -0.00           0.01           0.02***
+Email                       0.00*          0.00           0.00   
+IVR                        -0.03**         0.01           0.02***
 Mail_to_Phone              -0.00          -0.03**        -0.02** 
-Mail_to_Web                -0.00**        -0.04          -0.00   
+Mail_to_Web                 0.00          -0.04          -0.00   
 Online Ad                   0.05***        0.04***        0.04***
-Online Matched Sample       -0.02**        -0.02**        -0.01   
+Online Matched Sample       -0.03***       -0.02**        -0.01   
 Online Opt_In Panel        -0.03***       -0.01*         -0.01*  
 Probability Panel          -0.03***       -0.05***       -0.02   
 Text                        0.00           0.01           0.02***
-Text_to_Web                -0.01          -0.00           0.01   
+Text_to_Web                -0.01           0.00           0.01   
 
 note: *** p<0.01, ** p<0.05, * p<0.10
 all coefficients relative to Live Phone (reference category)
