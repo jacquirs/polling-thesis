@@ -1393,8 +1393,12 @@ Harris+Trump Polls dataset:
   7731 rows
   1664 unique polls
   2613 unique questions
+  cutoff (start_date >= dropout_cutoff): 1467 polls, 2337 questions
+  cutoff (end_date   >= dropout_cutoff): 1477 polls, 2354 questions
 
 Harris+Trump Polls dataset WITHOUT PARTISAN:
   7299 rows
   1508 unique polls
   2438 unique questions
+  cutoff (start_date >= dropout_cutoff): 1324 polls, 2175 questions
+  cutoff (end_date   >= dropout_cutoff): 1334 polls, 2192 questions
