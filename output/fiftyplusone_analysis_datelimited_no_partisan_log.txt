@@ -16,6 +16,7 @@ nebraska cd-1     1
 nebraska cd-3     1
 
 Questions remaining for accuracy analysis: 2142
+Total number of pollsters: 1299
 
 poll_level counts after flagging:
 poll_level

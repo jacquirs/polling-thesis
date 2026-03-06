@@ -149,6 +149,7 @@ if len(unmatched) > 0:
 # drop any remaining unmatched
 harris_trump_pivot = harris_trump_pivot.dropna(subset=['p_trump_true', 'p_harris_true'])
 print(f"\nQuestions remaining for accuracy analysis: {len(harris_trump_pivot)}")
+print(f"Total number of pollsters: {harris_trump_pivot['poll_id'].nunique()}")
 
 ######## compute Method A accuracy measure
 # A = ln((poll_trump / poll_harris) / (true_trump / true_harris))
