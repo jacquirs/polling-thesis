@@ -1106,40 +1106,13 @@ print(f"  national-level questions: {len(reg_national)}")
 print(f"  state-level questions:    {len(reg_state)}")
 print(f"  swing state questions: {len(reg_state_swing)}")
 
-########################################################################################
-######## BASE REGRESSIONS (NO TIME WINDOWS, NO MODE, SWING/NATIONAL/STATES) ############
-########################################################################################
-
-# national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
-results_national = run_ols_clustered(
-    df          = reg_national,
-    y_col       = 'A',
-    x_cols      = all_x_vars,
-    cluster_col = 'poll_id',
-    label       = 'national polls'
-)
-
-# state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
-results_state = run_ols_clustered(
-    df          = reg_state,
-    y_col       = 'A',
-    x_cols      = state_x_vars,
-    cluster_col = 'poll_id',
-    label       = 'state-level polls'
-)
-
-# swing state regression
-results_swing = run_ols_clustered(
-    df          = reg_state_swing,
-    y_col       = 'A',
-    x_cols      = state_x_vars,
-    cluster_col = 'poll_id',
-    label       = 'swing states'
-)
 
 ########################################################################################
 #################### PREPARE MODE FOR REGRESSIONS (LIVE PHONE REFERENCE) ###############
 ########################################################################################
+
+# Save a copy of the original un-exploded data for non-mode regressions
+reg_df_original = reg_df.copy()
 
 # explode mode into base_mode (each mixed mode poll becomes multiple rows)
 reg_df['base_mode'] = reg_df['mode'].str.split('/')
@@ -1172,19 +1145,33 @@ print(f"mode dummy variables created: {mode_vars}")
 print(f"\nall coefficients will be interpreted relative to {reference_mode} polls")
 
 # resplit into state and swing state and national after exploding and adding mode dummies
+# EXPLODED versions (for mode regressions)
 reg_state = reg_df[reg_df['poll_level'] == 'state'].copy()
 reg_national = reg_df[reg_df['poll_level'] == 'national'].copy()
 reg_state_swing = reg_state[reg_state['state'].isin(swing_states)].copy()
 
-print(f"\nsample sizes after exploding:")
+# ORIGINAL versions (for non-mode regressions)
+reg_state_original = reg_df_original[reg_df_original['poll_level'] == 'state'].copy()
+reg_national_original = reg_df_original[reg_df_original['poll_level'] == 'national'].copy()
+reg_state_swing_original = reg_state_original[reg_state_original['state'].isin(swing_states)].copy()
+
+print(f"\nexploded sample sizes after exploding:")
 print(f"  all state polls: {len(reg_state)}")
 print(f"  swing states only: {len(reg_state_swing)}")
 print(f"  national polls: {len(reg_national)}")
 
-print(f"\nswing states breakdown:")
+print(f"\original sample sizes after exploding:")
+print(f"  all state polls: {len(reg_state_original)}")
+print(f"  swing states only: {len(reg_state_swing_original)}")
+print(f"  national polls: {len(reg_national_original)}")
+
+print(f"\original swing states breakdown:")
+print(reg_state_swing_original['state'].value_counts().sort_index())
+
+print(f"\nexploded swing states breakdown:")
 print(reg_state_swing['state'].value_counts().sort_index())
 
-print(f"\nmode distribution in swing states:")
+print(f"\nexploded mode distribution in swing states:")
 mode_dist = reg_state_swing['base_mode'].value_counts()
 for mode, count in mode_dist.items():
     pct = 100 * count / len(reg_state_swing)
@@ -1199,6 +1186,39 @@ national_x_vars_no_mode = time_vars + national_vars
 # with mode
 state_x_vars_with_mode = time_vars + state_vars + mode_vars
 national_x_vars_with_mode = time_vars + national_vars + mode_vars
+
+
+########################################################################################
+######## BASE REGRESSIONS (NO TIME WINDOWS, NO MODE, SWING/NATIONAL/STATES) ############
+########################################################################################
+
+# national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
+results_national = run_ols_clustered(
+    df          = reg_national,
+    y_col       = 'A',
+    x_cols      = all_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'national polls'
+)
+
+# state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
+results_state = run_ols_clustered(
+    df          = reg_state,
+    y_col       = 'A',
+    x_cols      = state_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'state-level polls'
+)
+
+# swing state regression
+results_swing = run_ols_clustered(
+    df          = reg_state_swing,
+    y_col       = 'A',
+    x_cols      = state_x_vars,
+    cluster_col = 'poll_id',
+    label       = 'swing states'
+)
+
 
 ########################################################################################
 #################### BASE REGRESSIONS (NO TIME, WITH MODE, SWING/STATES/NATIONAL) ####################################
@@ -1250,7 +1270,7 @@ swing_window_results_no_mode = {}
 
 for window in time_windows:
     # filter swing states to this time window
-    state_w = reg_state_swing[reg_state_swing['days_before_election'] <= window].copy()
+    state_w = reg_state_swing_original[reg_state_swing_original['days_before_election'] <= window].copy()
     
     print(f"\n  window: {window} days before election")
     print(f"  swing state questions in window: {len(state_w)}")
@@ -1276,7 +1296,7 @@ all_states_window_results_no_mode = {}
 
 for window in time_windows:
     # filter all states to this time window
-    state_w = reg_state[reg_state['days_before_election'] <= window].copy()
+    state_w = reg_state_original[reg_state_original['days_before_election'] <= window].copy()
     
     print(f"\n  window: {window} days before election")
     print(f"  all state questions in window: {len(state_w)}")
@@ -1302,7 +1322,7 @@ national_window_results_no_mode = {}
 
 for window in time_windows:
     # filter national to this time window
-    national_w = reg_national[reg_national['days_before_election'] <= window].copy()
+    national_w = reg_national_original[reg_national_original['days_before_election'] <= window].copy()
     
     print(f"\n  window: {window} days before election")
     print(f"  national questions in window: {len(national_w)}")
