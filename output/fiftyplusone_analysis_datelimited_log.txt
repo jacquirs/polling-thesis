@@ -200,62 +200,6 @@ regression sample sizes:
   state-level questions:    1629
   swing state questions: 1182
 
-======================================================================
-  ols regression: national polls
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0032     0.0008    ***
-  days_before_election                   -0.0000     0.0001       
-  pct_dk                                 -0.0026     0.0007    ***
-  abs_margin                             -0.0008     0.0001    ***
-  const                                  -0.0519     0.0059    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0637
-  n:            671
-======================================================================
-
-
-======================================================================
-  ols regression: state-level polls
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0017     0.0003    ***
-  days_before_election                   -0.0002     0.0001    ***
-  pct_dk                                  0.0005     0.0010       
-  abs_margin                             -0.1124     0.0541     **
-  turnout_pct                             0.0022     0.0005    ***
-  const                                  -0.1978     0.0394    ***
-  ---------------------------------------------------------------
-  adjusted r2:  0.0933
-  n:            1629
-======================================================================
-
-
-======================================================================
-  ols regression: swing states
-  dependent variable: method a  (+ = republican bias)
-  standard errors: clustered by poll_id
-======================================================================
-  variable                                  coef         se    sig
-  ---------------------------------------------------------------
-  duration_days                          -0.0029     0.0004    ***
-  days_before_election                   -0.0003     0.0001    ***
-  pct_dk                                  0.0012     0.0009       
-  abs_margin                             -1.5236     0.3667    ***
-  turnout_pct                            -0.0032     0.0013     **
-  const                                   0.2294     0.0994     **
-  ---------------------------------------------------------------
-  adjusted r2:  0.1372
-  n:            1182
-======================================================================
-
-
 Unique base modes after exploding:
 base_mode
 Online Opt-In Panel      1064
@@ -277,12 +221,26 @@ mode dummy variables created: ['mode_App Panel', 'mode_Email', 'mode_IVR', 'mode
 
 all coefficients will be interpreted relative to Live Phone polls
 
-sample sizes after exploding:
+exploded sample sizes after exploding:
   all state polls: 2359
   swing states only: 1734
   national polls: 786
+\original sample sizes after exploding:
+  all state polls: 1629
+  swing states only: 1182
+  national polls: 671
+\original swing states breakdown:
+state
+arizona           157
+georgia           152
+michigan          188
+nevada            116
+north carolina    158
+pennsylvania      227
+wisconsin         184
+Name: count, dtype: int64
 
-swing states breakdown:
+exploded swing states breakdown:
 state
 arizona           229
 georgia           226
@@ -293,7 +251,7 @@ pennsylvania      343
 wisconsin         266
 Name: count, dtype: int64
 
-mode distribution in swing states:
+exploded mode distribution in swing states:
   Online Opt-In Panel: 485 (28.0%)
   Live Phone: 342 (19.7%) (REFERENCE)
   Text-to-Web: 287 (16.6%)
@@ -306,6 +264,62 @@ mode distribution in swing states:
   App Panel: 16 (0.9%)
   Probability Panel: 16 (0.9%)
   Mail-to-Phone: 11 (0.6%)
+
+======================================================================
+  ols regression: national polls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0033     0.0007    ***
+  days_before_election                   -0.0000     0.0001       
+  pct_dk                                 -0.0029     0.0007    ***
+  abs_margin                             -0.0007     0.0001    ***
+  const                                  -0.0479     0.0063    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.0768
+  n:            786
+======================================================================
+
+
+======================================================================
+  ols regression: state-level polls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0018     0.0003    ***
+  days_before_election                   -0.0002     0.0001     **
+  pct_dk                                  0.0011     0.0009       
+  abs_margin                             -0.1196     0.0480     **
+  turnout_pct                             0.0025     0.0005    ***
+  const                                  -0.2133     0.0371    ***
+  ---------------------------------------------------------------
+  adjusted r2:  0.1073
+  n:            2359
+======================================================================
+
+
+======================================================================
+  ols regression: swing states
+  dependent variable: method a  (+ = republican bias)
+  standard errors: clustered by poll_id
+======================================================================
+  variable                                  coef         se    sig
+  ---------------------------------------------------------------
+  duration_days                          -0.0031     0.0005    ***
+  days_before_election                   -0.0002     0.0001    ***
+  pct_dk                                  0.0016     0.0009      *
+  abs_margin                             -1.3193     0.3470    ***
+  turnout_pct                            -0.0025     0.0012     **
+  const                                   0.1738     0.0909      *
+  ---------------------------------------------------------------
+  adjusted r2:  0.1327
+  n:            1734
+======================================================================
+
 REGRESSIONS WITH MODE CONTROLS
 
 ======================================================================
@@ -399,7 +413,7 @@ REGRESSIONS WITH MODE CONTROLS
 
 
   window: 107 days before election
-  swing state questions in window: 1734
+  swing state questions in window: 1182
 
 ======================================================================
   ols regression: swing states 107 days before election (no mode)
@@ -408,20 +422,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0031     0.0005    ***
-  days_before_election                   -0.0002     0.0001    ***
-  pct_dk                                  0.0016     0.0009      *
-  abs_margin                             -1.3193     0.3470    ***
-  turnout_pct                            -0.0025     0.0012     **
-  const                                   0.1738     0.0909      *
+  duration_days                          -0.0029     0.0004    ***
+  days_before_election                   -0.0003     0.0001    ***
+  pct_dk                                  0.0012     0.0009       
+  abs_margin                             -1.5236     0.3667    ***
+  turnout_pct                            -0.0032     0.0013     **
+  const                                   0.2294     0.0994     **
   ---------------------------------------------------------------
-  adjusted r2:  0.1327
-  n:            1734
+  adjusted r2:  0.1372
+  n:            1182
 ======================================================================
 
 
   window: 90 days before election
-  swing state questions in window: 1589
+  swing state questions in window: 1092
 
 ======================================================================
   ols regression: swing states 90 days before election (no mode)
@@ -430,20 +444,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0029     0.0005    ***
-  days_before_election                   -0.0004     0.0001    ***
-  pct_dk                                  0.0019     0.0009     **
-  abs_margin                             -1.1584     0.3494    ***
-  turnout_pct                            -0.0019     0.0012       
-  const                                   0.1338     0.0937       
+  duration_days                          -0.0027     0.0004    ***
+  days_before_election                   -0.0005     0.0001    ***
+  pct_dk                                  0.0013     0.0010       
+  abs_margin                             -1.3564     0.3825    ***
+  turnout_pct                            -0.0027     0.0013     **
+  const                                   0.1940     0.1035      *
   ---------------------------------------------------------------
-  adjusted r2:  0.1486
-  n:            1589
+  adjusted r2:  0.1586
+  n:            1092
 ======================================================================
 
 
   window: 60 days before election
-  swing state questions in window: 1254
+  swing state questions in window: 852
 
 ======================================================================
   ols regression: swing states 60 days before election (no mode)
@@ -452,20 +466,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0028     0.0005    ***
+  duration_days                          -0.0028     0.0004    ***
   days_before_election                   -0.0005     0.0001    ***
-  pct_dk                                  0.0017     0.0011       
-  abs_margin                             -0.9713     0.3685    ***
-  turnout_pct                            -0.0013     0.0012       
-  const                                   0.0827     0.0949       
+  pct_dk                                  0.0004     0.0011       
+  abs_margin                             -1.1854     0.3851    ***
+  turnout_pct                            -0.0019     0.0013       
+  const                                   0.1426     0.0984       
   ---------------------------------------------------------------
-  adjusted r2:  0.1553
-  n:            1254
+  adjusted r2:  0.1686
+  n:            852
 ======================================================================
 
 
   window: 30 days before election
-  swing state questions in window: 789
+  swing state questions in window: 526
 
 ======================================================================
   ols regression: swing states 30 days before election (no mode)
@@ -474,20 +488,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0027     0.0005    ***
-  days_before_election                    0.0003     0.0003       
-  pct_dk                                  0.0002     0.0014       
-  abs_margin                             -0.8891     0.4673      *
-  turnout_pct                            -0.0013     0.0015       
-  const                                   0.0813     0.1181       
+  duration_days                          -0.0027     0.0004    ***
+  days_before_election                    0.0001     0.0003       
+  pct_dk                                 -0.0019     0.0015       
+  abs_margin                             -1.2465     0.4416    ***
+  turnout_pct                            -0.0025     0.0015      *
+  const                                   0.1817     0.1125       
   ---------------------------------------------------------------
-  adjusted r2:  0.1480
-  n:            789
+  adjusted r2:  0.1794
+  n:            526
 ======================================================================
 
 
   window: 7 days before election
-  swing state questions in window: 303
+  swing state questions in window: 228
 
 ======================================================================
   ols regression: swing states 7 days before election (no mode)
@@ -496,20 +510,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0029     0.0004    ***
-  days_before_election                   -0.0025     0.0022       
-  pct_dk                                 -0.0035     0.0024       
-  abs_margin                             -1.1592     0.5563     **
-  turnout_pct                            -0.0022     0.0018       
-  const                                   0.1787     0.1427       
+  duration_days                          -0.0031     0.0003    ***
+  days_before_election                   -0.0017     0.0020       
+  pct_dk                                 -0.0050     0.0027      *
+  abs_margin                             -1.1402     0.6056      *
+  turnout_pct                            -0.0025     0.0020       
+  const                                   0.2060     0.1530       
   ---------------------------------------------------------------
-  adjusted r2:  0.2717
-  n:            303
+  adjusted r2:  0.3236
+  n:            228
 ======================================================================
 
 
   window: 107 days before election
-  all state questions in window: 2359
+  all state questions in window: 1629
 
 ======================================================================
   ols regression: all states 107 days before election (no mode)
@@ -518,20 +532,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0018     0.0003    ***
-  days_before_election                   -0.0002     0.0001     **
-  pct_dk                                  0.0011     0.0009       
-  abs_margin                             -0.1196     0.0480     **
-  turnout_pct                             0.0025     0.0005    ***
-  const                                  -0.2133     0.0371    ***
+  duration_days                          -0.0017     0.0003    ***
+  days_before_election                   -0.0002     0.0001    ***
+  pct_dk                                  0.0005     0.0010       
+  abs_margin                             -0.1124     0.0541     **
+  turnout_pct                             0.0022     0.0005    ***
+  const                                  -0.1978     0.0394    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1073
-  n:            2359
+  adjusted r2:  0.0933
+  n:            1629
 ======================================================================
 
 
   window: 90 days before election
-  all state questions in window: 2176
+  all state questions in window: 1513
 
 ======================================================================
   ols regression: all states 90 days before election (no mode)
@@ -540,20 +554,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0017     0.0003    ***
+  duration_days                          -0.0016     0.0003    ***
   days_before_election                   -0.0004     0.0001    ***
-  pct_dk                                  0.0012     0.0010       
-  abs_margin                             -0.1203     0.0480     **
-  turnout_pct                             0.0025     0.0005    ***
-  const                                  -0.2123     0.0373    ***
+  pct_dk                                  0.0004     0.0011       
+  abs_margin                             -0.1177     0.0538     **
+  turnout_pct                             0.0022     0.0005    ***
+  const                                  -0.1904     0.0392    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1209
-  n:            2176
+  adjusted r2:  0.1087
+  n:            1513
 ======================================================================
 
 
   window: 60 days before election
-  all state questions in window: 1745
+  all state questions in window: 1205
 
 ======================================================================
   ols regression: all states 60 days before election (no mode)
@@ -562,20 +576,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0018     0.0003    ***
-  days_before_election                   -0.0004     0.0001    ***
-  pct_dk                                  0.0003     0.0011       
-  abs_margin                             -0.0930     0.0471     **
-  turnout_pct                             0.0027     0.0005    ***
-  const                                  -0.2253     0.0399    ***
+  duration_days                          -0.0019     0.0003    ***
+  days_before_election                   -0.0005     0.0001    ***
+  pct_dk                                 -0.0015     0.0011       
+  abs_margin                             -0.0972     0.0522      *
+  turnout_pct                             0.0025     0.0005    ***
+  const                                  -0.2040     0.0402    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1295
-  n:            1745
+  adjusted r2:  0.1301
+  n:            1205
 ======================================================================
 
 
   window: 30 days before election
-  all state questions in window: 1106
+  all state questions in window: 751
 
 ======================================================================
   ols regression: all states 30 days before election (no mode)
@@ -584,20 +598,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0018     0.0004    ***
+  duration_days                          -0.0020     0.0003    ***
   days_before_election                   -0.0001     0.0003       
-  pct_dk                                 -0.0006     0.0014       
-  abs_margin                             -0.0607     0.0551       
-  turnout_pct                             0.0028     0.0007    ***
-  const                                  -0.2312     0.0482    ***
+  pct_dk                                 -0.0034     0.0015     **
+  abs_margin                             -0.0402     0.0539       
+  turnout_pct                             0.0026     0.0007    ***
+  const                                  -0.2105     0.0472    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1269
-  n:            1106
+  adjusted r2:  0.1263
+  n:            751
 ======================================================================
 
 
   window: 7 days before election
-  all state questions in window: 391
+  all state questions in window: 296
 
 ======================================================================
   ols regression: all states 7 days before election (no mode)
@@ -606,20 +620,20 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0021     0.0005    ***
-  days_before_election                    0.0009     0.0024       
-  pct_dk                                 -0.0025     0.0027       
-  abs_margin                             -0.0505     0.1095       
-  turnout_pct                             0.0012     0.0009       
-  const                                  -0.1178     0.0686      *
+  duration_days                          -0.0023     0.0005    ***
+  days_before_election                    0.0017     0.0024       
+  pct_dk                                 -0.0054     0.0027     **
+  abs_margin                             -0.0558     0.0998       
+  turnout_pct                             0.0011     0.0010       
+  const                                  -0.0959     0.0730       
   ---------------------------------------------------------------
-  adjusted r2:  0.0806
-  n:            391
+  adjusted r2:  0.1031
+  n:            296
 ======================================================================
 
 
   window: 107 days before election
-  national questions in window: 786
+  national questions in window: 671
 
 ======================================================================
   ols regression: national 107 days before election (no mode)
@@ -628,19 +642,19 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0033     0.0007    ***
+  duration_days                          -0.0032     0.0008    ***
   days_before_election                   -0.0000     0.0001       
-  pct_dk                                 -0.0029     0.0007    ***
-  abs_margin                             -0.0007     0.0001    ***
-  const                                  -0.0479     0.0063    ***
+  pct_dk                                 -0.0026     0.0007    ***
+  abs_margin                             -0.0008     0.0001    ***
+  const                                  -0.0519     0.0059    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.0768
-  n:            786
+  adjusted r2:  0.0637
+  n:            671
 ======================================================================
 
 
   window: 90 days before election
-  national questions in window: 645
+  national questions in window: 561
 
 ======================================================================
   ols regression: national 90 days before election (no mode)
@@ -649,19 +663,19 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0017     0.0006    ***
+  duration_days                          -0.0018     0.0007     **
   days_before_election                   -0.0006     0.0001    ***
-  pct_dk                                 -0.0024     0.0006    ***
+  pct_dk                                 -0.0023     0.0006    ***
   abs_margin                             -0.0006     0.0001    ***
-  const                                  -0.0387     0.0057    ***
+  const                                  -0.0418     0.0052    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.2085
-  n:            645
+  adjusted r2:  0.1931
+  n:            561
 ======================================================================
 
 
   window: 60 days before election
-  national questions in window: 439
+  national questions in window: 380
 
 ======================================================================
   ols regression: national 60 days before election (no mode)
@@ -670,19 +684,19 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0020     0.0011      *
+  duration_days                          -0.0021     0.0010     **
   days_before_election                   -0.0011     0.0002    ***
   pct_dk                                 -0.0023     0.0007    ***
   abs_margin                             -0.0004     0.0001    ***
-  const                                  -0.0277     0.0082    ***
+  const                                  -0.0296     0.0075    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.2333
-  n:            439
+  adjusted r2:  0.2217
+  n:            380
 ======================================================================
 
 
   window: 30 days before election
-  national questions in window: 276
+  national questions in window: 234
 
 ======================================================================
   ols regression: national 30 days before election (no mode)
@@ -691,19 +705,19 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                          -0.0028     0.0009    ***
-  days_before_election                   -0.0012     0.0004    ***
-  pct_dk                                 -0.0028     0.0009    ***
-  abs_margin                             -0.0003     0.0001     **
-  const                                  -0.0198     0.0079     **
+  duration_days                          -0.0027     0.0009    ***
+  days_before_election                   -0.0013     0.0003    ***
+  pct_dk                                 -0.0027     0.0008    ***
+  abs_margin                             -0.0003     0.0001    ***
+  const                                  -0.0219     0.0069    ***
   ---------------------------------------------------------------
-  adjusted r2:  0.1512
-  n:            276
+  adjusted r2:  0.1583
+  n:            234
 ======================================================================
 
 
   window: 7 days before election
-  national questions in window: 97
+  national questions in window: 73
 
 ======================================================================
   ols regression: national 7 days before election (no mode)
@@ -712,14 +726,14 @@ REGRESSIONS WITH MODE CONTROLS
 ======================================================================
   variable                                  coef         se    sig
   ---------------------------------------------------------------
-  duration_days                           0.0041     0.0076       
-  days_before_election                    0.0037     0.0032       
-  pct_dk                                 -0.0023     0.0016       
-  abs_margin                             -0.0009     0.0005      *
-  const                                  -0.0639     0.0339      *
+  duration_days                           0.0019     0.0069       
+  days_before_election                    0.0013     0.0028       
+  pct_dk                                 -0.0025     0.0015      *
+  abs_margin                             -0.0007     0.0004       
+  const                                  -0.0466     0.0292       
   ---------------------------------------------------------------
-  adjusted r2:  0.0561
-  n:            97
+  adjusted r2:  0.0072
+  n:            73
 ======================================================================
 
 
@@ -1229,15 +1243,15 @@ NATIONAL, ACROSS TIME WINDOWS, NO MODE
 Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
                                      107d                       90d                       60d                       30d                        7d               
 ..............................................................................................................
-duration_days                     -0.003      0.001   ***    -0.002      0.001   ***    -0.002      0.001     *    -0.003      0.001   ***     0.004      0.008      
-days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.004      0.003      
-pct_dk                            -0.003      0.001   ***    -0.002      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***    -0.002      0.002      
-abs_margin                        -0.001      0.000   ***    -0.001      0.000   ***    -0.000      0.000   ***    -0.000      0.000    **    -0.001      0.000     *
+duration_days                     -0.003      0.001   ***    -0.002      0.001    **    -0.002      0.001    **    -0.003      0.001   ***     0.002      0.007      
+days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.001      0.003      
+pct_dk                            -0.003      0.001   ***    -0.002      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***    -0.003      0.001     *
+abs_margin                        -0.001      0.000   ***    -0.001      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***    -0.001      0.000      
 
-Constant                          -0.048      0.006          -0.039      0.006          -0.028      0.008          -0.020      0.008          -0.064      0.034      
+Constant                          -0.052      0.006          -0.042      0.005          -0.030      0.008          -0.022      0.007          -0.047      0.029      
 
-Adjusted R Square                   0.08                      0.21                      0.23                      0.15                      0.06                
-N                                    786                       645                       439                       276                        97                
+Adjusted R Square                   0.06                      0.19                      0.22                      0.16                      0.01                
+N                                    671                       561                       380                       234                        73                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1283,15 +1297,15 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
                                      107d                       90d                       60d                       30d                        7d               
 ..............................................................................................................
 duration_days                     -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***
-days_before_election              -0.000      0.000    **    -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000           0.001      0.002      
-pct_dk                             0.001      0.001           0.001      0.001           0.000      0.001          -0.001      0.001          -0.003      0.003      
-abs_margin                        -0.120      0.048    **    -0.120      0.048    **    -0.093      0.047    **    -0.061      0.055          -0.050      0.109      
+days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000           0.002      0.002      
+pct_dk                             0.000      0.001           0.000      0.001          -0.001      0.001          -0.003      0.001    **    -0.005      0.003    **
+abs_margin                        -0.112      0.054    **    -0.118      0.054    **    -0.097      0.052     *    -0.040      0.054          -0.056      0.100      
 turnout_pct                        0.002      0.001   ***     0.002      0.001   ***     0.003      0.001   ***     0.003      0.001   ***     0.001      0.001      
 
-Constant                          -0.213      0.037          -0.212      0.037          -0.225      0.040          -0.231      0.048          -0.118      0.069      
+Constant                          -0.198      0.039          -0.190      0.039          -0.204      0.040          -0.211      0.047          -0.096      0.073      
 
-Adjusted R Square                   0.11                      0.12                      0.13                      0.13                      0.08                
-N                                   2359                      2176                      1745                      1106                       391                
+Adjusted R Square                   0.09                      0.11                      0.13                      0.13                      0.10                
+N                                   1629                      1513                      1205                       751                       296                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1338,15 +1352,15 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
                                      107d                       90d                       60d                       30d                        7d               
 ..............................................................................................................
 duration_days                     -0.003      0.000   ***    -0.003      0.000   ***    -0.003      0.000   ***    -0.003      0.000   ***    -0.003      0.000   ***
-days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000          -0.002      0.002      
-pct_dk                             0.002      0.001     *     0.002      0.001    **     0.002      0.001           0.000      0.001          -0.004      0.002      
-abs_margin                        -1.319      0.347   ***    -1.158      0.349   ***    -0.971      0.368   ***    -0.889      0.467     *    -1.159      0.556    **
-turnout_pct                       -0.002      0.001    **    -0.002      0.001          -0.001      0.001          -0.001      0.002          -0.002      0.002      
+days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.001      0.000   ***     0.000      0.000          -0.002      0.002      
+pct_dk                             0.001      0.001           0.001      0.001           0.000      0.001          -0.002      0.001          -0.005      0.003     *
+abs_margin                        -1.524      0.367   ***    -1.356      0.382   ***    -1.185      0.385   ***    -1.246      0.442   ***    -1.140      0.606     *
+turnout_pct                       -0.003      0.001    **    -0.003      0.001    **    -0.002      0.001          -0.002      0.001     *    -0.003      0.002      
 
-Constant                           0.174      0.091           0.134      0.094           0.083      0.095           0.081      0.118           0.179      0.143      
+Constant                           0.229      0.099           0.194      0.104           0.143      0.098           0.182      0.113           0.206      0.153      
 
-Adjusted R Square                   0.13                      0.15                      0.16                      0.15                      0.27                
-N                                   1734                      1589                      1254                       789                       303                
+Adjusted R Square                   0.14                      0.16                      0.17                      0.18                      0.32                
+N                                   1182                      1092                       852                       526                       228                
 
 Note: Robust Standard Errors Reported
 Sig: *<.10; **<.05; ***<.01
@@ -1401,3 +1415,36 @@ Text_to_Web                -0.01           0.00           0.01
 
 note: *** p<0.01, ** p<0.05, * p<0.10
 all coefficients relative to Live Phone (reference category)
+
+==============================================================================================================
+SAMPLE SIZE CHANGES ACROSS TIME WINDOWS
+==============================================================================================================
+
+Cumulative Sample Sizes (polls within X days of election):
+Window (days)      Swing States      All States        National
+------------------------------------------------------------
+107                        1182            1629             671
+90                         1092            1513             561
+60                          852            1205             380
+30                          526             751             234
+7                           228             296              73
+
+
+Polls Excluded When Moving to Narrower Window:
+Window Change                Swing States           All States             National
+(from to)                  N (% of prior)       N (% of prior)       N (% of prior)
+--------------------------------------------------------------------------------
+107 to 90                90 (  7.6%)            116 (  7.1%)            110 ( 16.4%)
+90 to 60                240 ( 22.0%)            308 ( 20.4%)            181 ( 32.3%)
+60 to 30                326 ( 38.3%)            454 ( 37.7%)            146 ( 38.4%)
+30 to 7                 298 ( 56.7%)            455 ( 60.6%)            161 ( 68.8%)
+
+
+Overall Reduction (107 days to 7 days):
+Sample                     From         To       Drop     % Reduction
+-----------------------------------------------------------------
+Swing States               1182        228        954           80.7%
+All States                 1629        296       1333           81.8%
+National                    671         73        598           89.1%
+==============================================================================================================
+

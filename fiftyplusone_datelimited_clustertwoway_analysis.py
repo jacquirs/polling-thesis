@@ -632,7 +632,7 @@ for window in time_windows:
     print(f"  swing state questions in window: {len(state_w)}")
     
     # check if we have enough complete cases
-    state_complete = state_w[state_x_vars_no_mode + ['A', 'poll_id']].dropna()
+    state_complete = state_w[state_x_vars_no_mode + ['A', 'poll_id']].dropna() #there are no na to drop
     
     if len(state_complete) < 10:
         print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
@@ -659,7 +659,7 @@ for window in time_windows:
     print(f"  all state questions in window: {len(state_w)}")
     
     # check if we have enough complete cases
-    state_complete = state_w[state_x_vars_no_mode + ['A', 'poll_id']].dropna()
+    state_complete = state_w[state_x_vars_no_mode + ['A', 'poll_id']].dropna() #there are no na to drop
     
     if len(state_complete) < 10:
         print(f"  all state regression skipped, only {len(state_complete)} complete cases")
@@ -686,7 +686,7 @@ for window in time_windows:
     print(f"  national questions in window: {len(national_w)}")
     
     # check if we have enough complete cases
-    national_complete = national_w[national_x_vars_no_mode + ['A', 'poll_id']].dropna()
+    national_complete = national_w[national_x_vars_no_mode + ['A', 'poll_id']].dropna() #there are no na to drop
     
     if len(national_complete) < 10:
         print(f"  national regression skipped, only {len(national_complete)} complete cases")
@@ -718,7 +718,7 @@ for window in time_windows:
     print(f"  swing state questions in window: {len(state_w)}")
     
     # check if we have enough complete cases
-    state_complete = state_w[state_x_vars_with_mode + ['A', 'poll_id']].dropna()
+    state_complete = state_w[state_x_vars_with_mode + ['A', 'poll_id']].dropna() #there are no na to drop
     
     if len(state_complete) < 10:
         print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
@@ -745,7 +745,7 @@ for window in time_windows:
     print(f"  all state questions in window: {len(state_w)}")
     
     # check if we have enough complete cases
-    state_complete = state_w[state_x_vars_with_mode + ['A', 'poll_id']].dropna()
+    state_complete = state_w[state_x_vars_with_mode + ['A', 'poll_id']].dropna() #there are no na to drop
     
     if len(state_complete) < 10:
         print(f"  all state regression skipped, only {len(state_complete)} complete cases")
@@ -772,7 +772,7 @@ for window in time_windows:
     print(f"  national questions in window: {len(national_w)}")
     
     # check if we have enough complete cases
-    national_complete = national_w[national_x_vars_with_mode + ['A', 'poll_id']].dropna()
+    national_complete = national_w[national_x_vars_with_mode + ['A', 'poll_id']].dropna() #there are no na to drop
     
     if len(national_complete) < 10:
         print(f"  national regression skipped, only {len(national_complete)} complete cases")
@@ -1294,6 +1294,103 @@ for mode_var in sorted(mode_vars):
 
 print("\nnote: *** p<0.01, ** p<0.05, * p<0.10")
 print(f"all coefficients relative to {reference_mode} (reference category)")
+
+
+########################################################################################
+#################### SAMPLE SIZES ACROSS TIME WINDOWS ##############################
+########################################################################################
+
+print("\n" + "="*110)
+print("SAMPLE SIZE CHANGES ACROSS TIME WINDOWS")
+print("="*110)
+
+# create sample size tracking
+sample_tracking = []
+
+for window in time_windows:
+    # swing states
+    state_w = reg_state_swing_original[reg_state_swing_original['days_before_election'] <= window].copy()
+    n_swing = len(state_w)
+    
+    # all states
+    state_w_all = reg_state_original[reg_state_original['days_before_election'] <= window].copy()
+    n_all = len(state_w_all)
+    
+    # national
+    national_w = reg_national_original[reg_national_original['days_before_election'] <= window].copy()
+    n_national = len(national_w)
+    
+    sample_tracking.append({
+        'window': window,
+        'swing': n_swing,
+        'all_states': n_all,
+        'national': n_national
+    })
+
+# convert to dataframe
+sample_df = pd.DataFrame(sample_tracking)
+
+# print cumulative table
+print("\nCumulative Sample Sizes (polls within X days of election):")
+print(f"{'Window (days)':<15} {'Swing States':>15} {'All States':>15} {'National':>15}")
+print("-" * 60)
+for _, row in sample_df.iterrows():
+    print(f"{int(row['window']):<15} {int(row['swing']):>15} {int(row['all_states']):>15} {int(row['national']):>15}")
+
+# calculate and print marginal changes (polls added between windows)
+print("\n\nPolls Excluded When Moving to Narrower Window:")
+print(f"{'Window Change':<20} {'Swing States':>20} {'All States':>20} {'National':>20}")
+print(f"{'(from to)':<20} {'N (% of prior)':>20} {'N (% of prior)':>20} {'N (% of prior)':>20}")
+print("-" * 80)
+
+for i in range(len(sample_df) - 1):
+    from_window = sample_df.iloc[i]['window']
+    to_window = sample_df.iloc[i + 1]['window']
+    
+    # calculate drops
+    swing_drop = sample_df.iloc[i]['swing'] - sample_df.iloc[i + 1]['swing']
+    swing_pct = 100 * swing_drop / sample_df.iloc[i]['swing'] if sample_df.iloc[i]['swing'] > 0 else 0
+    
+    all_drop = sample_df.iloc[i]['all_states'] - sample_df.iloc[i + 1]['all_states']
+    all_pct = 100 * all_drop / sample_df.iloc[i]['all_states'] if sample_df.iloc[i]['all_states'] > 0 else 0
+    
+    nat_drop = sample_df.iloc[i]['national'] - sample_df.iloc[i + 1]['national']
+    nat_pct = 100 * nat_drop / sample_df.iloc[i]['national'] if sample_df.iloc[i]['national'] > 0 else 0
+    
+    window_label = f"{int(from_window)} to {int(to_window)}"
+    
+    print(f"{window_label:<20} {swing_drop:>6} ({swing_pct:>5.1f}%){' ':>8} "
+          f"{all_drop:>6} ({all_pct:>5.1f}%){' ':>8} "
+          f"{nat_drop:>6} ({nat_pct:>5.1f}%)")
+
+# print overall reduction from widest to narrowest
+print("\n\nOverall Reduction (107 days to 7 days):")
+print(f"{'Sample':<20} {'From':>10} {'To':>10} {'Drop':>10} {'% Reduction':>15}")
+print("-" * 65)
+
+swing_overall = ((sample_df.iloc[0]['swing'] - sample_df.iloc[-1]['swing']) / 
+                 sample_df.iloc[0]['swing'] * 100)
+all_overall = ((sample_df.iloc[0]['all_states'] - sample_df.iloc[-1]['all_states']) / 
+               sample_df.iloc[0]['all_states'] * 100)
+nat_overall = ((sample_df.iloc[0]['national'] - sample_df.iloc[-1]['national']) / 
+               sample_df.iloc[0]['national'] * 100)
+
+print(f"{'Swing States':<20} {int(sample_df.iloc[0]['swing']):>10} "
+      f"{int(sample_df.iloc[-1]['swing']):>10} "
+      f"{int(sample_df.iloc[0]['swing'] - sample_df.iloc[-1]['swing']):>10} "
+      f"{swing_overall:>14.1f}%")
+
+print(f"{'All States':<20} {int(sample_df.iloc[0]['all_states']):>10} "
+      f"{int(sample_df.iloc[-1]['all_states']):>10} "
+      f"{int(sample_df.iloc[0]['all_states'] - sample_df.iloc[-1]['all_states']):>10} "
+      f"{all_overall:>14.1f}%")
+
+print(f"{'National':<20} {int(sample_df.iloc[0]['national']):>10} "
+      f"{int(sample_df.iloc[-1]['national']):>10} "
+      f"{int(sample_df.iloc[0]['national'] - sample_df.iloc[-1]['national']):>10} "
+      f"{nat_overall:>14.1f}%")
+
+print("="*110 + "\n")
 
 
 ######## save outputs
