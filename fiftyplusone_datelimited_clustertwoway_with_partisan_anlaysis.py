@@ -1442,13 +1442,13 @@ print("\nAll Questions (N={})".format(len(reg_df_original)))
 print(desc_all.to_string())
 
 # National only
-desc_nat = reg_national_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin']].describe()
+desc_nat = reg_national_original[['A', 'duration_days', 'days_before_election', 'pct_dk','partisan_flag']].describe()
 
 print("\n\nNational Questions (N={})".format(len(reg_national_original)))
 print(desc_nat.to_string())
 
 # Swing states only
-desc_swing = reg_state_swing_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct']].describe()
+desc_swing = reg_state_swing_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct','partisan_flag']].describe()
 
 print("\n\nSwing State Questions (N={})".format(len(reg_state_swing_original)))
 print(desc_swing.to_string())
@@ -1456,7 +1456,7 @@ print(desc_swing.to_string())
 print("="*110 + "\n")
 
 # All states only
-desc_states = reg_state_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct']].describe()
+desc_states = reg_state_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct','partisan_flag']].describe()
 
 print("\n\n All State Questions (N={})".format(len(reg_state_original)))
 print(desc_states.to_string())
