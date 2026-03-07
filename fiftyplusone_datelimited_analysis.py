@@ -941,7 +941,7 @@ print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 # two separate regressions: state level polls and national polls
 # standard errors: clustered by poll_id in both regressions (clustering on poll_id is robust to both heteroskedasticity and within-poll correlation, as multiple questions from the same poll have correlated errors. this is the huber-white sandwich estimator extended to clusters, satisfying the requirement from martin, traugott & kennedy for correlated errors)
 
-# psuedocode for this section (removing once done)
+# psuedocode for this section 
 # unit of analysis is a single survey
 # do OLS regression mtulivariate predicting method A value 
 # state and national polls are in different regressions 
@@ -979,7 +979,6 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label, min_obs_threshold=1
                     low_variance_vars.append(col)
 
     # add intercept column with has_constant='add' to force it even if data
-    # appears to already contain a constant — sm.add_constant names it 'const'
     X      = sm.add_constant(df_reg[x_cols], has_constant='add')
     y      = df_reg[y_col]
     groups = df_reg[cluster_col]
@@ -1009,7 +1008,6 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label, min_obs_threshold=1
     pvalues = result.pvalues
 
     # identify the intercept name defensively — add_constant uses 'const' by
-    # default but older statsmodels versions may use 'Intercept' or 'intercept'
     intercept_name = next((v for v in params.index if v.lower() in ('const', 'intercept')), None)
 
     # print all covariates first, then intercept at the bottom
@@ -1161,8 +1159,6 @@ mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=Fal
 if f'mode_{reference_mode}' in mode_dummies.columns:
     mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
     print(f"\nreference category set to: {reference_mode}")
-else:
-    print(f"\nwarning: {reference_mode} not found in modes")
 
 # convert boolean to int and clean column names by replace hyphens with underscores
 mode_dummies = mode_dummies.astype(int)

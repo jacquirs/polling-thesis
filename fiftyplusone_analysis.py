@@ -932,7 +932,7 @@ print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 # two separate regressions: state level polls and national polls
 # standard errors: clustered by poll_id in both regressions (clustering on poll_id is robust to both heteroskedasticity and within-poll correlation, as multiple questions from the same poll have correlated errors. this is the huber-white sandwich estimator extended to clusters, satisfying the requirement from martin, traugott & kennedy for correlated errors)
 
-# psuedocode for this section (removing once done)
+# psuedocode for this section
 # unit of analysis is a single survey
 # do OLS regression mtulivariate predicting method A value 
 # state and national polls are in different regressions 
@@ -986,7 +986,6 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label):
     pvalues = result.pvalues
 
     # identify the intercept name defensively — add_constant uses 'const' by
-    # default but older statsmodels versions may use 'Intercept' or 'intercept'
     intercept_name = next((v for v in params.index if v.lower() in ('const', 'intercept')), None)
 
     # print all covariates first, then intercept at the bottom
@@ -1033,7 +1032,6 @@ print(f"  days_before_election -- mean: {reg_df['days_before_election'].mean():.
 # or nationally captures competitiveness polling dynamics than lopsided ones, and pollsters may expend more effort in competitive states
 
 
-# VAR: statewide turnout
 # VAR: statewide turnout
 # load turnout data
 turnout_data = pd.read_csv("data/Turnout_2024G_v0.3.csv")

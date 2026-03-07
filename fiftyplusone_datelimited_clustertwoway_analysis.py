@@ -248,7 +248,7 @@ mode_counts = (
 # two separate regressions: state level polls and national polls
 # standard errors: clustered by poll_id in both regressions (clustering on poll_id is robust to both heteroskedasticity and within-poll correlation, as multiple questions from the same poll have correlated errors. this is the huber-white sandwich estimator extended to clusters, satisfying the requirement from martin, traugott & kennedy for correlated errors)
 
-# psuedocode for this section (removing once done)
+# psuedocode for this section 
 # unit of analysis is a single survey
 # do OLS regression mtulivariate predicting method A value 
 # state and national polls are in different regressions 
@@ -458,7 +458,7 @@ print(f"  swing state questions: {len(reg_state_swing)}")
 ######## BASE REGRESSIONS (NO TIME WINDOWS, NO MODE, SWING/NATIONAL/STATES) ############
 ########################################################################################
 
-# national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
+# national regression: also clustered by poll_id and pollster for the same reason, though with fewer polls clustering matters less
 results_national = run_ols_twoway_clustered(
     df          = reg_national,
     y_col       = 'A',
@@ -468,7 +468,7 @@ results_national = run_ols_twoway_clustered(
     label       = 'national polls'
 )
 
-# state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
+# state regression: clustered ses by poll_id and pollster to account for the fact that multiple questions from the same poll share correlated errors and pollsters use same method
 results_state = run_ols_twoway_clustered(
     df          = reg_state,
     y_col       = 'A',
@@ -512,8 +512,6 @@ mode_dummies = pd.get_dummies(reg_df['base_mode'], prefix='mode', drop_first=Fal
 if f'mode_{reference_mode}' in mode_dummies.columns:
     mode_dummies = mode_dummies.drop(f'mode_{reference_mode}', axis=1)
     print(f"\nreference category set to: {reference_mode}")
-else:
-    print(f"\nwarning: {reference_mode} not found in modes")
 
 # convert boolean to int and clean column names by replace hyphens with underscores
 mode_dummies = mode_dummies.astype(int)
