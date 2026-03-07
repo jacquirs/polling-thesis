@@ -1,0 +1,569 @@
+==============================================================================================================
+CLUSTERING DIAGNOSTICS FOR POLL ACCURACY REGRESSIONS
+==============================================================================================================
+
+Data loaded successfully
+  Total questions: 2300
+  State questions: 1629
+  Swing state questions: 1182
+  National questions: 671
+
+==============================================================================================================
+PART 1: CLUSTER SIZE DISTRIBUTION (POLL_ID)
+==============================================================================================================
+
+Swing States (poll_id):
+  Total observations: 1182
+  Total clusters (poll_id): 709
+  Mean observations per cluster: 1.67
+  Median observations per cluster: 1.0
+  Min observations per cluster: 1
+  Max observations per cluster: 4
+  Std dev of cluster sizes: 0.99
+
+  Distribution of cluster sizes:
+    Cluster size              N clusters   % of clusters
+    --------------------------------------------------
+    1                                418           59.0%
+    2                                196           27.6%
+    3                                  8            1.1%
+    4                                 87           12.3%
+
+  Top 10 largest clusters:
+    Cluster ID                      N observations
+    ---------------------------------------------
+    87698                                        4
+    87719                                        4
+    87720                                        4
+    87721                                        4
+    87790                                        4
+    87806                                        4
+    87807                                        4
+    87808                                        4
+    87809                                        4
+    87812                                        4
+
+All States (poll_id):
+  Total observations: 1629
+  Total clusters (poll_id): 1058
+  Mean observations per cluster: 1.54
+  Median observations per cluster: 1.0
+  Min observations per cluster: 1
+  Max observations per cluster: 4
+  Std dev of cluster sizes: 0.91
+
+  Distribution of cluster sizes:
+    Cluster size              N clusters   % of clusters
+    --------------------------------------------------
+    1                                695           65.7%
+    2                                254           24.0%
+    3                                 10            0.9%
+    4                                 99            9.4%
+
+  Top 10 largest clusters:
+    Cluster ID                      N observations
+    ---------------------------------------------
+    87698                                        4
+    87719                                        4
+    87720                                        4
+    87721                                        4
+    87761                                        4
+    87790                                        4
+    87806                                        4
+    87807                                        4
+    87808                                        4
+    87809                                        4
+
+National (poll_id):
+  Total observations: 671
+  Total clusters (poll_id): 380
+  Mean observations per cluster: 1.77
+  Median observations per cluster: 1.0
+  Min observations per cluster: 1
+  Max observations per cluster: 8
+  Std dev of cluster sizes: 1.10
+
+  Distribution of cluster sizes:
+    Cluster size              N clusters   % of clusters
+    --------------------------------------------------
+    1                                193           50.8%
+    2                                137           36.1%
+    3                                 18            4.7%
+    4                                 21            5.5%
+    5                                  2            0.5%
+    6                                  8            2.1%
+    8                                  1            0.3%
+
+  Top 10 largest clusters:
+    Cluster ID                      N observations
+    ---------------------------------------------
+    87651                                        8
+    87579                                        6
+    87929                                        6
+    88177                                        6
+    88224                                        6
+    88558                                        6
+    88667                                        6
+    88759                                        6
+    88858                                        6
+    87794                                        5
+
+==============================================================================================================
+PART 2: CLUSTER SIZE DISTRIBUTION (POLLSTER)
+==============================================================================================================
+
+Swing States (pollster):
+  Total observations: 1182
+  Total clusters (pollster): 92
+  Mean observations per cluster: 12.85
+  Median observations per cluster: 5.0
+  Min observations per cluster: 1
+  Max observations per cluster: 125
+  Std dev of cluster sizes: 22.04
+
+  Distribution of cluster sizes:
+    Cluster size              N clusters   % of clusters
+    --------------------------------------------------
+    1                                 17           18.5%
+    2                                 17           18.5%
+    3                                  6            6.5%
+    4                                  5            5.4%
+    5                                  5            5.4%
+    6                                  8            8.7%
+    7                                  2            2.2%
+    8                                  2            2.2%
+    10                                 5            5.4%
+    11                                 1            1.1%
+    14                                 5            5.4%
+    16                                 3            3.3%
+    17                                 1            1.1%
+    18                                 1            1.1%
+    24                                 1            1.1%
+    28                                 1            1.1%
+    29                                 1            1.1%
+    30                                 1            1.1%
+    32                                 1            1.1%
+    33                                 1            1.1%
+    42                                 1            1.1%
+    48                                 1            1.1%
+    50                                 1            1.1%
+    77                                 1            1.1%
+    84                                 1            1.1%
+    86                                 1            1.1%
+    88                                 1            1.1%
+    125                                1            1.1%
+
+  Top 10 largest clusters:
+    Cluster ID                      N observations
+    ---------------------------------------------
+    Morning Consult                            125
+    Siena/NYT                                   88
+    Redfield & Wilton Strategies                86
+    AtlasIntel                                  84
+    Focaldata                                   77
+    YouGov                                      50
+    Emerson                                     48
+    Beacon/Shaw                                 42
+    TIPP                                        33
+    Quinnipiac                                  32
+
+All States (pollster):
+  Total observations: 1629
+  Total clusters (pollster): 156
+  Mean observations per cluster: 10.44
+  Median observations per cluster: 3.0
+  Min observations per cluster: 1
+  Max observations per cluster: 146
+  Std dev of cluster sizes: 21.70
+
+  Distribution of cluster sizes:
+    Cluster size              N clusters   % of clusters
+    --------------------------------------------------
+    1                                 46           29.5%
+    2                                 30           19.2%
+    3                                 14            9.0%
+    4                                  7            4.5%
+    5                                  8            5.1%
+    6                                  9            5.8%
+    7                                  1            0.6%
+    8                                  3            1.9%
+    10                                 4            2.6%
+    11                                 1            0.6%
+    13                                 2            1.3%
+    14                                 4            2.6%
+    15                                 1            0.6%
+    16                                 4            2.6%
+    17                                 1            0.6%
+    18                                 2            1.3%
+    20                                 3            1.9%
+    26                                 1            0.6%
+    28                                 1            0.6%
+    30                                 1            0.6%
+    31                                 2            1.3%
+    32                                 1            0.6%
+    33                                 1            0.6%
+    44                                 1            0.6%
+    61                                 1            0.6%
+    66                                 1            0.6%
+    74                                 1            0.6%
+    87                                 1            0.6%
+    94                                 1            0.6%
+    108                                1            0.6%
+    112                                1            0.6%
+    146                                1            0.6%
+
+  Top 10 largest clusters:
+    Cluster ID                      N observations
+    ---------------------------------------------
+    Morning Consult                            146
+    Siena/NYT                                  112
+    Redfield & Wilton Strategies               108
+    AtlasIntel                                  94
+    Focaldata                                   87
+    Emerson                                     74
+    ActiVote                                    66
+    YouGov                                      61
+    Beacon/Shaw                                 44
+    TIPP                                        33
+
+National (pollster):
+  Total observations: 671
+  Total clusters (pollster): 73
+  Mean observations per cluster: 9.19
+  Median observations per cluster: 4.0
+  Min observations per cluster: 1
+  Max observations per cluster: 145
+  Std dev of cluster sizes: 18.96
+
+  Distribution of cluster sizes:
+    Cluster size              N clusters   % of clusters
+    --------------------------------------------------
+    1                                 16           21.9%
+    2                                 14           19.2%
+    3                                  5            6.8%
+    4                                  7            9.6%
+    5                                  4            5.5%
+    6                                  4            5.5%
+    7                                  3            4.1%
+    8                                  3            4.1%
+    9                                  1            1.4%
+    10                                 2            2.7%
+    11                                 1            1.4%
+    12                                 1            1.4%
+    14                                 1            1.4%
+    15                                 1            1.4%
+    16                                 2            2.7%
+    18                                 1            1.4%
+    23                                 1            1.4%
+    30                                 1            1.4%
+    37                                 1            1.4%
+    38                                 1            1.4%
+    41                                 1            1.4%
+    50                                 1            1.4%
+    145                                1            1.4%
+
+  Top 10 largest clusters:
+    Cluster ID                      N observations
+    ---------------------------------------------
+    Morning Consult                            145
+    YouGov                                      50
+    HarrisX                                     41
+    TIPP                                        38
+    Ipsos                                       37
+    Big Village                                 30
+    ABC News/Ipsos                              23
+    Siena/NYT                                   18
+    ActiVote                                    16
+    RMG Research                                16
+
+==============================================================================================================
+PART 3: INTRA-CLUSTER CORRELATION (ICC) - JUSTIFICATION FOR CLUSTERING
+==============================================================================================================
+
+ICC for POLL_ID clustering:
+
+Swing States (poll_id):
+  ICC (Intra-cluster correlation): 0.8003
+  Interpretation:
+    Large - clustering is necessary
+  Variance decomposition:
+    Between-cluster variance: 0.004810
+    Within-cluster variance: 0.000626
+    Proportion of variance between clusters: 80.03%
+
+All States (poll_id):
+  ICC (Intra-cluster correlation): 0.8698
+  Interpretation:
+    Large - clustering is necessary
+  Variance decomposition:
+    Between-cluster variance: 0.007139
+    Within-cluster variance: 0.000633
+    Proportion of variance between clusters: 86.98%
+
+National (poll_id):
+  ICC (Intra-cluster correlation): 0.8527
+  Interpretation:
+    Large - clustering is necessary
+  Variance decomposition:
+    Between-cluster variance: 0.004251
+    Within-cluster variance: 0.000379
+    Proportion of variance between clusters: 85.27%
+
+--------------------------------------------------------------------------------------------------------------
+
+ICC for POLLSTER clustering:
+
+Swing States (pollster):
+  ICC (Intra-cluster correlation): 0.2424
+  Interpretation:
+    Large - clustering is necessary
+  Variance decomposition:
+    Between-cluster variance: 0.012167
+    Within-cluster variance: 0.002381
+    Proportion of variance between clusters: 24.24%
+
+All States (pollster):
+  ICC (Intra-cluster correlation): 0.3485
+  Interpretation:
+    Large - clustering is necessary
+  Variance decomposition:
+    Between-cluster variance: 0.020880
+    Within-cluster variance: 0.003171
+    Proportion of variance between clusters: 34.85%
+
+National (pollster):
+  ICC (Intra-cluster correlation): 0.4796
+  Interpretation:
+    Large - clustering is necessary
+  Variance decomposition:
+    Between-cluster variance: 0.012738
+    Within-cluster variance: 0.001345
+    Proportion of variance between clusters: 47.96%
+
+==============================================================================================================
+PART 4: STANDARD ERROR COMPARISON - CLUSTERED VS NON-CLUSTERED
+==============================================================================================================
+
+CLUSTERING BY POLL_ID:
+
+Swing States (poll_id):
+Variable                        OLS SE    Clustered SE      Ratio   % Increase
+--------------------------------------------------------------------------
+duration_days                 0.000286        0.000385      1.345        34.5%
+days_before_election          0.000050        0.000084      1.661        66.1%
+pct_dk                        0.000647        0.000898      1.387        38.7%
+abs_margin                    0.233289        0.366689      1.572        57.2%
+turnout_pct                   0.000793        0.001289      1.625        62.5%
+
+  Interpretation:
+    Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
+    Larger ratios = more important to cluster
+    If all ratios approx 1.0, clustering doesn't matter much
+
+National (poll_id):
+Variable                        OLS SE    Clustered SE      Ratio   % Increase
+--------------------------------------------------------------------------
+duration_days                 0.000770        0.000825      1.071         7.1%
+days_before_election          0.000059        0.000102      1.718        71.8%
+pct_dk                        0.000488        0.000714      1.462        46.2%
+abs_margin                    0.000074        0.000087      1.182        18.2%
+
+  Interpretation:
+    Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
+    Larger ratios = more important to cluster
+    If all ratios approx 1.0, clustering doesn't matter much
+
+--------------------------------------------------------------------------------------------------------------
+
+CLUSTERING BY POLLSTER:
+
+Swing States (pollster):
+Variable                        OLS SE    Clustered SE      Ratio   % Increase
+--------------------------------------------------------------------------
+duration_days                 0.000286        0.000664      2.318       131.8%
+days_before_election          0.000050        0.000127      2.516       151.6%
+pct_dk                        0.000647        0.001285      1.986        98.6%
+abs_margin                    0.233289        0.281313      1.206        20.6%
+turnout_pct                   0.000793        0.001098      1.385        38.5%
+
+  Interpretation:
+    Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
+    Larger ratios = more important to cluster
+    If all ratios approx 1.0, clustering doesn't matter much
+
+National (pollster):
+Variable                        OLS SE    Clustered SE      Ratio   % Increase
+--------------------------------------------------------------------------
+duration_days                 0.000770        0.001350      1.752        75.2%
+days_before_election          0.000059        0.000107      1.799        79.9%
+pct_dk                        0.000488        0.001013      2.075       107.5%
+abs_margin                    0.000074        0.000211      2.856       185.6%
+
+  Interpretation:
+    Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
+    Larger ratios = more important to cluster
+    If all ratios approx 1.0, clustering doesn't matter much
+
+==============================================================================================================
+PART 5: DESIGN EFFECT (DEFF) FROM CLUSTERING
+==============================================================================================================
+
+DESIGN EFFECTS - POLL_ID CLUSTERING:
+
+Swing States (poll_id):
+Variable                        DEFF                 Interpretation
+-----------------------------------------------------------------
+duration_days                  1.809       Strong clustering effect
+days_before_election           2.758       Strong clustering effect
+pct_dk                         1.924       Strong clustering effect
+abs_margin                     2.471       Strong clustering effect
+turnout_pct                    2.642       Strong clustering effect
+
+National (poll_id):
+Variable                        DEFF                 Interpretation
+-----------------------------------------------------------------
+duration_days                  1.146     Moderate clustering effect
+days_before_election           2.952       Strong clustering effect
+pct_dk                         2.137       Strong clustering effect
+abs_margin                     1.397     Moderate clustering effect
+
+--------------------------------------------------------------------------------------------------------------
+
+DESIGN EFFECTS - POLLSTER CLUSTERING:
+
+Swing States (pollster):
+Variable                        DEFF                 Interpretation
+-----------------------------------------------------------------
+duration_days                  5.372       Strong clustering effect
+days_before_election           6.330       Strong clustering effect
+pct_dk                         3.943       Strong clustering effect
+abs_margin                     1.454     Moderate clustering effect
+turnout_pct                    1.919       Strong clustering effect
+
+National (pollster):
+Variable                        DEFF                 Interpretation
+-----------------------------------------------------------------
+duration_days                  3.071       Strong clustering effect
+days_before_election           3.235       Strong clustering effect
+pct_dk                         4.307       Strong clustering effect
+abs_margin                     8.159       Strong clustering effect
+
+==============================================================================================================
+PART 6: CROSS-TABULATION - POLLS NESTED WITHIN POLLSTERS
+==============================================================================================================
+
+Swing States:
+  Total pollsters: 92
+  Total polls: 709
+  Total questions: 1182
+
+  Polls per pollster:
+    Mean: 7.71
+    Median: 4.0
+    Min: 1
+    Max: 86
+
+  Top 10 pollsters by number of polls:
+    Pollster                                    N polls     N questions
+    -----------------------------------------------------------------
+    Redfield & Wilton Strategies                     86              86
+    Morning Consult                                  55             125
+    AtlasIntel                                       42              84
+    Emerson                                          42              48
+    InsiderAdvantage                                 30              30
+    Trafalgar Group                                  29              29
+    Siena/NYT                                        22              88
+    Focaldata                                        21              77
+    YouGov                                           19              50
+    Patriot Polling                                  17              17
+
+  Nesting structure: Perfect (each poll belongs to exactly one pollster)
+
+All States:
+  Total pollsters: 156
+  Total polls: 1058
+  Total questions: 1629
+
+  Polls per pollster:
+    Mean: 6.78
+    Median: 2.0
+    Min: 1
+    Max: 108
+
+  Top 10 pollsters by number of polls:
+    Pollster                                    N polls     N questions
+    -----------------------------------------------------------------
+    Redfield & Wilton Strategies                    108             108
+    Morning Consult                                  76             146
+    ActiVote                                         66              66
+    Emerson                                          65              74
+    AtlasIntel                                       47              94
+    InsiderAdvantage                                 31              31
+    Trafalgar Group                                  31              31
+    Siena/NYT                                        28             112
+    YouGov                                           26              61
+    Focaldata                                        24              87
+
+  Nesting structure: Perfect (each poll belongs to exactly one pollster)
+
+National:
+  Total pollsters: 73
+  Total polls: 380
+  Total questions: 671
+
+  Polls per pollster:
+    Mean: 5.21
+    Median: 2.0
+    Min: 1
+    Max: 103
+
+  Top 10 pollsters by number of polls:
+    Pollster                                    N polls     N questions
+    -----------------------------------------------------------------
+    Morning Consult                                 103             145
+    YouGov                                           28              50
+    TIPP                                             27              38
+    ActiVote                                         14              16
+    RMG Research                                     13              16
+    Ipsos                                            12              37
+    HarrisX                                          10              41
+    Redfield & Wilton Strategies                     10              10
+    Big Village                                       9              30
+    AtlasIntel                                        7              14
+
+  Nesting structure: Perfect (each poll belongs to exactly one pollster)
+
+==============================================================================================================
+SUMMARY AND RECOMMENDATIONS
+==============================================================================================================
+
+1. CLUSTER SIZE SUMMARY:
+   Poll_id clusters:
+     Swing: 709 polls, avg 1.7 questions/poll
+     All States: 1058 polls, avg 1.5 questions/poll
+     National: 380 polls, avg 1.8 questions/poll
+
+   Pollster clusters:
+     Swing: 92 pollsters, avg 12.8 questions/pollster
+     All States: 156 pollsters, avg 10.4 questions/pollster
+     National: 73 pollsters, avg 9.2 questions/pollster
+
+2. INTRA-CLUSTER CORRELATION (ICC):
+   Poll_id clustering:
+     Swing: 0.8003 - Critical
+     All States: 0.8698 - Critical
+     National: 0.8527 - Critical
+
+   Pollster clustering:
+     Swing: 0.2424 - Critical
+     All States: 0.3485 - Critical
+     National: 0.4796 - Critical
+
+3. RECOMMENDATION:
+   Two-way clustering (poll_id AND pollster) is RECOMMENDED
+   - Both poll-level and pollster-level ICCs indicate meaningful clustering
+
+==============================================================================================================
+DIAGNOSTICS COMPLETE
+==============================================================================================================
+

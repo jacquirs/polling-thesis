@@ -200,6 +200,17 @@ regression sample sizes:
   state-level questions:    1629
   swing state questions: 1182
 
+DEBUG: Columns in reg_df_original:
+['question_id', 'pct_harris_poll', 'pct_trump_poll', 'poll_id', 'pollster', 'state', 'start_date', 'end_date', 'mode', 'population', 'sample_size', 'pct_dk', 'p_trump_true', 'p_harris_true', 'abs_margin', 'A', 'trump_part_A', 'harris_part_A', 'poll_level', 'has_self_admin', 'has_interviewer', 'has_explicit_mixed', 'has_other', 'duration_days', 'days_before_election', 'turnout_pct']
+
+DEBUG: Has turnout_pct? True
+DEBUG: Sample turnout values: 0    64.07
+1    64.07
+2    64.07
+3    64.07
+4    64.07
+Name: turnout_pct, dtype: float64
+
 Unique base modes after exploding:
 base_mode
 Online Opt-In Panel      1064

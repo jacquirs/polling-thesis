@@ -1114,6 +1114,9 @@ print(f"  swing state questions: {len(reg_state_swing)}")
 # Save a copy of the original un-exploded data for non-mode regressions
 reg_df_original = reg_df.copy()
 
+# for clustering analysis
+reg_df_original.to_csv('data/harris_trump_datelimted_check_for_clusering.csv', index=False)
+
 # explode mode into base_mode (each mixed mode poll becomes multiple rows)
 reg_df['base_mode'] = reg_df['mode'].str.split('/')
 reg_df = reg_df.explode('base_mode')
@@ -2044,7 +2047,7 @@ print(f"{'National':<20} {int(sample_df.iloc[0]['national']):>10} "
 print("="*110 + "\n")
 
 ######## save outputs
-# save question-level accuracy dataset for further analysis
+# save question-level accuracy dataset for further analysis, has mode splits
 harris_trump_pivot.to_csv('data/harris_trump_datelimted_accuracy.csv', index=False)
 
 # save regression-ready dataset withs constructed covariates
