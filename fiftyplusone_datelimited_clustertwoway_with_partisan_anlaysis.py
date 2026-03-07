@@ -1537,6 +1537,47 @@ print(pollster_counts.sort_values('n_questions', ascending=False).to_string())
 
 
 ########################################################################################
+#################### SAMPLE CHARACTERISTICS OVER TIME ######################################
+########################################################################################
+
+print("\n" + "="*110)
+print("SAMPLE COMPOSITION OVER TIME")
+print("="*110)
+
+time_windows = [107, 90, 60, 30, 7]
+
+print("\nSample characteristics by time window (Swing States):")
+print(f"{'Window':<10} {'N':>8} {'Mean A':>12} {'Mean Days':>12} {'Mean Duration':>15}")
+print("-" * 60)
+
+for window in time_windows:
+    state_w = reg_state_swing_original[reg_state_swing_original['days_before_election'] <= window].copy()
+    print(f"{window:<10} {len(state_w):>8} {state_w['A'].mean():>12.4f} "
+          f"{state_w['days_before_election'].mean():>12.1f} "
+          f"{state_w['duration_days'].mean():>15.1f}")
+
+print("\nSample characteristics by time window (All States):")
+print(f"{'Window':<10} {'N':>8} {'Mean A':>12} {'Mean Days':>12} {'Mean Duration':>15}")
+print("-" * 60)
+
+for window in time_windows:
+    state_w = reg_state_original[reg_state_original['days_before_election'] <= window].copy()
+    print(f"{window:<10} {len(state_w):>8} {state_w['A'].mean():>12.4f} "
+          f"{state_w['days_before_election'].mean():>12.1f} "
+          f"{state_w['duration_days'].mean():>15.1f}")
+
+print("\nSample characteristics by time window (National):")
+print(f"{'Window':<10} {'N':>8} {'Mean A':>12} {'Mean Days':>12} {'Mean Duration':>15}")
+print("-" * 60)
+
+for window in time_windows:
+    nat_w = reg_national_original[reg_national_original['days_before_election'] <= window].copy()
+    print(f"{window:<10} {len(nat_w):>8} {nat_w['A'].mean():>12.4f} "
+          f"{nat_w['days_before_election'].mean():>12.1f} "
+          f"{nat_w['duration_days'].mean():>15.1f}")
+    
+
+########################################################################################
 #################### RESIDUAL AUTOCORRELATION TEST #####################################
 ########################################################################################
 
