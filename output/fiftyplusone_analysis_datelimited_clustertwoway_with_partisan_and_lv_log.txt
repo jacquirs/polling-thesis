@@ -1,0 +1,2287 @@
+WITH PARTISAN CONTROL
+WITH LV CONTROL
+Questions with both Trump and Harris pct: 2613
+Questions dropped due to missing pct:     0
+
+Derived national true vote shares (confirmed against results yay!!):
+  Trump:  0.4981
+  Harris: 0.4834
+
+Questions unmatched after state + national merge: 37
+Unmatched states:
+state
+maine cd-2       11
+nebraska cd-2    11
+maine cd-1        8
+puerto rico       5
+nebraska cd-1     1
+nebraska cd-3     1
+
+Questions remaining for accuracy analysis: 2300
+
+poll_level counts after flagging:
+poll_level
+state       1629
+national     671
+
+state values flagged as national:
+state
+national    671
+Partisan flagged: 158
+Partiasan unflagged: 2142
+
+time variable diagnostics:
+  duration_days        -- mean: 6.2, min: 1, max: 43
+  days_before_election -- mean: 43.2, min: 1, max: 107
+
+regression sample sizes:
+  national-level questions: 671
+  state-level questions:    1629
+  swing state questions: 1182
+population
+lv    1581
+rv     618
+a      100
+Name: count, dtype: int64
+
+Population reference category: lv
+Population dummy variables created: ['pop_a', 'pop_rv']
+
+Unique base modes after exploding:
+base_mode
+Online Opt-In Panel      1064
+Live Phone                542
+Text-to-Web               479
+IVR                       180
+Online Matched Sample     164
+Online Ad                 129
+Probability Panel         121
+Text                       98
+App Panel                  85
+Email                      79
+Mail-to-Web                28
+Mail-to-Phone              11
+Name: count, dtype: int64
+
+reference category set to: Live Phone
+mode dummy variables created: ['mode_App Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Online Ad', 'mode_Online Matched Sample', 'mode_Online Opt_In Panel', 'mode_Probability Panel', 'mode_Text', 'mode_Text_to_Web']
+
+all coefficients will be interpreted relative to Live Phone polls
+
+exploded sample sizes after exploding:
+  all state polls: 2357
+  swing states only: 1734
+  national polls: 786
+\original sample sizes after exploding:
+  all state polls: 1628
+  swing states only: 1182
+  national polls: 671
+\original swing states breakdown:
+state
+arizona           157
+georgia           152
+michigan          188
+nevada            116
+north carolina    158
+pennsylvania      227
+wisconsin         184
+Name: count, dtype: int64
+
+ exploded swing states breakdown:
+state
+arizona           229
+georgia           226
+michigan          269
+nevada            166
+north carolina    235
+pennsylvania      343
+wisconsin         266
+Name: count, dtype: int64
+
+exploded mode distribution in swing states:
+  Online Opt-In Panel: 485 (28.0%)
+  Live Phone: 342 (19.7%) (REFERENCE)
+  Text-to-Web: 287 (16.6%)
+  IVR: 119 (6.9%)
+  Online Ad: 93 (5.4%)
+  Text: 78 (4.5%)
+  Online Matched Sample: 74 (4.3%)
+  Email: 69 (4.0%)
+  Mail-to-Web: 25 (1.4%)
+  App Panel: 16 (0.9%)
+  Probability Panel: 16 (0.9%)
+  Mail-to-Phone: 11 (0.6%)
+BASE MODE DISTRIBUTION ACROSS SAMPLES
+
+Original Mode Strings:
+Mode                                                        N          %
+----------------------------------------------------------------------
+Online Opt-In Panel                                       780      33.9%
+Live Phone                                                245      10.7%
+Online Matched Sample                                     164       7.1%
+Live Phone/Text-to-Web                                    156       6.8%
+Probability Panel                                         117       5.1%
+Online Ad                                                 112       4.9%
+Online Opt-In Panel/Text-to-Web                            91       4.0%
+App Panel                                                  82       3.6%
+IVR/Online Opt-In Panel/Text-to-Web                        61       2.7%
+Live Phone/Online Opt-In Panel/Text-to-Web                 51       2.2%
+Text-to-Web                                                35       1.5%
+IVR/Live Phone/Text/Online Opt-In Panel/Email              32       1.4%
+IVR/Text                                                   31       1.3%
+IVR/Text-to-Web                                            30       1.3%
+Text                                                       24       1.0%
+Text-to-Web/Online Ad                                      17       0.7%
+IVR/Online Opt-In Panel                                    17       0.7%
+Live Phone/Text-to-Web/Email/Mail-to-Web                   14       0.6%
+Live Phone/Online Opt-In Panel                             10       0.4%
+Email                                                       9       0.4%
+Live Phone/Email                                            8       0.3%
+Live Phone/Text-to-Web/Email                                7       0.3%
+Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone          6       0.3%
+Online Opt-In Panel/Text                                    6       0.3%
+Mail-to-Web/Mail-to-Phone                                   5       0.2%
+Online Opt-In Panel/Text-to-Web/Text                        4       0.2%
+IVR/Live Phone/Online Opt-In Panel/Text-to-Web              3       0.1%
+Live Phone/Online Opt-In Panel/App Panel                    3       0.1%
+Online Opt-In Panel/Probability Panel                       3       0.1%
+IVR                                                         2       0.1%
+Text-to-Web/Email                                           2       0.1%
+IVR/Live Phone/Text-to-Web                                  2       0.1%
+Mail-to-Web                                                 2       0.1%
+IVR/Live Phone/Online Opt-In Panel                          2       0.1%
+Live Phone/Online Opt-In Panel/Text                         1       0.0%
+Live Phone/Probability Panel                                1       0.0%
+Live Phone/Email/Mail-to-Web                                1       0.0%
+
+Total unique mode combinations: 37
+ORIGINAL MODE DISTRIBUTION ACROSS SAMPLES
+
+NATIONAL:
+Mode                                              N          %
+------------------------------------------------------------
+Online Opt-In Panel                             362      53.9%
+Probability Panel                                82      12.2%
+Online Matched Sample                            57       8.5%
+Live Phone                                       35       5.2%
+Live Phone/Online Opt-In Panel/Text-to-Web         17       2.5%
+App Panel                                        16       2.4%
+Online Ad                                        15       2.2%
+Live Phone/Text-to-Web                           13       1.9%
+Online Opt-In Panel/Text-to-Web                   9       1.3%
+IVR/Online Opt-In Panel                           8       1.2%
+IVR/Online Opt-In Panel/Text-to-Web               7       1.0%
+Text-to-Web/Online Ad                             4       0.6%
+Online Opt-In Panel/Text-to-Web/Text              4       0.6%
+Live Phone/Online Opt-In Panel/App Panel          3       0.4%
+IVR/Text                                          3       0.4%
+Online Opt-In Panel/Probability Panel             3       0.4%
+IVR/Live Phone/Online Opt-In Panel/Text-to-Web          2       0.3%
+Text-to-Web                                       2       0.3%
+IVR/Live Phone/Online Opt-In Panel                2       0.3%
+Live Phone/Online Opt-In Panel/Text               1       0.1%
+Live Phone/Probability Panel                      1       0.1%
+
+SWING:
+Mode                                              N          %
+------------------------------------------------------------
+Online Opt-In Panel                             322      27.2%
+Live Phone                                      159      13.5%
+Live Phone/Text-to-Web                           90       7.6%
+Online Ad                                        87       7.4%
+Online Matched Sample                            74       6.3%
+Online Opt-In Panel/Text-to-Web                  54       4.6%
+IVR/Online Opt-In Panel/Text-to-Web              40       3.4%
+IVR/Live Phone/Text/Online Opt-In Panel/Email         30       2.5%
+Live Phone/Online Opt-In Panel/Text-to-Web         27       2.3%
+Text                                             22       1.9%
+Text-to-Web                                      21       1.8%
+IVR/Text-to-Web                                  21       1.8%
+IVR/Text                                         20       1.7%
+App Panel                                        16       1.4%
+Probability Panel                                16       1.4%
+Live Phone/Text-to-Web/Email/Mail-to-Web         14       1.2%
+Live Phone/Email                                  8       0.7%
+Text-to-Web/Online Ad                             6       0.5%
+Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone          6       0.5%
+Email                                             6       0.5%
+Online Opt-In Panel/Text                          6       0.5%
+Mail-to-Web/Mail-to-Phone                         5       0.4%
+IVR/Online Opt-In Panel                           5       0.4%
+Live Phone/Text-to-Web/Email                      5       0.4%
+IVR/Live Phone/Text-to-Web                        2       0.2%
+IVR/Live Phone/Online Opt-In Panel/Text-to-Web          1       0.1%
+
+STATE:
+Mode                                              N          %
+------------------------------------------------------------
+Online Opt-In Panel                             418      25.7%
+Live Phone                                      210      12.9%
+Live Phone/Text-to-Web                          143       8.8%
+Online Matched Sample                           107       6.6%
+Online Ad                                        97       6.0%
+Online Opt-In Panel/Text-to-Web                  82       5.0%
+App Panel                                        66       4.1%
+IVR/Online Opt-In Panel/Text-to-Web              54       3.3%
+Probability Panel                                35       2.1%
+Live Phone/Online Opt-In Panel/Text-to-Web         34       2.1%
+Text-to-Web                                      33       2.0%
+IVR/Live Phone/Text/Online Opt-In Panel/Email         32       2.0%
+IVR/Text-to-Web                                  30       1.8%
+IVR/Text                                         28       1.7%
+Text                                             24       1.5%
+Live Phone/Text-to-Web/Email/Mail-to-Web         14       0.9%
+Text-to-Web/Online Ad                            13       0.8%
+Live Phone/Online Opt-In Panel                   10       0.6%
+IVR/Online Opt-In Panel                           9       0.6%
+Email                                             9       0.6%
+Live Phone/Email                                  8       0.5%
+Live Phone/Text-to-Web/Email                      7       0.4%
+Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone          6       0.4%
+Online Opt-In Panel/Text                          6       0.4%
+Mail-to-Web/Mail-to-Phone                         5       0.3%
+IVR                                               2       0.1%
+Text-to-Web/Email                                 2       0.1%
+IVR/Live Phone/Text-to-Web                        2       0.1%
+Mail-to-Web                                       2       0.1%
+IVR/Live Phone/Online Opt-In Panel/Text-to-Web          1       0.1%
+Live Phone/Email/Mail-to-Web                      1       0.1%
+==============================================================================================================
+
+
+===========================================================================
+  ols regression: national polls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0030     0.0012     **
+  duration_days                          -0.0032     0.0012    ***
+  days_before_election                   -0.0000     0.0001       
+  partisan_flag                           0.0333     0.0158     **
+  pop_a                                   0.0063     0.0177       
+  pop_rv                                  0.0126     0.0092       
+  const                                  -0.0546     0.0140    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.0823
+  n:            671
+  clusters:     380 poll_id, 73 pollster
+===========================================================================
+
+
+===========================================================================
+  ols regression: state-level polls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                  0.0012     0.0012       
+  abs_margin                             -0.1324     0.0675      *
+  turnout_pct                             0.0022     0.0006    ***
+  duration_days                          -0.0013     0.0008      *
+  days_before_election                   -0.0002     0.0001       
+  partisan_flag                           0.0085     0.0081       
+  pop_a                                  -0.0319     0.0142     **
+  pop_rv                                 -0.0200     0.0075    ***
+  const                                  -0.1924     0.0451    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1116
+  n:            1628
+  clusters:     1057 poll_id, 156 pollster
+===========================================================================
+
+
+===========================================================================
+  ols regression: swing states
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                  0.0016     0.0012       
+  abs_margin                             -1.5383     0.2775    ***
+  turnout_pct                            -0.0032     0.0011    ***
+  duration_days                          -0.0023     0.0007    ***
+  days_before_election                   -0.0003     0.0001     **
+  partisan_flag                           0.0148     0.0064     **
+  pop_a                                  -0.0345     0.0095    ***
+  pop_rv                                 -0.0196     0.0066    ***
+  const                                   0.2328     0.0815    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1725
+  n:            1182
+  clusters:     709 poll_id, 92 pollster
+===========================================================================
+
+REGRESSIONS WITH MODE CONTROLS
+
+===========================================================================
+  ols regression: national polls with mode controls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0040     0.0010    ***
+  days_before_election                   -0.0000     0.0001       
+  partisan_flag                           0.0323     0.0161     **
+  pct_dk                                 -0.0025     0.0012     **
+  mode_App Panel                          0.0131     0.0112       
+  mode_Email                              0.0000     0.0000     **
+  mode_IVR                               -0.0284     0.0121     **
+  mode_Mail_to_Phone                      0.0000     0.0000       
+  mode_Mail_to_Web                        0.0000     0.0000    ***
+  mode_Online Ad                          0.0480     0.0218     **
+  mode_Online Matched Sample             -0.0266     0.0099    ***
+  mode_Online Opt_In Panel               -0.0346     0.0099    ***
+  mode_Probability Panel                 -0.0344     0.0125    ***
+  mode_Text                                 ----       ----       
+  mode_Text_to_Web                       -0.0069     0.0113       
+  pop_a                                   0.0065     0.0153       
+  pop_rv                                  0.0115     0.0075       
+  const                                  -0.0267     0.0138      *
+  --------------------------------------------------------------------
+  adjusted r2:  0.2048
+  n:            786
+  clusters:     380 poll_id, 73 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+===========================================================================
+  ols regression: all state polls with mode controls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0018     0.0005    ***
+  days_before_election                   -0.0001     0.0001       
+  partisan_flag                           0.0061     0.0079       
+  pct_dk                                  0.0022     0.0011      *
+  abs_margin                             -0.1387     0.0525    ***
+  turnout_pct                             0.0025     0.0006    ***
+  mode_App Panel                          0.0446     0.0101    ***
+  mode_Email                             -0.0032     0.0082       
+  mode_IVR                                0.0063     0.0085       
+  mode_Mail_to_Phone                     -0.0258     0.0073    ***
+  mode_Mail_to_Web                       -0.0381     0.0359       
+  mode_Online Ad                          0.0348     0.0052    ***
+  mode_Online Matched Sample             -0.0167     0.0076     **
+  mode_Online Opt_In Panel               -0.0090     0.0068       
+  mode_Probability Panel                 -0.0512     0.0146    ***
+  mode_Text                               0.0080     0.0080       
+  mode_Text_to_Web                       -0.0002     0.0051       
+  pop_a                                  -0.0130     0.0200       
+  pop_rv                                 -0.0162     0.0067     **
+  const                                  -0.2198     0.0390    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1665
+  n:            2357
+  clusters:     1057 poll_id, 156 pollster
+===========================================================================
+
+
+===========================================================================
+  ols regression: swing states with mode controls
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0025     0.0006    ***
+  days_before_election                   -0.0001     0.0001       
+  partisan_flag                           0.0108     0.0064      *
+  pct_dk                                  0.0021     0.0010     **
+  abs_margin                             -1.3108     0.3956    ***
+  turnout_pct                            -0.0024     0.0013      *
+  mode_App Panel                          0.0507     0.0110    ***
+  mode_Email                             -0.0022     0.0079       
+  mode_IVR                                0.0182     0.0067    ***
+  mode_Mail_to_Phone                     -0.0228     0.0058    ***
+  mode_Mail_to_Web                       -0.0024     0.0109       
+  mode_Online Ad                          0.0344     0.0044    ***
+  mode_Online Matched Sample             -0.0025     0.0077       
+  mode_Online Opt_In Panel               -0.0085     0.0077       
+  mode_Probability Panel                 -0.0188     0.0038    ***
+  mode_Text                               0.0151     0.0068     **
+  mode_Text_to_Web                        0.0039     0.0052       
+  pop_a                                  -0.0290     0.0090    ***
+  pop_rv                                 -0.0121     0.0058     **
+  const                                   0.1602     0.1054       
+  --------------------------------------------------------------------
+  adjusted r2:  0.2055
+  n:            1734
+  clusters:     709 poll_id, 92 pollster
+===========================================================================
+
+
+  window: 107 days before election
+  swing state questions in window: 1182
+
+===========================================================================
+  ols regression: swing states 107 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                  0.0016     0.0012       
+  abs_margin                             -1.5383     0.2775    ***
+  turnout_pct                            -0.0032     0.0011    ***
+  duration_days                          -0.0023     0.0007    ***
+  days_before_election                   -0.0003     0.0001     **
+  partisan_flag                           0.0148     0.0064     **
+  pop_a                                  -0.0345     0.0095    ***
+  pop_rv                                 -0.0196     0.0066    ***
+  const                                   0.2328     0.0815    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1725
+  n:            1182
+  clusters:     709 poll_id, 92 pollster
+===========================================================================
+
+
+  window: 90 days before election
+  swing state questions in window: 1092
+
+===========================================================================
+  ols regression: swing states 90 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                  0.0021     0.0010     **
+  abs_margin                             -1.3624     0.2710    ***
+  turnout_pct                            -0.0028     0.0011     **
+  duration_days                          -0.0020     0.0006    ***
+  days_before_election                   -0.0005     0.0001    ***
+  partisan_flag                           0.0165     0.0065     **
+  pop_a                                  -0.0353     0.0095    ***
+  pop_rv                                 -0.0247     0.0073    ***
+  const                                   0.1991     0.0834     **
+  --------------------------------------------------------------------
+  adjusted r2:  0.2095
+  n:            1092
+  clusters:     648 poll_id, 83 pollster
+===========================================================================
+
+
+  window: 60 days before election
+  swing state questions in window: 852
+
+===========================================================================
+  ols regression: swing states 60 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                  0.0010     0.0011       
+  abs_margin                             -1.1934     0.4001    ***
+  turnout_pct                            -0.0020     0.0012      *
+  duration_days                          -0.0021     0.0005    ***
+  days_before_election                   -0.0006     0.0002    ***
+  partisan_flag                           0.0117     0.0081       
+  pop_a                                  -0.0390     0.0093    ***
+  pop_rv                                 -0.0222     0.0070    ***
+  const                                   0.1464     0.0925       
+  --------------------------------------------------------------------
+  adjusted r2:  0.2091
+  n:            852
+  clusters:     524 poll_id, 74 pollster
+===========================================================================
+
+
+  window: 30 days before election
+  swing state questions in window: 526
+
+===========================================================================
+  ols regression: swing states 30 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0010     0.0013       
+  abs_margin                             -1.2517     0.4518    ***
+  turnout_pct                            -0.0025     0.0013      *
+  duration_days                          -0.0021     0.0005    ***
+  days_before_election                    0.0000     0.0004       
+  partisan_flag                           0.0108     0.0094       
+  pop_a                                  -0.0335     0.0138     **
+  pop_rv                                 -0.0196     0.0074     **
+  const                                   0.1806     0.1082       
+  --------------------------------------------------------------------
+  adjusted r2:  0.2107
+  n:            526
+  clusters:     330 poll_id, 61 pollster
+===========================================================================
+
+
+  window: 7 days before election
+  swing state questions in window: 228
+
+===========================================================================
+  ols regression: swing states 7 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0036     0.0017     **
+  abs_margin                             -1.1191     0.3595    ***
+  turnout_pct                            -0.0024     0.0012      *
+  duration_days                          -0.0028     0.0005    ***
+  days_before_election                   -0.0020     0.0019       
+  partisan_flag                             ----       ----       
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0224     0.0098     **
+  const                                   0.1960     0.0948     **
+  --------------------------------------------------------------------
+  adjusted r2:  0.3511
+  n:            228
+  clusters:     130 poll_id, 29 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 107 days before election
+  all state questions in window: 1628
+
+===========================================================================
+  ols regression: all states 107 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                  0.0012     0.0012       
+  abs_margin                             -0.1324     0.0675      *
+  turnout_pct                             0.0022     0.0006    ***
+  duration_days                          -0.0013     0.0008      *
+  days_before_election                   -0.0002     0.0001       
+  partisan_flag                           0.0085     0.0081       
+  pop_a                                  -0.0319     0.0142     **
+  pop_rv                                 -0.0200     0.0075    ***
+  const                                  -0.1924     0.0451    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1116
+  n:            1628
+  clusters:     1057 poll_id, 156 pollster
+===========================================================================
+
+
+  window: 90 days before election
+  all state questions in window: 1512
+
+===========================================================================
+  ols regression: all states 90 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                  0.0014     0.0012       
+  abs_margin                             -0.1407     0.0676     **
+  turnout_pct                             0.0021     0.0006    ***
+  duration_days                          -0.0011     0.0007       
+  days_before_election                   -0.0004     0.0001    ***
+  partisan_flag                           0.0097     0.0089       
+  pop_a                                  -0.0317     0.0138     **
+  pop_rv                                 -0.0228     0.0081    ***
+  const                                  -0.1812     0.0461    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1309
+  n:            1512
+  clusters:     978 poll_id, 148 pollster
+===========================================================================
+
+
+  window: 60 days before election
+  all state questions in window: 1204
+
+===========================================================================
+  ols regression: all states 60 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0005     0.0013       
+  abs_margin                             -0.1189     0.0634      *
+  turnout_pct                             0.0024     0.0006    ***
+  duration_days                          -0.0015     0.0006     **
+  days_before_election                   -0.0005     0.0002    ***
+  partisan_flag                           0.0068     0.0095       
+  pop_a                                  -0.0261     0.0181       
+  pop_rv                                 -0.0226     0.0078    ***
+  const                                  -0.1961     0.0456    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1488
+  n:            1204
+  clusters:     799 poll_id, 134 pollster
+===========================================================================
+
+
+  window: 30 days before election
+  all state questions in window: 751
+
+===========================================================================
+  ols regression: all states 30 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0025     0.0018       
+  abs_margin                             -0.0598     0.0599       
+  turnout_pct                             0.0025     0.0007    ***
+  duration_days                          -0.0015     0.0006     **
+  days_before_election                   -0.0001     0.0004       
+  partisan_flag                           0.0187     0.0114       
+  pop_a                                  -0.0285     0.0142     **
+  pop_rv                                 -0.0172     0.0090      *
+  const                                  -0.2038     0.0503    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1430
+  n:            751
+  clusters:     504 poll_id, 105 pollster
+===========================================================================
+
+
+  window: 7 days before election
+  all state questions in window: 296
+
+===========================================================================
+  ols regression: all states 7 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0039     0.0032       
+  abs_margin                             -0.0896     0.0997       
+  turnout_pct                             0.0010     0.0007       
+  duration_days                          -0.0018     0.0008     **
+  days_before_election                    0.0012     0.0030       
+  partisan_flag                          -0.0137     0.0168       
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0240     0.0124      *
+  const                                  -0.0917     0.0633       
+  --------------------------------------------------------------------
+  adjusted r2:  0.1166
+  n:            296
+  clusters:     188 poll_id, 44 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 107 days before election
+  national questions in window: 671
+
+===========================================================================
+  ols regression: national 107 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0030     0.0012     **
+  duration_days                          -0.0032     0.0012    ***
+  days_before_election                   -0.0000     0.0001       
+  partisan_flag                           0.0333     0.0158     **
+  pop_a                                   0.0063     0.0177       
+  pop_rv                                  0.0126     0.0092       
+  const                                  -0.0546     0.0140    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.0823
+  n:            671
+  clusters:     380 poll_id, 73 pollster
+===========================================================================
+
+
+  window: 90 days before election
+  national questions in window: 561
+
+===========================================================================
+  ols regression: national 90 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0024     0.0010     **
+  duration_days                          -0.0016     0.0009      *
+  days_before_election                   -0.0006     0.0001    ***
+  partisan_flag                           0.0482     0.0125    ***
+  pop_a                                  -0.0015     0.0130       
+  pop_rv                                  0.0118     0.0093       
+  const                                  -0.0457     0.0126    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.2322
+  n:            561
+  clusters:     325 poll_id, 69 pollster
+===========================================================================
+
+
+  window: 60 days before election
+  national questions in window: 380
+
+===========================================================================
+  ols regression: national 60 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0024     0.0009     **
+  duration_days                          -0.0021     0.0013       
+  days_before_election                   -0.0011     0.0002    ***
+  partisan_flag                             ----       ----       
+  pop_a                                  -0.0015     0.0154       
+  pop_rv                                  0.0112     0.0101       
+  const                                  -0.0337     0.0146     **
+  --------------------------------------------------------------------
+  adjusted r2:  0.2436
+  n:            380
+  clusters:     229 poll_id, 58 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 30 days before election
+  national questions in window: 234
+
+===========================================================================
+  ols regression: national 30 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0031     0.0009    ***
+  duration_days                          -0.0028     0.0011    ***
+  days_before_election                   -0.0013     0.0004    ***
+  partisan_flag                             ----       ----       
+  pop_a                                   0.0079     0.0144       
+  pop_rv                                  0.0096     0.0108       
+  const                                  -0.0243     0.0115     **
+  --------------------------------------------------------------------
+  adjusted r2:  0.1837
+  n:            234
+  clusters:     138 poll_id, 53 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 7 days before election
+  national questions in window: 73
+
+===========================================================================
+  ols regression: national 7 days before election (no mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  pct_dk                                 -0.0018     0.0020       
+  duration_days                           0.0034     0.0058       
+  days_before_election                    0.0005     0.0025       
+  partisan_flag                             ----       ----       
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0070     0.0119       
+  const                                  -0.0490     0.0296       
+  --------------------------------------------------------------------
+  adjusted r2:  0.0364
+  n:            73
+  clusters:     39 poll_id, 25 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 107 days before election
+  swing state questions in window: 1734
+
+===========================================================================
+  ols regression: swing states 107 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0025     0.0006    ***
+  days_before_election                   -0.0001     0.0001       
+  partisan_flag                           0.0108     0.0064      *
+  pct_dk                                  0.0021     0.0010     **
+  abs_margin                             -1.3108     0.3956    ***
+  turnout_pct                            -0.0024     0.0013      *
+  mode_App Panel                          0.0507     0.0110    ***
+  mode_Email                             -0.0022     0.0079       
+  mode_IVR                                0.0182     0.0067    ***
+  mode_Mail_to_Phone                     -0.0228     0.0058    ***
+  mode_Mail_to_Web                       -0.0024     0.0109       
+  mode_Online Ad                          0.0344     0.0044    ***
+  mode_Online Matched Sample             -0.0025     0.0077       
+  mode_Online Opt_In Panel               -0.0085     0.0077       
+  mode_Probability Panel                 -0.0188     0.0038    ***
+  mode_Text                               0.0151     0.0068     **
+  mode_Text_to_Web                        0.0039     0.0052       
+  pop_a                                  -0.0290     0.0090    ***
+  pop_rv                                 -0.0121     0.0058     **
+  const                                   0.1602     0.1054       
+  --------------------------------------------------------------------
+  adjusted r2:  0.2055
+  n:            1734
+  clusters:     709 poll_id, 92 pollster
+===========================================================================
+
+
+  window: 90 days before election
+  swing state questions in window: 1589
+
+===========================================================================
+  ols regression: swing states 90 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0021     0.0004    ***
+  days_before_election                   -0.0003     0.0001    ***
+  partisan_flag                           0.0125     0.0062     **
+  pct_dk                                  0.0027     0.0010    ***
+  abs_margin                             -1.1641     0.3842    ***
+  turnout_pct                            -0.0020     0.0013       
+  mode_App Panel                          0.0417     0.0080    ***
+  mode_Email                             -0.0088     0.0096       
+  mode_IVR                                0.0148     0.0071     **
+  mode_Mail_to_Phone                     -0.0248     0.0077    ***
+  mode_Mail_to_Web                       -0.0064     0.0101       
+  mode_Online Ad                          0.0296     0.0040    ***
+  mode_Online Matched Sample             -0.0058     0.0058       
+  mode_Online Opt_In Panel               -0.0114     0.0061      *
+  mode_Probability Panel                 -0.0178     0.0038    ***
+  mode_Text                               0.0139     0.0079      *
+  mode_Text_to_Web                        0.0022     0.0040       
+  pop_a                                  -0.0321     0.0080    ***
+  pop_rv                                 -0.0195     0.0055    ***
+  const                                   0.1294     0.1031       
+  --------------------------------------------------------------------
+  adjusted r2:  0.2437
+  n:            1589
+  clusters:     648 poll_id, 83 pollster
+===========================================================================
+
+
+  window: 60 days before election
+  swing state questions in window: 1254
+
+===========================================================================
+  ols regression: swing states 60 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0019     0.0004    ***
+  days_before_election                   -0.0004     0.0001    ***
+  partisan_flag                           0.0084     0.0072       
+  pct_dk                                  0.0023     0.0010     **
+  abs_margin                             -0.9756     0.4803     **
+  turnout_pct                            -0.0012     0.0015       
+  mode_App Panel                          0.0325     0.0087    ***
+  mode_Email                             -0.0129     0.0103       
+  mode_IVR                                0.0139     0.0070      *
+  mode_Mail_to_Phone                     -0.0321     0.0053    ***
+  mode_Mail_to_Web                       -0.0111     0.0106       
+  mode_Online Ad                          0.0270     0.0046    ***
+  mode_Online Matched Sample             -0.0121     0.0060     **
+  mode_Online Opt_In Panel               -0.0112     0.0052     **
+  mode_Probability Panel                 -0.0254     0.0047    ***
+  mode_Text                               0.0090     0.0071       
+  mode_Text_to_Web                       -0.0021     0.0034       
+  pop_a                                  -0.0344     0.0074    ***
+  pop_rv                                 -0.0168     0.0054    ***
+  const                                   0.0727     0.1179       
+  --------------------------------------------------------------------
+  adjusted r2:  0.2359
+  n:            1254
+  clusters:     524 poll_id, 74 pollster
+===========================================================================
+
+
+  window: 30 days before election
+  swing state questions in window: 789
+
+===========================================================================
+  ols regression: swing states 30 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0016     0.0004    ***
+  days_before_election                    0.0004     0.0002      *
+  partisan_flag                           0.0130     0.0059     **
+  pct_dk                                  0.0010     0.0011       
+  abs_margin                             -0.9264     0.6878       
+  turnout_pct                            -0.0012     0.0021       
+  mode_App Panel                          0.0257     0.0082    ***
+  mode_Email                             -0.0158     0.0115       
+  mode_IVR                                0.0079     0.0082       
+  mode_Mail_to_Phone                        ----       ----       
+  mode_Mail_to_Web                       -0.0170     0.0108       
+  mode_Online Ad                          0.0328     0.0062    ***
+  mode_Online Matched Sample             -0.0136     0.0059     **
+  mode_Online Opt_In Panel               -0.0090     0.0050      *
+  mode_Probability Panel                    ----       ----       
+  mode_Text                               0.0099     0.0087       
+  mode_Text_to_Web                        0.0003     0.0029       
+  pop_a                                  -0.0273     0.0125     **
+  pop_rv                                 -0.0143     0.0064     **
+  const                                   0.0628     0.1632       
+  --------------------------------------------------------------------
+  adjusted r2:  0.2428
+  n:            789
+  clusters:     330 poll_id, 61 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 7 days before election
+  swing state questions in window: 303
+
+===========================================================================
+  ols regression: swing states 7 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0021     0.0004    ***
+  days_before_election                   -0.0003     0.0021       
+  partisan_flag                           0.0058     0.0060       
+  pct_dk                                 -0.0006     0.0022       
+  abs_margin                             -1.1759     0.3481    ***
+  turnout_pct                            -0.0021     0.0011      *
+  mode_App Panel                            ----       ----       
+  mode_Email                                ----       ----       
+  mode_IVR                                0.0064     0.0126       
+  mode_Mail_to_Phone                      0.0000     0.0000    ***
+  mode_Mail_to_Web                        0.0000     0.0000       
+  mode_Online Ad                          0.0358     0.0127    ***
+  mode_Online Matched Sample             -0.0162     0.0121       
+  mode_Online Opt_In Panel               -0.0070     0.0104       
+  mode_Probability Panel                 -0.0000     0.0000       
+  mode_Text                               0.0101     0.0104       
+  mode_Text_to_Web                       -0.0066     0.0056       
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0132     0.0099       
+  const                                   0.1424     0.0917       
+  --------------------------------------------------------------------
+  adjusted r2:  0.4178
+  n:            303
+  clusters:     130 poll_id, 29 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 107 days before election
+  all state questions in window: 2357
+
+===========================================================================
+  ols regression: all states 107 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0018     0.0005    ***
+  days_before_election                   -0.0001     0.0001       
+  partisan_flag                           0.0061     0.0079       
+  pct_dk                                  0.0022     0.0011      *
+  abs_margin                             -0.1387     0.0525    ***
+  turnout_pct                             0.0025     0.0006    ***
+  mode_App Panel                          0.0446     0.0101    ***
+  mode_Email                             -0.0032     0.0082       
+  mode_IVR                                0.0063     0.0085       
+  mode_Mail_to_Phone                     -0.0258     0.0073    ***
+  mode_Mail_to_Web                       -0.0381     0.0359       
+  mode_Online Ad                          0.0348     0.0052    ***
+  mode_Online Matched Sample             -0.0167     0.0076     **
+  mode_Online Opt_In Panel               -0.0090     0.0068       
+  mode_Probability Panel                 -0.0512     0.0146    ***
+  mode_Text                               0.0080     0.0080       
+  mode_Text_to_Web                       -0.0002     0.0051       
+  pop_a                                  -0.0130     0.0200       
+  pop_rv                                 -0.0162     0.0067     **
+  const                                  -0.2198     0.0390    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1665
+  n:            2357
+  clusters:     1057 poll_id, 156 pollster
+===========================================================================
+
+
+  window: 90 days before election
+  all state questions in window: 2174
+
+===========================================================================
+  ols regression: all states 90 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0015     0.0004    ***
+  days_before_election                   -0.0003     0.0001    ***
+  partisan_flag                           0.0072     0.0083       
+  pct_dk                                  0.0026     0.0012     **
+  abs_margin                             -0.1440     0.0548    ***
+  turnout_pct                             0.0025     0.0006    ***
+  mode_App Panel                          0.0399     0.0093    ***
+  mode_Email                             -0.0072     0.0094       
+  mode_IVR                                0.0036     0.0080       
+  mode_Mail_to_Phone                     -0.0266     0.0089    ***
+  mode_Mail_to_Web                       -0.0408     0.0360       
+  mode_Online Ad                          0.0312     0.0054    ***
+  mode_Online Matched Sample             -0.0188     0.0068    ***
+  mode_Online Opt_In Panel               -0.0096     0.0061       
+  mode_Probability Panel                 -0.0485     0.0150    ***
+  mode_Text                               0.0079     0.0089       
+  mode_Text_to_Web                       -0.0003     0.0043       
+  pop_a                                  -0.0150     0.0193       
+  pop_rv                                 -0.0214     0.0068    ***
+  const                                  -0.2122     0.0407    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1882
+  n:            2174
+  clusters:     978 poll_id, 148 pollster
+===========================================================================
+
+
+  window: 60 days before election
+  all state questions in window: 1743
+
+===========================================================================
+  ols regression: all states 60 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0017     0.0005    ***
+  days_before_election                   -0.0004     0.0001    ***
+  partisan_flag                           0.0046     0.0078       
+  pct_dk                                  0.0016     0.0013       
+  abs_margin                             -0.1192     0.0525     **
+  turnout_pct                             0.0028     0.0006    ***
+  mode_App Panel                          0.0372     0.0109    ***
+  mode_Email                             -0.0085     0.0094       
+  mode_IVR                                0.0056     0.0062       
+  mode_Mail_to_Phone                     -0.0322     0.0074    ***
+  mode_Mail_to_Web                       -0.0428     0.0380       
+  mode_Online Ad                          0.0282     0.0054    ***
+  mode_Online Matched Sample             -0.0222     0.0059    ***
+  mode_Online Opt_In Panel               -0.0109     0.0049     **
+  mode_Probability Panel                 -0.0504     0.0195     **
+  mode_Text                               0.0022     0.0081       
+  mode_Text_to_Web                       -0.0016     0.0039       
+  pop_a                                  -0.0052     0.0246       
+  pop_rv                                 -0.0198     0.0062    ***
+  const                                  -0.2265     0.0436    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.1955
+  n:            1743
+  clusters:     799 poll_id, 134 pollster
+===========================================================================
+
+
+  window: 30 days before election
+  all state questions in window: 1106
+
+===========================================================================
+  ols regression: all states 30 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0012     0.0004    ***
+  days_before_election                    0.0001     0.0003       
+  partisan_flag                           0.0162     0.0080     **
+  pct_dk                                  0.0010     0.0018       
+  abs_margin                             -0.0925     0.0590       
+  turnout_pct                             0.0028     0.0007    ***
+  mode_App Panel                          0.0319     0.0117    ***
+  mode_Email                             -0.0149     0.0102       
+  mode_IVR                                0.0058     0.0085       
+  mode_Mail_to_Phone                        ----       ----       
+  mode_Mail_to_Web                       -0.0504     0.0416       
+  mode_Online Ad                          0.0360     0.0066    ***
+  mode_Online Matched Sample             -0.0253     0.0062    ***
+  mode_Online Opt_In Panel               -0.0104     0.0058      *
+  mode_Probability Panel                 -0.0365     0.0318       
+  mode_Text                               0.0080     0.0093       
+  mode_Text_to_Web                       -0.0019     0.0041       
+  pop_a                                  -0.0123     0.0142       
+  pop_rv                                 -0.0141     0.0073      *
+  const                                  -0.2404     0.0483    ***
+  --------------------------------------------------------------------
+  adjusted r2:  0.2161
+  n:            1106
+  clusters:     504 poll_id, 105 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 7 days before election
+  all state questions in window: 391
+
+===========================================================================
+  ols regression: all states 7 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0015     0.0005    ***
+  days_before_election                    0.0014     0.0024       
+  partisan_flag                          -0.0020     0.0075       
+  pct_dk                                  0.0039     0.0033       
+  abs_margin                             -0.1568     0.1080       
+  turnout_pct                             0.0013     0.0007      *
+  mode_App Panel                          0.0785     0.0179    ***
+  mode_Email                                ----       ----       
+  mode_IVR                                0.0226     0.0127      *
+  mode_Mail_to_Phone                      0.0000     0.0000    ***
+  mode_Mail_to_Web                          ----       ----       
+  mode_Online Ad                          0.0522     0.0129    ***
+  mode_Online Matched Sample             -0.0086     0.0107       
+  mode_Online Opt_In Panel               -0.0031     0.0109       
+  mode_Probability Panel                    ----       ----       
+  mode_Text                               0.0176     0.0130       
+  mode_Text_to_Web                        0.0063     0.0087       
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0167     0.0097      *
+  const                                  -0.1519     0.0568     **
+  --------------------------------------------------------------------
+  adjusted r2:  0.4057
+  n:            391
+  clusters:     188 poll_id, 44 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 107 days before election
+  national questions in window: 786
+
+===========================================================================
+  ols regression: national 107 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0040     0.0010    ***
+  days_before_election                   -0.0000     0.0001       
+  partisan_flag                           0.0323     0.0161     **
+  pct_dk                                 -0.0025     0.0012     **
+  mode_App Panel                          0.0131     0.0112       
+  mode_Email                              0.0000     0.0000     **
+  mode_IVR                               -0.0284     0.0121     **
+  mode_Mail_to_Phone                      0.0000     0.0000       
+  mode_Mail_to_Web                        0.0000     0.0000    ***
+  mode_Online Ad                          0.0480     0.0218     **
+  mode_Online Matched Sample             -0.0266     0.0099    ***
+  mode_Online Opt_In Panel               -0.0346     0.0099    ***
+  mode_Probability Panel                 -0.0344     0.0125    ***
+  mode_Text                                 ----       ----       
+  mode_Text_to_Web                       -0.0069     0.0113       
+  pop_a                                   0.0065     0.0153       
+  pop_rv                                  0.0115     0.0075       
+  const                                  -0.0267     0.0138      *
+  --------------------------------------------------------------------
+  adjusted r2:  0.2048
+  n:            786
+  clusters:     380 poll_id, 73 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 90 days before election
+  national questions in window: 645
+
+===========================================================================
+  ols regression: national 90 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0024     0.0007    ***
+  days_before_election                   -0.0006     0.0001    ***
+  partisan_flag                           0.0472     0.0134    ***
+  pct_dk                                 -0.0020     0.0009     **
+  mode_App Panel                          0.0058     0.0152       
+  mode_Email                              0.0000     0.0000       
+  mode_IVR                               -0.0349     0.0133     **
+  mode_Mail_to_Phone                      0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000    ***
+  mode_Online Ad                          0.0236     0.0184       
+  mode_Online Matched Sample             -0.0307     0.0102    ***
+  mode_Online Opt_In Panel               -0.0363     0.0103    ***
+  mode_Probability Panel                 -0.0303     0.0125     **
+  mode_Text                                 ----       ----       
+  mode_Text_to_Web                       -0.0139     0.0114       
+  pop_a                                  -0.0028     0.0134       
+  pop_rv                                  0.0103     0.0083       
+  const                                  -0.0153     0.0144       
+  --------------------------------------------------------------------
+  adjusted r2:  0.3271
+  n:            645
+  clusters:     325 poll_id, 69 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 60 days before election
+  national questions in window: 439
+
+===========================================================================
+  ols regression: national 60 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0034     0.0011    ***
+  days_before_election                   -0.0012     0.0002    ***
+  partisan_flag                           0.0399     0.0169     **
+  pct_dk                                 -0.0021     0.0009     **
+  mode_App Panel                          0.0088     0.0148       
+  mode_Email                             -0.0000     0.0000    ***
+  mode_IVR                               -0.0381     0.0168     **
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000      *
+  mode_Online Ad                          0.0218     0.0134       
+  mode_Online Matched Sample             -0.0412     0.0132    ***
+  mode_Online Opt_In Panel               -0.0457     0.0125    ***
+  mode_Probability Panel                 -0.0356     0.0148     **
+  mode_Text                                 ----       ----       
+  mode_Text_to_Web                       -0.0194     0.0126       
+  pop_a                                  -0.0012     0.0151       
+  pop_rv                                  0.0091     0.0077       
+  const                                   0.0076     0.0155       
+  --------------------------------------------------------------------
+  adjusted r2:  0.3939
+  n:            439
+  clusters:     229 poll_id, 58 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 30 days before election
+  national questions in window: 276
+
+===========================================================================
+  ols regression: national 30 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                          -0.0037     0.0010    ***
+  days_before_election                   -0.0012     0.0005    ***
+  partisan_flag                             ----       ----       
+  pct_dk                                 -0.0032     0.0010    ***
+  mode_App Panel                            ----       ----       
+  mode_Email                              0.0000     0.0000       
+  mode_IVR                                  ----       ----       
+  mode_Mail_to_Phone                     -0.0000     0.0000    ***
+  mode_Mail_to_Web                       -0.0000     0.0000      *
+  mode_Online Ad                          0.0274     0.0134     **
+  mode_Online Matched Sample             -0.0440     0.0112    ***
+  mode_Online Opt_In Panel               -0.0418     0.0141    ***
+  mode_Probability Panel                 -0.0274     0.0132     **
+  mode_Text                                 ----       ----       
+  mode_Text_to_Web                       -0.0155     0.0079      *
+  pop_a                                   0.0117     0.0119       
+  pop_rv                                  0.0096     0.0079       
+  const                                   0.0098     0.0172       
+  --------------------------------------------------------------------
+  adjusted r2:  0.3416
+  n:            276
+  clusters:     138 poll_id, 53 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+  window: 7 days before election
+  national questions in window: 97
+
+===========================================================================
+  ols regression: national 7 days before election (with mode)
+  dependent variable: method a  (+ = republican bias)
+  standard errors: two-way clustered (poll_id & pollster)
+===========================================================================
+  variable                                  coef         se    sig
+  --------------------------------------------------------------------
+  duration_days                           0.0106     0.0085       
+  days_before_election                    0.0029     0.0034       
+  partisan_flag                             ----       ----       
+  pct_dk                                  0.0005     0.0019       
+  mode_App Panel                            ----       ----       
+  mode_Email                             -0.0000     0.0000      *
+  mode_IVR                                  ----       ----       
+  mode_Mail_to_Phone                      0.0000     0.0000      *
+  mode_Mail_to_Web                        0.0000     0.0000       
+  mode_Online Ad                            ----       ----       
+  mode_Online Matched Sample                ----       ----       
+  mode_Online Opt_In Panel               -0.0104     0.0193       
+  mode_Probability Panel                    ----       ----       
+  mode_Text                                 ----       ----       
+  mode_Text_to_Web                        0.0130     0.0128       
+  pop_a                                     ----       ----       
+  pop_rv                                  0.0033     0.0125       
+  const                                  -0.0849     0.0377     **
+  --------------------------------------------------------------------
+  adjusted r2:  0.2564
+  n:            97
+  clusters:     39 poll_id, 25 pollster
+  note:         ---- indicates <10 observations in category
+===========================================================================
+
+
+==============================================================================================================
+NATIONAL, ACROSS TIME WINDOWS, NO MODE
+==============================================================================================================
+
+Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
+                                     107d                       90d                       60d                       30d                        7d               
+..............................................................................................................
+duration_days                     -0.003      0.001   ***    -0.002      0.001    **    -0.002      0.001    **    -0.003      0.001   ***     0.003      0.005      
+days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.001      0.002      
+pct_dk                            -0.003      0.001   ***    -0.002      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***    -0.002      0.002      
+abs_margin                                                                                                                                                           
+
+Constant                          -0.055      0.005          -0.046      0.004          -0.034      0.006          -0.024      0.007          -0.049      0.020      
+
+Adjusted R Square                   0.08                      0.23                      0.24                      0.18                      0.04                
+N                                    671                       561                       380                       234                        73                
+
+Note: Robust Standard Errors Reported
+Sig: *<.10; **<.05; ***<.01
+
+==============================================================================================================
+NATIONAL, ACROSS TIME WINDOWS, WITH MODE
+reference mode: Live Phone
+==============================================================================================================
+
+Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
+                                     107d                       90d                       60d                       30d                        7d               
+..............................................................................................................
+duration_days                     -0.004      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***    -0.004      0.001   ***     0.011      0.005    **
+days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.003      0.002      
+pct_dk                            -0.002      0.001   ***    -0.002      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***     0.001      0.002      
+abs_margin                                                                                                                                                           
+mode_App Panel                     0.013      0.012           0.006      0.012           0.009      0.013           0.026      0.020          -0.008      0.038      
+mode_Email                         0.000      0.000   ***     0.000      0.000     *    -0.000      0.000   ***     0.000      0.000     *    -0.000      0.000     *
+mode_IVR                          -0.028      0.011   ***    -0.035      0.011   ***    -0.038      0.013   ***    -0.038      0.016    **    -0.021      0.020      
+mode_Mail_to_Phone                 0.000      0.000           0.000      0.000          -0.000      0.000          -0.000      0.000    **     0.000      0.000     *
+mode_Mail_to_Web                   0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000     *    -0.000      0.000           0.000      0.000      
+mode_Online Ad                     0.048      0.011   ***     0.024      0.012    **     0.022      0.012     *     0.027      0.013    **     0.047      0.017   ***
+mode_Online Matched Sample        -0.027      0.008   ***    -0.031      0.007   ***    -0.041      0.008   ***    -0.044      0.010   ***    -0.020      0.017      
+mode_Online Opt_In Panel          -0.035      0.005   ***    -0.036      0.005   ***    -0.046      0.006   ***    -0.042      0.008   ***    -0.010      0.013      
+mode_Probability Panel            -0.034      0.007   ***    -0.030      0.007   ***    -0.036      0.007   ***    -0.027      0.010   ***    -0.052      0.022    **
+mode_Text                         -0.007      0.017          -0.012      0.015          -0.029      0.017     *    -0.030      0.017     *     0.005      0.019      
+mode_Text_to_Web                  -0.007      0.008          -0.014      0.007     *    -0.019      0.008    **    -0.015      0.010           0.013      0.016      
+
+Constant                          -0.027      0.006          -0.015      0.006           0.008      0.008           0.010      0.010          -0.085      0.024      
+
+Adjusted R Square                   0.20                      0.33                      0.39                      0.34                      0.26                
+N                                    786                       645                       439                       276                        97                
+
+Note: Robust Standard Errors Reported
+Sig: *<.10; **<.05; ***<.01
+all coefficients relative to Live Phone (reference category)
+
+==============================================================================================================
+ALL STATES, ACROSS TIME WINDOWS, NO MODE
+==============================================================================================================
+
+Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
+                                     107d                       90d                       60d                       30d                        7d               
+..............................................................................................................
+duration_days                     -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***    -0.002      0.000   ***    -0.002      0.001   ***
+days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000           0.001      0.002      
+pct_dk                             0.001      0.001     *     0.001      0.001    **    -0.000      0.001          -0.002      0.001    **    -0.004      0.002    **
+abs_margin                        -0.132      0.030   ***    -0.141      0.030   ***    -0.119      0.032   ***    -0.060      0.039          -0.090      0.069      
+turnout_pct                        0.002      0.000   ***     0.002      0.000   ***     0.002      0.000   ***     0.003      0.001   ***     0.001      0.001      
+
+Constant                          -0.192      0.028          -0.181      0.029          -0.196      0.031          -0.204      0.038          -0.092      0.061      
+
+Adjusted R Square                   0.11                      0.13                      0.15                      0.14                      0.12                
+N                                   1628                      1512                      1204                       751                       296                
+
+Note: Robust Standard Errors Reported
+Sig: *<.10; **<.05; ***<.01
+
+==============================================================================================================
+ALL STATES, ACROSS TIME WINDOWS, WITH MODE
+reference mode: Live Phone
+==============================================================================================================
+
+Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
+                                     107d                       90d                       60d                       30d                        7d               
+..............................................................................................................
+duration_days                     -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***
+days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000           0.001      0.002      
+pct_dk                             0.002      0.001   ***     0.003      0.001   ***     0.002      0.001    **     0.001      0.001           0.004      0.002    **
+abs_margin                        -0.139      0.023   ***    -0.144      0.023   ***    -0.119      0.025   ***    -0.093      0.030   ***    -0.157      0.052   ***
+turnout_pct                        0.003      0.000   ***     0.002      0.000   ***     0.003      0.000   ***     0.003      0.000   ***     0.001      0.001    **
+mode_App Panel                     0.045      0.010   ***     0.040      0.010   ***     0.037      0.011   ***     0.032      0.012   ***     0.079      0.018   ***
+mode_Email                        -0.003      0.007          -0.007      0.008          -0.009      0.008          -0.015      0.009     *     0.012      0.021      
+mode_IVR                           0.006      0.006           0.004      0.006           0.006      0.007           0.006      0.008           0.023      0.011    **
+mode_Mail_to_Phone                -0.026      0.019          -0.027      0.018          -0.032      0.018     *    -0.037      0.020     *     0.000      0.000   ***
+mode_Mail_to_Web                  -0.038      0.012   ***    -0.041      0.012   ***    -0.043      0.012   ***    -0.050      0.012   ***    -0.514      0.047   ***
+mode_Online Ad                     0.035      0.007   ***     0.031      0.007   ***     0.028      0.007   ***     0.036      0.008   ***     0.052      0.010   ***
+mode_Online Matched Sample        -0.017      0.007    **    -0.019      0.007   ***    -0.022      0.007   ***    -0.025      0.008   ***    -0.009      0.011      
+mode_Online Opt_In Panel          -0.009      0.003   ***    -0.010      0.004   ***    -0.011      0.004   ***    -0.010      0.005    **    -0.003      0.008      
+mode_Probability Panel            -0.051      0.011   ***    -0.049      0.011   ***    -0.050      0.012   ***    -0.037      0.015    **     0.036      0.023      
+mode_Text                          0.008      0.007           0.008      0.007           0.002      0.007           0.008      0.009           0.018      0.012      
+mode_Text_to_Web                  -0.000      0.004          -0.000      0.004          -0.002      0.004          -0.002      0.006           0.006      0.010      
+
+Constant                          -0.220      0.022          -0.212      0.023          -0.227      0.024          -0.240      0.030          -0.152      0.043      
+
+Adjusted R Square                   0.17                      0.19                      0.20                      0.22                      0.41                
+N                                   2357                      2174                      1743                      1106                       391                
+
+Note: Robust Standard Errors Reported
+Sig: *<.10; **<.05; ***<.01
+all coefficients relative to Live Phone (reference category)
+
+==============================================================================================================
+SWING, ACROSS TIME WINDOWS, NO MODE
+==============================================================================================================
+
+Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
+                                     107d                       90d                       60d                       30d                        7d               
+..............................................................................................................
+duration_days                     -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.003      0.000   ***
+days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.001      0.000   ***     0.000      0.000          -0.002      0.002      
+pct_dk                             0.002      0.001    **     0.002      0.001   ***     0.001      0.001          -0.001      0.001          -0.004      0.001   ***
+abs_margin                        -1.538      0.229   ***    -1.362      0.228   ***    -1.193      0.241   ***    -1.252      0.293   ***    -1.119      0.388   ***
+turnout_pct                       -0.003      0.001   ***    -0.003      0.001   ***    -0.002      0.001    **    -0.002      0.001    **    -0.002      0.001     *
+
+Constant                           0.233      0.060           0.199      0.060           0.146      0.064           0.181      0.077           0.196      0.101      
+
+Adjusted R Square                   0.17                      0.21                      0.21                      0.21                      0.35                
+N                                   1182                      1092                       852                       526                       228                
+
+Note: Robust Standard Errors Reported
+Sig: *<.10; **<.05; ***<.01
+
+==============================================================================================================
+SWING, ACROSS TIME WINDOWS< WITH MODE
+reference mode: Live Phone
+==============================================================================================================
+
+Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.     Coef.  Std. Err.  Sig.
+                                     107d                       90d                       60d                       30d                        7d               
+..............................................................................................................
+duration_days                     -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.000   ***
+days_before_election              -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000    **    -0.000      0.001      
+pct_dk                             0.002      0.001   ***     0.003      0.001   ***     0.002      0.001   ***     0.001      0.001          -0.001      0.001      
+abs_margin                        -1.311      0.177   ***    -1.164      0.177   ***    -0.976      0.189   ***    -0.926      0.228   ***    -1.176      0.308   ***
+turnout_pct                       -0.002      0.001   ***    -0.002      0.001   ***    -0.001      0.001     *    -0.001      0.001          -0.002      0.001    **
+mode_App Panel                     0.051      0.013   ***     0.042      0.013   ***     0.033      0.014    **     0.026      0.015     *     0.041      0.017    **
+mode_Email                        -0.002      0.006          -0.009      0.006          -0.013      0.007     *    -0.016      0.007    **     0.004      0.019      
+mode_IVR                           0.018      0.005   ***     0.015      0.005   ***     0.014      0.006    **     0.008      0.007           0.006      0.010      
+mode_Mail_to_Phone                -0.023      0.015          -0.025      0.014     *    -0.032      0.014    **    -0.038      0.015    **     0.000      0.000   ***
+mode_Mail_to_Web                  -0.002      0.010          -0.006      0.010          -0.011      0.009          -0.017      0.010     *     0.000      0.000      
+mode_Online Ad                     0.034      0.006   ***     0.030      0.006   ***     0.027      0.006   ***     0.033      0.006   ***     0.036      0.008   ***
+mode_Online Matched Sample        -0.003      0.006          -0.006      0.006          -0.012      0.006     *    -0.014      0.007    **    -0.016      0.008     *
+mode_Online Opt_In Panel          -0.009      0.003   ***    -0.011      0.003   ***    -0.011      0.003   ***    -0.009      0.004    **    -0.007      0.007      
+mode_Probability Panel            -0.019      0.012          -0.018      0.012          -0.025      0.014     *    -0.018      0.017          -0.000      0.000      
+mode_Text                          0.015      0.006    **     0.014      0.006    **     0.009      0.006           0.010      0.007           0.010      0.009      
+mode_Text_to_Web                   0.004      0.004           0.002      0.004          -0.002      0.004           0.000      0.005          -0.007      0.008      
+
+Constant                           0.160      0.047           0.129      0.047           0.073      0.051           0.063      0.060           0.142      0.081      
+
+Adjusted R Square                   0.21                      0.24                      0.24                      0.24                      0.42                
+N                                   1734                      1589                      1254                       789                       303                
+
+Note: Robust Standard Errors Reported
+Sig: *<.10; **<.05; ***<.01
+MODE COEFFICIENTS ACROSS SAMPLES
+
+Mode                        National           Swing      All States
+......................................................................
+App Panel                   0.01           0.04***        0.05***
+Email                       0.00***       -0.00          -0.00   
+IVR                        -0.03***        0.01           0.02***
+Mail_to_Phone               0.00          -0.03          -0.02   
+Mail_to_Web                 0.00***       -0.04***       -0.00   
+Online Ad                   0.05***        0.03***        0.03***
+Online Matched Sample       -0.03***       -0.02**        -0.00   
+Online Opt_In Panel        -0.03***       -0.01***       -0.01***
+Probability Panel          -0.03***       -0.05***       -0.02   
+Text                       -0.01           0.01           0.02** 
+Text_to_Web                -0.01          -0.00           0.00   
+
+note: *** p<0.01, ** p<0.05, * p<0.10
+all coefficients relative to Live Phone (reference category)
+
+==============================================================================================================
+SAMPLE SIZE CHANGES ACROSS TIME WINDOWS
+==============================================================================================================
+
+Cumulative Sample Sizes (polls within X days of election):
+Window (days)      Swing States      All States        National
+------------------------------------------------------------
+107                        1182            1628             671
+90                         1092            1512             561
+60                          852            1204             380
+30                          526             751             234
+7                           228             296              73
+
+
+Polls Excluded When Moving to Narrower Window:
+Window Change                Swing States           All States             National
+(from to)                  N (% of prior)       N (% of prior)       N (% of prior)
+--------------------------------------------------------------------------------
+107 to 90                90 (  7.6%)            116 (  7.1%)            110 ( 16.4%)
+90 to 60                240 ( 22.0%)            308 ( 20.4%)            181 ( 32.3%)
+60 to 30                326 ( 38.3%)            453 ( 37.6%)            146 ( 38.4%)
+30 to 7                 298 ( 56.7%)            455 ( 60.6%)            161 ( 68.8%)
+
+
+Overall Reduction (107 days to 7 days):
+Sample                     From         To       Drop     % Reduction
+-----------------------------------------------------------------
+Swing States               1182        228        954           80.7%
+All States                 1628        296       1332           81.8%
+National                    671         73        598           89.1%
+==============================================================================================================
+
+
+==============================================================================================================
+DESCRIPTIVE STATISTICS - REGRESSION VARIABLES
+==============================================================================================================
+
+All Questions (N=2299)
+                 A  duration_days  days_before_election       pct_dk   abs_margin  turnout_pct  partisan_flag
+count  2299.000000    2299.000000           2299.000000  2299.000000  2299.000000  2299.000000    2299.000000
+mean     -0.070578       6.250544             43.169204     4.069326     0.044290    67.828421       0.068291
+std       0.064913       5.835938             31.482953     3.110668     0.059485     4.905538       0.252299
+min      -0.562824       1.000000              1.000000    -2.000000     0.008588    53.280000       0.000000
+25%      -0.112058       3.000000             14.000000     2.000000     0.014723    64.070000       0.000000
+50%      -0.070524       4.000000             41.000000     4.000000     0.017097    66.710000       0.000000
+75%      -0.028851       7.000000             70.000000     5.800000     0.042394    71.430000       0.000000
+max       0.310397      43.000000            107.000000    24.000000     0.457561    76.640000       1.000000
+
+
+National Questions (N=671)
+                A  duration_days  days_before_election      pct_dk  partisan_flag
+count  671.000000     671.000000             671.00000  671.000000     671.000000
+mean    -0.078179       3.949329              51.28763    4.817705       0.026826
+std      0.050687       2.463548              32.79064    3.982556       0.161694
+min     -0.216590       1.000000               1.00000   -1.000000       0.000000
+25%     -0.115162       3.000000              20.00000    2.000000       0.000000
+50%     -0.086019       3.000000              51.00000    4.000000       0.000000
+75%     -0.050207       4.000000              79.00000    6.000000       0.000000
+max      0.140621      25.000000             107.00000   24.000000       1.000000
+
+
+Swing State Questions (N=1182)
+                 A  duration_days  days_before_election       pct_dk   abs_margin  turnout_pct  partisan_flag
+count  1182.000000    1182.000000           1182.000000  1182.000000  1182.000000  1182.000000    1182.000000
+mean     -0.058637       6.570220             40.802030     3.648350     0.024407    70.603020       0.084602
+std       0.055988       5.384903             30.830306     2.420266     0.014365     4.231626       0.278407
+min      -0.297115       1.000000              1.000000    -1.000000     0.008588    63.600000       0.000000
+25%      -0.091943       4.000000             11.000000     2.000000     0.014142    68.260000       0.000000
+50%      -0.055150       5.000000             40.000000     3.000000     0.017097    71.430000       0.000000
+75%      -0.018752       7.000000             69.000000     5.000000     0.032119    74.640000       0.000000
+max       0.103454      34.000000            106.000000    16.000000     0.055286    76.640000       1.000000
+==============================================================================================================
+
+
+
+ All State Questions (N=1628)
+                 A  duration_days  days_before_election       pct_dk   abs_margin  turnout_pct  partisan_flag
+count  1628.000000    1628.000000           1628.000000  1628.000000  1628.000000  1628.000000    1628.000000
+mean     -0.067446       7.199017             39.823096     3.760872     0.056476    69.377500       0.085381
+std       0.069712       6.520806             30.311526     2.609452     0.066998     5.075629       0.279533
+min      -0.562824       1.000000              1.000000    -2.000000     0.008588    53.280000       0.000000
+25%      -0.105761       3.000000             11.000000     2.000000     0.017097    65.800000       0.000000
+50%      -0.063201       5.000000             37.000000     3.300000     0.031400    70.320000       0.000000
+75%      -0.022677       8.000000             63.000000     5.000000     0.055286    74.097500       0.000000
+max       0.310397      43.000000            106.000000    16.000000     0.457561    76.640000       1.000000
+==============================================================================================================
+
+
+==============================================================================================================
+CORRELATION MATRIX INDEPENDENT VARIABLES, NO MODE
+==============================================================================================================
+
+Swing state-level polls:
+                        pct_dk  abs_margin  turnout_pct  duration_days  days_before_election  partisan_flag     pop_a    pop_rv
+pct_dk                1.000000    0.034247    -0.057134      -0.163536              0.206115       0.160553  0.076232  0.104074
+abs_margin            0.034247    1.000000    -0.892075       0.015603             -0.021305      -0.002218 -0.012949  0.020083
+turnout_pct          -0.057134   -0.892075     1.000000      -0.017846              0.021545       0.006747  0.007171 -0.023510
+duration_days        -0.163536    0.015603    -0.017846       1.000000             -0.126638      -0.140082  0.359895  0.005182
+days_before_election  0.206115   -0.021305     0.021545      -0.126638              1.000000       0.076630  0.023505  0.124552
+partisan_flag         0.160553   -0.002218     0.006747      -0.140082              0.076630       1.000000 -0.053882 -0.128851
+pop_a                 0.076232   -0.012949     0.007171       0.359895              0.023505      -0.053882  1.000000 -0.103599
+pop_rv                0.104074    0.020083    -0.023510       0.005182              0.124552      -0.128851 -0.103599  1.000000
+
+State-level polls:
+                        pct_dk  abs_margin  turnout_pct  duration_days  days_before_election  partisan_flag     pop_a    pop_rv
+pct_dk                1.000000    0.028957    -0.005923      -0.214950              0.178357       0.125919  0.110474  0.126858
+abs_margin            0.028957    1.000000    -0.559948       0.160507             -0.071139       0.020972 -0.015942 -0.060125
+turnout_pct          -0.005923   -0.559948     1.000000      -0.107721              0.054950      -0.010519  0.017778 -0.003180
+duration_days        -0.214950    0.160507    -0.107721       1.000000             -0.161782      -0.151623  0.307660 -0.042925
+days_before_election  0.178357   -0.071139     0.054950      -0.161782              1.000000       0.068012 -0.003612  0.127493
+partisan_flag         0.125919    0.020972    -0.010519      -0.151623              0.068012       1.000000 -0.056048 -0.071001
+pop_a                 0.110474   -0.015942     0.017778       0.307660             -0.003612      -0.056048  1.000000 -0.101745
+pop_rv                0.126858   -0.060125    -0.003180      -0.042925              0.127493      -0.071001 -0.101745  1.000000
+
+
+National polls:
+                        pct_dk  duration_days  days_before_election  partisan_flag     pop_a    pop_rv
+pct_dk                1.000000       0.002234              0.224921       0.008301  0.481229  0.125172
+duration_days         0.002234       1.000000             -0.050241      -0.071520  0.147971  0.025264
+days_before_election  0.224921      -0.050241              1.000000      -0.013844  0.014164  0.202742
+partisan_flag         0.008301      -0.071520             -0.013844       1.000000 -0.045566 -0.025214
+pop_a                 0.481229       0.147971              0.014164      -0.045566  1.000000 -0.201487
+pop_rv                0.125172       0.025264              0.202742      -0.025214 -0.201487  1.000000
+==============================================================================================================
+
+
+==============================================================================================================
+CORRELATION MATRIX INDEPENDENT VARIABLES, WITH MODE
+==============================================================================================================
+
+Swing state-level polls:
+                            duration_days  days_before_election  partisan_flag    pct_dk  abs_margin  turnout_pct  mode_App Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online Ad  mode_Online Matched Sample  mode_Online Opt_In Panel  mode_Probability Panel  mode_Text  mode_Text_to_Web     pop_a    pop_rv
+duration_days                    1.000000             -0.137399      -0.209618 -0.118748    0.007807    -0.014166        0.375410    0.043281 -0.145179            0.055317          0.171307       -0.118214                    0.204090                 -0.047000                0.032275  -0.132772         -0.055398  0.333446  0.043992
+days_before_election            -0.137399              1.000000       0.061348  0.149009   -0.021041     0.020441       -0.035963   -0.036369  0.058495           -0.042878         -0.071878       -0.165428                   -0.098852                  0.066281               -0.003179  -0.076332          0.068458  0.019413  0.121925
+partisan_flag                   -0.209618              0.061348       1.000000  0.315105    0.012188    -0.008701       -0.040163    0.189734  0.163532           -0.033253         -0.050336       -0.048564                   -0.079828                 -0.092733               -0.040163   0.168515         -0.045368 -0.060599 -0.214196
+pct_dk                          -0.118748              0.149009       0.315105  1.000000    0.030831    -0.063825       -0.143243    0.081882 -0.009368           -0.024836          0.015628       -0.159439                    0.037065                  0.075886               -0.062954   0.082591         -0.099442  0.059277  0.039919
+abs_margin                       0.007807             -0.021041       0.012188  0.030831    1.000000    -0.890909       -0.002944   -0.035175  0.009470           -0.028956         -0.012741        0.005236                   -0.029756                  0.037460               -0.036561  -0.009238          0.006355 -0.010711  0.011090
+turnout_pct                     -0.014166              0.020441      -0.008701 -0.063825   -0.890909     1.000000        0.007148    0.040573 -0.013008            0.021194          0.006188       -0.010288                    0.027444                 -0.040384                0.047989   0.010781         -0.000773  0.006360 -0.013214
+mode_App Panel                   0.375410             -0.035963      -0.040163 -0.143243   -0.002944     0.007148        1.000000   -0.019646 -0.026196           -0.007711         -0.011672       -0.022974                   -0.020376                 -0.060136               -0.009313  -0.020944         -0.042979 -0.014052 -0.055760
+mode_Email                       0.043281             -0.036369       0.189734  0.081882   -0.035175     0.040573       -0.019646    1.000000 -0.055259           -0.016266         -0.024622       -0.048462                   -0.042981                 -0.126855               -0.019646  -0.044181         -0.090662 -0.029641 -0.035892
+mode_IVR                        -0.145179              0.058495       0.163532 -0.009368    0.009470    -0.013008       -0.026196   -0.055259  1.000000           -0.021689         -0.032831       -0.064621                   -0.057312                 -0.169152               -0.026196  -0.058912         -0.120891 -0.039525 -0.004130
+mode_Mail_to_Phone               0.055317             -0.042878      -0.033253 -0.024836   -0.028956     0.021194       -0.007711   -0.016266 -0.021689            1.000000         -0.009664       -0.019021                   -0.016870                 -0.049790               -0.007711  -0.017341         -0.035584 -0.011634  0.020907
+mode_Mail_to_Web                 0.171307             -0.071878      -0.050336  0.015628   -0.012741     0.006188       -0.011672   -0.024622 -0.032831           -0.009664          1.000000       -0.028793                   -0.025536                 -0.075368               -0.011672  -0.026249         -0.053865 -0.017611  0.052969
+mode_Online Ad                  -0.118214             -0.165428      -0.048564 -0.159439    0.005236    -0.010288       -0.022974   -0.048462 -0.064621           -0.019021         -0.028793        1.000000                   -0.050263                 -0.148346               -0.022974  -0.051666         -0.106021 -0.034663 -0.119822
+mode_Online Matched Sample       0.204090             -0.098852      -0.079828  0.037065   -0.029756     0.027444       -0.020376   -0.042981 -0.057312           -0.016870         -0.025536       -0.050263                    1.000000                 -0.131568               -0.020376  -0.045823         -0.094030  0.269415 -0.003434
+mode_Online Opt_In Panel        -0.047000              0.066281      -0.092733  0.075886    0.037460    -0.040384       -0.060136   -0.126855 -0.169152           -0.049790         -0.075368       -0.148346                   -0.131568                  1.000000               -0.060136  -0.135241         -0.277521 -0.027657  0.022572
+mode_Probability Panel           0.032275             -0.003179      -0.040163 -0.062954   -0.036561     0.047989       -0.009313   -0.019646 -0.026196           -0.007711         -0.011672       -0.022974                   -0.020376                 -0.060136                1.000000  -0.020944         -0.042979 -0.014052 -0.000064
+mode_Text                       -0.132772             -0.076332       0.168515  0.082591   -0.009238     0.010781       -0.020944   -0.044181 -0.058912           -0.017341         -0.026249       -0.051666                   -0.045823                 -0.135241               -0.020944   1.000000         -0.096655 -0.031601  0.009490
+mode_Text_to_Web                -0.055398              0.068458      -0.045368 -0.099442    0.006355    -0.000773       -0.042979   -0.090662 -0.120891           -0.035584         -0.053865       -0.106021                   -0.094030                 -0.277521               -0.042979  -0.096655          1.000000 -0.064847 -0.020894
+pop_a                            0.333446              0.019413      -0.060599  0.059277   -0.010711     0.006360       -0.014052   -0.029641 -0.039525           -0.011634         -0.017611       -0.034663                    0.269415                 -0.027657               -0.014052  -0.031601         -0.064847  1.000000 -0.084131
+pop_rv                           0.043992              0.121925      -0.214196  0.039919    0.011090    -0.013214       -0.055760   -0.035892 -0.004130            0.020907          0.052969       -0.119822                   -0.003434                  0.022572               -0.000064   0.009490         -0.020894 -0.084131  1.000000
+
+State-level polls:
+                            duration_days  days_before_election  partisan_flag    pct_dk  abs_margin  turnout_pct  mode_App Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online Ad  mode_Online Matched Sample  mode_Online Opt_In Panel  mode_Probability Panel  mode_Text  mode_Text_to_Web     pop_a    pop_rv
+duration_days                    1.000000             -0.161517      -0.199934 -0.144620    0.133606    -0.080941        0.541975    0.045595 -0.143355            0.034649          0.128951       -0.103911                    0.212459                 -0.067081                0.002179  -0.118945         -0.105878  0.290676 -0.006214
+days_before_election            -0.161517              1.000000       0.051294  0.126680   -0.075631     0.060911       -0.059054   -0.041931  0.048894           -0.035562         -0.068290       -0.157048                   -0.106248                  0.079225                0.001494  -0.068993          0.060744 -0.000399  0.136604
+partisan_flag                   -0.199934              0.051294       1.000000  0.227573   -0.022294     0.002320       -0.067758    0.165262  0.178754           -0.027336         -0.043772       -0.029914                   -0.081138                 -0.093370               -0.049012   0.190493         -0.031756 -0.063409 -0.142727
+pct_dk                          -0.144620              0.126680       0.227573  1.000000    0.047363    -0.012183       -0.244077    0.056521 -0.012161           -0.023363          0.014481       -0.127439                    0.018060                  0.061668               -0.053551   0.057462         -0.044893  0.124294  0.079365
+abs_margin                       0.133606             -0.075631      -0.022294  0.047363    1.000000    -0.551241        0.191596   -0.032579 -0.002589           -0.037389         -0.027667       -0.051260                   -0.006753                 -0.052700                0.055570  -0.042393          0.050603 -0.004464 -0.050258
+turnout_pct                     -0.080941              0.060911       0.002320 -0.012183   -0.551241     1.000000       -0.126487    0.035623 -0.031810            0.031546          0.028360        0.029394                   -0.000957                  0.009635                0.035325   0.022334         -0.018081  0.016715 -0.008426
+mode_App Panel                   0.541975             -0.059054      -0.067758 -0.244077    0.191596    -0.126487        1.000000   -0.031608 -0.045496           -0.011622         -0.018610       -0.037554                   -0.037013                 -0.104292               -0.020838  -0.033819         -0.079149 -0.026959 -0.095083
+mode_Email                       0.045595             -0.041931       0.165262  0.056521   -0.032579     0.035623       -0.031608    1.000000 -0.049917           -0.012752         -0.020419       -0.041203                   -0.040610                 -0.114427               -0.022863  -0.037105         -0.086841 -0.029579 -0.026925
+mode_IVR                        -0.143355              0.048894       0.178754 -0.012161   -0.002589    -0.031810       -0.045496   -0.049917  1.000000           -0.018355         -0.029391       -0.059308                   -0.058454                 -0.164705               -0.032909  -0.053409         -0.124998 -0.042576  0.024906
+mode_Mail_to_Phone               0.034649             -0.035562      -0.027336 -0.023363   -0.037389     0.031546       -0.011622   -0.012752 -0.018355            1.000000         -0.007508       -0.015151                   -0.014933                 -0.042075               -0.008407  -0.013644         -0.031932 -0.010876  0.020038
+mode_Mail_to_Web                 0.128951             -0.068290      -0.043772  0.014481   -0.027667     0.028360       -0.018610   -0.020419 -0.029391           -0.007508          1.000000       -0.024260                   -0.023911                 -0.067373               -0.013462  -0.021847         -0.051131 -0.017416  0.048784
+mode_Online Ad                  -0.103911             -0.157048      -0.029914 -0.127439   -0.051260     0.029394       -0.037554   -0.041203 -0.059308           -0.015151         -0.024260        1.000000                   -0.048250                 -0.135952               -0.027164  -0.044085         -0.103177 -0.035143 -0.105078
+mode_Online Matched Sample       0.212459             -0.106248      -0.081138  0.018060   -0.006753    -0.000957       -0.037013   -0.040610 -0.058454           -0.014933         -0.023911       -0.048250                    1.000000                 -0.133996               -0.026773  -0.043451         -0.101693  0.254774 -0.007449
+mode_Online Opt_In Panel        -0.067081              0.079225      -0.093370  0.061668   -0.052700     0.009635       -0.104292   -0.114427 -0.164705           -0.042075         -0.067373       -0.135952                   -0.133996                  1.000000               -0.075439  -0.122430         -0.286536 -0.011643  0.006011
+mode_Probability Panel           0.002179              0.001494      -0.049012 -0.053551    0.055570     0.035325       -0.020838   -0.022863 -0.032909           -0.008407         -0.013462       -0.027164                   -0.026773                 -0.075439                1.000000  -0.024462         -0.057252 -0.019501 -0.019417
+mode_Text                       -0.118945             -0.068993       0.190493  0.057462   -0.042393     0.022334       -0.033819   -0.037105 -0.053409           -0.013644         -0.021847       -0.044085                   -0.043451                 -0.122430               -0.024462   1.000000         -0.092915 -0.031648  0.018185
+mode_Text_to_Web                -0.105878              0.060744      -0.031756 -0.044893    0.050603    -0.018081       -0.079149   -0.086841 -0.124998           -0.031932         -0.051131       -0.103177                   -0.101693                 -0.286536               -0.057252  -0.092915          1.000000 -0.059769 -0.001458
+pop_a                            0.290676             -0.000399      -0.063409  0.124294   -0.004464     0.016715       -0.026959   -0.029579 -0.042576           -0.010876         -0.017416       -0.035143                    0.254774                 -0.011643               -0.019501  -0.031648         -0.059769  1.000000 -0.088979
+pop_rv                          -0.006214              0.136604      -0.142727  0.079365   -0.050258    -0.008426       -0.095083   -0.026925  0.024906            0.020038          0.048784       -0.105078                   -0.007449                  0.006011               -0.019417   0.018185         -0.001458 -0.088979  1.000000
+
+
+National polls:
+                            duration_days  days_before_election  partisan_flag    pct_dk  mode_App Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online Ad  mode_Online Matched Sample  mode_Online Opt_In Panel  mode_Probability Panel  mode_Text  mode_Text_to_Web     pop_a    pop_rv
+duration_days                    1.000000             -0.036292      -0.067184  0.059456        0.181101         NaN -0.080600                 NaN               NaN       -0.018180                    0.072174                 -0.225671                0.223374  -0.039076          0.006388  0.162709  0.036055
+days_before_election            -0.036292              1.000000      -0.018932  0.217773        0.039142         NaN  0.026403                 NaN               NaN       -0.039034                   -0.050390                  0.051088               -0.037123  -0.087310         -0.039124  0.013052  0.186508
+partisan_flag                   -0.067184             -0.018932       1.000000  0.013266       -0.024772         NaN  0.023513                 NaN               NaN        0.029164                   -0.044010                  0.097874               -0.055167   0.066570         -0.044425 -0.041023 -0.030590
+pct_dk                           0.059456              0.217773       0.013266  1.000000       -0.135146         NaN -0.034731                 NaN               NaN       -0.037275                    0.040183                  0.004451                0.214022  -0.069790         -0.103486  0.471073  0.118628
+mode_App Panel                   0.181101              0.039142      -0.024772 -0.135146        1.000000         NaN -0.026708                 NaN               NaN       -0.024772                   -0.044010                 -0.167743               -0.055167  -0.015960         -0.044425 -0.041023 -0.117080
+mode_Email                            NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN       NaN       NaN
+mode_IVR                        -0.080600              0.026403       0.023513 -0.034731       -0.026708         NaN  1.000000                 NaN               NaN       -0.026708                   -0.047450                 -0.180854               -0.059479  -0.017208         -0.047898 -0.044229 -0.029591
+mode_Mail_to_Phone                    NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN       NaN       NaN
+mode_Mail_to_Web                      NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN       NaN       NaN
+mode_Online Ad                  -0.018180             -0.039034       0.029164 -0.037275       -0.024772         NaN -0.026708                 NaN               NaN        1.000000                   -0.044010                 -0.167743               -0.055167  -0.015960         -0.044425 -0.041023 -0.047888
+mode_Online Matched Sample       0.072174             -0.050390      -0.044010  0.040183       -0.044010         NaN -0.047450                 NaN               NaN       -0.044010                    1.000000                 -0.298015               -0.098011  -0.028355         -0.078926  0.027618  0.078824
+mode_Online Opt_In Panel        -0.225671              0.051088       0.097874  0.004451       -0.167743         NaN -0.180854                 NaN               NaN       -0.167743                   -0.298015                  1.000000               -0.373564  -0.108074         -0.300824 -0.089742 -0.105983
+mode_Probability Panel           0.223374             -0.037123      -0.055167  0.214022       -0.055167         NaN -0.059479                 NaN               NaN       -0.055167                   -0.098011                 -0.373564                1.000000  -0.035543         -0.098935  0.326127  0.071183
+mode_Text                       -0.039076             -0.087310       0.066570 -0.069790       -0.015960         NaN -0.017208                 NaN               NaN       -0.015960                   -0.028355                 -0.108074               -0.035543   1.000000         -0.028622 -0.026430  0.056911
+mode_Text_to_Web                 0.006388             -0.039124      -0.044425 -0.103486       -0.044425         NaN -0.047898                 NaN               NaN       -0.044425                   -0.078926                 -0.300824               -0.098935  -0.028622          1.000000 -0.053629  0.044088
+pop_a                            0.162709              0.013052      -0.041023  0.471073       -0.041023         NaN -0.044229                 NaN               NaN       -0.041023                    0.027618                 -0.089742                0.326127  -0.026430         -0.053629  1.000000 -0.193888
+pop_rv                           0.036055              0.186508      -0.030590  0.118628       -0.117080         NaN -0.029591                 NaN               NaN       -0.047888                    0.078824                 -0.105983                0.071183   0.056911          0.044088 -0.193888  1.000000
+==============================================================================================================
+
+
+Pollster distribution swing state:
+                                                   n_polls  n_questions
+pollster                                                               
+Morning Consult                                         55          125
+Siena/NYT                                               22           88
+Redfield & Wilton Strategies                            86           86
+AtlasIntel                                              42           84
+Focaldata                                               21           77
+YouGov                                                  19           50
+Emerson                                                 42           48
+Beacon/Shaw                                             14           42
+TIPP                                                     9           33
+Quinnipiac                                              16           32
+InsiderAdvantage                                        30           30
+Trafalgar Group                                         29           29
+Benenson Strategy Group/GS Strategy Group               14           28
+Marist College                                          12           24
+Bullfinch                                               10           18
+Patriot Polling                                         17           17
+ActiVote                                                16           16
+Marquette Law School                                     4           16
+Fabrizio/Impact                                          8           16
+Washington Post/George Mason University                  7           14
+Fabrizio/GBAO                                            7           14
+CES / YouGov                                             7           14
+CNN/SSRS                                                14           14
+Global Strategy Group/North Star Opinion Research        7           14
+Mitchell                                                 6           11
+Florida Atlantic University/Mainstreet Research          5           10
+SoCal Strategies                                         9           10
+RMG Research                                            10           10
+Spry Strategies                                          5           10
+Navigator                                                5           10
+The Washington Post                                      4            8
+Noble Predictive Insights                                4            8
+Fabrizio/McLaughlin                                      7            7
+OnMessage Inc.                                           7            7
+University of Massachusetts Lowell/YouGov                6            6
+Z to A Research                                          3            6
+OnMessage Public Strategies                              6            6
+Fabrizio Ward                                            3            6
+Research Co.                                             6            6
+Cygnal                                                   5            6
+Echelon Insights                                         3            6
+Suffolk                                                  6            6
+Franklin and Marshall College                            3            5
+East Carolina University                                 5            5
+SurveyUSA                                                4            5
+Susquehanna                                              5            5
+Public Opinion Strategies                                5            5
+Data for Progress                                        4            4
+MassINC Polling Group                                    2            4
+Quantus Insights                                         4            4
+Remington                                                4            4
+Glengariff Group Inc.                                    4            4
+HighGround                                               3            3
+RG Strategies                                            3            3
+co/efficient                                             3            3
+Quantus Polls and News                                   3            3
+EPIC-MRA                                                 2            3
+PPP                                                      3            3
+Data Orbital                                             2            2
+American Pulse                                           1            2
+U. Arizona/TrueDot                                       2            2
+U. Georgia SPIA                                          2            2
+J.L. Partners                                            2            2
+Fabrizio                                                 1            2
+Wick                                                     1            2
+Victory Insights                                         2            2
+SoCal Research                                           2            2
+Strategies 360                                           2            2
+Monmouth                                                 2            2
+Landmark Communications                                  1            2
+High Point University                                    1            2
+Institute for Global Affairs/YouGov                      2            2
+Muhlenberg                                               2            2
+Hunt Research                                            1            2
+The Citadel                                              1            2
+Arc Insights                                             1            1
+GQR                                                      1            1
+BK Strategies                                            1            1
+National Research                                        1            1
+North Star Opinion Research                              1            1
+Iron Light                                               1            1
+MRG (Marketing Resource Group)                           1            1
+Michigan State University/YouGov                         1            1
+Meredith College                                         1            1
+Peak Insights                                            1            1
+National Public Affairs                                  1            1
+Survation                                                1            1
+RABA Research                                            1            1
+Trafalgar Group/InsiderAdvantage                         1            1
+Tarrance                                                 1            1
+YouGov/Center for Working Class Politics                 1            1
+YouGov Blue                                              1            1
+
+Pollster distribution all state:
+                                                       n_polls  n_questions
+pollster                                                                   
+Morning Consult                                             76          146
+Siena/NYT                                                   28          112
+Redfield & Wilton Strategies                               108          108
+AtlasIntel                                                  47           94
+Focaldata                                                   24           87
+Emerson                                                     65           74
+ActiVote                                                    66           66
+YouGov                                                      26           61
+Beacon/Shaw                                                 15           44
+TIPP                                                         9           33
+Quinnipiac                                                  16           32
+InsiderAdvantage                                            31           31
+Trafalgar Group                                             31           31
+Marist College                                              15           30
+Benenson Strategy Group/GS Strategy Group                   14           28
+CES / YouGov                                                13           26
+Washington Post/George Mason University                      9           20
+Bullfinch                                                   12           20
+Fabrizio/Impact                                             10           20
+U. New Hampshire                                            13           18
+Florida Atlantic University/Mainstreet Research              8           18
+Patriot Polling                                             17           17
+Cygnal                                                      14           16
+RMG Research                                                16           16
+Marquette Law School                                         4           16
+PPP                                                         11           15
+SurveyUSA                                                   14           15
+CNN/SSRS                                                    14           14
+Global Strategy Group/North Star Opinion Research            7           14
+Fabrizio/GBAO                                                7           14
+Research Co.                                                14           14
+SoCal Strategies                                            11           13
+Noble Predictive Insights                                    6           13
+Mitchell                                                     6           11
+Navigator                                                    5           10
+Spry Strategies                                              5           10
+The Washington Post                                          5           10
+MassINC Polling Group                                        6           10
+Suffolk                                                      8            8
+OnMessage Inc.                                               8            8
+University of Massachusetts Lowell/YouGov                    8            8
+Fabrizio/McLaughlin                                          7            7
+St. Anselm                                                   5            6
+Fabrizio Ward                                                3            6
+OnMessage Public Strategies                                  6            6
+Alaska Survey Research                                       4            6
+Echelon Insights                                             3            6
+East Carolina University                                     6            6
+Siena                                                        3            6
+Z to A Research                                              3            6
+Remington                                                    6            6
+Franklin and Marshall College                                3            5
+University of Maryland/Washington Post                       2            5
+Research America                                             2            5
+Susquehanna                                                  5            5
+Victory Insights                                             5            5
+Quantus Polls and News                                       5            5
+Public Opinion Strategies                                    5            5
+Quantus Insights                                             5            5
+Data for Progress                                            4            4
+Virginia Commonwealth U.                                     2            4
+Glengariff Group Inc.                                        4            4
+Hunt Research                                                2            4
+The Citadel                                                  2            4
+Capitol Weekly                                               4            4
+Change Research                                              4            4
+RG Strategies                                                3            3
+co/efficient                                                 3            3
+Mason-Dixon                                                  3            3
+Embold Research                                              3            3
+UC Berkeley                                                  3            3
+American Pulse                                               2            3
+Chism Strategies                                             3            3
+EPIC-MRA                                                     2            3
+Roanoke College                                              2            3
+U. Texas/YouGov                                              2            3
+HighGround                                                   3            3
+J.L. Partners                                                3            3
+Lake Research                                                3            3
+HarrisX                                                      2            3
+WPAi                                                         2            2
+SoCal Research                                               2            2
+Research & Polling                                           2            2
+Data Orbital                                                 2            2
+Bowling Green State University/YouGov                        2            2
+Cherry Communications                                        2            2
+Dartmouth Poll                                               2            2
+Selzer                                                       2            2
+U. North Florida                                             2            2
+U. Arizona/TrueDot                                           2            2
+CWS Research                                                 2            2
+Muhlenberg                                                   2            2
+Monmouth                                                     2            2
+Institute for Global Affairs/YouGov                          2            2
+Hoffman Research                                             1            2
+Landmark Communications                                      1            2
+Fabrizio                                                     1            2
+Elway                                                        2            2
+U. Georgia SPIA                                              2            2
+Strategies 360                                               2            2
+Rutgers-Eagleton                                             1            2
+Wick                                                         1            2
+Keating Research                                             2            2
+GQR                                                          2            2
+McLaughlin                                                   2            2
+PPIC                                                         2            2
+Tarrance                                                     2            2
+Targoz Market Research                                       1            2
+Fort Hays State University                                   1            2
+High Point University                                        1            2
+Digital Research                                             1            1
+Claflin University                                           1            1
+BK Strategies                                                1            1
+ARW Strategies                                               1            1
+Christopher Newport U.                                       1            1
+Arc Insights                                                 1            1
+Global Strategy Group                                        1            1
+Fabrizio/David Binder Research                               1            1
+MSU - Billings                                               1            1
+MRG (Marketing Resource Group)                               1            1
+Gonzales Research & Media Services                           1            1
+Hendrix College                                              1            1
+Iron Light                                                   1            1
+Impact Research                                              1            1
+RABA Research                                                1            1
+Praecones Analytica                                          1            1
+Peak Insights                                                1            1
+Pan Atlantic Research                                        1            1
+North Star Opinion Research                                  1            1
+Michigan State University/YouGov                             1            1
+National Public Affairs                                      1            1
+National Research                                            1            1
+Miami University (Ohio)                                      1            1
+Meredith College                                             1            1
+Stetson University Center for Public Opinion Research        1            1
+Texas Hispanic Policy Foundation                             1            1
+St. Pete Polls                                               1            1
+SoonerPoll.com                                               1            1
+Slingshot Strategies                                         1            1
+Survation                                                    1            1
+Torchlight Strategies                                        1            1
+University of Houston/Texas Southern University              1            1
+University of Akron                                          1            1
+USC Dornsife/CSU Long Beach/Cal Poly Pomona                  1            1
+UMass Amherst/YouGov                                         1            1
+UMBC                                                         1            1
+U. Houston                                                   1            1
+U. Rhode Island                                              1            1
+Trafalgar Group/InsiderAdvantage                             1            1
+University of Delaware                                       1            1
+University of Maryland/YouGov                                1            1
+University of Texas at Tyler                                 1            1
+University of Wyoming                                        1            1
+Winthrop U.                                                  1            1
+YouGov/Center for Working Class Politics                     1            1
+YouGov Blue                                                  1            1
+
+Pollster distribution national:
+                                                 n_polls  n_questions
+pollster                                                             
+Morning Consult                                      103          145
+YouGov                                                28           50
+HarrisX                                               10           41
+TIPP                                                  27           38
+Ipsos                                                 12           37
+Big Village                                            9           30
+ABC News/Ipsos                                         5           23
+Siena/NYT                                              5           18
+ActiVote                                              14           16
+RMG Research                                          13           16
+Big Data Poll                                          3           15
+AtlasIntel                                             7           14
+Outward Intelligence                                   6           12
+Marist College                                         6           11
+Redfield & Wilton Strategies                          10           10
+Florida Atlantic University/Mainstreet Research        4           10
+HarrisX/Harris Poll                                    3            9
+Hart/POS                                               5            8
+Cygnal                                                 4            8
+Marquette Law School                                   2            8
+Echelon Insights                                       3            7
+Emerson                                                6            7
+Leger                                                  5            7
+Fabrizio/GBAO                                          3            6
+Beacon/Shaw                                            3            6
+McLaughlin                                             2            6
+J.L. Partners                                          4            6
+ABC/Washington Post                                    1            5
+Angus Reid                                             4            5
+Data for Progress                                      4            5
+Noble Predictive Insights                              2            5
+American Pulse                                         2            4
+SoCal Strategies                                       3            4
+CNN/SSRS                                               2            4
+Clarity                                                4            4
+Pew                                                    3            4
+Change Research                                        4            4
+Quinnipiac                                             2            4
+Suffolk                                                2            3
+Kaplan Strategies                                      2            3
+PRRI                                                   1            3
+SurveyMonkey                                           2            3
+OnMessage Inc.                                         3            3
+UMass Amherst/YouGov                                   2            2
+Research Co.                                           2            2
+Patriot Polling                                        2            2
+Targoz Market Research                                 1            2
+Quantus Insights                                       2            2
+Tufts                                                  1            2
+Monmouth                                               2            2
+Fairleigh Dickinson                                    2            2
+CES / YouGov                                           1            2
+Bullfinch                                              1            2
+John Zogby Strategies                                  1            2
+Navigator                                              1            2
+SoCal Research                                         1            2
+Quantus Polls and News                                 2            2
+McCourtney Institute/YouGov                            1            1
+Kaiser Family Foundation                               1            1
+Gateway Political Strategies                           1            1
+Institute for Global Affairs/YouGov                    1            1
+Civiqs                                                 1            1
+Embold Research                                        1            1
+Deltapoll                                              1            1
+Echelon Insights/GBAO                                  1            1
+RABA Research                                          1            1
+Paradigm                                               1            1
+Survey Center on American Life                         1            1
+SurveyUSA                                              1            1
+Susquehanna                                            1            1
+Yale Youth Poll                                        1            1
+YouGov/SNF Agora                                       1            1
+co/efficient                                           1            1
+
+==============================================================================================================
+SAMPLE COMPOSITION OVER TIME
+==============================================================================================================
+
+Sample characteristics by time window (Swing States):
+Window            N       Mean A    Mean Days   Mean Duration
+------------------------------------------------------------
+107            1182      -0.0586         40.8             6.6
+90             1092      -0.0598         36.0             6.7
+60              852      -0.0553         24.6             7.0
+30              526      -0.0476         12.1             7.2
+7               228      -0.0459          4.1             7.5
+
+Sample characteristics by time window (All States):
+Window            N       Mean A    Mean Days   Mean Duration
+------------------------------------------------------------
+107            1628      -0.0674         39.8             7.2
+90             1512      -0.0693         35.3             7.4
+60             1204      -0.0662         24.8             7.7
+30              751      -0.0596         12.5             8.2
+7               296      -0.0522          4.1             7.9
+
+Sample characteristics by time window (National):
+Window            N       Mean A    Mean Days   Mean Duration
+------------------------------------------------------------
+107             671      -0.0782         51.3             3.9
+90              561      -0.0847         41.8             4.1
+60              380      -0.0771         26.4             3.9
+30              234      -0.0613         14.3             4.1
+7                73      -0.0419          4.5             3.2
+
+==============================================================================================================
+RESIDUAL AUTOCORRELATION DIAGNOSTICS
+==============================================================================================================
+
+======================================================================
+SWING STATES
+======================================================================
+
+Swing States (Non-Mode Regression):
+----------------------------------------------------------------------
+  Durbin-Watson statistic: 1.631
+  N observations: 1182
+  Interpretation:
+      Mild positive autocorrelation (1.5 <= DW < 1.8)
+      Two-way clustering should be adequate
+
+  Weekly variance:
+    Min: 0.000627
+    Max: 0.005633
+    Ratio (max/min): 8.99x
+      Stable variance across time
+
+  Residual patterns by state:
+  State                  N       Mean         SD  Mean|Resid|
+  ------------------------------------------------------------
+  Arizona              157    -0.0027     0.0546       0.0443
+  Georgia              152     0.0221     0.0475       0.0387
+  Michigan             188    -0.0043     0.0545       0.0416
+  Nevada               116    -0.0268     0.0567       0.0482
+  North Carolina       158     0.0143     0.0416       0.0347
+  Pennsylvania         227    -0.0013     0.0435       0.0336
+  Wisconsin            184    -0.0053     0.0474       0.0370
+
+======================================================================
+ALL STATES
+======================================================================
+
+All States (Non-Mode Regression):
+----------------------------------------------------------------------
+  Durbin-Watson statistic: 1.701
+  N observations: 1628
+  Interpretation:
+      Mild positive autocorrelation (1.5 <= DW < 1.8)
+      Two-way clustering should be adequate
+
+  Weekly variance:
+    Min: 0.000968
+    Max: 0.010560
+    Ratio (max/min): 10.91x
+      Large variance changes (ratio > 10)
+
+======================================================================
+NATIONAL
+======================================================================
+
+National Polls (Non-Mode Regression):
+----------------------------------------------------------------------
+  Durbin-Watson statistic: 1.167
+  N observations: 671
+  Interpretation:
+     Strong positive autocorrelation (DW < 1.5)
+      Consider time clustering
+
+  Weekly variance:
+    Min: 0.000070
+    Max: 0.002664
+    Ratio (max/min): 38.22x
+      Large variance changes (ratio > 10)
+
+==============================================================================================================
+SUMMARY: DURBIN-WATSON STATISTICS
+==============================================================================================================
+
+Sample                  DW Statistic          N                           Interpretation
+-------------------------------------------------------------------------------------
+Swing States                   1.631       1182                                 Adequate
+All States                     1.701       1628                                 Adequate
+National                       1.167        671                   Time clustering needed
+
+==============================================================================================================
+
+
+==============================================================================================================
+PARTISAN FLAG CONSISTENCY CHECK - DO POLLS HAVE MULTIPLE PARTISAN VALUES?
+==============================================================================================================
+
+Total polls: 1437
+Polls with single partisan value: 1437
+Polls with multiple partisan values: 0
+
+ CONFIRMED: All polls have consistent partisan flag values
+Partisan flag is correctly applied at poll level.
+
+--------------------------------------------------------------------------------------------------------------
+PARTISAN FLAG DISTRIBUTION:
+
+By questions:
+partisan_flag
+0    2142
+1     157
+
+By polls (unique poll_id):
+partisan_flag
+0    1299
+1     138
+==============================================================================================================
+
+
+==============================================================================================================
+PARTISAN FLAG VARIANCE ANALYSIS - WHY DEFF < 1.0?
+==============================================================================================================
+
+Swing States:
+  Total variance (all questions): 0.077510
+  Between-poll variance: 0.110982
+  Within-poll variance: 0.000000
+  ICC (partisan flag): 1.000000
+
+  Total questions: 1182
+  Total polls: 709
+  Questions per poll (avg): 1.67
+
+Partisan flag distribution in swing states:
+  partisan_flag=0: 1082 questions (91.5%)
+  partisan_flag=1: 100 questions (8.5%)
+
+Partisan flag distribution at poll level:
+  partisan_flag=0.0: 619 polls (87.3%)
+  partisan_flag=1.0: 90 polls (12.7%)
+
+--------------------------------------------------------------------------------------------------------------
+Comparison to other variables:
+
+  days_before_election:
+    Total variance: 950.507769
+    Between-poll variance: 940.856821
+    Approx ICC: 0.9898
+
+  pct_dk:
+    Total variance: 5.857685
+    Between-poll variance: 5.975913
+    Approx ICC: 1.0202
+
+  partisan_flag:
+    Total variance: 0.077510
+    Between-poll variance: 0.110982
+    Approx ICC: 1.4318
+==============================================================================================================
+
+
+==============================================================================================================
+PARTISAN FLAG COMPOSITION EFFECT - WHY BETWEEN-POLL VARIANCE > TOTAL VARIANCE
+==============================================================================================================
+
+Swing States - Questions per poll by partisan status:
+
+Partisan polls (partisan_flag=1):
+  Number of polls: 90
+  Total questions: 100
+  Questions per poll (mean): 1.11
+  Questions per poll (median): 1.0
+  Distribution:
+    1 question(s): 80 polls (88.9%)
+    2 question(s): 10 polls (11.1%)
+
+Non-partisan polls (partisan_flag=0):
+  Number of polls: 619
+  Total questions: 1082
+  Questions per poll (mean): 1.75
+  Questions per poll (median): 1.0
+  Distribution:
+    1 question(s): 338 polls (54.6%)
+    2 question(s): 186 polls (30.0%)
+    3 question(s): 8 polls (1.3%)
+    4 question(s): 87 polls (14.1%)
+
+--------------------------------------------------------------------------------------------------------------
+Weighted vs Unweighted Proportions:
+  Unweighted (poll-level): 12.7% partisan
+  Weighted (question-level): 8.5% partisan
+
+Difference: 4.2 percentage points
+     Partisan polls have FEWER questions per poll on average
+     Multi-question polls are disproportionately non-partisan
+     This increases between-poll variance relative to total variance
+==============================================================================================================
+
