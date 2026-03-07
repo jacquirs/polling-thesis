@@ -216,30 +216,6 @@ def sig_stars(p):
 
 
 ########################################################################################
-##################################### MANY Mode Analysis ####################################
-########################################################################################
-
-######## explode slash-separated modes into base modes
-
-# each mode with a slash will count in both listed
-# explode slash-separated mode strings so a question with 'live phone/online' appears in counts and accuracy stats for both modes
-harris_trump_modes = harris_trump_pivot.copy()
-harris_trump_modes['base_mode'] = harris_trump_modes['mode'].str.split('/')
-harris_trump_modes = harris_trump_modes.explode('base_mode')
-harris_trump_modes['base_mode'] = harris_trump_modes['base_mode'].str.strip()
-
-######## mode counts
-mode_counts = (
-    harris_trump_modes.groupby('base_mode')['question_id']
-    .nunique()
-    .reset_index()
-    .rename(columns={'question_id': 'unique_questions'})
-    .sort_values('unique_questions', ascending=False)
-    .reset_index(drop=True)
-)
-
-
-########################################################################################
 ###################### Multivariate Regression Analysis Set Up #########################
 ########################################################################################
 
@@ -527,6 +503,19 @@ for mode, count in mode_dist.items():
     pct = 100 * count / len(reg_state_swing)
     marker = " (REFERENCE)" if mode == reference_mode else ""
     print(f"  {mode}: {count} ({pct:.1f}%){marker}")
+
+# understand the original modes
+print("\nOriginal Mode Strings (Top 15):")
+print(f"{'Mode':<50} {'N':>10} {'%':>10}")
+print("-" * 70)
+
+mode_original = reg_df_original['mode'].value_counts()
+for mode, count in mode_original.head(15).items():
+    pct = 100 * count / len(reg_df_original)
+    print(f"{mode:<50} {count:>10} {pct:>9.1f}%")
+
+print(f"\nTotal unique mode combinations: {reg_df_original['mode'].nunique()}")
+
 
 # update covariate lists
 # without mode

@@ -1178,6 +1178,19 @@ for mode, count in mode_dist.items():
     marker = " (REFERENCE)" if mode == reference_mode else ""
     print(f"  {mode}: {count} ({pct:.1f}%){marker}")
 
+# understand the original modes
+print("\nOriginal Mode Strings (Top 15):")
+print(f"{'Mode':<50} {'N':>10} {'%':>10}")
+print("-" * 70)
+
+mode_original = reg_df_original['mode'].value_counts()
+for mode, count in mode_original.head(15).items():
+    pct = 100 * count / len(reg_df_original)
+    print(f"{mode:<50} {count:>10} {pct:>9.1f}%")
+
+print(f"\nTotal unique mode combinations: {reg_df_original['mode'].nunique()}")
+
+
 # update covariate lists
 # without mode
 state_x_vars_no_mode = time_vars + state_vars
