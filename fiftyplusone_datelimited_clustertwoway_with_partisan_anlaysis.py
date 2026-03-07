@@ -396,9 +396,6 @@ time_vars  = ['duration_days', 'days_before_election','partisan_flag']
 state_vars = ['pct_dk', 'abs_margin','turnout_pct']
 national_vars = ['pct_dk']
 
-# final covariate lists per regression
-state_x_vars    = time_vars + state_vars
-all_x_vars = time_vars + national_vars
 
 # split into statelevel and national samples
 reg_state    = reg_df[reg_df['poll_level'] == 'state'].copy()
@@ -421,6 +418,9 @@ print(f"  swing state questions: {len(reg_state_swing)}")
 
 # Save a copy of the original un-exploded data for non-mode regressions
 reg_df_original = reg_df.copy()
+
+# save original (non-exploded) regression dataset for VIF diagnostics
+reg_df_original.to_csv('data/harris_trump_regression_original_with_partisan.csv', index=False)
 
 # explode mode into base_mode (each mixed mode poll becomes multiple rows)
 reg_df['base_mode'] = reg_df['mode'].str.split('/')
@@ -564,8 +564,8 @@ print("="*110 + "\n")
 
 # update covariate lists
 # without mode
-state_x_vars_no_mode = time_vars + state_vars
-national_x_vars_no_mode = time_vars + national_vars
+state_x_vars_no_mode = state_vars
+national_x_vars_no_mode = national_vars
 
 # with mode
 state_x_vars_with_mode = time_vars + state_vars + mode_vars
@@ -580,7 +580,7 @@ national_x_vars_with_mode = time_vars + national_vars + mode_vars
 results_national = run_ols_twoway_clustered(
     df          = reg_national_original,
     y_col       = 'A',
-    x_cols      = all_x_vars,
+    x_cols      = national_x_vars_no_mode,
     cluster_col1 = 'poll_id',
     cluster_col2 = 'pollster',
     label       = 'national polls'
@@ -590,7 +590,7 @@ results_national = run_ols_twoway_clustered(
 results_state = run_ols_twoway_clustered(
     df          = reg_state_original,
     y_col       = 'A',
-    x_cols      = state_x_vars,
+    x_cols      = state_x_vars_no_mode,
     cluster_col1 = 'poll_id',
     cluster_col2 = 'pollster',
     label       = 'state-level polls'
@@ -600,7 +600,7 @@ results_state = run_ols_twoway_clustered(
 results_swing = run_ols_twoway_clustered(
     df          = reg_state_swing_original,
     y_col       = 'A',
-    x_cols      = state_x_vars,
+    x_cols      = state_x_vars_no_mode,
     cluster_col1 = 'poll_id',
     cluster_col2 = 'pollster',
     label       = 'swing states'
@@ -1469,17 +1469,43 @@ print("="*110 + "\n")
 ########################################################################################
 
 print("\n" + "="*110)
-print("CORRELATION MATRIX - INDEPENDENT VARIABLES")
+print("CORRELATION MATRIX INDEPENDENT VARIABLES, NO MODE")
 print("="*110)
 
 # State variables
+print("\nSwing state-level polls:")
+corr_state_swing = reg_state_swing_original[state_x_vars_no_mode].corr()
+print(corr_state_swing.to_string())
+
+# State variables
 print("\nState-level polls:")
-corr_state = reg_state_original[state_x_vars].corr()
+corr_state = reg_state_original[state_x_vars_no_mode].corr()
 print(corr_state.to_string())
 
 # National variables
 print("\n\nNational polls:")
 corr_national = reg_national_original[national_x_vars_no_mode].corr()
+print(corr_national.to_string())
+
+print("="*110 + "\n")
+
+print("\n" + "="*110)
+print("CORRELATION MATRIX INDEPENDENT VARIABLES, WITH MODE")
+print("="*110)
+
+# State variables
+print("\nSwing state-level polls:")
+corr_state_swing = reg_state_swing[state_x_vars_with_mode].corr()
+print(corr_state_swing.to_string())
+
+# State variables
+print("\nState-level polls:")
+corr_state = reg_state[state_x_vars_with_mode].corr()
+print(corr_state.to_string())
+
+# National variables
+print("\n\nNational polls:")
+corr_national = reg_national[national_x_vars_with_mode].corr()
 print(corr_national.to_string())
 
 print("="*110 + "\n")

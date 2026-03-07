@@ -1551,8 +1551,16 @@ max       0.310397      43.000000            106.000000    16.000000     0.45756
 
 
 ==============================================================================================================
-CORRELATION MATRIX - INDEPENDENT VARIABLES
+CORRELATION MATRIX INDEPENDENT VARIABLES, NO MODE
 ==============================================================================================================
+
+Swing state-level polls:
+                      duration_days  days_before_election    pct_dk  abs_margin  turnout_pct
+duration_days              1.000000             -0.126638 -0.163536    0.015603    -0.017846
+days_before_election      -0.126638              1.000000  0.206115   -0.021305     0.021545
+pct_dk                    -0.163536              0.206115  1.000000    0.034247    -0.057134
+abs_margin                 0.015603             -0.021305  0.034247    1.000000    -0.892075
+turnout_pct               -0.017846              0.021545 -0.057134   -0.892075     1.000000
 
 State-level polls:
                       duration_days  days_before_election    pct_dk  abs_margin  turnout_pct
@@ -1568,6 +1576,507 @@ National polls:
 duration_days              1.000000             -0.050241  0.002234
 days_before_election      -0.050241              1.000000  0.224921
 pct_dk                     0.002234              0.224921  1.000000
+==============================================================================================================
+
+
+==============================================================================================================
+CORRELATION MATRIX INDEPENDENT VARIABLES, WITH MODE
+==============================================================================================================
+
+Swing state-level polls:
+                            duration_days  days_before_election    pct_dk  abs_margin  turnout_pct  mode_App Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online Ad  mode_Online Matched Sample  mode_Online Opt_In Panel  mode_Probability Panel  mode_Text  mode_Text_to_Web
+duration_days                    1.000000             -0.137399 -0.118748    0.007807    -0.014166        0.375410    0.043281 -0.145179            0.055317          0.171307       -0.118214                    0.204090                 -0.047000                0.032275  -0.132772         -0.055398
+days_before_election            -0.137399              1.000000  0.149009   -0.021041     0.020441       -0.035963   -0.036369  0.058495           -0.042878         -0.071878       -0.165428                   -0.098852                  0.066281               -0.003179  -0.076332          0.068458
+pct_dk                          -0.118748              0.149009  1.000000    0.030831    -0.063825       -0.143243    0.081882 -0.009368           -0.024836          0.015628       -0.159439                    0.037065                  0.075886               -0.062954   0.082591         -0.099442
+abs_margin                       0.007807             -0.021041  0.030831    1.000000    -0.890909       -0.002944   -0.035175  0.009470           -0.028956         -0.012741        0.005236                   -0.029756                  0.037460               -0.036561  -0.009238          0.006355
+turnout_pct                     -0.014166              0.020441 -0.063825   -0.890909     1.000000        0.007148    0.040573 -0.013008            0.021194          0.006188       -0.010288                    0.027444                 -0.040384                0.047989   0.010781         -0.000773
+mode_App Panel                   0.375410             -0.035963 -0.143243   -0.002944     0.007148        1.000000   -0.019646 -0.026196           -0.007711         -0.011672       -0.022974                   -0.020376                 -0.060136               -0.009313  -0.020944         -0.042979
+mode_Email                       0.043281             -0.036369  0.081882   -0.035175     0.040573       -0.019646    1.000000 -0.055259           -0.016266         -0.024622       -0.048462                   -0.042981                 -0.126855               -0.019646  -0.044181         -0.090662
+mode_IVR                        -0.145179              0.058495 -0.009368    0.009470    -0.013008       -0.026196   -0.055259  1.000000           -0.021689         -0.032831       -0.064621                   -0.057312                 -0.169152               -0.026196  -0.058912         -0.120891
+mode_Mail_to_Phone               0.055317             -0.042878 -0.024836   -0.028956     0.021194       -0.007711   -0.016266 -0.021689            1.000000         -0.009664       -0.019021                   -0.016870                 -0.049790               -0.007711  -0.017341         -0.035584
+mode_Mail_to_Web                 0.171307             -0.071878  0.015628   -0.012741     0.006188       -0.011672   -0.024622 -0.032831           -0.009664          1.000000       -0.028793                   -0.025536                 -0.075368               -0.011672  -0.026249         -0.053865
+mode_Online Ad                  -0.118214             -0.165428 -0.159439    0.005236    -0.010288       -0.022974   -0.048462 -0.064621           -0.019021         -0.028793        1.000000                   -0.050263                 -0.148346               -0.022974  -0.051666         -0.106021
+mode_Online Matched Sample       0.204090             -0.098852  0.037065   -0.029756     0.027444       -0.020376   -0.042981 -0.057312           -0.016870         -0.025536       -0.050263                    1.000000                 -0.131568               -0.020376  -0.045823         -0.094030
+mode_Online Opt_In Panel        -0.047000              0.066281  0.075886    0.037460    -0.040384       -0.060136   -0.126855 -0.169152           -0.049790         -0.075368       -0.148346                   -0.131568                  1.000000               -0.060136  -0.135241         -0.277521
+mode_Probability Panel           0.032275             -0.003179 -0.062954   -0.036561     0.047989       -0.009313   -0.019646 -0.026196           -0.007711         -0.011672       -0.022974                   -0.020376                 -0.060136                1.000000  -0.020944         -0.042979
+mode_Text                       -0.132772             -0.076332  0.082591   -0.009238     0.010781       -0.020944   -0.044181 -0.058912           -0.017341         -0.026249       -0.051666                   -0.045823                 -0.135241               -0.020944   1.000000         -0.096655
+mode_Text_to_Web                -0.055398              0.068458 -0.099442    0.006355    -0.000773       -0.042979   -0.090662 -0.120891           -0.035584         -0.053865       -0.106021                   -0.094030                 -0.277521               -0.042979  -0.096655          1.000000
+
+State-level polls:
+                            duration_days  days_before_election    pct_dk  abs_margin  turnout_pct  mode_App Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online Ad  mode_Online Matched Sample  mode_Online Opt_In Panel  mode_Probability Panel  mode_Text  mode_Text_to_Web
+duration_days                    1.000000             -0.161666 -0.144373    0.130624    -0.080906        0.541940    0.045706 -0.144040            0.034686          0.128990       -0.103735                    0.212544                 -0.066646                0.002260  -0.119873         -0.105532
+days_before_election            -0.161666              1.000000  0.126592   -0.074384     0.060903       -0.059094   -0.041976  0.049182           -0.035578         -0.068315       -0.157095                   -0.106296                  0.079055                0.001463  -0.068021          0.060619
+pct_dk                          -0.144373              0.126592  1.000000    0.046230    -0.012177       -0.244020    0.056567 -0.012574           -0.023344          0.014509       -0.127373                    0.018115                  0.061816               -0.053517   0.056531         -0.044766
+abs_margin                       0.130624             -0.074384  0.046230    1.000000    -0.548540        0.190139   -0.032958  0.002458           -0.037401         -0.027847       -0.051646                   -0.007354                 -0.054216                0.054934  -0.034977          0.048987
+turnout_pct                     -0.080906              0.060903 -0.012177   -0.548540     1.000000       -0.126482    0.035626 -0.031747            0.031547          0.028361        0.029397                   -0.000953                  0.009644                0.035327   0.022172         -0.018071
+mode_App Panel                   0.541940             -0.059094 -0.244020    0.190139    -0.126482        1.000000   -0.031580 -0.045610           -0.011612         -0.018594       -0.037521                   -0.036981                 -0.104186               -0.020820  -0.033984         -0.079074
+mode_Email                       0.045706             -0.041976  0.056567   -0.032958     0.035626       -0.031580    1.000000 -0.050042           -0.012741         -0.020401       -0.041167                   -0.040575                 -0.114310               -0.022843  -0.037286         -0.086758
+mode_IVR                        -0.144040              0.049182 -0.012574    0.002458    -0.031747       -0.045610   -0.050042  1.000000           -0.018401         -0.029464       -0.059455                   -0.058600                 -0.165092               -0.032992  -0.053850         -0.125300
+mode_Mail_to_Phone               0.034686             -0.035578 -0.023344   -0.037401     0.031547       -0.011612   -0.012741 -0.018401            1.000000         -0.007502       -0.015137                   -0.014920                 -0.042032               -0.008400  -0.013710         -0.031902
+mode_Mail_to_Web                 0.128990             -0.068315  0.014509   -0.027847     0.028361       -0.018594   -0.020401 -0.029464           -0.007502          1.000000       -0.024239                   -0.023890                 -0.067305               -0.013450  -0.021954         -0.051082
+mode_Online Ad                  -0.103735             -0.157095 -0.127373   -0.051646     0.029397       -0.037521   -0.041167 -0.059455           -0.015137         -0.024239        1.000000                   -0.048207                 -0.135812               -0.027140  -0.044300         -0.103078
+mode_Online Matched Sample       0.212544             -0.106296  0.018115   -0.007354    -0.000953       -0.036981   -0.040575 -0.058600           -0.014920         -0.023890       -0.048207                    1.000000                 -0.133858               -0.026750  -0.043662         -0.101595
+mode_Online Opt_In Panel        -0.066646              0.079055  0.061816   -0.054216     0.009644       -0.104186   -0.114310 -0.165092           -0.042032         -0.067305       -0.135812                   -0.133858                  1.000000               -0.075362  -0.123009         -0.286221
+mode_Probability Panel           0.002260              0.001463 -0.053517    0.054934     0.035327       -0.020820   -0.022843 -0.032992           -0.008400         -0.013450       -0.027140                   -0.026750                 -0.075362                1.000000  -0.024582         -0.057198
+mode_Text                       -0.119873             -0.068021  0.056531   -0.034977     0.022172       -0.033984   -0.037286 -0.053850           -0.013710         -0.021954       -0.044300                   -0.043662                 -0.123009               -0.024582   1.000000         -0.093361
+mode_Text_to_Web                -0.105532              0.060619 -0.044766    0.048987    -0.018071       -0.079074   -0.086758 -0.125300           -0.031902         -0.051082       -0.103078                   -0.101595                 -0.286221               -0.057198  -0.093361          1.000000
+
+
+National polls:
+                            duration_days  days_before_election    pct_dk  mode_App Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online Ad  mode_Online Matched Sample  mode_Online Opt_In Panel  mode_Probability Panel  mode_Text  mode_Text_to_Web
+duration_days                    1.000000             -0.036292  0.059456        0.181101         NaN -0.080600                 NaN               NaN       -0.018180                    0.072174                 -0.225671                0.223374  -0.039076          0.006388
+days_before_election            -0.036292              1.000000  0.217773        0.039142         NaN  0.026403                 NaN               NaN       -0.039034                   -0.050390                  0.051088               -0.037123  -0.087310         -0.039124
+pct_dk                           0.059456              0.217773  1.000000       -0.135146         NaN -0.034731                 NaN               NaN       -0.037275                    0.040183                  0.004451                0.214022  -0.069790         -0.103486
+mode_App Panel                   0.181101              0.039142 -0.135146        1.000000         NaN -0.026708                 NaN               NaN       -0.024772                   -0.044010                 -0.167743               -0.055167  -0.015960         -0.044425
+mode_Email                            NaN                   NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN
+mode_IVR                        -0.080600              0.026403 -0.034731       -0.026708         NaN  1.000000                 NaN               NaN       -0.026708                   -0.047450                 -0.180854               -0.059479  -0.017208         -0.047898
+mode_Mail_to_Phone                    NaN                   NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN
+mode_Mail_to_Web                      NaN                   NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN
+mode_Online Ad                  -0.018180             -0.039034 -0.037275       -0.024772         NaN -0.026708                 NaN               NaN        1.000000                   -0.044010                 -0.167743               -0.055167  -0.015960         -0.044425
+mode_Online Matched Sample       0.072174             -0.050390  0.040183       -0.044010         NaN -0.047450                 NaN               NaN       -0.044010                    1.000000                 -0.298015               -0.098011  -0.028355         -0.078926
+mode_Online Opt_In Panel        -0.225671              0.051088  0.004451       -0.167743         NaN -0.180854                 NaN               NaN       -0.167743                   -0.298015                  1.000000               -0.373564  -0.108074         -0.300824
+mode_Probability Panel           0.223374             -0.037123  0.214022       -0.055167         NaN -0.059479                 NaN               NaN       -0.055167                   -0.098011                 -0.373564                1.000000  -0.035543         -0.098935
+mode_Text                       -0.039076             -0.087310 -0.069790       -0.015960         NaN -0.017208                 NaN               NaN       -0.015960                   -0.028355                 -0.108074               -0.035543   1.000000         -0.028622
+mode_Text_to_Web                 0.006388             -0.039124 -0.103486       -0.044425         NaN -0.047898                 NaN               NaN       -0.044425                   -0.078926                 -0.300824               -0.098935  -0.028622          1.000000
+==============================================================================================================
+
+
+==============================================================================================================
+VARIANCE INFLATION FACTORS (VIF) - MULTICOLLINEARITY CHECK
+==============================================================================================================
+
+==============================================================================================================
+WITHOUT MODE VARIABLES
+==============================================================================================================
+
+swing state-level polls (no mode) (N=1182):
+            Variable      VIF
+       duration_days 1.037756
+days_before_election 1.055198
+              pct_dk 1.071869
+          abs_margin 4.904109
+         turnout_pct 4.917185
+
+state-level polls (no mode) (N=1629):
+            Variable      VIF
+       duration_days 1.094506
+days_before_election 1.053756
+              pct_dk 1.077772
+          abs_margin 1.480086
+         turnout_pct 1.453303
+
+national polls (no mode) (N=671):
+            Variable      VIF
+       duration_days 1.002724
+days_before_election 1.056150
+              pct_dk 1.053489
+
+==============================================================================================================
+WITH MODE VARIABLES
+reference mode: Live Phone
+==============================================================================================================
+
+swing state-level polls (with mode) (N=1734):
+                  Variable      VIF
+             duration_days 1.405474
+      days_before_election 1.104880
+                    pct_dk 1.125474
+                abs_margin 4.872407
+               turnout_pct 4.899194
+            mode_App Panel 1.220569
+                mode_Email 1.115939
+                  mode_IVR 1.207180
+        mode_Mail_to_Phone 1.024192
+          mode_Mail_to_Web 1.079696
+            mode_Online Ad 1.230710
+mode_Online Matched Sample 1.169045
+  mode_Online Opt_In Panel 1.485306
+    mode_Probability Panel 1.032909
+                 mode_Text 1.162294
+          mode_Text_to_Web 1.378077
+
+state-level polls (with mode) (N=2359):
+                  Variable      VIF
+             duration_days 1.715022
+      days_before_election 1.107721
+                    pct_dk 1.132584
+                abs_margin 1.505654
+               turnout_pct 1.445314
+            mode_App Panel 1.654715
+                mode_Email 1.102514
+                  mode_IVR 1.210196
+        mode_Mail_to_Phone 1.019661
+          mode_Mail_to_Web 1.067612
+            mode_Online Ad 1.202805
+mode_Online Matched Sample 1.204773
+  mode_Online Opt_In Panel 1.505030
+    mode_Probability Panel 1.057881
+                 mode_Text 1.139947
+          mode_Text_to_Web 1.417555
+
+national polls (with mode) (N=786):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 12, expected: 15
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+==============================================================================================================
+TIME WINDOW ANALYSIS (NO MODE)
+==============================================================================================================
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 107 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (107d window) (N=1182):
+            Variable      VIF
+       duration_days 1.037756
+days_before_election 1.055198
+              pct_dk 1.071869
+          abs_margin 4.904109
+         turnout_pct 4.917185
+
+all states (107d window) (N=1629):
+            Variable      VIF
+       duration_days 1.094506
+days_before_election 1.053756
+              pct_dk 1.077772
+          abs_margin 1.480086
+         turnout_pct 1.453303
+
+national (107d window) (N=671):
+            Variable      VIF
+       duration_days 1.002724
+days_before_election 1.056150
+              pct_dk 1.053489
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 90 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (90d window) (N=1092):
+            Variable      VIF
+       duration_days 1.032627
+days_before_election 1.034293
+              pct_dk 1.058875
+          abs_margin 4.898374
+         turnout_pct 4.909666
+
+all states (90d window) (N=1513):
+            Variable      VIF
+       duration_days 1.088479
+days_before_election 1.031928
+              pct_dk 1.075059
+          abs_margin 1.491053
+         turnout_pct 1.461226
+
+national (90d window) (N=561):
+            Variable      VIF
+       duration_days 1.005271
+days_before_election 1.059547
+              pct_dk 1.064353
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 60 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (60d window) (N=852):
+            Variable      VIF
+       duration_days 1.023671
+days_before_election 1.013790
+              pct_dk 1.042785
+          abs_margin 4.735297
+         turnout_pct 4.759397
+
+all states (60d window) (N=1205):
+            Variable      VIF
+       duration_days 1.077573
+days_before_election 1.028676
+              pct_dk 1.078706
+          abs_margin 1.478068
+         turnout_pct 1.445125
+
+national (60d window) (N=380):
+            Variable      VIF
+       duration_days 1.008539
+days_before_election 1.029180
+              pct_dk 1.031548
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 30 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (30d window) (N=526):
+            Variable      VIF
+       duration_days 1.011359
+days_before_election 1.022214
+              pct_dk 1.035051
+          abs_margin 4.969148
+         turnout_pct 4.981180
+
+all states (30d window) (N=751):
+            Variable      VIF
+       duration_days 1.087101
+days_before_election 1.032653
+              pct_dk 1.069534
+          abs_margin 1.541590
+         turnout_pct 1.492178
+
+national (30d window) (N=234):
+            Variable      VIF
+       duration_days 1.028089
+days_before_election 1.032084
+              pct_dk 1.009912
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 7 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (7d window) (N=228):
+            Variable      VIF
+       duration_days 1.017547
+days_before_election 1.004863
+              pct_dk 1.019654
+          abs_margin 5.174807
+         turnout_pct 5.172823
+  WARNING: 2 variable(s) with VIF > 5 (caution warranted)
+
+all states (7d window) (N=296):
+            Variable      VIF
+       duration_days 1.090208
+days_before_election 1.017534
+              pct_dk 1.057081
+          abs_margin 1.316477
+         turnout_pct 1.306856
+
+national (7d window) (N=73):
+            Variable      VIF
+       duration_days 1.052677
+days_before_election 1.014203
+              pct_dk 1.050763
+
+==============================================================================================================
+TIME WINDOW ANALYSIS (WITH MODE)
+==============================================================================================================
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 107 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (107d window, with mode) (N=1734):
+                  Variable      VIF
+             duration_days 1.405474
+      days_before_election 1.104880
+                    pct_dk 1.125474
+                abs_margin 4.872407
+               turnout_pct 4.899194
+            mode_App Panel 1.220569
+                mode_Email 1.115939
+                  mode_IVR 1.207180
+        mode_Mail_to_Phone 1.024192
+          mode_Mail_to_Web 1.079696
+            mode_Online Ad 1.230710
+mode_Online Matched Sample 1.169045
+  mode_Online Opt_In Panel 1.485306
+    mode_Probability Panel 1.032909
+                 mode_Text 1.162294
+          mode_Text_to_Web 1.378077
+
+all states (107d window, with mode) (N=2359):
+                  Variable      VIF
+             duration_days 1.715022
+      days_before_election 1.107721
+                    pct_dk 1.132584
+                abs_margin 1.505654
+               turnout_pct 1.445314
+            mode_App Panel 1.654715
+                mode_Email 1.102514
+                  mode_IVR 1.210196
+        mode_Mail_to_Phone 1.019661
+          mode_Mail_to_Web 1.067612
+            mode_Online Ad 1.202805
+mode_Online Matched Sample 1.204773
+  mode_Online Opt_In Panel 1.505030
+    mode_Probability Panel 1.057881
+                 mode_Text 1.139947
+          mode_Text_to_Web 1.417555
+
+national (107d window, with mode) (N=786):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 12, expected: 15
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 90 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (90d window, with mode) (N=1589):
+                  Variable      VIF
+             duration_days 1.405554
+      days_before_election 1.085376
+                    pct_dk 1.139815
+                abs_margin 4.853704
+               turnout_pct 4.875294
+            mode_App Panel 1.226455
+                mode_Email 1.119164
+                  mode_IVR 1.197608
+        mode_Mail_to_Phone 1.025331
+          mode_Mail_to_Web 1.082502
+            mode_Online Ad 1.252744
+mode_Online Matched Sample 1.174077
+  mode_Online Opt_In Panel 1.466859
+    mode_Probability Panel 1.035423
+                 mode_Text 1.167757
+          mode_Text_to_Web 1.363817
+
+all states (90d window, with mode) (N=2176):
+                  Variable      VIF
+             duration_days 1.707687
+      days_before_election 1.084158
+                    pct_dk 1.148157
+                abs_margin 1.518353
+               turnout_pct 1.454008
+            mode_App Panel 1.670618
+                mode_Email 1.104110
+                  mode_IVR 1.206278
+        mode_Mail_to_Phone 1.020479
+          mode_Mail_to_Web 1.069881
+            mode_Online Ad 1.218257
+mode_Online Matched Sample 1.210502
+  mode_Online Opt_In Panel 1.489725
+    mode_Probability Panel 1.062715
+                 mode_Text 1.144377
+          mode_Text_to_Web 1.404168
+
+national (90d window, with mode) (N=645):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 12, expected: 15
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 60 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (60d window, with mode) (N=1254):
+                  Variable      VIF
+             duration_days 1.360297
+      days_before_election 1.093930
+                    pct_dk 1.186806
+                abs_margin 4.702157
+               turnout_pct 4.761487
+            mode_App Panel 1.217624
+                mode_Email 1.132793
+                  mode_IVR 1.174745
+        mode_Mail_to_Phone 1.028125
+          mode_Mail_to_Web 1.087850
+            mode_Online Ad 1.315295
+mode_Online Matched Sample 1.204479
+  mode_Online Opt_In Panel 1.477307
+    mode_Probability Panel 1.039984
+                 mode_Text 1.174702
+          mode_Text_to_Web 1.385923
+
+all states (60d window, with mode) (N=1745):
+                  Variable      VIF
+             duration_days 1.666815
+      days_before_election 1.098122
+                    pct_dk 1.183498
+                abs_margin 1.501227
+               turnout_pct 1.432077
+            mode_App Panel 1.685885
+                mode_Email 1.114663
+                  mode_IVR 1.179259
+        mode_Mail_to_Phone 1.022660
+          mode_Mail_to_Web 1.076821
+            mode_Online Ad 1.257452
+mode_Online Matched Sample 1.254817
+  mode_Online Opt_In Panel 1.495419
+    mode_Probability Panel 1.052642
+                 mode_Text 1.148111
+          mode_Text_to_Web 1.406883
+
+national (60d window, with mode) (N=439):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 12, expected: 15
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 30 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (30d window, with mode) (N=789):
+                  Variable      VIF
+             duration_days 1.326911
+      days_before_election 1.121858
+                    pct_dk 1.234469
+                abs_margin 4.855675
+               turnout_pct 4.896296
+            mode_App Panel 1.225315
+                mode_Email 1.187034
+                  mode_IVR 1.231213
+        mode_Mail_to_Phone 1.043205
+          mode_Mail_to_Web 1.137562
+            mode_Online Ad 1.461266
+mode_Online Matched Sample 1.323851
+  mode_Online Opt_In Panel 1.652689
+    mode_Probability Panel 1.041394
+                 mode_Text 1.225216
+          mode_Text_to_Web 1.480070
+
+all states (30d window, with mode) (N=1106):
+                  Variable      VIF
+             duration_days 1.602647
+      days_before_election 1.111916
+                    pct_dk 1.271324
+                abs_margin 1.595727
+               turnout_pct 1.501061
+            mode_App Panel 1.761798
+                mode_Email 1.167927
+                  mode_IVR 1.241001
+        mode_Mail_to_Phone 1.033966
+          mode_Mail_to_Web 1.116891
+            mode_Online Ad 1.408309
+mode_Online Matched Sample 1.383205
+  mode_Online Opt_In Panel 1.669364
+    mode_Probability Panel 1.060844
+                 mode_Text 1.192924
+          mode_Text_to_Web 1.518299
+
+national (30d window, with mode) (N=276):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 12, expected: 15
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 7 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (7d window, with mode) (N=303):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 14, expected: 17
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+all states (7d window, with mode) (N=391):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 16, expected: 17
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+national (7d window, with mode) (N=97):
+  NOTE: perfect collinearity detected (likely mode variables with no variation)
+  matrix rank: 12, expected: 15
+  VIF cannot be computed - this is expected in small time windows with limited mode diversity
+
+==============================================================================================================
+VIF DIAGNOSTICS SUMMARY
+==============================================================================================================
+
+WARNING: MULTICOLLINEARITY CONCERNS DETECTED:
+--------------------------------------------------------------------------------------------------------------
+  * swing (no mode, 7d): VIF concerns
+
+recommendation: review variables with VIF > 5 and consider removing or combining correlated predictors
+
+note: VIF > 10 suggests problematic multicollinearity
+      VIF > 5 warrants caution
 ==============================================================================================================
 
 
