@@ -564,8 +564,8 @@ print("="*110 + "\n")
 
 # update covariate lists
 # without mode
-state_x_vars_no_mode = state_vars
-national_x_vars_no_mode = national_vars
+state_x_vars_no_mode = state_vars + time_vars
+national_x_vars_no_mode = national_vars + time_vars
 
 # with mode
 state_x_vars_with_mode = time_vars + state_vars + mode_vars
