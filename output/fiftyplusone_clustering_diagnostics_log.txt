@@ -364,11 +364,10 @@ turnout_pct                   0.000789        0.001283      1.626        62.6%
 National (poll_id):
 Variable                        OLS SE    Clustered SE      Ratio   % Increase
 --------------------------------------------------------------------------
-duration_days                 0.000768        0.000827      1.076         7.6%
-days_before_election          0.000059        0.000103      1.735        73.5%
-partisan_flag                 0.011694        0.010131      0.866       -13.4%
-pct_dk                        0.000486        0.000716      1.474        47.4%
-abs_margin                    0.000074        0.000088      1.194        19.4%
+duration_days                 0.000768        0.000826      1.075         7.5%
+days_before_election          0.000059        0.000102      1.734        73.4%
+partisan_flag                 0.011694        0.010123      0.866       -13.4%
+pct_dk                        0.000486        0.000716      1.472        47.2%
 
   Interpretation:
     Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
@@ -397,11 +396,10 @@ turnout_pct                   0.000789        0.001087      1.378        37.8%
 National (pollster):
 Variable                        OLS SE    Clustered SE      Ratio   % Increase
 --------------------------------------------------------------------------
-duration_days                 0.000768        0.001357      1.766        76.6%
-days_before_election          0.000059        0.000108      1.822        82.2%
-partisan_flag                 0.011694        0.015086      1.290        29.0%
-pct_dk                        0.000486        0.001027      2.113       111.3%
-abs_margin                    0.000074        0.000215      2.912       191.2%
+duration_days                 0.000768        0.001356      1.764        76.4%
+days_before_election          0.000059        0.000108      1.820        82.0%
+partisan_flag                 0.011694        0.015074      1.289        28.9%
+pct_dk                        0.000486        0.001026      2.111       111.1%
 
   Interpretation:
     Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
@@ -427,11 +425,10 @@ turnout_pct                    2.644       Strong clustering effect
 National (poll_id):
 Variable                        DEFF                 Interpretation
 -----------------------------------------------------------------
-duration_days                  1.158     Moderate clustering effect
-days_before_election           3.011       Strong clustering effect
-partisan_flag                  0.750      Minimal clustering effect
-pct_dk                         2.171       Strong clustering effect
-abs_margin                     1.426     Moderate clustering effect
+duration_days                  1.156     Moderate clustering effect
+days_before_election           3.007       Strong clustering effect
+partisan_flag                  0.749      Minimal clustering effect
+pct_dk                         2.168       Strong clustering effect
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -450,11 +447,10 @@ turnout_pct                    1.899       Strong clustering effect
 National (pollster):
 Variable                        DEFF                 Interpretation
 -----------------------------------------------------------------
-duration_days                  3.118       Strong clustering effect
-days_before_election           3.318       Strong clustering effect
-partisan_flag                  1.664       Strong clustering effect
-pct_dk                         4.463       Strong clustering effect
-abs_margin                     8.479       Strong clustering effect
+duration_days                  3.113       Strong clustering effect
+days_before_election           3.313       Strong clustering effect
+partisan_flag                  1.662       Strong clustering effect
+pct_dk                         4.456       Strong clustering effect
 
 ==============================================================================================================
 PART 6: CROSS-TABULATION - POLLS NESTED WITHIN POLLSTERS

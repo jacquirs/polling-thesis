@@ -159,8 +159,7 @@ Total unique mode combinations: 38
   days_before_election                   -0.0000     0.0001       
   partisan_flag                           0.0321     0.0151     **
   pct_dk                                 -0.0026     0.0010     **
-  abs_margin                             -0.0008     0.0002    ***
-  const                                  -0.0534     0.0146    ***
+  const                                  -0.0535     0.0146    ***
   --------------------------------------------------------------------
   adjusted r2:  0.0728
   n:            671
@@ -222,19 +221,18 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0000     0.0001       
   partisan_flag                           0.0314     0.0159      *
   pct_dk                                 -0.0022     0.0010     **
-  abs_margin                             -0.0004     0.0002      *
   mode_App Panel                          0.0083     0.0106       
-  mode_Email                              0.0000     0.0000       
+  mode_Email                             -0.0000     0.0000    ***
   mode_IVR                               -0.0302     0.0118     **
-  mode_Mail_to_Phone                      0.0000     0.0000    ***
-  mode_Mail_to_Web                        0.0000     0.0000    ***
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000       
   mode_Online Ad                          0.0459     0.0211     **
   mode_Online Matched Sample             -0.0255     0.0102     **
   mode_Online Opt_In Panel               -0.0359     0.0102    ***
-  mode_Probability Panel                 -0.0331     0.0133     **
+  mode_Probability Panel                 -0.0331     0.0132     **
   mode_Text                                 ----       ----       
   mode_Text_to_Web                       -0.0064     0.0116       
-  const                                  -0.0246     0.0140      *
+  const                                  -0.0247     0.0140      *
   --------------------------------------------------------------------
   adjusted r2:  0.1971
   n:            786
@@ -562,8 +560,7 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0000     0.0001       
   partisan_flag                           0.0321     0.0151     **
   pct_dk                                 -0.0026     0.0010     **
-  abs_margin                             -0.0008     0.0002    ***
-  const                                  -0.0534     0.0146    ***
+  const                                  -0.0535     0.0146    ***
   --------------------------------------------------------------------
   adjusted r2:  0.0728
   n:            671
@@ -585,7 +582,6 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0006     0.0001    ***
   partisan_flag                           0.0473     0.0121    ***
   pct_dk                                 -0.0023     0.0008    ***
-  abs_margin                             -0.0006     0.0002    ***
   const                                  -0.0439     0.0128    ***
   --------------------------------------------------------------------
   adjusted r2:  0.2213
@@ -608,7 +604,6 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0011     0.0002    ***
   partisan_flag                             ----       ----       
   pct_dk                                 -0.0024     0.0008    ***
-  abs_margin                             -0.0005     0.0002     **
   const                                  -0.0314     0.0136     **
   --------------------------------------------------------------------
   adjusted r2:  0.2366
@@ -631,8 +626,7 @@ REGRESSIONS WITH MODE CONTROLS
   duration_days                          -0.0026     0.0012     **
   days_before_election                   -0.0013     0.0004    ***
   partisan_flag                             ----       ----       
-  pct_dk                                 -0.0028     0.0011    ***
-  abs_margin                             -0.0003     0.0002     **
+  pct_dk                                 -0.0028     0.0010    ***
   const                                  -0.0235     0.0107     **
   --------------------------------------------------------------------
   adjusted r2:  0.1812
@@ -652,12 +646,11 @@ REGRESSIONS WITH MODE CONTROLS
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
-  duration_days                           0.0022     0.0059       
+  duration_days                           0.0022     0.0058       
   days_before_election                    0.0007     0.0025       
   partisan_flag                             ----       ----       
   pct_dk                                 -0.0028     0.0016      *
-  abs_margin                             -0.0007     0.0004       
-  const                                  -0.0459     0.0284       
+  const                                  -0.0459     0.0282       
   --------------------------------------------------------------------
   adjusted r2:  0.0462
   n:            73
@@ -1034,19 +1027,18 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0000     0.0001       
   partisan_flag                           0.0314     0.0159      *
   pct_dk                                 -0.0022     0.0010     **
-  abs_margin                             -0.0004     0.0002      *
   mode_App Panel                          0.0083     0.0106       
-  mode_Email                              0.0000     0.0000       
+  mode_Email                             -0.0000     0.0000    ***
   mode_IVR                               -0.0302     0.0118     **
-  mode_Mail_to_Phone                      0.0000     0.0000    ***
-  mode_Mail_to_Web                        0.0000     0.0000    ***
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000       
   mode_Online Ad                          0.0459     0.0211     **
   mode_Online Matched Sample             -0.0255     0.0102     **
   mode_Online Opt_In Panel               -0.0359     0.0102    ***
-  mode_Probability Panel                 -0.0331     0.0133     **
+  mode_Probability Panel                 -0.0331     0.0132     **
   mode_Text                                 ----       ----       
   mode_Text_to_Web                       -0.0064     0.0116       
-  const                                  -0.0246     0.0140      *
+  const                                  -0.0247     0.0140      *
   --------------------------------------------------------------------
   adjusted r2:  0.1971
   n:            786
@@ -1069,13 +1061,12 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0006     0.0001    ***
   partisan_flag                           0.0467     0.0134    ***
   pct_dk                                 -0.0020     0.0008     **
-  abs_margin                             -0.0002     0.0002       
   mode_App Panel                          0.0015     0.0151       
-  mode_Email                             -0.0000     0.0000    ***
+  mode_Email                              0.0000     0.0000      *
   mode_IVR                               -0.0361     0.0128    ***
-  mode_Mail_to_Phone                     -0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000     **
-  mode_Online Ad                          0.0209     0.0175       
+  mode_Mail_to_Phone                      0.0000     0.0000    ***
+  mode_Mail_to_Web                        0.0000     0.0000       
+  mode_Online Ad                          0.0209     0.0174       
   mode_Online Matched Sample             -0.0298     0.0107    ***
   mode_Online Opt_In Panel               -0.0377     0.0104    ***
   mode_Probability Panel                 -0.0305     0.0133     **
@@ -1104,18 +1095,17 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0012     0.0002    ***
   partisan_flag                           0.0381     0.0163     **
   pct_dk                                 -0.0021     0.0007    ***
-  abs_margin                              0.0002     0.0002       
   mode_App Panel                          0.0051     0.0145       
-  mode_Email                             -0.0000     0.0000       
+  mode_Email                              0.0000     0.0000       
   mode_IVR                               -0.0396     0.0162     **
   mode_Mail_to_Phone                     -0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000     **
+  mode_Mail_to_Web                       -0.0000     0.0000    ***
   mode_Online Ad                          0.0184     0.0126       
   mode_Online Matched Sample             -0.0407     0.0133    ***
   mode_Online Opt_In Panel               -0.0475     0.0127    ***
   mode_Probability Panel                 -0.0360     0.0154     **
   mode_Text                                 ----       ----       
-  mode_Text_to_Web                       -0.0193     0.0129       
+  mode_Text_to_Web                       -0.0193     0.0128       
   const                                   0.0112     0.0147       
   --------------------------------------------------------------------
   adjusted r2:  0.3898
@@ -1136,18 +1126,17 @@ REGRESSIONS WITH MODE CONTROLS
   variable                                  coef         se    sig
   --------------------------------------------------------------------
   duration_days                          -0.0035     0.0009    ***
-  days_before_election                   -0.0012     0.0005     **
+  days_before_election                   -0.0012     0.0005    ***
   partisan_flag                             ----       ----       
   pct_dk                                 -0.0030     0.0010    ***
-  abs_margin                              0.0002     0.0002       
   mode_App Panel                            ----       ----       
-  mode_Email                             -0.0000     0.0000       
+  mode_Email                             -0.0000     0.0000    ***
   mode_IVR                                  ----       ----       
-  mode_Mail_to_Phone                     -0.0000     0.0000     **
-  mode_Mail_to_Web                        0.0000     0.0000    ***
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000       
   mode_Online Ad                          0.0231     0.0124      *
-  mode_Online Matched Sample             -0.0441     0.0115    ***
-  mode_Online Opt_In Panel               -0.0441     0.0149    ***
+  mode_Online Matched Sample             -0.0441     0.0114    ***
+  mode_Online Opt_In Panel               -0.0441     0.0148    ***
   mode_Probability Panel                 -0.0260     0.0131      *
   mode_Text                                 ----       ----       
   mode_Text_to_Web                       -0.0161     0.0086      *
@@ -1174,19 +1163,18 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                    0.0029     0.0033       
   partisan_flag                             ----       ----       
   pct_dk                                  0.0004     0.0015       
-  abs_margin                             -0.0012     0.0005     **
   mode_App Panel                            ----       ----       
-  mode_Email                             -0.0000     0.0000       
+  mode_Email                              0.0000     0.0000       
   mode_IVR                                  ----       ----       
-  mode_Mail_to_Phone                      0.0000     0.0000       
+  mode_Mail_to_Phone                      0.0000     0.0000    ***
   mode_Mail_to_Web                       -0.0000     0.0000       
   mode_Online Ad                            ----       ----       
   mode_Online Matched Sample                ----       ----       
-  mode_Online Opt_In Panel               -0.0112     0.0182       
+  mode_Online Opt_In Panel               -0.0112     0.0180       
   mode_Probability Panel                    ----       ----       
   mode_Text                                 ----       ----       
-  mode_Text_to_Web                        0.0129     0.0132       
-  const                                  -0.0821     0.0342     **
+  mode_Text_to_Web                        0.0129     0.0131       
+  const                                  -0.0822     0.0340     **
   --------------------------------------------------------------------
   adjusted r2:  0.2726
   n:            97
@@ -1205,7 +1193,7 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
 duration_days                     -0.003      0.001   ***    -0.001      0.001    **    -0.002      0.001    **    -0.003      0.001   ***     0.002      0.005      
 days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.001      0.002      
 pct_dk                            -0.003      0.000   ***    -0.002      0.000   ***    -0.002      0.001   ***    -0.003      0.001   ***    -0.003      0.002     *
-abs_margin                        -0.001      0.000   ***    -0.001      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***    -0.001      0.000    **
+abs_margin                                                                                                                                                           
 
 Constant                          -0.053      0.005          -0.044      0.004          -0.031      0.006          -0.023      0.006          -0.046      0.019      
 
@@ -1226,12 +1214,12 @@ Variable                           Coef.  Std. Err.  Sig.     Coef.  Std. Err.  
 duration_days                     -0.004      0.001   ***    -0.002      0.001   ***    -0.003      0.001   ***    -0.004      0.001   ***     0.010      0.005    **
 days_before_election              -0.000      0.000          -0.001      0.000   ***    -0.001      0.000   ***    -0.001      0.000   ***     0.003      0.002      
 pct_dk                            -0.002      0.000   ***    -0.002      0.000   ***    -0.002      0.001   ***    -0.003      0.001   ***     0.000      0.002      
-abs_margin                        -0.000      0.000   ***    -0.000      0.000    **     0.000      0.000           0.000      0.000          -0.001      0.000   ***
+abs_margin                                                                                                                                                           
 mode_App Panel                     0.008      0.012           0.002      0.012           0.005      0.013           0.022      0.020          -0.009      0.038      
-mode_Email                         0.000      0.000          -0.000      0.000   ***    -0.000      0.000          -0.000      0.000          -0.000      0.000      
+mode_Email                        -0.000      0.000   ***     0.000      0.000    **     0.000      0.000          -0.000      0.000   ***     0.000      0.000      
 mode_IVR                          -0.030      0.011   ***    -0.036      0.011   ***    -0.040      0.013   ***    -0.040      0.016    **    -0.021      0.020      
-mode_Mail_to_Phone                 0.000      0.000   ***    -0.000      0.000          -0.000      0.000     *    -0.000      0.000   ***     0.000      0.000      
-mode_Mail_to_Web                   0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000   ***    -0.000      0.000      
+mode_Mail_to_Phone                -0.000      0.000           0.000      0.000   ***    -0.000      0.000     *    -0.000      0.000           0.000      0.000    **
+mode_Mail_to_Web                  -0.000      0.000           0.000      0.000          -0.000      0.000   ***    -0.000      0.000          -0.000      0.000      
 mode_Online Ad                     0.046      0.011   ***     0.021      0.012     *     0.018      0.012           0.023      0.013     *     0.045      0.016   ***
 mode_Online Matched Sample        -0.026      0.008   ***    -0.030      0.007   ***    -0.041      0.008   ***    -0.044      0.010   ***    -0.019      0.017      
 mode_Online Opt_In Panel          -0.036      0.005   ***    -0.038      0.005   ***    -0.047      0.006   ***    -0.044      0.008   ***    -0.011      0.012      
@@ -1361,10 +1349,10 @@ MODE COEFFICIENTS ACROSS SAMPLES
 Mode                        National           Swing      All States
 ......................................................................
 App Panel                   0.01           0.05***        0.06***
-Email                       0.00          -0.00          -0.00   
+Email                      -0.00***       -0.00          -0.00   
 IVR                        -0.03***        0.01           0.02***
-Mail_to_Phone               0.00***       -0.03          -0.02   
-Mail_to_Web                 0.00***       -0.04***       -0.00   
+Mail_to_Phone              -0.00          -0.03          -0.02   
+Mail_to_Web                -0.00          -0.04***       -0.00   
 Online Ad                   0.05***        0.04***        0.04***
 Online Matched Sample       -0.03***       -0.02**        -0.01   
 Online Opt_In Panel        -0.04***       -0.01**        -0.01** 
@@ -1460,6 +1448,29 @@ min      -0.562824       1.000000              1.000000    -2.000000     0.00858
 50%      -0.063201       5.000000             37.000000     3.300000     0.031400    70.320000
 75%      -0.022677       8.000000             63.000000     5.000000     0.055286    74.050000
 max       0.310397      43.000000            106.000000    16.000000     0.457561    76.640000
+==============================================================================================================
+
+
+==============================================================================================================
+CORRELATION MATRIX - INDEPENDENT VARIABLES
+==============================================================================================================
+
+State-level polls:
+                      duration_days  days_before_election  partisan_flag    pct_dk  abs_margin  turnout_pct
+duration_days              1.000000             -0.161894      -0.152694 -0.214759    0.158237    -0.107692
+days_before_election      -0.161894              1.000000       0.068394  0.178294   -0.070250     0.054946
+partisan_flag             -0.152694              0.068394       1.000000  0.124920    0.027649    -0.010515
+pct_dk                    -0.214759              0.178294       0.124920  1.000000    0.028243    -0.005920
+abs_margin                 0.158237             -0.070250       0.027649  0.028243    1.000000    -0.557984
+turnout_pct               -0.107692              0.054946      -0.010515 -0.005920   -0.557984     1.000000
+
+
+National polls:
+                      duration_days  days_before_election  partisan_flag    pct_dk
+duration_days              1.000000             -0.050241      -0.071520  0.002234
+days_before_election      -0.050241              1.000000      -0.013844  0.224921
+partisan_flag             -0.071520             -0.013844       1.000000  0.008301
+pct_dk                     0.002234              0.224921       0.008301  1.000000
 ==============================================================================================================
 
 

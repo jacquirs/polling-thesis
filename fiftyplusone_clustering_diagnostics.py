@@ -27,7 +27,7 @@ reg_df['start_date'] = pd.to_datetime(reg_df['start_date'])
 # define variable lists
 time_vars = ['duration_days', 'days_before_election','partisan_flag']
 state_vars = ['pct_dk', 'abs_margin', 'turnout_pct']
-national_vars = ['pct_dk', 'abs_margin']
+national_vars = ['pct_dk']
 state_x_vars = time_vars + state_vars
 national_x_vars = time_vars + national_vars
 

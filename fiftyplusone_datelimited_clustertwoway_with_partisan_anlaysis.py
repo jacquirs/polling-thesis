@@ -392,7 +392,7 @@ reg_df = reg_df.merge(
 # covariates for both regressions
 time_vars  = ['duration_days', 'days_before_election','partisan_flag']
 state_vars = ['pct_dk', 'abs_margin','turnout_pct']
-national_vars = ['pct_dk', 'abs_margin']
+national_vars = ['pct_dk']
 
 # final covariate lists per regression
 state_x_vars    = time_vars + state_vars
@@ -1402,6 +1402,27 @@ print("="*110 + "\n")
 
 
 ########################################################################################
+#################### CORRELATION MATRIX FOR INDEPENDENT VARIABLES ######################
+########################################################################################
+
+print("\n" + "="*110)
+print("CORRELATION MATRIX - INDEPENDENT VARIABLES")
+print("="*110)
+
+# State variables
+print("\nState-level polls:")
+corr_state = reg_state_original[state_x_vars].corr()
+print(corr_state.to_string())
+
+# National variables
+print("\n\nNational polls:")
+corr_national = reg_national_original[national_x_vars_no_mode].corr()
+print(corr_national.to_string())
+
+print("="*110 + "\n")
+
+
+########################################################################################
 #################### RESIDUAL AUTOCORRELATION TEST #####################################
 ########################################################################################
 
@@ -1725,6 +1746,7 @@ else:
     print(f"     Multi-question polls are disproportionately partisan")
 
 print("="*110 + "\n")
+
 
 ######## save outputs
 # save regression-ready dataset withs constructed covariates
