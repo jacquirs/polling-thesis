@@ -16,6 +16,9 @@ sys.stdout = log_file
 # then runs multivariate ols regressions (state and national separately)
 # to understand what poll design factors predict accuracy
 
+##### WITHOUT PARTISAN CONTROL, USED FOR COMPARISON 
+print("WITHOUT PARTISAN CONTROL")
+
 # load cleaned harris+trump questions dataset (output from fiftyplusone_initial_analysis.py)
 harris_trump_full_df = pd.read_csv("data/fiftyplusone_cleaned_harris_trump_questions.csv")
 
@@ -46,6 +49,7 @@ pct_total_by_question = (
 )
 pct_total_by_question['pct_dk'] = 100 - pct_total_by_question['pct_total']
 
+
 ########################################################################################
 ##################################### Pivoting #########################################
 ########################################################################################
@@ -67,7 +71,7 @@ harris_trump_pivot = (
 # merge metadata from one of the rows
 metadata_to_merge = (
     harris_trump_full_df[harris_trump_full_df['answer'] == 'Trump']
-    [['question_id', 'poll_id', 'pollster', 'state', 'start_date', 'end_date', 
+    [['question_id', 'poll_id', 'pollster', 'partisan', 'state', 'start_date', 'end_date', 
       'mode', 'population', 'sample_size']]
     .drop_duplicates('question_id')
 )
@@ -175,44 +179,20 @@ print(harris_trump_pivot['poll_level'].value_counts(dropna=False).to_string())
 print(f"\nstate values flagged as national:")
 print(harris_trump_pivot[harris_trump_pivot['poll_level'] == 'national']['state'].value_counts(dropna=False).to_string())
 
-########################################################################################
-############################# General Accuracy Analysis ################################
-########################################################################################
-# include SE
-def compute_clustered_se(df, value_col, cluster_col):
-    """
-    compute cluster-robust standard error of the mean, accounts for multiple questions per poll
-    """
-    # remove any rows with missing values
-    df_clean = df[[value_col, cluster_col]].dropna()
-    
-    if len(df_clean) == 0:
-        return np.nan, 0
-    
-    # get cluster means
-    cluster_means = df_clean.groupby(cluster_col)[value_col].mean()
-    n_clusters = len(cluster_means)
-    
-    # need at least 2 clusters to compute cluster-robust SE
-    if n_clusters < 2:
-        return np.nan, n_clusters
-    
-    # grand mean
-    grand_mean = df_clean[value_col].mean()
-    
-    # cluster-robust variance of the mean
-    cluster_var = ((cluster_means - grand_mean) ** 2).sum() / (n_clusters - 1)
-    
-    # standard error of grand mean
-    se_robust = np.sqrt(cluster_var / n_clusters)
-    
-    return se_robust, n_clusters
 
-def sig_stars(p):
-    if p < 0.01:   return '***'
-    elif p < 0.05: return '**'
-    elif p < 0.10: return '*'
-    else:          return ''
+########################################################################################
+############################# Create partisan flag ################################
+########################################################################################
+harris_trump_pivot["partisan_flag"] = (
+    harris_trump_pivot["partisan"].notna() &
+    (harris_trump_pivot["partisan"].str.strip() != "")
+).astype(int)
+
+flagged = (harris_trump_pivot["partisan_flag"] == 1).sum()
+unflagged = (harris_trump_pivot["partisan_flag"] == 0).sum()
+
+print("Partisan flagged:", flagged)
+print("Partiasan unflagged:", unflagged)
 
 
 ########################################################################################
@@ -1507,7 +1487,7 @@ print("\n" + "="*110 + "\n")
 
 ######## save outputs
 # save regression-ready dataset withs constructed covariates
-reg_df.to_csv('data/harris_trump_datelimted_clustertwoway_regression.csv', index=False)
+reg_df.to_csv('data/harris_trump_datelimited_clustertwoway_regression.csv', index=False)
 
 # close log and restore terminal
 log_file.close()

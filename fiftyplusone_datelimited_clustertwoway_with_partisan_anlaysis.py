@@ -4,10 +4,10 @@ import sys
 import statsmodels.api as sm
 from scipy import stats
 import matplotlib.pyplot as plt
-
+from statsmodels.stats.sandwich_covariance import cov_cluster_2groups
 
 # redirect all print output to a log file
-log_file = open('output/fiftyplusone_analysis_datelimited_log.txt', 'w')
+log_file = open('output/fiftyplusone_analysis_datelimited_clustertwoway_with_partisan_log.txt', 'w')
 sys.stdout = log_file
 
 # THIS FILE ANALYZES POLL ACCURACY AND MODE EFFECTS FOR HARRIS+TRUMP POLLS
@@ -15,6 +15,9 @@ sys.stdout = log_file
 # using Martin, Traugott & Kennedy (2005) Method A accuracy measure
 # then runs multivariate ols regressions (state and national separately)
 # to understand what poll design factors predict accuracy
+
+##### WITH PARTISAN CONTROL
+print("WITH PARTISAN CONTROL")
 
 # load cleaned harris+trump questions dataset (output from fiftyplusone_initial_analysis.py)
 harris_trump_full_df = pd.read_csv("data/fiftyplusone_cleaned_harris_trump_questions.csv")
@@ -45,6 +48,7 @@ pct_total_by_question = (
     .rename(columns={'pct': 'pct_total'})
 )
 pct_total_by_question['pct_dk'] = 100 - pct_total_by_question['pct_total']
+
 
 ########################################################################################
 ##################################### Pivoting #########################################
@@ -86,10 +90,6 @@ n_before_drop = harris_trump_pivot['question_id'].nunique()
 harris_trump_pivot = harris_trump_pivot.dropna(subset=['pct_trump_poll', 'pct_harris_poll'])
 n_after_drop = harris_trump_pivot['question_id'].nunique()
 
-# convert end_date and start_date to datetime after pivot
-harris_trump_pivot['end_date'] = pd.to_datetime(harris_trump_pivot['end_date'])
-harris_trump_pivot['start_date'] = pd.to_datetime(harris_trump_pivot['start_date'])
-
 print(f"Questions with both Trump and Harris pct: {n_after_drop}")
 print(f"Questions dropped due to missing pct:     {n_before_drop - n_after_drop}")
 
@@ -102,7 +102,7 @@ harris_trump_pivot = harris_trump_pivot.merge(
 
 
 ##### LIMIT THE DATES TO PERIOD WHEN HARRIS WAS NOMINEE
-harris_trump_pivot = harris_trump_pivot[harris_trump_pivot['start_date'] >=  dropout_cutoff] 
+harris_trump_pivot = harris_trump_pivot[harris_trump_pivot['start_date'] >=  dropout_cutoff] #maybe reeval this
 
 ######## compute national true vote shares as weighted average of state results
 national_true = pd.Series({
@@ -151,7 +151,6 @@ if len(unmatched) > 0:
 # drop any remaining unmatched
 harris_trump_pivot = harris_trump_pivot.dropna(subset=['p_trump_true', 'p_harris_true'])
 print(f"\nQuestions remaining for accuracy analysis: {len(harris_trump_pivot)}")
-print(f"Total number of polls: {harris_trump_pivot['poll_id'].nunique()}")
 
 ######## compute Method A accuracy measure
 # A = ln((poll_trump / poll_harris) / (true_trump / true_harris))
@@ -180,6 +179,7 @@ print(harris_trump_pivot['poll_level'].value_counts(dropna=False).to_string())
 print(f"\nstate values flagged as national:")
 print(harris_trump_pivot[harris_trump_pivot['poll_level'] == 'national']['state'].value_counts(dropna=False).to_string())
 
+
 ########################################################################################
 ############################# Create partisan flag ################################
 ########################################################################################
@@ -193,757 +193,6 @@ unflagged = (harris_trump_pivot["partisan_flag"] == 0).sum()
 
 print("Partisan flagged:", flagged)
 print("Partiasan unflagged:", unflagged)
-
-########################################################################################
-############################# General Accuracy Analysis ################################
-########################################################################################
-# include SE
-def compute_clustered_se(df, value_col, cluster_col):
-    """
-    compute cluster-robust standard error of the mean, accounts for multiple questions per poll
-    """
-    # remove any rows with missing values
-    df_clean = df[[value_col, cluster_col]].dropna()
-    
-    if len(df_clean) == 0:
-        return np.nan, 0
-    
-    # get cluster means
-    cluster_means = df_clean.groupby(cluster_col)[value_col].mean()
-    n_clusters = len(cluster_means)
-    
-    # need at least 2 clusters to compute cluster-robust SE
-    if n_clusters < 2:
-        return np.nan, n_clusters
-    
-    # grand mean
-    grand_mean = df_clean[value_col].mean()
-    
-    # cluster-robust variance of the mean
-    cluster_var = ((cluster_means - grand_mean) ** 2).sum() / (n_clusters - 1)
-    
-    # standard error of grand mean
-    se_robust = np.sqrt(cluster_var / n_clusters)
-    
-    return se_robust, n_clusters
-
-def sig_stars(p):
-    if p < 0.01:   return '***'
-    elif p < 0.05: return '**'
-    elif p < 0.10: return '*'
-    else:          return ''
-
-
-######## overall accuracy
-mean_A = harris_trump_pivot['A'].mean()
-se_A_robust, n_polls = compute_clustered_se(harris_trump_pivot, 'A', 'poll_id')
-t_stat = mean_A / se_A_robust
-p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
-
-mean_trump_part_A = harris_trump_pivot['trump_part_A'].mean()
-mean_harris_part_A = harris_trump_pivot['harris_part_A'].mean()
-
-print(f"\nOverall Method A accuracy (all Harris+Trump questions):")
-print(f"  Mean:   {mean_A:.4f}")
-print(f"  SE:       {se_A_robust:.4f}")
-print(f"  p-value:  {p_value:.4f} {sig_stars(p_value)}")
-print(f"  Median: {harris_trump_pivot['A'].median():.4f}")
-print(f"  SD:    {harris_trump_pivot['A'].std():.4f}")
-print(f"  N:        {len(harris_trump_pivot)}")
-print(f"  Mean Harris Part:   {mean_harris_part_A:.4f}")
-print(f"  Mean Trump Part:   {mean_trump_part_A:.4f}")
-
-
-### graph of trump and harris parts, all polls
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-
-
-# histograms of components vs method A
-axes[0, 0].hist(harris_trump_pivot['trump_part_A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
-axes[0, 0].axvline(harris_trump_pivot['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {harris_trump_pivot["trump_part_A"].mean():.4f}')
-axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[0, 0].set_xlabel('Trump Component')
-axes[0, 0].set_ylabel('Frequency')
-axes[0, 0].set_title('Trump Component: ln(poll_trump) - ln(true_trump)')
-axes[0, 0].legend()
-
-
-axes[0, 1].hist(harris_trump_pivot['harris_part_A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
-axes[0, 1].axvline(harris_trump_pivot['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {harris_trump_pivot["harris_part_A"].mean():.4f}')
-axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[0, 1].set_xlabel('Harris Component')
-axes[0, 1].set_ylabel('Frequency')
-axes[0, 1].set_title('Harris Component: ln(poll_harris) - ln(true_harris)')
-axes[0, 1].legend()
-
-
-axes[0, 2].hist(harris_trump_pivot['A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
-axes[0, 2].axvline(harris_trump_pivot['A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {harris_trump_pivot["A"].mean():.4f}')
-axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[0, 2].set_xlabel('Method A')
-axes[0, 2].set_ylabel('Frequency')
-axes[0, 2].set_title('Method A: trump_part - harris_part')
-axes[0, 2].legend()
-
-
-# poll vs true scatter plots
-axes[1, 0].scatter(harris_trump_pivot['p_trump_true']*100, harris_trump_pivot['pct_trump_poll'], alpha=0.3, s=10)
-axes[1, 0].plot([0, 100], [0, 100], 'r--', linewidth=2, label='Perfect accuracy')
-axes[1, 0].set_xlabel('True Trump %')
-axes[1, 0].set_ylabel('Poll Trump %')
-axes[1, 0].set_title('Trump: Poll vs True')
-axes[1, 0].legend()
-axes[1, 0].grid(True, alpha=0.3)
-
-
-axes[1, 1].scatter(harris_trump_pivot['p_harris_true']*100, harris_trump_pivot['pct_harris_poll'], alpha=0.3, s=10)
-axes[1, 1].plot([0, 100], [0, 100], 'r--', linewidth=2, label='Perfect accuracy')
-axes[1, 1].set_xlabel('True Harris %')
-axes[1, 1].set_ylabel('Poll Harris %')
-axes[1, 1].set_title('Harris: Poll vs True')
-axes[1, 1].legend()
-axes[1, 1].grid(True, alpha=0.3)
-
-
-# simple errors
-axes[1, 2].hist(harris_trump_pivot['pct_trump_poll'] - harris_trump_pivot['p_trump_true']*100,
-                bins=50, alpha=0.5, label='Trump Error', edgecolor='black')
-axes[1, 2].hist(harris_trump_pivot['pct_harris_poll'] - harris_trump_pivot['p_harris_true']*100,
-                bins=50, alpha=0.5, label='Harris Error', edgecolor='black')
-axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[1, 2].set_xlabel('Simple Error (Poll - True)')
-axes[1, 2].set_ylabel('Frequency')
-axes[1, 2].set_title('Simple Errors: Poll % - True %')
-axes[1, 2].legend()
-
-
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_overall_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-### graphs of parts for NATIONAL polls only
-national_polls = harris_trump_pivot[harris_trump_pivot['state'] == 'national'].copy()
-fig, axes = plt.subplots(2, 3, figsize=(14, 10))
-
-# histograms of components vs method A
-axes[0, 0].hist(national_polls['trump_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7)
-axes[0, 0].axvline(national_polls['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {national_polls["trump_part_A"].mean():.4f}')
-axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[0, 0].set_xlabel('Trump Component')
-axes[0, 0].set_ylabel('Frequency')
-axes[0, 0].set_title('Trump Component: ln(poll_trump) - ln(true_trump)')
-axes[0, 0].legend()
-
-
-axes[0, 1].hist(national_polls['harris_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7)
-axes[0, 1].axvline(national_polls['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {national_polls["harris_part_A"].mean():.4f}')
-axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[0, 1].set_xlabel('Harris Component')
-axes[0, 1].set_ylabel('Frequency')
-axes[0, 1].set_title('Harris Component: ln(poll_harris) - ln(true_harris)')
-axes[0, 1].legend()
-
-axes[0, 2].hist(national_polls['A'].dropna(), bins=50, edgecolor='black', alpha=0.7)
-axes[0, 2].axvline(national_polls['A'].mean(), color='red', linestyle='--', linewidth=2, label=f'Mean: {national_polls["A"].mean():.4f}')
-axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[0, 2].set_xlabel('Method A')
-axes[0, 2].set_ylabel('Frequency')
-axes[0, 2].set_title('Method A: trump_part - harris_part')
-axes[0, 2].legend()
-
-# Rpoll value histograms with true value line
-true_trump_national = national_polls['p_trump_true'].iloc[0] * 100
-true_harris_national = national_polls['p_harris_true'].iloc[0] * 100
-
-axes[1, 0].hist(national_polls['pct_trump_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7)
-axes[1, 0].axvline(true_trump_national, color='red', linestyle='--', linewidth=2, label=f'True: {true_trump_national:.2f}%')
-axes[1, 0].axvline(national_polls['pct_trump_poll'].mean(), color='blue', linestyle='--', linewidth=2, label=f'Poll Mean: {national_polls["pct_trump_poll"].mean():.2f}%')
-axes[1, 0].set_xlabel('Trump Poll %')
-axes[1, 0].set_ylabel('Frequency')
-axes[1, 0].set_title('Distribution of Trump Poll Values (National)')
-axes[1, 0].legend()
-
-axes[1, 1].hist(national_polls['pct_harris_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7)
-axes[1, 1].axvline(true_harris_national, color='red', linestyle='--', linewidth=2, label=f'True: {true_harris_national:.2f}%')
-axes[1, 1].axvline(national_polls['pct_harris_poll'].mean(), color='blue', linestyle='--', linewidth=2, label=f'Poll Mean: {national_polls["pct_harris_poll"].mean():.2f}%')
-axes[1, 1].set_xlabel('Harris Poll %')
-axes[1, 1].set_ylabel('Frequency')
-axes[1, 1].set_title('Distribution of Harris Poll Values (National)')
-axes[1, 1].legend()
-
-axes[1, 2].hist(national_polls['pct_trump_poll'] - national_polls['p_trump_true']*100,
-                bins=50, alpha=0.5, label='Trump Error', edgecolor='black')
-axes[1, 2].hist(national_polls['pct_harris_poll'] - national_polls['p_harris_true']*100,
-                bins=50, alpha=0.5, label='Harris Error', edgecolor='black')
-axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=1)
-axes[1, 2].set_xlabel('Simple Error (Poll - True)')
-axes[1, 2].set_ylabel('Frequency')
-axes[1, 2].set_title('Simple Errors (National): Poll % - True %')
-axes[1, 2].legend()
-
-plt.suptitle('National Polls Only', fontsize=16, y=1.00)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_national_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-print(f"\nNational Polls (N={len(national_polls)}):")
-print(f"Trump - True: {true_trump_national:.2f}%, Poll Mean: {national_polls['pct_trump_poll'].mean():.2f}%, Error: {national_polls['pct_trump_poll'].mean() - true_trump_national:.2f}")
-print(f"Harris - True: {true_harris_national:.2f}%, Poll Mean: {national_polls['pct_harris_poll'].mean():.2f}%, Error: {national_polls['pct_harris_poll'].mean() - true_harris_national:.2f}")
-
-
-### battleground states combined treating all as one group
-battleground_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
-bg_polls = harris_trump_pivot[harris_trump_pivot['state'].isin(battleground_states)].copy()
-fig, axes = plt.subplots(2, 3, figsize=(20, 12))
-
-# trump component all battleground polls combined
-axes[0, 0].hist(bg_polls['trump_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
-axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=2)
-axes[0, 0].axvline(bg_polls['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2,
-                   label=f'Mean: {bg_polls["trump_part_A"].mean():.4f}')
-axes[0, 0].set_xlabel('Trump Component')
-axes[0, 0].set_ylabel('Frequency')
-axes[0, 0].set_title('Trump Component: ln(poll_trump) - ln(true_trump)')
-axes[0, 0].legend()
-
-# harris component all battleground polls combined
-axes[0, 1].hist(bg_polls['harris_part_A'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
-axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=2)
-axes[0, 1].axvline(bg_polls['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2,
-                   label=f'Mean: {bg_polls["harris_part_A"].mean():.4f}')
-axes[0, 1].set_xlabel('Harris Component')
-axes[0, 1].set_ylabel('Frequency')
-axes[0, 1].set_title('Harris Component: ln(poll_harris) - ln(true_harris)')
-axes[0, 1].legend()
-
-# method a all battleground polls combined
-axes[0, 2].hist(bg_polls['A'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
-axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=2)
-axes[0, 2].axvline(bg_polls['A'].mean(), color='red', linestyle='--', linewidth=2,
-                   label=f'Mean: {bg_polls["A"].mean():.4f}')
-axes[0, 2].set_xlabel('Method A')
-axes[0, 2].set_ylabel('Frequency')
-axes[0, 2].set_title('Method A: trump_part - harris_part')
-axes[0, 2].legend()
-
-# harris poll distribution mean true value across all battleground states
-mean_true_harris = (bg_polls['p_harris_true'] * 100).mean()
-axes[1, 0].hist(bg_polls['pct_harris_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
-axes[1, 0].axvline(mean_true_harris, color='red', linestyle='--', linewidth=2,
-                   label=f'Mean True Value: {mean_true_harris:.2f}%')
-axes[1, 0].axvline(bg_polls['pct_harris_poll'].mean(), color='blue', linestyle='--', linewidth=2,
-                   label=f'Poll Mean: {bg_polls["pct_harris_poll"].mean():.2f}%')
-axes[1, 0].set_xlabel('Harris Poll %')
-axes[1, 0].set_ylabel('Frequency')
-axes[1, 0].set_title('Harris Poll Distribution')
-axes[1, 0].legend()
-
-# trump poll distribution mean true value across all battleground states
-mean_true_trump = (bg_polls['p_trump_true'] * 100).mean()
-axes[1, 1].hist(bg_polls['pct_trump_poll'].dropna(), bins=30, edgecolor='black', alpha=0.7, color='steelblue')
-axes[1, 1].axvline(mean_true_trump, color='red', linestyle='--', linewidth=2,
-                   label=f'Mean True Value: {mean_true_trump:.2f}%')
-axes[1, 1].axvline(bg_polls['pct_trump_poll'].mean(), color='blue', linestyle='--', linewidth=2,
-                   label=f'Poll Mean: {bg_polls["pct_trump_poll"].mean():.2f}%')
-axes[1, 1].set_xlabel('Trump Poll %')
-axes[1, 1].set_ylabel('Frequency')
-axes[1, 1].set_title('Trump Poll Distribution')
-axes[1, 1].legend()
-
-# simple errors both candidates combined
-trump_error_all = bg_polls['pct_trump_poll'] - bg_polls['p_trump_true'] * 100
-harris_error_all = bg_polls['pct_harris_poll'] - bg_polls['p_harris_true'] * 100
-
-axes[1, 2].hist(trump_error_all.dropna(), bins=30, alpha=0.5, label=f'Trump (mean={trump_error_all.mean():.2f})',
-               color='red', edgecolor='black')
-axes[1, 2].hist(harris_error_all.dropna(), bins=30, alpha=0.5, label=f'Harris (mean={harris_error_all.mean():.2f})',
-               color='blue', edgecolor='black')
-axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=2)
-axes[1, 2].set_xlabel('Simple Error (Poll - True %)')
-axes[1, 2].set_ylabel('Frequency')
-axes[1, 2].set_title('Simple Errors')
-axes[1, 2].legend()
-
-plt.suptitle('All Battleground States Combined (AZ, GA, MI, NV, NC, PA, WI)', fontsize=16)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundcombined_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-### trump component, seven panels for each individual state
-fig, axes = plt.subplots(2, 4, figsize=(20, 10))
-axes = axes.flatten()
-
-# loop through each battleground state
-for i, state in enumerate(battleground_states):
-    state_data = bg_polls[bg_polls['state'] == state]
-    axes[i].hist(state_data['trump_part_A'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
-    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
-    axes[i].axvline(state_data['trump_part_A'].mean(), color='red', linestyle='--', linewidth=2,
-                   label=f'Mean: {state_data["trump_part_A"].mean():.4f}')
-    axes[i].set_xlabel('Trump Component')
-    axes[i].set_ylabel('Frequency')
-    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
-    axes[i].legend()
-
-# hide the extra subplot
-axes[7].axis('off')
-
-plt.suptitle('Trump Component by State: ln(poll_trump) - ln(true_trump)', fontsize=16)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumpcomp_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-### harris component, seven panels for each individual state
-fig, axes = plt.subplots(2, 4, figsize=(20, 10))
-axes = axes.flatten()
-
-# loop through each battleground state
-for i, state in enumerate(battleground_states):
-    state_data = bg_polls[bg_polls['state'] == state]
-    axes[i].hist(state_data['harris_part_A'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
-    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
-    axes[i].axvline(state_data['harris_part_A'].mean(), color='red', linestyle='--', linewidth=2,
-                   label=f'Mean: {state_data["harris_part_A"].mean():.4f}')
-    axes[i].set_xlabel('Harris Component')
-    axes[i].set_ylabel('Frequency')
-    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
-    axes[i].legend()
-
-# hide the extra subplot
-axes[7].axis('off')
-
-plt.suptitle('Harris Component by State: ln(poll_harris) - ln(true_harris)', fontsize=16)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harriscomp_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-### method a, seven panels for each individual state
-fig, axes = plt.subplots(2, 4, figsize=(20, 10))
-axes = axes.flatten()
-
-# loop through each battleground state
-for i, state in enumerate(battleground_states):
-    state_data = bg_polls[bg_polls['state'] == state]
-    axes[i].hist(state_data['A'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
-    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
-    axes[i].axvline(state_data['A'].mean(), color='red', linestyle='--', linewidth=2,
-                   label=f'Mean: {state_data["A"].mean():.4f}')
-    axes[i].set_xlabel('Method A')
-    axes[i].set_ylabel('Frequency')
-    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
-    axes[i].legend()
-
-
-# hide the extra subplot
-axes[7].axis('off')
-
-plt.suptitle('Method A by State: trump_part - harris_part', fontsize=16)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_methoda_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-### harris poll distribution, seven panels for each individual state
-fig, axes = plt.subplots(2, 4, figsize=(20, 10))
-axes = axes.flatten()
-
-# loop through each battleground state
-for i, state in enumerate(battleground_states):
-    state_data = bg_polls[bg_polls['state'] == state]
-    true_harris = state_data['p_harris_true'].iloc[0] * 100
-    axes[i].hist(state_data['pct_harris_poll'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
-    axes[i].axvline(true_harris, color='red', linestyle='--', linewidth=2,
-                   label=f'True: {true_harris:.2f}%')
-    axes[i].axvline(state_data['pct_harris_poll'].mean(), color='blue', linestyle='--', linewidth=2,
-                   label=f'Poll Mean: {state_data["pct_harris_poll"].mean():.2f}%')
-    axes[i].set_xlabel('Harris Poll %')
-    axes[i].set_ylabel('Frequency')
-    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
-    axes[i].legend()
-
-# hide the extra subplot
-axes[7].axis('off')
-
-plt.suptitle('Harris Poll Distribution by State', fontsize=16)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_harrispoll_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-### trump poll distribution, seven panels for each individual state
-fig, axes = plt.subplots(2, 4, figsize=(20, 10))
-axes = axes.flatten()
-
-# loop through each battleground state
-for i, state in enumerate(battleground_states):
-    state_data = bg_polls[bg_polls['state'] == state]
-    true_trump = state_data['p_trump_true'].iloc[0] * 100
-    axes[i].hist(state_data['pct_trump_poll'].dropna(), bins=20, edgecolor='black', alpha=0.7, color='steelblue')
-    axes[i].axvline(true_trump, color='red', linestyle='--', linewidth=2,
-                   label=f'True: {true_trump:.2f}%')
-    axes[i].axvline(state_data['pct_trump_poll'].mean(), color='blue', linestyle='--', linewidth=2,
-                   label=f'Poll Mean: {state_data["pct_trump_poll"].mean():.2f}%')
-    axes[i].set_xlabel('Trump Poll %')
-    axes[i].set_ylabel('Frequency')
-    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
-    axes[i].legend()
-
-# hide the extra subplot
-axes[7].axis('off')
-
-plt.suptitle('Trump Poll Distribution by State', fontsize=16)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_trumppoll_methoda_errors.png", dpi=300)
-#plt.show()
-
-
-### simple errors, seven panels for each individual state
-fig, axes = plt.subplots(2, 4, figsize=(20, 10))
-axes = axes.flatten()
-
-# loop through each battleground state
-for i, state in enumerate(battleground_states):
-    state_data = bg_polls[bg_polls['state'] == state]
-    trump_error = state_data['pct_trump_poll'] - state_data['p_trump_true'] * 100
-    harris_error = state_data['pct_harris_poll'] - state_data['p_harris_true'] * 100
-   
-    axes[i].hist(trump_error.dropna(), bins=20, alpha=0.5, label=f'Trump (mean={trump_error.mean():.2f})',
-                color='red', edgecolor='black')
-    axes[i].hist(harris_error.dropna(), bins=20, alpha=0.5, label=f'Harris (mean={harris_error.mean():.2f})',
-                color='blue', edgecolor='black')
-    axes[i].axvline(0, color='black', linestyle='-', linewidth=2)
-    axes[i].set_xlabel('Simple Error (Poll - True %)')
-    axes[i].set_ylabel('Frequency')
-    axes[i].set_title(f'{state.title()} (N={len(state_data)})')
-    axes[i].legend()
-
-# hide the extra subplot
-axes[7].axis('off')
-
-plt.suptitle('Simple Errors by State', fontsize=16)
-plt.tight_layout()
-plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundsplit_simpleerr_methoda_errors.png", dpi=300)
-#plt.show()
-
-### battleground summary stats
-# battleground state summary statistics combined
-print(f"\nAll Battleground States Combined (N={len(bg_polls)}):")
-print(f"  Trump Component Mean: {bg_polls['trump_part_A'].mean():.4f}")
-print(f"  Harris Component Mean: {bg_polls['harris_part_A'].mean():.4f}")
-print(f"  Method A Mean: {bg_polls['A'].mean():.4f}")
-print(f"  Trump Error Mean: {trump_error_all.mean():.2f}")
-print(f"  Harris Error Mean: {harris_error_all.mean():.2f}")
-
-
-# battleground state summary statistics by state
-print(f"\nBy State:")
-for state in battleground_states:
-    state_data = bg_polls[bg_polls['state'] == state]
-    true_trump = state_data['p_trump_true'].iloc[0] * 100
-    true_harris = state_data['p_harris_true'].iloc[0] * 100
-    poll_trump = state_data['pct_trump_poll'].mean()
-    poll_harris = state_data['pct_harris_poll'].mean()
-    trump_error = poll_trump - true_trump
-    harris_error = poll_harris - true_harris
-   
-    print(f"\n{state} (N={len(state_data)}):")
-    print(f"  Trump True: {true_trump:.2f}%, Poll Mean: {poll_trump:.2f}%, Error: {trump_error:.2f}")
-    print(f"  Harris True: {true_harris:.2f}%, Poll Mean: {poll_harris:.2f}%, Error: {harris_error:.2f}")
-    print(f"  Trump Component Mean: {state_data['trump_part_A'].mean():.4f}")
-    print(f"  Harris Component Mean: {state_data['harris_part_A'].mean():.4f}")
-    print(f"  Method A Mean: {state_data['A'].mean():.4f}")
-
-
-######## accuracy split by state vs national
-print(f"\nMethod A accuracy by poll level (state vs national):")
-results = []
-for level in harris_trump_pivot['poll_level'].unique():
-    subdf = harris_trump_pivot[harris_trump_pivot['poll_level'] == level]
-    mean_A = subdf['A'].mean()
-    se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
-    t_stat = mean_A / se_robust
-
-    # only compute p-value if SE is valid
-    if pd.notna(se_robust) and se_robust > 0:
-        t_stat = mean_A / se_robust
-        p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
-    else:
-        p_value = np.nan
-
-    results.append({
-        'poll_level': level,
-        'mean': mean_A,
-        'median': subdf['A'].median(),
-        'se': se_robust,
-        'p_value': p_value,
-        'sd': subdf['A'].std(),
-        'n': len(subdf)
-    })
-
-results_df = pd.DataFrame(results)
-results_df['sig'] = results_df['p_value'].apply(sig_stars)
-print(results_df.to_string(index=False))
-
-
-########################################################################################
-################################# SIMPLE MODE ANALSYIS PREP ############################
-########################################################################################
-
-# fix typo
-harris_trump_pivot['mode'] = harris_trump_pivot['mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
-
-# classify modes as self-administered vs interviewer-administered
-self_admin_modes = [
-    'Online Opt-In Panel', 'Text-to-Web', 'Online Matched Sample', 
-    'Online Ad', 'Probability Panel', 'Text', 'App Panel', 
-    'Email', 'Mail-to-Web'
-]
-
-interviewer_modes = ['Live Phone', 'IVR']
-
-# mixed modes that combine self-admin and interviewer
-explicit_mixed_modes = ['Mail-to-Phone']
-
-# create mode component indicators in the non exploded dataset
-harris_trump_pivot['has_self_admin'] = harris_trump_pivot['mode'].apply(
-    lambda x: any(mode.strip() in self_admin_modes for mode in str(x).split('/'))
-)
-
-harris_trump_pivot['has_interviewer'] = harris_trump_pivot['mode'].apply(
-    lambda x: any(mode.strip() in interviewer_modes for mode in str(x).split('/'))
-)
-
-harris_trump_pivot['has_explicit_mixed'] = harris_trump_pivot['mode'].apply(
-    lambda x: any(mode.strip() in explicit_mixed_modes for mode in str(x).split('/'))
-)
-
-# check for modes that don't fall into any category (the "Other" cases)
-harris_trump_pivot['has_other'] = ~(
-    harris_trump_pivot['has_self_admin'] | 
-    harris_trump_pivot['has_interviewer'] | 
-    harris_trump_pivot['has_explicit_mixed']
-)
-
-# print others
-other_examples = harris_trump_pivot[harris_trump_pivot['has_other']]['mode'].value_counts()
-
-print(f"\nOther category (N = {len(harris_trump_pivot[harris_trump_pivot['has_other']])} questions):")
-print("  All modes in this category:")
-for mode, count in other_examples.items():
-    print(f"    '{mode}': {count} questions")
-
-# exclude other (these all don't have a mode), keep everything else
-harris_trump_simple_mode_analysis = harris_trump_pivot[
-    ~harris_trump_pivot['has_other']
-].copy()
-
-# create three mutually exclusive binary indicators
-# mixed = either has both components or is the explicit mixed mode Mail-to-Phone, others are solely one type
-harris_trump_simple_mode_analysis['interviewer_only'] = (
-    (harris_trump_simple_mode_analysis['has_interviewer']) & 
-    (~harris_trump_simple_mode_analysis['has_self_admin']) &
-    (~harris_trump_simple_mode_analysis['has_explicit_mixed'])
-).astype(int)
-
-harris_trump_simple_mode_analysis['self_admin_only'] = (
-    (harris_trump_simple_mode_analysis['has_self_admin']) & 
-    (~harris_trump_simple_mode_analysis['has_interviewer']) &
-    (~harris_trump_simple_mode_analysis['has_explicit_mixed'])
-).astype(int)
-
-harris_trump_simple_mode_analysis['mixed_mode'] = (
-    ((harris_trump_simple_mode_analysis['has_self_admin']) & 
-     (harris_trump_simple_mode_analysis['has_interviewer'])) |
-    harris_trump_simple_mode_analysis['has_explicit_mixed']
-).astype(int)
-
-# verify they sum to 1 for each row 
-mode_sum = (harris_trump_simple_mode_analysis['interviewer_only'] + 
-            harris_trump_simple_mode_analysis['self_admin_only'] + 
-            harris_trump_simple_mode_analysis['mixed_mode'])
-
-# was not necessary
-if not (mode_sum == 1).all():
-    print("\nWARNING: Mode categories are not mutually exclusive!")
-
-print("MODE ANALYSIS DATAFRAME")
-print(f"\nTotal questions: {len(harris_trump_simple_mode_analysis)}")
-print(f"Excluded from original: {len(harris_trump_pivot) - len(harris_trump_simple_mode_analysis)}")
-print(f"  Interviewer-only: {harris_trump_simple_mode_analysis['interviewer_only'].sum()}")
-print(f"  Self-admin-only: {harris_trump_simple_mode_analysis['self_admin_only'].sum()}")
-print(f"  Mixed mode: {harris_trump_simple_mode_analysis['mixed_mode'].sum()}")
-
-print(f"\nMixed mode composition:")
-mixed_polls = harris_trump_simple_mode_analysis[harris_trump_simple_mode_analysis['mixed_mode'] == 1]
-slash_mixed = ((mixed_polls['has_self_admin']) & (mixed_polls['has_interviewer'])).sum()
-explicit_mixed = mixed_polls['has_explicit_mixed'].sum()
-print(f"  Slash-separated (e.g., 'Live Phone/Online'): {slash_mixed}")
-print(f"  Explicit mixed (Mail-to-Phone): {explicit_mixed}")
-
-# subset for pure binary analysis (excludes mixed)
-harris_trump_simple_mode_analysis_pure = harris_trump_simple_mode_analysis[
-    harris_trump_simple_mode_analysis['mixed_mode'] == 0
-].copy()
-
-print(f"\nPure mode subset (excludes mixed):")
-print(f"  Total questions: {len(harris_trump_simple_mode_analysis_pure)}")
-print(f"  Self-admin-only: {harris_trump_simple_mode_analysis_pure['self_admin_only'].sum()}")
-print(f"  Interviewer-only: {harris_trump_simple_mode_analysis_pure['interviewer_only'].sum()}")
-
-# save the full three-way dataset (interviewer-only, self-admin-only, mixed)
-harris_trump_simple_mode_analysis.to_csv('data/harris_trump_datelimited_simple_mode_analysis_threeway.csv', index=False)
-
-# save the pure binary dataset (excludes mixed)
-harris_trump_simple_mode_analysis_pure.to_csv('data/harris_trump_datelimited_simple_mode_analysis_pure.csv', index=False)
-
-########################################################################################
-##################################### MANY Mode Analysis ####################################
-########################################################################################
-
-######## explode slash-separated modes into base modes
-
-# each mode with a slash will count in both listed
-# explode slash-separated mode strings so a question with 'live phone/online' appears in counts and accuracy stats for both modes
-harris_trump_modes = harris_trump_pivot.copy()
-harris_trump_modes['base_mode'] = harris_trump_modes['mode'].str.split('/')
-harris_trump_modes = harris_trump_modes.explode('base_mode')
-harris_trump_modes['base_mode'] = harris_trump_modes['base_mode'].str.strip()
-
-######## mode counts
-mode_counts = (
-    harris_trump_modes.groupby('base_mode')['question_id']
-    .nunique()
-    .reset_index()
-    .rename(columns={'question_id': 'unique_questions'})
-    .sort_values('unique_questions', ascending=False)
-    .reset_index(drop=True)
-)
-
-print(f"\nBase mode breakdown (unique questions per mode):\n")
-print(mode_counts.to_string(index=False))
-
-######## accuracy by base mode
-print(f"\nMethod A accuracy by base mode")
-results = []
-for mode in harris_trump_modes['base_mode'].unique():
-    subdf = harris_trump_modes[harris_trump_modes['base_mode'] == mode]
-    mean_A = subdf['A'].mean()
-    se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
-    t_stat = mean_A / se_robust
-
-    # only compute p-value if SE is valid
-    if pd.notna(se_robust) and se_robust > 0:
-        t_stat = mean_A / se_robust
-        p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
-    else:
-        p_value = np.nan
-
-    results.append({
-        'base_mode': mode,
-        'mean': mean_A,
-        'median': subdf['A'].median(),
-        'sd': subdf['A'].std(),
-        'se': se_robust,
-        'p_value': p_value,
-        'n': len(subdf)
-    })
-
-results_df = pd.DataFrame(results).sort_values('mean', ascending=False)
-results_df['sig'] = results_df['p_value'].apply(sig_stars)
-print(results_df.to_string(index=False))
-
-
-########################################################################################
-########################## Accuracy by mode and target population ######################
-########################################################################################
-
-# these two tables report mean, median, std, and n for method a broken out by (1) polling mode and (2) target population, each split by state vs national
-# mode and population are reported separately from the regression because they are categorical design choices better understood descriptively, and the multi-hot nature of mode makes regression coefficients hard to interpret cleanly (but i may go back to this later so i can say something like mode X is more biased controlling for days before election and swingness)
-
-# table print function
-def print_accuracy_table(df, group_col, label):
-    """
-    groups df by group_col and poll_level, computes mean/median/std/se/p-value/n of method a,
-    and prints a formatted table with state and national columns side by side
-    """
-    results = []
-    
-    for (group_val, level), subdf in df.groupby([group_col, 'poll_level']):
-        mean_A = subdf['A'].mean()
-        se_robust, n_polls = compute_clustered_se(subdf, 'A', 'poll_id')
-        t_stat = mean_A / se_robust
-
-        # only compute p-value if SE is valid
-        if pd.notna(se_robust) and se_robust > 0:
-            t_stat = mean_A / se_robust
-            p_value = 2 * (1 - stats.t.cdf(abs(t_stat), df=n_polls-1))
-        else:
-            p_value = np.nan
-
-        results.append({
-            group_col: group_val,
-            'poll_level': level,
-            'mean': mean_A,
-            'se': se_robust,
-            'p_value': p_value,
-            'median': subdf['A'].median(),
-            'std': subdf['A'].std(),
-            'n': len(subdf)
-        })
-    
-    results_df = pd.DataFrame(results)
-    tbl_wide = results_df.pivot(index=group_col, columns='poll_level', 
-                                  values=['mean', 'se', 'p_value', 'median', 'std', 'n'])
-    tbl_wide.columns = [f"{stat}_{level}" for stat, level in tbl_wide.columns]
-    tbl_wide = tbl_wide.reset_index().sort_values('mean_state', ascending=False, na_position='last')
-
-    print(f"\n{'='*110}")
-    print(f"  method a accuracy by {label}")
-    print(f"  (+ = republican bias, - = democratic bias)")
-    print(f"{'='*110}")
-    print(f"  {'':30} {'-------------- state --------------':>42} {'------------ national ------------':>42}")
-    print(f"  {group_col:<30} {'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}   "
-          f"{'mean':>8} {'se':>8} {'p-val':>8} {'median':>8} {'std':>8} {'n':>5}")
-    print(f"  {'-'*108}")
-
-    for _, row in tbl_wide.iterrows():
-        def fmt_val(val):
-            return f"{val:.4f}" if pd.notna(val) else '   --'
-        def fmt_pval(val):
-            return f"{val:.3f}{sig_stars(val)}" if pd.notna(val) else '   --'
-        def fmt_n(val):
-            return f"{int(val)}" if pd.notna(val) and val > 0 else '--'
-
-        print(
-            f"  {str(row[group_col]):<30} "
-            f"{fmt_val(row.get('mean_state')):>8} "
-            f"{fmt_val(row.get('se_state')):>8} "
-            f"{fmt_pval(row.get('p_value_state')):>8} "
-            f"{fmt_val(row.get('median_state')):>8} "
-            f"{fmt_val(row.get('std_state')):>8} "
-            f"{fmt_n(row.get('n_state')):>5}   "
-            f"{fmt_val(row.get('mean_national')):>8} "
-            f"{fmt_val(row.get('se_national')):>8} "
-            f"{fmt_pval(row.get('p_value_national')):>8} "
-            f"{fmt_val(row.get('median_national')):>8} "
-            f"{fmt_val(row.get('std_national')):>8} "
-            f"{fmt_n(row.get('n_national')):>5}"
-        )
-
-    print(f"{'='*110}\n")
-
-# Table: accuracy by polling mode
-print_accuracy_table(harris_trump_modes, 'base_mode', 'polling mode')
-
-
-# Table: accuracy by target population
-# shows whether polls targeting different populations are systematically more or less accurate, without controlling for other factors
-print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 
 
 ########################################################################################
@@ -967,11 +216,11 @@ print_accuracy_table(harris_trump_pivot, 'population', 'target population')
 # variables to include: base_mode / mode indicators, population indicators (have a, lv, rv)
 # variables to create: duration in field (difference between start_date and end_date), days before election (end_date to november 5 2025), final absolute margin of victory (state or national depending on regression), percent of don't know (100 - total for all candidates in a question), total statewide turnout percent (i will need to find you a dataset with the number of people registered to vote in each state)
 
-# function to run ols with clustered ses and print a formatted table
-def run_ols_clustered(df, y_col, x_cols, cluster_col, label, min_obs_threshold=10):
+# function to run ols with two way clustered ses and print a formatted table
+def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, label, min_obs_threshold=10):
     """
     fits ols on df using x_cols to predict y_col.
-    standard errors are clustered on cluster_col (huber-white sandwich).
+    standard errors are two-way clustered on cluster_col1 and cluster_col2.
     prints a formatted regression table with stars, adj-r2, constant, and n.
     returns the fitted statsmodels results object.
     
@@ -979,8 +228,12 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label, min_obs_threshold=1
     it will be displayed as '----' instead of a coefficient.
     """
     # drop rows with any missing values in the variables used
-    df_reg = df[x_cols + [y_col, cluster_col]].dropna()
+    df_reg = df[x_cols + [y_col, cluster_col1, cluster_col2]].dropna()
 
+    # add intercept column
+    X = sm.add_constant(df_reg[x_cols], has_constant='add')
+    y = df_reg[y_col]
+    
     # check for low-variance variables (modes with very few observations)
     # these will cause numerical issues
     low_variance_vars = []
@@ -991,15 +244,46 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label, min_obs_threshold=1
                 value_counts = df_reg[col].value_counts()
                 if value_counts.min() < min_obs_threshold:
                     low_variance_vars.append(col)
-
-    # add intercept column with has_constant='add' to force it even if data
-    X      = sm.add_constant(df_reg[x_cols], has_constant='add')
-    y      = df_reg[y_col]
-    groups = df_reg[cluster_col]
-
-    # fit ols with cluster-robust covariance
-    model  = sm.OLS(y, X)
-    result = model.fit(cov_type='cluster', cov_kwds={'groups': groups})
+    
+    # fit ols first (without clustering)
+    model = sm.OLS(y, X)
+    result = model.fit()
+    
+    # convert cluster variables to categorical codes to get integer cluster ids
+    # statsmodels requires integer cluster identifiers for two-way clustering
+    cluster1_cat = pd.Categorical(df_reg[cluster_col1])
+    cluster2_cat = pd.Categorical(df_reg[cluster_col2])
+    
+    # extract integer codes and ensure proper dtype
+    cluster1 = cluster1_cat.codes.astype(np.int64)
+    cluster2 = cluster2_cat.codes.astype(np.int64)
+    
+    # stack cluster ids into 2d array format required by cov_cluster_2groups
+    groups = np.column_stack([cluster1, cluster2])
+    
+    # compute two-way clustered covariance matrix using statsmodels function
+    # cov_cluster_2groups returns a tuple (cov_matrix, ...), so extract first element
+    cov_result = cov_cluster_2groups(result, groups)
+    
+    # check if it's a tuple and extract the covariance matrix
+    if isinstance(cov_result, tuple):
+        cov_twoway = cov_result[0]
+    else:
+        cov_twoway = cov_result
+    
+    # extract standard errors from diagonal of covariance matrix
+    bse_twoway = np.sqrt(np.diag(cov_twoway))
+    
+    # compute t-statistics and p-values using two-way clustered standard errors
+    tvalues = result.params / bse_twoway
+    
+    # use conservative degrees of freedom: minimum cluster count minus 1
+    n_cluster1 = len(cluster1_cat.categories)
+    n_cluster2 = len(cluster2_cat.categories)
+    df_resid = min(n_cluster1, n_cluster2) - 1
+    
+    # compute two-tailed p-values
+    pvalues = 2 * stats.t.sf(np.abs(tvalues), df_resid)
 
     # significance stars based on two-tailed p-values
     def stars_local(p):
@@ -1008,41 +292,47 @@ def run_ols_clustered(df, y_col, x_cols, cluster_col, label, min_obs_threshold=1
         elif p < 0.10: return '*'
         else:          return ''
 
-    # print formatted table
-    print(f"\n{'='*70}")
+    # print formatted regression table
+    print(f"\n{'='*75}")
     print(f"  ols regression: {label}")
     print(f"  dependent variable: method a  (+ = republican bias)")
-    print(f"  standard errors: clustered by {cluster_col}")
-    print(f"{'='*70}")
+    print(f"  standard errors: two-way clustered ({cluster_col1} & {cluster_col2})")
+    print(f"{'='*75}")
     print(f"  {'variable':<35} {'coef':>10} {'se':>10} {'sig':>6}")
-    print(f"  {'-'*63}")
+    print(f"  {'-'*68}")
 
-    params  = result.params
-    bse     = result.bse
-    pvalues = result.pvalues
-
-    # identify the intercept name defensively — add_constant uses 'const' by
+    params = result.params
+    
+    # identify the intercept name (could be 'const', 'Intercept', or 'intercept')
     intercept_name = next((v for v in params.index if v.lower() in ('const', 'intercept')), None)
 
     # print all covariates first, then intercept at the bottom
     var_order = [v for v in params.index if v != intercept_name] + ([intercept_name] if intercept_name else [])
     
-    for var in var_order:
+    # loop through variables and print coefficients with two-way clustered standard errors
+    for i, var in enumerate(var_order):
+        # get correct index position for this variable in the arrays
+        idx = result.params.index.get_loc(var)
+        
         # check if this variable should be suppressed due to low observations
         if var in low_variance_vars:
             print(f"  {var:<35} {'----':>10} {'----':>10} {'':>6}")
         else:
-            print(f"  {var:<35} {params[var]:>10.4f} {bse[var]:>10.4f} {stars_local(pvalues[var]):>6}")
+            print(f"  {var:<35} {params[var]:>10.4f} {bse_twoway[idx]:>10.4f} {stars_local(pvalues[idx]):>6}")
 
-    print(f"  {'-'*63}")
+    print(f"  {'-'*68}")
     print(f"  adjusted r2:  {result.rsquared_adj:.4f}")
     print(f"  n:            {int(result.nobs)}")
+    print(f"  clusters:     {n_cluster1} {cluster_col1}, {n_cluster2} {cluster_col2}")
     if low_variance_vars:
         print(f"  note:         ---- indicates <{min_obs_threshold} observations in category")
-    print(f"{'='*70}\n")
+    print(f"{'='*75}\n")
 
-    # store low variance vars for later reference
-    result.low_variance_vars = low_variance_vars
+    # store two-way clustered results in the result object for later use
+    result.bse_twoway = bse_twoway
+    result.pvalues_twoway = pvalues
+    result.cov_params_twoway = cov_twoway
+    result.low_variance_vars = low_variance_vars  # store for later reference
     
     return result
 
@@ -1098,7 +388,7 @@ reg_df = reg_df.merge(
 
 
 # covariates for both regressions
-time_vars  = ['duration_days', 'days_before_election']
+time_vars  = ['duration_days', 'days_before_election','partisan_flag']
 state_vars = ['pct_dk', 'abs_margin','turnout_pct']
 national_vars = ['pct_dk', 'abs_margin']
 
@@ -1128,9 +418,6 @@ print(f"  swing state questions: {len(reg_state_swing)}")
 # Save a copy of the original un-exploded data for non-mode regressions
 reg_df_original = reg_df.copy()
 
-# for clustering analysis
-reg_df_original.to_csv('data/harris_trump_datelimted_check_for_clusering.csv', index=False)
-
 # explode mode into base_mode (each mixed mode poll becomes multiple rows)
 reg_df['base_mode'] = reg_df['mode'].str.split('/')
 reg_df = reg_df.explode('base_mode')
@@ -1138,6 +425,8 @@ reg_df['base_mode'] = reg_df['base_mode'].str.strip()
 
 print("\nUnique base modes after exploding:")
 print(reg_df['base_mode'].value_counts())
+
+reg_df['base_mode'] = reg_df['base_mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
 
 # set live phone as reference category (following polling literature conventions and gold standard of live phone)
 reference_mode = 'Live Phone'
@@ -1185,7 +474,7 @@ print(f"  national polls: {len(reg_national_original)}")
 print(f"\original swing states breakdown:")
 print(reg_state_swing_original['state'].value_counts().sort_index())
 
-print(f"\nexploded swing states breakdown:")
+print(f"\n exploded swing states breakdown:")
 print(reg_state_swing['state'].value_counts().sort_index())
 
 print(f"\nexploded mode distribution in swing states:")
@@ -1222,30 +511,33 @@ national_x_vars_with_mode = time_vars + national_vars + mode_vars
 ######## BASE REGRESSIONS (NO TIME WINDOWS, NO MODE, SWING/NATIONAL/STATES) ############
 ########################################################################################
 
-# national regression: also clustered by poll_id for the same reason, though with fewer polls clustering matters less
-results_national = run_ols_clustered(
-    df          = reg_national,
+# national regression: also clustered by poll_id and pollster for the same reason, though with fewer polls clustering matters less
+results_national = run_ols_twoway_clustered(
+    df          = reg_national_original,
     y_col       = 'A',
     x_cols      = all_x_vars,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'national polls'
 )
 
-# state regression: clustered ses by poll_id to account for the fact that multiple questions from the same poll share correlated errors
-results_state = run_ols_clustered(
-    df          = reg_state,
+# state regression: clustered ses by poll_id and pollster to account for the fact that multiple questions from the same poll share correlated errors and pollsters use same method
+results_state = run_ols_twoway_clustered(
+    df          = reg_state_original,
     y_col       = 'A',
     x_cols      = state_x_vars,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'state-level polls'
 )
 
 # swing state regression
-results_swing = run_ols_clustered(
-    df          = reg_state_swing,
+results_swing = run_ols_twoway_clustered(
+    df          = reg_state_swing_original,
     y_col       = 'A',
     x_cols      = state_x_vars,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'swing states'
 )
 
@@ -1257,29 +549,32 @@ results_swing = run_ols_clustered(
 print("REGRESSIONS WITH MODE CONTROLS")
 
 # natioanl questions
-results_national_mode = run_ols_clustered(
+results_national_mode = run_ols_twoway_clustered(
     df          = reg_national,
     y_col       = 'A',
     x_cols      = national_x_vars_with_mode,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'national polls with mode controls'
 )
 
 # all state questions
-results_all_states_mode = run_ols_clustered(
+results_all_states_mode = run_ols_twoway_clustered(
     df          = reg_state,
     y_col       = 'A',
     x_cols      = state_x_vars_with_mode,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'all state polls with mode controls'
 )
 
 # swing state questions
-results_swing_mode = run_ols_clustered(
+results_swing_mode = run_ols_twoway_clustered(
     df          = reg_state_swing,
     y_col       = 'A',
     x_cols      = state_x_vars_with_mode,
-    cluster_col = 'poll_id',
+    cluster_col1 = 'poll_id',
+    cluster_col2 = 'pollster',
     label       = 'swing states with mode controls'
 )
 
@@ -1312,11 +607,12 @@ for window in time_windows:
         print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
         swing_window_results_no_mode[window] = None
     else:
-        res_swing = run_ols_clustered(
+        res_swing = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_no_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'swing states {window} days before election (no mode)'
         )
         swing_window_results_no_mode[window] = res_swing
@@ -1338,11 +634,12 @@ for window in time_windows:
         print(f"  all state regression skipped, only {len(state_complete)} complete cases")
         all_states_window_results_no_mode[window] = None
     else:
-        res_state = run_ols_clustered(
+        res_state = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_no_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'all states {window} days before election (no mode)'
         )
         all_states_window_results_no_mode[window] = res_state
@@ -1364,11 +661,12 @@ for window in time_windows:
         print(f"  national regression skipped, only {len(national_complete)} complete cases")
         national_window_results_no_mode[window] = None
     else:
-        res_national = run_ols_clustered(
+        res_national = run_ols_twoway_clustered(
             df          = national_w,
             y_col       = 'A',
             x_cols      = national_x_vars_no_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'national {window} days before election (no mode)'
         )
         national_window_results_no_mode[window] = res_national
@@ -1395,11 +693,12 @@ for window in time_windows:
         print(f"  swing state regression skipped, only {len(state_complete)} complete cases")
         swing_window_results_with_mode[window] = None
     else:
-        res_swing = run_ols_clustered(
+        res_swing = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_with_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'swing states {window} days before election (with mode)'
         )
         swing_window_results_with_mode[window] = res_swing
@@ -1421,11 +720,12 @@ for window in time_windows:
         print(f"  all state regression skipped, only {len(state_complete)} complete cases")
         all_states_window_results_with_mode[window] = None
     else:
-        res_state = run_ols_clustered(
+        res_state = run_ols_twoway_clustered(
             df          = state_w,
             y_col       = 'A',
             x_cols      = state_x_vars_with_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'all states {window} days before election (with mode)'
         )
         all_states_window_results_with_mode[window] = res_state
@@ -1447,11 +747,12 @@ for window in time_windows:
         print(f"  national regression skipped, only {len(national_complete)} complete cases")
         national_window_results_with_mode[window] = None
     else:
-        res_national = run_ols_clustered(
+        res_national = run_ols_twoway_clustered(
             df          = national_w,
             y_col       = 'A',
             x_cols      = national_x_vars_with_mode,
-            cluster_col = 'poll_id',
+            cluster_col1 = 'poll_id',
+            cluster_col2 = 'pollster',
             label       = f'national {window} days before election (with mode)'
         )
         national_window_results_with_mode[window] = res_national
@@ -2060,14 +1361,341 @@ print(f"{'National':<20} {int(sample_df.iloc[0]['national']):>10} "
 
 print("="*110 + "\n")
 
-######## save outputs
-# save question-level accuracy dataset for further analysis, has mode splits
-harris_trump_pivot.to_csv('data/harris_trump_datelimted_accuracy.csv', index=False)
 
+########################################################################################
+#################### RESIDUAL AUTOCORRELATION TEST #####################################
+########################################################################################
+
+print("\n" + "="*110)
+print("RESIDUAL AUTOCORRELATION DIAGNOSTICS")
+print("="*110)
+
+from statsmodels.stats.stattools import durbin_watson
+
+def test_autocorrelation(df, x_vars, label, states_list=None):
+    """Test residual autocorrelation for a given sample"""
+    
+    print(f"\n{label}:")
+    print("-" * 70)
+    
+    # Prepare regression data
+    df_reg = df[x_vars + ['A', 'poll_id', 'end_date']].dropna()
+    X = sm.add_constant(df_reg[x_vars], has_constant='add')
+    y = df_reg['A']
+    
+    # Fit OLS WITHOUT clustering to get residuals
+    model = sm.OLS(y, X)
+    result_ols = model.fit()
+    
+    # Add residuals to dataframe
+    df_with_resid = df.copy()
+    df_with_resid['residuals'] = np.nan
+    df_with_resid.loc[df_reg.index, 'residuals'] = result_ols.resid
+    df_with_resid = df_with_resid.dropna(subset=['residuals'])
+    
+    # Sort by date and compute Durbin-Watson
+    df_sorted = df_with_resid.sort_values('end_date')
+    dw_stat = durbin_watson(df_sorted['residuals'])
+    
+    print(f"  Durbin-Watson statistic: {dw_stat:.3f}")
+    print(f"  N observations: {len(df_sorted)}")
+    print(f"  Interpretation:")
+    if dw_stat < 1.5:
+        print(f"     Strong positive autocorrelation (DW < 1.5)")
+        print(f"      Consider time clustering")
+    elif 1.5 <= dw_stat < 1.8:
+        print(f"      Mild positive autocorrelation (1.5 <= DW < 1.8)")
+        print(f"      Two-way clustering should be adequate")
+    else:
+        print(f"      No substantial autocorrelation (DW >= 1.8)")
+        print(f"      Two-way clustering is sufficient")
+    
+    # Check weekly variance
+    df_with_resid['week'] = df_with_resid['end_date'].dt.isocalendar().week
+    weekly_var = df_with_resid.groupby('week')['residuals'].var()
+    
+    print(f"\n  Weekly variance:")
+    print(f"    Min: {weekly_var.min():.6f}")
+    print(f"    Max: {weekly_var.max():.6f}")
+    print(f"    Ratio (max/min): {weekly_var.max() / weekly_var.min():.2f}x")
+    
+    if weekly_var.max() / weekly_var.min() > 10:
+        print(f"      Large variance changes (ratio > 10)")
+    else:
+        print(f"      Stable variance across time")
+    
+    # If state-level data, check by state
+    if states_list is not None:
+        print(f"\n  Residual patterns by state:")
+        print(f"  {'State':<15} {'N':>8} {'Mean':>10} {'SD':>10} {'Mean|Resid|':>12}")
+        print("  " + "-" * 60)
+        
+        for state in states_list:
+            state_data = df_with_resid[df_with_resid['state'] == state]
+            if len(state_data) > 0:
+                resid_mean = state_data['residuals'].mean()
+                resid_sd = state_data['residuals'].std()
+                resid_mean_abs = state_data['residuals'].abs().mean()
+                print(f"  {state.title():<15} {len(state_data):>8} {resid_mean:>10.4f} {resid_sd:>10.4f} {resid_mean_abs:>12.4f}")
+    
+    return dw_stat, weekly_var
+
+
+# Test all three samples
+print("\n" + "="*70)
+print("SWING STATES")
+print("="*70)
+dw_swing, weekly_swing = test_autocorrelation(
+    df=reg_state_swing_original,
+    x_vars=state_x_vars_no_mode,
+    label="Swing States (Non-Mode Regression)",
+    states_list=swing_states
+)
+
+print("\n" + "="*70)
+print("ALL STATES")
+print("="*70)
+dw_all, weekly_all = test_autocorrelation(
+    df=reg_state_original,
+    x_vars=state_x_vars_no_mode,
+    label="All States (Non-Mode Regression)",
+    states_list=None  # Too many states to list individually
+)
+
+print("\n" + "="*70)
+print("NATIONAL")
+print("="*70)
+dw_national, weekly_national = test_autocorrelation(
+    df=reg_national_original,
+    x_vars=national_x_vars_no_mode,
+    label="National Polls (Non-Mode Regression)",
+    states_list=None
+)
+
+
+# Summary table
+print("\n" + "="*110)
+print("SUMMARY: DURBIN-WATSON STATISTICS")
+print("="*110)
+print(f"\n{'Sample':<20} {'DW Statistic':>15} {'N':>10} {'Interpretation':>40}")
+print("-" * 85)
+print(f"{'Swing States':<20} {dw_swing:>15.3f} {len(reg_state_swing_original):>10} {'Adequate' if dw_swing >= 1.5 else 'Time clustering needed':>40}")
+print(f"{'All States':<20} {dw_all:>15.3f} {len(reg_state_original):>10} {'Adequate' if dw_all >= 1.5 else 'Time clustering needed':>40}")
+print(f"{'National':<20} {dw_national:>15.3f} {len(reg_national_original):>10} {'Adequate' if dw_national >= 1.5 else 'Time clustering needed':>40}")
+
+print("\n" + "="*110 + "\n")
+
+
+########################################################################################
+#################### PARTISAN FLAG VARIANCE DECOMPOSITION ##############################
+########################################################################################
+### determine why partisan sees an se decrease with poll_id clustering
+
+print("\n" + "="*110)
+print("PARTISAN FLAG CONSISTENCY CHECK - DO POLLS HAVE MULTIPLE PARTISAN VALUES?")
+print("="*110)
+
+# Check if any poll_id has multiple different partisan_flag values
+partisan_check = reg_df_original.groupby('poll_id')['partisan_flag'].nunique()
+
+# Count how many polls have multiple partisan values
+polls_with_multiple = (partisan_check > 1).sum()
+polls_with_single = (partisan_check == 1).sum()
+
+print(f"\nTotal polls: {len(partisan_check)}")
+print(f"Polls with single partisan value: {polls_with_single}")
+print(f"Polls with multiple partisan values: {polls_with_multiple}")
+
+if polls_with_multiple > 0:
+    print(f"\n WARNING: {polls_with_multiple} polls have multiple partisan flag values!")
+    print(f"This violates the assumption that partisan flag is poll-level.")
+    
+    # Show examples
+    print(f"\nExamples of polls with multiple partisan values:")
+    problematic_polls = partisan_check[partisan_check > 1].head(10)
+    
+    for poll_id, n_values in problematic_polls.items():
+        poll_data = reg_df_original[reg_df_original['poll_id'] == poll_id]
+        print(f"\n  Poll ID: {poll_id}")
+        print(f"    Number of partisan values: {n_values}")
+        print(f"    Number of questions: {len(poll_data)}")
+        print(f"    Partisan values: {poll_data['partisan_flag'].unique()}")
+        print(f"    Pollster: {poll_data['pollster'].iloc[0]}")
+else:
+    print(f"\n CONFIRMED: All polls have consistent partisan flag values")
+    print(f"Partisan flag is correctly applied at poll level.")
+
+# Additional check: Show distribution of partisan values
+print(f"\n" + "-"*110)
+print("PARTISAN FLAG DISTRIBUTION:")
+print(f"\nBy questions:")
+print(reg_df_original['partisan_flag'].value_counts().to_string())
+
+print(f"\nBy polls (unique poll_id):")
+poll_partisan = reg_df_original.groupby('poll_id')['partisan_flag'].first()
+print(poll_partisan.value_counts().to_string())
+
+print("="*110 + "\n")
+
+print("\n" + "="*110)
+print("PARTISAN FLAG VARIANCE ANALYSIS - WHY DEFF < 1.0?")
+print("="*110)
+
+# Calculate variance at different levels
+print("\nSwing States:")
+
+# Total variance (treating all questions as independent)
+total_var = reg_state_swing_original['partisan_flag'].var()
+print(f"  Total variance (all questions): {total_var:.6f}")
+
+# Between-poll variance
+poll_means = reg_state_swing_original.groupby('poll_id')['partisan_flag'].mean()
+between_poll_var = poll_means.var()
+print(f"  Between-poll variance: {between_poll_var:.6f}")
+
+# Within-poll variance
+within_poll_var = 0.0  # Should be zero since partisan is poll-level
+for poll_id in reg_state_swing_original['poll_id'].unique():
+    poll_data = reg_state_swing_original[reg_state_swing_original['poll_id'] == poll_id]
+    if len(poll_data) > 1:
+        within_poll_var += poll_data['partisan_flag'].var() * (len(poll_data) - 1)
+
+n_total = len(reg_state_swing_original)
+n_polls = reg_state_swing_original['poll_id'].nunique()
+within_poll_var = within_poll_var / (n_total - n_polls)
+
+print(f"  Within-poll variance: {within_poll_var:.6f}")
+
+# ICC for partisan flag
+if between_poll_var + within_poll_var > 0:
+    icc_partisan = between_poll_var / (between_poll_var + within_poll_var)
+else:
+    icc_partisan = 1.0
+    
+print(f"  ICC (partisan flag): {icc_partisan:.6f}")
+
+# Check effective sample size
+print(f"\n  Total questions: {n_total}")
+print(f"  Total polls: {n_polls}")
+print(f"  Questions per poll (avg): {n_total / n_polls:.2f}")
+
+# Distribution check
+print(f"\nPartisan flag distribution in swing states:")
+partisan_dist = reg_state_swing_original['partisan_flag'].value_counts()
+for val, count in partisan_dist.items():
+    pct = 100 * count / len(reg_state_swing_original)
+    print(f"  partisan_flag={val}: {count} questions ({pct:.1f}%)")
+
+# At poll level
+poll_partisan_dist = poll_means.value_counts()
+print(f"\nPartisan flag distribution at poll level:")
+for val, count in poll_partisan_dist.items():
+    pct = 100 * count / len(poll_means)
+    print(f"  partisan_flag={val}: {count} polls ({pct:.1f}%)")
+
+# Compare to other variables
+print(f"\n" + "-"*110)
+print("Comparison to other variables:")
+
+for var in ['days_before_election', 'pct_dk', 'partisan_flag']:
+    # Total variance
+    total_v = reg_state_swing_original[var].var()
+    
+    # Between-poll variance
+    poll_m = reg_state_swing_original.groupby('poll_id')[var].mean()
+    between_v = poll_m.var()
+    
+    # ICC
+    # Simplified calculation
+    if total_v > 0:
+        approx_icc = between_v / total_v
+    else:
+        approx_icc = 0
+    
+    print(f"\n  {var}:")
+    print(f"    Total variance: {total_v:.6f}")
+    print(f"    Between-poll variance: {between_v:.6f}")
+    print(f"    Approx ICC: {approx_icc:.4f}")
+
+print("="*110 + "\n")
+
+print("\n" + "="*110)
+print("PARTISAN FLAG COMPOSITION EFFECT - WHY BETWEEN-POLL VARIANCE > TOTAL VARIANCE")
+print("="*110)
+
+# Check questions per poll by partisan status
+print("\nSwing States - Questions per poll by partisan status:")
+
+partisan_polls = reg_state_swing_original[reg_state_swing_original['partisan_flag'] == 1]['poll_id'].unique()
+nonpartisan_polls = reg_state_swing_original[reg_state_swing_original['partisan_flag'] == 0]['poll_id'].unique()
+
+# Count questions per partisan poll
+partisan_questions_per_poll = []
+for poll_id in partisan_polls:
+    n_questions = len(reg_state_swing_original[reg_state_swing_original['poll_id'] == poll_id])
+    partisan_questions_per_poll.append(n_questions)
+
+# Count questions per non-partisan poll
+nonpartisan_questions_per_poll = []
+for poll_id in nonpartisan_polls:
+    n_questions = len(reg_state_swing_original[reg_state_swing_original['poll_id'] == poll_id])
+    nonpartisan_questions_per_poll.append(n_questions)
+
+print(f"\nPartisan polls (partisan_flag=1):")
+print(f"  Number of polls: {len(partisan_polls)}")
+print(f"  Total questions: {sum(partisan_questions_per_poll)}")
+print(f"  Questions per poll (mean): {np.mean(partisan_questions_per_poll):.2f}")
+print(f"  Questions per poll (median): {np.median(partisan_questions_per_poll):.1f}")
+print(f"  Distribution:")
+from collections import Counter
+partisan_dist = Counter(partisan_questions_per_poll)
+for n_q in sorted(partisan_dist.keys()):
+    count = partisan_dist[n_q]
+    pct = 100 * count / len(partisan_polls)
+    print(f"    {n_q} question(s): {count} polls ({pct:.1f}%)")
+
+print(f"\nNon-partisan polls (partisan_flag=0):")
+print(f"  Number of polls: {len(nonpartisan_polls)}")
+print(f"  Total questions: {sum(nonpartisan_questions_per_poll)}")
+print(f"  Questions per poll (mean): {np.mean(nonpartisan_questions_per_poll):.2f}")
+print(f"  Questions per poll (median): {np.median(nonpartisan_questions_per_poll):.1f}")
+print(f"  Distribution:")
+nonpartisan_dist = Counter(nonpartisan_questions_per_poll)
+for n_q in sorted(nonpartisan_dist.keys()):
+    count = nonpartisan_dist[n_q]
+    pct = 100 * count / len(nonpartisan_polls)
+    print(f"    {n_q} question(s): {count} polls ({pct:.1f}%)")
+
+# Calculate weighted proportion
+print(f"\n" + "-"*110)
+print("Weighted vs Unweighted Proportions:")
+
+# Unweighted (at poll level)
+unweighted_partisan_pct = 100 * len(partisan_polls) / (len(partisan_polls) + len(nonpartisan_polls))
+print(f"  Unweighted (poll-level): {unweighted_partisan_pct:.1f}% partisan")
+
+# Weighted (at question level)
+total_questions = sum(partisan_questions_per_poll) + sum(nonpartisan_questions_per_poll)
+weighted_partisan_pct = 100 * sum(partisan_questions_per_poll) / total_questions
+print(f"  Weighted (question-level): {weighted_partisan_pct:.1f}% partisan")
+
+print(f"\nDifference: {unweighted_partisan_pct - weighted_partisan_pct:.1f} percentage points")
+
+if unweighted_partisan_pct > weighted_partisan_pct:
+    print(f"     Partisan polls have FEWER questions per poll on average")
+    print(f"     Multi-question polls are disproportionately non-partisan")
+    print(f"     This increases between-poll variance relative to total variance")
+else:
+    print(f"     Partisan polls have MORE questions per poll on average")
+    print(f"     Multi-question polls are disproportionately partisan")
+
+print("="*110 + "\n")
+
+######## save outputs
 # save regression-ready dataset withs constructed covariates
-reg_df.to_csv('data/harris_trump_datelimted_regression.csv', index=False)
+reg_df.to_csv('data/harris_trump_datelimted_clustertwoway_with_partisan_regression.csv', index=False)
 
 # close log and restore terminal
 log_file.close()
 sys.stdout = sys.__stdout__
-print("Accuracy analysis complete — see output/fiftyplusone_analysis_datelimited_log.txt")
+print("Accuracy analysis complete — see output/fiftyplusone_analysis_datelimited_clustertwoway_with_partisan_log.txt")

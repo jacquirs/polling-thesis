@@ -26,6 +26,8 @@ national     671
 state values flagged as national:
 state
 national    671
+Partisan flagged: 158
+Partiasan unflagged: 2142
 
 Overall Method A accuracy (all Harris+Trump questions):
   Mean:   -0.0706
