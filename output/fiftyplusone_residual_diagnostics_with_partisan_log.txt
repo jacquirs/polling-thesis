@@ -1,0 +1,846 @@
+==============================================================================================================
+COMPREHENSIVE RESIDUAL DIAGNOSTICS, WITH PARTISAN CONTROL
+==============================================================================================================
+
+data loaded (un-exploded dataset):
+  swing states: 1182
+  all states: 1629
+  national: 671
+
+==============================================================================================================
+PART 1: MAIN SPECIFICATIONS (NON-MODE)
+==============================================================================================================
+
+==============================================================================================================
+swing states (non-mode)
+==============================================================================================================
+
+swing states (non-mode):
+  n observations: 1182
+  mean: -0.000000
+  std dev: 0.051605
+  min: -0.223731
+  max: 0.162907
+  skewness: -0.2482
+  kurtosis: 0.8586
+
+  normality tests:
+    shapiro-wilk: w=0.9921, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=48.4447, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 19 (1.6%)
+    lower fence: -0.128965
+    upper fence: 0.129171
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.25 (good - approximately symmetric)
+     outliers 1.6% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+all states (non-mode)
+==============================================================================================================
+
+all states (non-mode):
+  n observations: 1629
+  mean: 0.000000
+  std dev: 0.066176
+  min: -0.518438
+  max: 0.417945
+  skewness: -0.3430
+  kurtosis: 6.5688
+
+  normality tests:
+    shapiro-wilk: w=0.9449, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=2960.7123, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 42 (2.6%)
+    lower fence: -0.149289
+    upper fence: 0.149552
+
+  extreme outliers (3xiqr rule):
+    count: 10 (0.6%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.34 (good - approximately symmetric)
+     outliers 2.6% (good - within typical range)
+     extreme outliers 0.6% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+national (non-mode)
+==============================================================================================================
+
+national (non-mode):
+  n observations: 671
+  mean: -0.000000
+  std dev: 0.048663
+  min: -0.136968
+  max: 0.214592
+  skewness: 0.4010
+  kurtosis: 0.2397
+
+  normality tests:
+    shapiro-wilk: w=0.9861, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=19.5911, p=0.0001
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 2 (0.3%)
+    lower fence: -0.147144
+    upper fence: 0.145349
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness 0.40 (good - approximately symmetric)
+     outliers 0.3% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+PART 2: TIME WINDOW REGRESSIONS
+==============================================================================================================
+
+==============================================================================================================
+TIME WINDOW: 107 DAYS BEFORE ELECTION
+==============================================================================================================
+
+==============================================================================================================
+swing states - 107 days
+==============================================================================================================
+
+swing states - 107 days:
+  n observations: 1182
+  mean: -0.000000
+  std dev: 0.051605
+  min: -0.223731
+  max: 0.162907
+  skewness: -0.2482
+  kurtosis: 0.8586
+
+  normality tests:
+    shapiro-wilk: w=0.9921, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=48.4447, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 19 (1.6%)
+    lower fence: -0.128965
+    upper fence: 0.129171
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.25 (good - approximately symmetric)
+     outliers 1.6% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+all states - 107 days
+==============================================================================================================
+
+all states - 107 days:
+  n observations: 1629
+  mean: 0.000000
+  std dev: 0.066176
+  min: -0.518438
+  max: 0.417945
+  skewness: -0.3430
+  kurtosis: 6.5688
+
+  normality tests:
+    shapiro-wilk: w=0.9449, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=2960.7123, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 42 (2.6%)
+    lower fence: -0.149289
+    upper fence: 0.149552
+
+  extreme outliers (3xiqr rule):
+    count: 10 (0.6%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.34 (good - approximately symmetric)
+     outliers 2.6% (good - within typical range)
+     extreme outliers 0.6% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+national - 107 days
+==============================================================================================================
+
+national - 107 days:
+  n observations: 671
+  mean: -0.000000
+  std dev: 0.048663
+  min: -0.136968
+  max: 0.214592
+  skewness: 0.4010
+  kurtosis: 0.2397
+
+  normality tests:
+    shapiro-wilk: w=0.9861, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=19.5911, p=0.0001
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 2 (0.3%)
+    lower fence: -0.147144
+    upper fence: 0.145349
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness 0.40 (good - approximately symmetric)
+     outliers 0.3% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+TIME WINDOW: 90 DAYS BEFORE ELECTION
+==============================================================================================================
+
+==============================================================================================================
+swing states - 90 days
+==============================================================================================================
+
+swing states - 90 days:
+  n observations: 1092
+  mean: -0.000000
+  std dev: 0.049831
+  min: -0.198568
+  max: 0.175587
+  skewness: -0.0993
+  kurtosis: 0.6612
+
+  normality tests:
+    shapiro-wilk: w=0.9952, p=0.0015
+        reject normality (p < 0.05)
+    jarque-bera: jb=21.6886, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 21 (1.9%)
+    lower fence: -0.122738
+    upper fence: 0.123014
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.10 (good - approximately symmetric)
+     outliers 1.9% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+all states - 90 days
+==============================================================================================================
+
+all states - 90 days:
+  n observations: 1513
+  mean: -0.000000
+  std dev: 0.065276
+  min: -0.522081
+  max: 0.432333
+  skewness: -0.3269
+  kurtosis: 7.4272
+
+  normality tests:
+    shapiro-wilk: w=0.9399, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=3504.5017, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 40 (2.6%)
+    lower fence: -0.145647
+    upper fence: 0.145486
+
+  extreme outliers (3xiqr rule):
+    count: 9 (0.6%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.33 (good - approximately symmetric)
+     outliers 2.6% (good - within typical range)
+     extreme outliers 0.6% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+national - 90 days
+==============================================================================================================
+
+national - 90 days:
+  n observations: 561
+  mean: 0.000000
+  std dev: 0.041441
+  min: -0.108240
+  max: 0.137333
+  skewness: 0.4247
+  kurtosis: 0.1246
+
+  normality tests:
+    shapiro-wilk: w=0.9877, p=0.0001
+        reject normality (p < 0.05)
+    jarque-bera: jb=17.2294, p=0.0002
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 7 (1.2%)
+    lower fence: -0.113632
+    upper fence: 0.110003
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness 0.42 (good - approximately symmetric)
+     outliers 1.2% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+TIME WINDOW: 60 DAYS BEFORE ELECTION
+==============================================================================================================
+
+==============================================================================================================
+swing states - 60 days
+==============================================================================================================
+
+swing states - 60 days:
+  n observations: 852
+  mean: -0.000000
+  std dev: 0.046786
+  min: -0.152527
+  max: 0.149374
+  skewness: 0.0297
+  kurtosis: 0.4087
+
+  normality tests:
+    shapiro-wilk: w=0.9952, p=0.0089
+        reject normality (p < 0.05)
+    jarque-bera: jb=6.0538, p=0.0485
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 16 (1.9%)
+    lower fence: -0.119444
+    upper fence: 0.116269
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness 0.03 (good - approximately symmetric)
+     outliers 1.9% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+all states - 60 days
+==============================================================================================================
+
+all states - 60 days:
+  n observations: 1205
+  mean: -0.000000
+  std dev: 0.062262
+  min: -0.523441
+  max: 0.338307
+  skewness: -0.7953
+  kurtosis: 8.0049
+
+  normality tests:
+    shapiro-wilk: w=0.9381, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=3344.2919, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 30 (2.5%)
+    lower fence: -0.141874
+    upper fence: 0.139450
+
+  extreme outliers (3xiqr rule):
+    count: 6 (0.5%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+      skewness -0.80 (moderate - acceptable)
+     outliers 2.5% (good - within typical range)
+     extreme outliers 0.5% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+national - 60 days
+==============================================================================================================
+
+national - 60 days:
+  n observations: 380
+  mean: -0.000000
+  std dev: 0.041607
+  min: -0.101168
+  max: 0.141089
+  skewness: 0.6707
+  kurtosis: 0.6155
+
+  normality tests:
+    shapiro-wilk: w=0.9718, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=34.4921, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 9 (2.4%)
+    lower fence: -0.105444
+    upper fence: 0.099187
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+      skewness 0.67 (moderate - acceptable)
+     outliers 2.4% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+TIME WINDOW: 30 DAYS BEFORE ELECTION
+==============================================================================================================
+
+==============================================================================================================
+swing states - 30 days
+==============================================================================================================
+
+swing states - 30 days:
+  n observations: 526
+  mean: 0.000000
+  std dev: 0.043778
+  min: -0.158017
+  max: 0.144508
+  skewness: -0.0060
+  kurtosis: 0.6760
+
+  normality tests:
+    shapiro-wilk: w=0.9917, p=0.0051
+        reject normality (p < 0.05)
+    jarque-bera: jb=10.0185, p=0.0067
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 11 (2.1%)
+    lower fence: -0.111785
+    upper fence: 0.108501
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.01 (good - approximately symmetric)
+     outliers 2.1% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+all states - 30 days
+==============================================================================================================
+
+all states - 30 days:
+  n observations: 751
+  mean: 0.000000
+  std dev: 0.060554
+  min: -0.516698
+  max: 0.320536
+  skewness: -0.9161
+  kurtosis: 9.3482
+
+  normality tests:
+    shapiro-wilk: w=0.9291, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=2839.5744, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 20 (2.7%)
+    lower fence: -0.136995
+    upper fence: 0.133604
+
+  extreme outliers (3xiqr rule):
+    count: 5 (0.7%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+      skewness -0.92 (moderate - acceptable)
+     outliers 2.7% (good - within typical range)
+     extreme outliers 0.7% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+national - 30 days
+==============================================================================================================
+
+national - 30 days:
+  n observations: 234
+  mean: -0.000000
+  std dev: 0.038652
+  min: -0.102048
+  max: 0.098597
+  skewness: 0.2856
+  kurtosis: -0.2275
+
+  normality tests:
+    shapiro-wilk: w=0.9866, p=0.0271
+        reject normality (p < 0.05)
+    jarque-bera: jb=3.6865, p=0.1583
+        cannot reject normality (p >= 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 0 (0.0%)
+    lower fence: -0.109156
+    upper fence: 0.103978
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness 0.29 (good - approximately symmetric)
+     outliers 0.0% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+TIME WINDOW: 7 DAYS BEFORE ELECTION
+==============================================================================================================
+
+==============================================================================================================
+swing states - 7 days
+==============================================================================================================
+
+swing states - 7 days:
+  n observations: 228
+  mean: 0.000000
+  std dev: 0.037814
+  min: -0.089574
+  max: 0.114707
+  skewness: 0.1995
+  kurtosis: -0.0434
+
+  normality tests:
+    shapiro-wilk: w=0.9887, p=0.0691
+        cannot reject normality (p >= 0.05)
+    jarque-bera: jb=1.5308, p=0.4652
+        cannot reject normality (p >= 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 2 (0.9%)
+    lower fence: -0.109172
+    upper fence: 0.103887
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness 0.20 (good - approximately symmetric)
+     outliers 0.9% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+all states - 7 days
+==============================================================================================================
+
+all states - 7 days:
+  n observations: 296
+  mean: 0.000000
+  std dev: 0.060039
+  min: -0.511162
+  max: 0.175025
+  skewness: -2.4256
+  kurtosis: 18.6704
+
+  normality tests:
+    shapiro-wilk: w=0.8437, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=4589.4608, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 8 (2.7%)
+    lower fence: -0.128020
+    upper fence: 0.127561
+
+  extreme outliers (3xiqr rule):
+    count: 2 (0.7%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+      skewness -2.43 (high - check for outliers/events)
+     outliers 2.7% (good - within typical range)
+     extreme outliers 0.7% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+national - 7 days
+==============================================================================================================
+
+national - 7 days:
+  n observations: 73
+  mean: 0.000000
+  std dev: 0.034561
+  min: -0.068930
+  max: 0.072443
+  skewness: -0.0632
+  kurtosis: -0.7773
+
+  normality tests:
+    shapiro-wilk: w=0.9790, p=0.2642
+        cannot reject normality (p >= 0.05)
+    jarque-bera: jb=1.8864, p=0.3894
+        cannot reject normality (p >= 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 0 (0.0%)
+    lower fence: -0.100554
+    upper fence: 0.095749
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.06 (good - approximately symmetric)
+     outliers 0.0% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+PART 3: MODE REGRESSIONS
+==============================================================================================================
+
+exploding mixed-mode polls for mode analysis...
+  exploded dataset loaded:
+    swing states: 1734
+    all states: 2359
+    national: 786
+
+  mode dummies found: ['mode_App Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Online Ad', 'mode_Online Matched Sample', 'mode_Online Opt_In Panel', 'mode_Probability Panel', 'mode_Text', 'mode_Text_to_Web']
+  mode variables in regression: ['mode_App Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Online Ad', 'mode_Online Matched Sample', 'mode_Online Opt_In Panel', 'mode_Probability Panel', 'mode_Text', 'mode_Text_to_Web']
+  reference category: live phone (excluded)
+
+==============================================================================================================
+swing states (with mode)
+==============================================================================================================
+
+swing states (with mode):
+  n observations: 1734
+  mean: 0.000000
+  std dev: 0.047744
+  min: -0.224145
+  max: 0.164756
+  skewness: -0.2443
+  kurtosis: 1.1901
+
+  normality tests:
+    shapiro-wilk: w=0.9873, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=119.5707, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 46 (2.7%)
+    lower fence: -0.113232
+    upper fence: 0.114572
+
+  extreme outliers (3xiqr rule):
+    count: 3 (0.2%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.24 (good - approximately symmetric)
+     outliers 2.7% (good - within typical range)
+     extreme outliers 0.2% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+all states (with mode)
+==============================================================================================================
+
+all states (with mode):
+  n observations: 2359
+  mean: -0.000000
+  std dev: 0.061017
+  min: -0.483878
+  max: 0.412544
+  skewness: -0.2059
+  kurtosis: 5.9653
+
+  normality tests:
+    shapiro-wilk: w=0.9519, p=0.0000
+        reject normality (p < 0.05)
+    jarque-bera: jb=3514.3377, p=0.0000
+        reject normality (p < 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 84 (3.6%)
+    lower fence: -0.131570
+    upper fence: 0.132524
+
+  extreme outliers (3xiqr rule):
+    count: 12 (0.5%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness -0.21 (good - approximately symmetric)
+     outliers 3.6% (good - within typical range)
+     extreme outliers 0.5% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+national (with mode)
+==============================================================================================================
+
+national (with mode):
+  n observations: 786
+  mean: -0.000000
+  std dev: 0.045292
+  min: -0.138609
+  max: 0.137713
+  skewness: 0.1066
+  kurtosis: -0.1113
+
+  normality tests:
+    shapiro-wilk: w=0.9972, p=0.1874
+        cannot reject normality (p >= 0.05)
+    jarque-bera: jb=1.8952, p=0.3877
+        cannot reject normality (p >= 0.05)
+
+  outliers (1.5xiqr rule):
+    count: 4 (0.5%)
+    lower fence: -0.128299
+    upper fence: 0.128640
+
+  extreme outliers (3xiqr rule):
+    count: 0 (0.0%)
+
+  interpretation:
+     mean approx 0 (good - no systematic bias)
+     skewness 0.11 (good - approximately symmetric)
+     outliers 0.5% (good - within typical range)
+     extreme outliers 0.0% (good)
+    note: normality tests often reject with large n due to minor deviations
+          visual inspection (q-q plots) more informative than formal tests
+          clustered standard errors robust to non-normality
+
+==============================================================================================================
+SUMMARY: RESIDUAL DIAGNOSTICS ACROSS ALL SPECIFICATIONS
+==============================================================================================================
+
+key findings to look for:
+
+good signs:
+   mean approx 0 (no systematic bias)
+   residuals roughly symmetric around zero (|skewness| < 0.5)
+   q-q plot points roughly follow diagonal line
+   no clear patterns in residuals vs fitted (constant variance)
+   outliers <10% using 1.5xiqr rule
+   extreme outliers <2% using 3xiqr rule
+
+warning signs:
+    mean far from zero (model bias)
+    strong skewness (>1 or <-1)
+    funnel shape in residuals vs fitted (heteroskedasticity)
+    curved pattern in q-q plot (non-normality)
+    >15% outliers (potential influential observations)
+    >5% extreme outliers (check specific polls/events)
+
+not concerning:
+    normality tests reject (common with large n, minor deviations)
+    slight deviations in q-q plot tails (typical)
+    kurtosis in 2-4 range (acceptable)
+    moderate outlier rates 10-15% (still acceptable)
+
+interpretation notes:
+  • normality tests (shapiro-wilk, jarque-bera) are very sensitive with large n
+  • rejecting normality doesn't invalidate clustered standard errors
+  • visual inspection of q-q plots more informative than formal tests
+  • clustered ses remain valid under non-normality
+  • outliers may reflect real campaign events (debates, scandals, etc.)
+  • extreme outliers should be investigated but not automatically removed
+  • heteroskedasticity handled by clustering, not a major concern
+
+==============================================================================================================
+
