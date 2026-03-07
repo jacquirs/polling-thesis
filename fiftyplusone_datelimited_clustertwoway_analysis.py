@@ -32,6 +32,8 @@ dropout_cutoff = pd.Timestamp('2024-07-21')
 # election day 2024
 election_date  = pd.Timestamp('2024-11-05')   
 
+# fix one dataset error
+harris_trump_full_df['mode'] = harris_trump_full_df['mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
 
 ########################################################################################
 ############################# New fields ################################
@@ -427,8 +429,6 @@ reg_df['base_mode'] = reg_df['base_mode'].str.strip()
 print("\nUnique base modes after exploding:")
 print(reg_df['base_mode'].value_counts())
 
-reg_df['base_mode'] = reg_df['base_mode'].str.replace('LIve Phone', 'Live Phone', regex=False)
-
 # set live phone as reference category (following polling literature conventions and gold standard of live phone)
 reference_mode = 'Live Phone'
 
@@ -478,6 +478,7 @@ print(reg_state_swing_original['state'].value_counts().sort_index())
 print(f"\n exploded swing states breakdown:")
 print(reg_state_swing['state'].value_counts().sort_index())
 
+# understand the exploded modes overall
 print(f"\nexploded mode distribution in swing states:")
 mode_dist = reg_state_swing['base_mode'].value_counts()
 for mode, count in mode_dist.items():
@@ -485,7 +486,43 @@ for mode, count in mode_dist.items():
     marker = " (REFERENCE)" if mode == reference_mode else ""
     print(f"  {mode}: {count} ({pct:.1f}%){marker}")
 
-# understand the original modes
+# understand the exploded modes by poll level
+print("BASE MODE DISTRIBUTION ACROSS SAMPLES")
+
+base_mode_summary = []
+
+for level in ['national', 'state', 'swing']:
+    if level == 'national':
+        df = reg_national
+    elif level == 'state':
+        df = reg_state
+    else:
+        df = reg_state_swing
+    
+    base_mode_dist = df['base_mode'].value_counts()
+    
+    for base_mode, count in base_mode_dist.items():
+        pct = 100 * count / len(df)
+        base_mode_summary.append({
+            'sample': level,
+            'mode': mode,
+            'n': count,
+            'pct': pct
+        })
+
+mode_df = pd.DataFrame(base_mode_summary)
+
+for level in ['national', 'swing', 'state']:
+    print(f"\n{level.upper()}:")
+    subset = mode_df[mode_df['sample'] == level].sort_values('n', ascending=False)
+    print(f"{'Mode':<40} {'N':>10} {'%':>10}")
+    print("-" * 60)
+    for _, row in subset.iterrows():
+        print(f"{row['mode']:<40} {int(row['n']):>10} {row['pct']:>9.1f}%")
+
+print("="*110 + "\n")
+
+# understand the original modes overall
 print("\nOriginal Mode Strings:")
 print(f"{'Mode':<50} {'N':>10} {'%':>10}")
 print("-" * 70)
@@ -496,6 +533,43 @@ for mode, count in mode_original.items():
     print(f"{mode:<50} {count:>10} {pct:>9.1f}%")
 
 print(f"\nTotal unique mode combinations: {reg_df_original['mode'].nunique()}")
+
+
+# understand the original modes by poll level
+print("ORIGINAL MODE DISTRIBUTION ACROSS SAMPLES")
+
+mode_summary = []
+
+for level in ['national', 'state', 'swing']:
+    if level == 'national':
+        df = reg_national_original
+    elif level == 'state':
+        df = reg_state_original
+    else:
+        df = reg_state_swing_original
+    
+    mode_dist = df['mode'].value_counts()
+    
+    for mode, count in mode_dist.items():
+        pct = 100 * count / len(df)
+        mode_summary.append({
+            'sample': level,
+            'mode': mode,
+            'n': count,
+            'pct': pct
+        })
+
+mode_df = pd.DataFrame(mode_summary)
+
+for level in ['national', 'swing', 'state']:
+    print(f"\n{level.upper()}:")
+    subset = mode_df[mode_df['sample'] == level].sort_values('n', ascending=False)
+    print(f"{'Mode':<40} {'N':>10} {'%':>10}")
+    print("-" * 60)
+    for _, row in subset.iterrows():
+        print(f"{row['mode']:<40} {int(row['n']):>10} {row['pct']:>9.1f}%")
+
+print("="*110 + "\n")
 
 
 # update covariate lists

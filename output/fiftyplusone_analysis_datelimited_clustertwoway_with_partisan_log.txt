@@ -41,7 +41,7 @@ regression sample sizes:
 Unique base modes after exploding:
 base_mode
 Online Opt-In Panel      1064
-Live Phone                541
+Live Phone                542
 Text-to-Web               479
 IVR                       181
 Online Matched Sample     164
@@ -52,7 +52,6 @@ App Panel                  85
 Email                      79
 Mail-to-Web                28
 Mail-to-Phone              11
-LIve Phone                  1
 Name: count, dtype: int64
 
 reference category set to: Live Phone
@@ -103,12 +102,13 @@ exploded mode distribution in swing states:
   App Panel: 16 (0.9%)
   Probability Panel: 16 (0.9%)
   Mail-to-Phone: 11 (0.6%)
+BASE MODE DISTRIBUTION ACROSS SAMPLES
 
 Original Mode Strings:
 Mode                                                        N          %
 ----------------------------------------------------------------------
 Online Opt-In Panel                                       780      33.9%
-Live Phone                                                244      10.6%
+Live Phone                                                245      10.7%
 Online Matched Sample                                     164       7.1%
 Live Phone/Text-to-Web                                    156       6.8%
 Probability Panel                                         117       5.1%
@@ -143,10 +143,102 @@ Mail-to-Web                                                 2       0.1%
 IVR/Live Phone/Online Opt-In Panel                          2       0.1%
 Live Phone/Online Opt-In Panel/Text                         1       0.0%
 Live Phone/Probability Panel                                1       0.0%
-LIve Phone                                                  1       0.0%
 Live Phone/Email/Mail-to-Web                                1       0.0%
 
-Total unique mode combinations: 38
+Total unique mode combinations: 37
+ORIGINAL MODE DISTRIBUTION ACROSS SAMPLES
+
+NATIONAL:
+Mode                                              N          %
+------------------------------------------------------------
+Online Opt-In Panel                             362      53.9%
+Probability Panel                                82      12.2%
+Online Matched Sample                            57       8.5%
+Live Phone                                       35       5.2%
+Live Phone/Online Opt-In Panel/Text-to-Web         17       2.5%
+App Panel                                        16       2.4%
+Online Ad                                        15       2.2%
+Live Phone/Text-to-Web                           13       1.9%
+Online Opt-In Panel/Text-to-Web                   9       1.3%
+IVR/Online Opt-In Panel                           8       1.2%
+IVR/Online Opt-In Panel/Text-to-Web               7       1.0%
+Text-to-Web/Online Ad                             4       0.6%
+Online Opt-In Panel/Text-to-Web/Text              4       0.6%
+Live Phone/Online Opt-In Panel/App Panel          3       0.4%
+IVR/Text                                          3       0.4%
+Online Opt-In Panel/Probability Panel             3       0.4%
+IVR/Live Phone/Online Opt-In Panel/Text-to-Web          2       0.3%
+Text-to-Web                                       2       0.3%
+IVR/Live Phone/Online Opt-In Panel                2       0.3%
+Live Phone/Online Opt-In Panel/Text               1       0.1%
+Live Phone/Probability Panel                      1       0.1%
+
+SWING:
+Mode                                              N          %
+------------------------------------------------------------
+Online Opt-In Panel                             322      27.2%
+Live Phone                                      159      13.5%
+Live Phone/Text-to-Web                           90       7.6%
+Online Ad                                        87       7.4%
+Online Matched Sample                            74       6.3%
+Online Opt-In Panel/Text-to-Web                  54       4.6%
+IVR/Online Opt-In Panel/Text-to-Web              40       3.4%
+IVR/Live Phone/Text/Online Opt-In Panel/Email         30       2.5%
+Live Phone/Online Opt-In Panel/Text-to-Web         27       2.3%
+Text                                             22       1.9%
+Text-to-Web                                      21       1.8%
+IVR/Text-to-Web                                  21       1.8%
+IVR/Text                                         20       1.7%
+App Panel                                        16       1.4%
+Probability Panel                                16       1.4%
+Live Phone/Text-to-Web/Email/Mail-to-Web         14       1.2%
+Live Phone/Email                                  8       0.7%
+Text-to-Web/Online Ad                             6       0.5%
+Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone          6       0.5%
+Email                                             6       0.5%
+Online Opt-In Panel/Text                          6       0.5%
+Mail-to-Web/Mail-to-Phone                         5       0.4%
+IVR/Online Opt-In Panel                           5       0.4%
+Live Phone/Text-to-Web/Email                      5       0.4%
+IVR/Live Phone/Text-to-Web                        2       0.2%
+IVR/Live Phone/Online Opt-In Panel/Text-to-Web          1       0.1%
+
+STATE:
+Mode                                              N          %
+------------------------------------------------------------
+Online Opt-In Panel                             418      25.7%
+Live Phone                                      210      12.9%
+Live Phone/Text-to-Web                          143       8.8%
+Online Matched Sample                           107       6.6%
+Online Ad                                        97       6.0%
+Online Opt-In Panel/Text-to-Web                  82       5.0%
+App Panel                                        66       4.1%
+IVR/Online Opt-In Panel/Text-to-Web              54       3.3%
+Probability Panel                                35       2.1%
+Live Phone/Online Opt-In Panel/Text-to-Web         34       2.1%
+Text-to-Web                                      33       2.0%
+IVR/Live Phone/Text/Online Opt-In Panel/Email         32       2.0%
+IVR/Text-to-Web                                  30       1.8%
+IVR/Text                                         29       1.8%
+Text                                             24       1.5%
+Live Phone/Text-to-Web/Email/Mail-to-Web         14       0.9%
+Text-to-Web/Online Ad                            13       0.8%
+Live Phone/Online Opt-In Panel                   10       0.6%
+IVR/Online Opt-In Panel                           9       0.6%
+Email                                             9       0.6%
+Live Phone/Email                                  8       0.5%
+Live Phone/Text-to-Web/Email                      7       0.4%
+Live Phone/Text-to-Web/Email/Mail-to-Web/Mail-to-Phone          6       0.4%
+Online Opt-In Panel/Text                          6       0.4%
+Mail-to-Web/Mail-to-Phone                         5       0.3%
+IVR                                               2       0.1%
+Text-to-Web/Email                                 2       0.1%
+IVR/Live Phone/Text-to-Web                        2       0.1%
+Mail-to-Web                                       2       0.1%
+IVR/Live Phone/Online Opt-In Panel/Text-to-Web          1       0.1%
+Live Phone/Email/Mail-to-Web                      1       0.1%
+==============================================================================================================
+
 
 ===========================================================================
   ols regression: national polls
