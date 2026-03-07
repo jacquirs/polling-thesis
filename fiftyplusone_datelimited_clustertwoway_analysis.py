@@ -5,6 +5,7 @@ import statsmodels.api as sm
 from scipy import stats
 import matplotlib.pyplot as plt
 from statsmodels.stats.sandwich_covariance import cov_cluster_2groups
+from statsmodels.stats.stattools import durbin_watson
 
 # redirect all print output to a log file
 log_file = open('output/fiftyplusone_analysis_datelimited_clustertwoway_log.txt', 'w')
@@ -485,12 +486,12 @@ for mode, count in mode_dist.items():
     print(f"  {mode}: {count} ({pct:.1f}%){marker}")
 
 # understand the original modes
-print("\nOriginal Mode Strings (Top 15):")
+print("\nOriginal Mode Strings:")
 print(f"{'Mode':<50} {'N':>10} {'%':>10}")
 print("-" * 70)
 
 mode_original = reg_df_original['mode'].value_counts()
-for mode, count in mode_original.head(15).items():
+for mode, count in mode_original.items():
     pct = 100 * count / len(reg_df_original)
     print(f"{mode:<50} {count:>10} {pct:>9.1f}%")
 
@@ -1363,14 +1364,49 @@ print("="*110 + "\n")
 
 
 ########################################################################################
+#################### DESCRIPTIVE STATISTICS FOR REGRESSION VARIABLES ###################
+########################################################################################
+
+print("\n" + "="*110)
+print("DESCRIPTIVE STATISTICS - REGRESSION VARIABLES")
+print("="*110)
+
+# All questions
+desc_all = reg_df_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct','partisan_flag']].describe()
+
+print("\nAll Questions (N={})".format(len(reg_df_original)))
+print(desc_all.to_string())
+
+# National only
+desc_nat = reg_national_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin']].describe()
+
+print("\n\nNational Questions (N={})".format(len(reg_national_original)))
+print(desc_nat.to_string())
+
+# Swing states only
+desc_swing = reg_state_swing_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct']].describe()
+
+print("\n\nSwing State Questions (N={})".format(len(reg_state_swing_original)))
+print(desc_swing.to_string())
+
+print("="*110 + "\n")
+
+# All states only
+desc_states = reg_state_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct']].describe()
+
+print("\n\n All State Questions (N={})".format(len(reg_state_original)))
+print(desc_states.to_string())
+
+print("="*110 + "\n")
+
+
+########################################################################################
 #################### RESIDUAL AUTOCORRELATION TEST #####################################
 ########################################################################################
 
 print("\n" + "="*110)
 print("RESIDUAL AUTOCORRELATION DIAGNOSTICS")
 print("="*110)
-
-from statsmodels.stats.stattools import durbin_watson
 
 def test_autocorrelation(df, x_vars, label, states_list=None):
     """Test residual autocorrelation for a given sample"""
@@ -1440,7 +1476,6 @@ def test_autocorrelation(df, x_vars, label, states_list=None):
     
     return dw_stat, weekly_var
 
-
 # Test all three samples
 print("\n" + "="*70)
 print("SWING STATES")
@@ -1472,7 +1507,6 @@ dw_national, weekly_national = test_autocorrelation(
     states_list=None
 )
 
-
 # Summary table
 print("\n" + "="*110)
 print("SUMMARY: DURBIN-WATSON STATISTICS")
@@ -1484,6 +1518,7 @@ print(f"{'All States':<20} {dw_all:>15.3f} {len(reg_state_original):>10} {'Adequ
 print(f"{'National':<20} {dw_national:>15.3f} {len(reg_national_original):>10} {'Adequate' if dw_national >= 1.5 else 'Time clustering needed':>40}")
 
 print("\n" + "="*110 + "\n")
+
 
 ######## save outputs
 # save regression-ready dataset withs constructed covariates
