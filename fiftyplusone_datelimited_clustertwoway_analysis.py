@@ -1382,6 +1382,129 @@ print(f"{'National':<20} {int(sample_df.iloc[0]['national']):>10} "
 print("="*110 + "\n")
 
 
+########################################################################################
+#################### RESIDUAL AUTOCORRELATION TEST #####################################
+########################################################################################
+
+print("\n" + "="*110)
+print("RESIDUAL AUTOCORRELATION DIAGNOSTICS")
+print("="*110)
+
+from statsmodels.stats.stattools import durbin_watson
+
+def test_autocorrelation(df, x_vars, label, states_list=None):
+    """Test residual autocorrelation for a given sample"""
+    
+    print(f"\n{label}:")
+    print("-" * 70)
+    
+    # Prepare regression data
+    df_reg = df[x_vars + ['A', 'poll_id', 'end_date']].dropna()
+    X = sm.add_constant(df_reg[x_vars], has_constant='add')
+    y = df_reg['A']
+    
+    # Fit OLS WITHOUT clustering to get residuals
+    model = sm.OLS(y, X)
+    result_ols = model.fit()
+    
+    # Add residuals to dataframe
+    df_with_resid = df.copy()
+    df_with_resid['residuals'] = np.nan
+    df_with_resid.loc[df_reg.index, 'residuals'] = result_ols.resid
+    df_with_resid = df_with_resid.dropna(subset=['residuals'])
+    
+    # Sort by date and compute Durbin-Watson
+    df_sorted = df_with_resid.sort_values('end_date')
+    dw_stat = durbin_watson(df_sorted['residuals'])
+    
+    print(f"  Durbin-Watson statistic: {dw_stat:.3f}")
+    print(f"  N observations: {len(df_sorted)}")
+    print(f"  Interpretation:")
+    if dw_stat < 1.5:
+        print(f"     Strong positive autocorrelation (DW < 1.5)")
+        print(f"      Consider time clustering")
+    elif 1.5 <= dw_stat < 1.8:
+        print(f"      Mild positive autocorrelation (1.5 <= DW < 1.8)")
+        print(f"      Two-way clustering should be adequate")
+    else:
+        print(f"      No substantial autocorrelation (DW >= 1.8)")
+        print(f"      Two-way clustering is sufficient")
+    
+    # Check weekly variance
+    df_with_resid['week'] = df_with_resid['end_date'].dt.isocalendar().week
+    weekly_var = df_with_resid.groupby('week')['residuals'].var()
+    
+    print(f"\n  Weekly variance:")
+    print(f"    Min: {weekly_var.min():.6f}")
+    print(f"    Max: {weekly_var.max():.6f}")
+    print(f"    Ratio (max/min): {weekly_var.max() / weekly_var.min():.2f}x")
+    
+    if weekly_var.max() / weekly_var.min() > 10:
+        print(f"      Large variance changes (ratio > 10)")
+    else:
+        print(f"      Stable variance across time")
+    
+    # If state-level data, check by state
+    if states_list is not None:
+        print(f"\n  Residual patterns by state:")
+        print(f"  {'State':<15} {'N':>8} {'Mean':>10} {'SD':>10} {'Mean|Resid|':>12}")
+        print("  " + "-" * 60)
+        
+        for state in states_list:
+            state_data = df_with_resid[df_with_resid['state'] == state]
+            if len(state_data) > 0:
+                resid_mean = state_data['residuals'].mean()
+                resid_sd = state_data['residuals'].std()
+                resid_mean_abs = state_data['residuals'].abs().mean()
+                print(f"  {state.title():<15} {len(state_data):>8} {resid_mean:>10.4f} {resid_sd:>10.4f} {resid_mean_abs:>12.4f}")
+    
+    return dw_stat, weekly_var
+
+
+# Test all three samples
+print("\n" + "="*70)
+print("SWING STATES")
+print("="*70)
+dw_swing, weekly_swing = test_autocorrelation(
+    df=reg_state_swing_original,
+    x_vars=state_x_vars_no_mode,
+    label="Swing States (Non-Mode Regression)",
+    states_list=swing_states
+)
+
+print("\n" + "="*70)
+print("ALL STATES")
+print("="*70)
+dw_all, weekly_all = test_autocorrelation(
+    df=reg_state_original,
+    x_vars=state_x_vars_no_mode,
+    label="All States (Non-Mode Regression)",
+    states_list=None  # Too many states to list individually
+)
+
+print("\n" + "="*70)
+print("NATIONAL")
+print("="*70)
+dw_national, weekly_national = test_autocorrelation(
+    df=reg_national_original,
+    x_vars=national_x_vars_no_mode,
+    label="National Polls (Non-Mode Regression)",
+    states_list=None
+)
+
+
+# Summary table
+print("\n" + "="*110)
+print("SUMMARY: DURBIN-WATSON STATISTICS")
+print("="*110)
+print(f"\n{'Sample':<20} {'DW Statistic':>15} {'N':>10} {'Interpretation':>40}")
+print("-" * 85)
+print(f"{'Swing States':<20} {dw_swing:>15.3f} {len(reg_state_swing_original):>10} {'Adequate' if dw_swing >= 1.5 else 'Time clustering needed':>40}")
+print(f"{'All States':<20} {dw_all:>15.3f} {len(reg_state_original):>10} {'Adequate' if dw_all >= 1.5 else 'Time clustering needed':>40}")
+print(f"{'National':<20} {dw_national:>15.3f} {len(reg_national_original):>10} {'Adequate' if dw_national >= 1.5 else 'Time clustering needed':>40}")
+
+print("\n" + "="*110 + "\n")
+
 ######## save outputs
 # save regression-ready dataset withs constructed covariates
 reg_df.to_csv('data/harris_trump_datelimted_clustertwoway_regression.csv', index=False)

@@ -1341,3 +1341,85 @@ All States                 1629        296       1333           81.8%
 National                    671         73        598           89.1%
 ==============================================================================================================
 
+
+==============================================================================================================
+RESIDUAL AUTOCORRELATION DIAGNOSTICS
+==============================================================================================================
+
+======================================================================
+SWING STATES
+======================================================================
+
+Swing States (Non-Mode Regression):
+----------------------------------------------------------------------
+  Durbin-Watson statistic: 1.599
+  N observations: 1182
+  Interpretation:
+      Mild positive autocorrelation (1.5 <= DW < 1.8)
+      Two-way clustering should be adequate
+
+  Weekly variance:
+    Min: 0.000838
+    Max: 0.005788
+    Ratio (max/min): 6.90x
+      Stable variance across time
+
+  Residual patterns by state:
+  State                  N       Mean         SD  Mean|Resid|
+  ------------------------------------------------------------
+  Arizona              157    -0.0027     0.0540       0.0436
+  Georgia              152     0.0216     0.0500       0.0414
+  Michigan             188    -0.0039     0.0551       0.0425
+  Nevada               116    -0.0263     0.0594       0.0501
+  North Carolina       158     0.0140     0.0433       0.0365
+  Pennsylvania         227    -0.0011     0.0447       0.0354
+  Wisconsin            184    -0.0055     0.0487       0.0386
+
+======================================================================
+ALL STATES
+======================================================================
+
+All States (Non-Mode Regression):
+----------------------------------------------------------------------
+  Durbin-Watson statistic: 1.703
+  N observations: 1629
+  Interpretation:
+      Mild positive autocorrelation (1.5 <= DW < 1.8)
+      Two-way clustering should be adequate
+
+  Weekly variance:
+    Min: 0.000916
+    Max: 0.010792
+    Ratio (max/min): 11.78x
+      Large variance changes (ratio > 10)
+
+======================================================================
+NATIONAL
+======================================================================
+
+National Polls (Non-Mode Regression):
+----------------------------------------------------------------------
+  Durbin-Watson statistic: 1.173
+  N observations: 671
+  Interpretation:
+     Strong positive autocorrelation (DW < 1.5)
+      Consider time clustering
+
+  Weekly variance:
+    Min: 0.000075
+    Max: 0.002724
+    Ratio (max/min): 36.29x
+      Large variance changes (ratio > 10)
+
+==============================================================================================================
+SUMMARY: DURBIN-WATSON STATISTICS
+==============================================================================================================
+
+Sample                  DW Statistic          N                           Interpretation
+-------------------------------------------------------------------------------------
+Swing States                   1.599       1182                                 Adequate
+All States                     1.703       1629                                 Adequate
+National                       1.173        671                   Time clustering needed
+
+==============================================================================================================
+
