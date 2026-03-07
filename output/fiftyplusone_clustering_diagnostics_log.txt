@@ -3,8 +3,8 @@ CLUSTERING DIAGNOSTICS FOR POLL ACCURACY REGRESSIONS
 ==============================================================================================================
 
 Data loaded successfully
-  Total questions: 2300
-  State questions: 1629
+  Total questions: 2299
+  State questions: 1628
   Swing state questions: 1182
   National questions: 671
 
@@ -44,8 +44,8 @@ Swing States (poll_id):
     87812                                        4
 
 All States (poll_id):
-  Total observations: 1629
-  Total clusters (poll_id): 1058
+  Total observations: 1628
+  Total clusters (poll_id): 1057
   Mean observations per cluster: 1.54
   Median observations per cluster: 1.0
   Min observations per cluster: 1
@@ -55,7 +55,7 @@ All States (poll_id):
   Distribution of cluster sizes:
     Cluster size              N clusters   % of clusters
     --------------------------------------------------
-    1                                695           65.7%
+    1                                694           65.7%
     2                                254           24.0%
     3                                 10            0.9%
     4                                 99            9.4%
@@ -168,7 +168,7 @@ Swing States (pollster):
     Quinnipiac                                  32
 
 All States (pollster):
-  Total observations: 1629
+  Total observations: 1628
   Total clusters (pollster): 156
   Mean observations per cluster: 10.44
   Median observations per cluster: 3.0
@@ -191,8 +191,8 @@ All States (pollster):
     11                                 1            0.6%
     13                                 2            1.3%
     14                                 4            2.6%
-    15                                 1            0.6%
-    16                                 4            2.6%
+    15                                 2            1.3%
+    16                                 3            1.9%
     17                                 1            0.6%
     18                                 2            1.3%
     20                                 3            1.9%
@@ -296,7 +296,7 @@ All States (poll_id):
   Interpretation:
     Large - clustering is necessary
   Variance decomposition:
-    Between-cluster variance: 0.007139
+    Between-cluster variance: 0.007145
     Within-cluster variance: 0.000633
     Proportion of variance between clusters: 86.98%
 
@@ -323,13 +323,13 @@ Swing States (pollster):
     Proportion of variance between clusters: 24.24%
 
 All States (pollster):
-  ICC (Intra-cluster correlation): 0.3485
+  ICC (Intra-cluster correlation): 0.3488
   Interpretation:
     Large - clustering is necessary
   Variance decomposition:
-    Between-cluster variance: 0.020880
+    Between-cluster variance: 0.020895
     Within-cluster variance: 0.003171
-    Proportion of variance between clusters: 34.85%
+    Proportion of variance between clusters: 34.88%
 
 National (pollster):
   ICC (Intra-cluster correlation): 0.4796
@@ -349,12 +349,14 @@ CLUSTERING BY POLL_ID:
 Swing States (poll_id):
 Variable                        OLS SE    Clustered SE      Ratio   % Increase
 --------------------------------------------------------------------------
-duration_days                 0.000287        0.000384      1.340        34.0%
-days_before_election          0.000050        0.000084      1.669        66.9%
-partisan_flag                 0.005521        0.004741      0.859       -14.1%
-pct_dk                        0.000650        0.000906      1.394        39.4%
-abs_margin                    0.232113        0.366027      1.577        57.7%
-turnout_pct                   0.000789        0.001283      1.626        62.6%
+duration_days                 0.000305        0.000362      1.184        18.4%
+days_before_election          0.000050        0.000081      1.629        62.9%
+partisan_flag                 0.005504        0.004667      0.848       -15.2%
+pop_a                         0.009454        0.010608      1.122        12.2%
+pop_rv                        0.003517        0.004035      1.148        14.8%
+pct_dk                        0.000651        0.000935      1.437        43.7%
+abs_margin                    0.228509        0.361933      1.584        58.4%
+turnout_pct                   0.000777        0.001257      1.619        61.9%
 
   Interpretation:
     Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
@@ -364,10 +366,12 @@ turnout_pct                   0.000789        0.001283      1.626        62.6%
 National (poll_id):
 Variable                        OLS SE    Clustered SE      Ratio   % Increase
 --------------------------------------------------------------------------
-duration_days                 0.000768        0.000826      1.075         7.5%
-days_before_election          0.000059        0.000102      1.734        73.4%
-partisan_flag                 0.011694        0.010123      0.866       -13.4%
-pct_dk                        0.000486        0.000716      1.472        47.2%
+duration_days                 0.000777        0.000874      1.124        12.4%
+days_before_election          0.000060        0.000104      1.744        74.4%
+partisan_flag                 0.011656        0.010317      0.885       -11.5%
+pop_a                         0.008964        0.010007      1.116        11.6%
+pop_rv                        0.004223        0.004402      1.042         4.2%
+pct_dk                        0.000571        0.000865      1.515        51.5%
 
   Interpretation:
     Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
@@ -381,12 +385,14 @@ CLUSTERING BY POLLSTER:
 Swing States (pollster):
 Variable                        OLS SE    Clustered SE      Ratio   % Increase
 --------------------------------------------------------------------------
-duration_days                 0.000287        0.000677      2.362       136.2%
-days_before_election          0.000050        0.000128      2.559       155.9%
-partisan_flag                 0.005521        0.007082      1.283        28.3%
-pct_dk                        0.000650        0.001285      1.978        97.8%
-abs_margin                    0.232113        0.280844      1.210        21.0%
-turnout_pct                   0.000789        0.001087      1.378        37.8%
+duration_days                 0.000305        0.000651      2.130       113.0%
+days_before_election          0.000050        0.000119      2.391       139.1%
+partisan_flag                 0.005504        0.006442      1.170        17.0%
+pop_a                         0.009454        0.009543      1.009         0.9%
+pop_rv                        0.003517        0.006608      1.879        87.9%
+pct_dk                        0.000651        0.001169      1.796        79.6%
+abs_margin                    0.228509        0.277476      1.214        21.4%
+turnout_pct                   0.000777        0.001060      1.364        36.4%
 
   Interpretation:
     Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
@@ -396,10 +402,12 @@ turnout_pct                   0.000789        0.001087      1.378        37.8%
 National (pollster):
 Variable                        OLS SE    Clustered SE      Ratio   % Increase
 --------------------------------------------------------------------------
-duration_days                 0.000768        0.001356      1.764        76.4%
-days_before_election          0.000059        0.000108      1.820        82.0%
-partisan_flag                 0.011694        0.015074      1.289        28.9%
-pct_dk                        0.000486        0.001026      2.111       111.1%
+duration_days                 0.000777        0.001203      1.548        54.8%
+days_before_election          0.000060        0.000111      1.855        85.5%
+partisan_flag                 0.011656        0.015835      1.359        35.9%
+pop_a                         0.008964        0.017684      1.973        97.3%
+pop_rv                        0.004223        0.009168      2.171       117.1%
+pct_dk                        0.000571        0.001218      2.134       113.4%
 
   Interpretation:
     Ratio > 1: Clustering increases SEs (accounting for within-cluster correlation)
@@ -415,20 +423,24 @@ DESIGN EFFECTS - POLL_ID CLUSTERING:
 Swing States (poll_id):
 Variable                        DEFF                 Interpretation
 -----------------------------------------------------------------
-duration_days                  1.796       Strong clustering effect
-days_before_election           2.786       Strong clustering effect
-partisan_flag                  0.738      Minimal clustering effect
-pct_dk                         1.943       Strong clustering effect
-abs_margin                     2.487       Strong clustering effect
-turnout_pct                    2.644       Strong clustering effect
+duration_days                  1.403     Moderate clustering effect
+days_before_election           2.653       Strong clustering effect
+partisan_flag                  0.719      Minimal clustering effect
+pop_a                          1.259     Moderate clustering effect
+pop_rv                         1.317     Moderate clustering effect
+pct_dk                         2.066       Strong clustering effect
+abs_margin                     2.509       Strong clustering effect
+turnout_pct                    2.620       Strong clustering effect
 
 National (poll_id):
 Variable                        DEFF                 Interpretation
 -----------------------------------------------------------------
-duration_days                  1.156     Moderate clustering effect
-days_before_election           3.007       Strong clustering effect
-partisan_flag                  0.749      Minimal clustering effect
-pct_dk                         2.168       Strong clustering effect
+duration_days                  1.264     Moderate clustering effect
+days_before_election           3.041       Strong clustering effect
+partisan_flag                  0.783      Minimal clustering effect
+pop_a                          1.246     Moderate clustering effect
+pop_rv                         1.086      Minimal clustering effect
+pct_dk                         2.294       Strong clustering effect
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -437,20 +449,24 @@ DESIGN EFFECTS - POLLSTER CLUSTERING:
 Swing States (pollster):
 Variable                        DEFF                 Interpretation
 -----------------------------------------------------------------
-duration_days                  5.581       Strong clustering effect
-days_before_election           6.550       Strong clustering effect
-partisan_flag                  1.646       Strong clustering effect
-pct_dk                         3.912       Strong clustering effect
-abs_margin                     1.464     Moderate clustering effect
-turnout_pct                    1.899       Strong clustering effect
+duration_days                  4.539       Strong clustering effect
+days_before_election           5.715       Strong clustering effect
+partisan_flag                  1.370     Moderate clustering effect
+pop_a                          1.019      Minimal clustering effect
+pop_rv                         3.530       Strong clustering effect
+pct_dk                         3.226       Strong clustering effect
+abs_margin                     1.474     Moderate clustering effect
+turnout_pct                    1.861       Strong clustering effect
 
 National (pollster):
 Variable                        DEFF                 Interpretation
 -----------------------------------------------------------------
-duration_days                  3.113       Strong clustering effect
-days_before_election           3.313       Strong clustering effect
-partisan_flag                  1.662       Strong clustering effect
-pct_dk                         4.456       Strong clustering effect
+duration_days                  2.395       Strong clustering effect
+days_before_election           3.442       Strong clustering effect
+partisan_flag                  1.846       Strong clustering effect
+pop_a                          3.892       Strong clustering effect
+pop_rv                         4.712       Strong clustering effect
+pct_dk                         4.552       Strong clustering effect
 
 ==============================================================================================================
 PART 6: CROSS-TABULATION - POLLS NESTED WITHIN POLLSTERS
@@ -485,8 +501,8 @@ Swing States:
 
 All States:
   Total pollsters: 156
-  Total polls: 1058
-  Total questions: 1629
+  Total polls: 1057
+  Total questions: 1628
 
   Polls per pollster:
     Mean: 6.78
@@ -544,7 +560,7 @@ SUMMARY AND RECOMMENDATIONS
 1. CLUSTER SIZE SUMMARY:
    Poll_id clusters:
      Swing: 709 polls, avg 1.7 questions/poll
-     All States: 1058 polls, avg 1.5 questions/poll
+     All States: 1057 polls, avg 1.5 questions/poll
      National: 380 polls, avg 1.8 questions/poll
 
    Pollster clusters:
@@ -560,7 +576,7 @@ SUMMARY AND RECOMMENDATIONS
 
    Pollster clustering:
      Swing: 0.2424 - Critical
-     All States: 0.3485 - Critical
+     All States: 0.3488 - Critical
      National: 0.4796 - Critical
 
 3. RECOMMENDATION:

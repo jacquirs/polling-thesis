@@ -18,14 +18,14 @@ print("="*110)
 
 # load the regression-ready dataset
 # this should already have ALL variables including turnout_pct
-reg_df = pd.read_csv('data/harris_trump_datelimted_check_for_clusering.csv')
+reg_df = pd.read_csv('data/harris_trump_regression_original_with_partisan_and_lv.csv')
 
 # convert date columns to datetime
 reg_df['end_date'] = pd.to_datetime(reg_df['end_date'])
 reg_df['start_date'] = pd.to_datetime(reg_df['start_date'])
 
 # define variable lists
-time_vars = ['duration_days', 'days_before_election','partisan_flag']
+time_vars = ['duration_days', 'days_before_election','partisan_flag','pop_a','pop_rv']
 state_vars = ['pct_dk', 'abs_margin', 'turnout_pct']
 national_vars = ['pct_dk']
 state_x_vars = time_vars + state_vars

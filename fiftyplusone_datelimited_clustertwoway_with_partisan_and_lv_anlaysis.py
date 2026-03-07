@@ -1477,19 +1477,19 @@ print("DESCRIPTIVE STATISTICS - REGRESSION VARIABLES")
 print("="*110)
 
 # All questions
-desc_all = reg_df_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct','partisan_flag']].describe()
+desc_all = reg_df_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct','partisan_flag','pop_a','pop_rv']].describe()
 
 print("\nAll Questions (N={})".format(len(reg_df_original)))
 print(desc_all.to_string())
 
 # National only
-desc_nat = reg_national_original[['A', 'duration_days', 'days_before_election', 'pct_dk','partisan_flag']].describe()
+desc_nat = reg_national_original[['A', 'duration_days', 'days_before_election', 'pct_dk','partisan_flag','pop_a','pop_rv']].describe()
 
 print("\n\nNational Questions (N={})".format(len(reg_national_original)))
 print(desc_nat.to_string())
 
 # Swing states only
-desc_swing = reg_state_swing_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct','partisan_flag']].describe()
+desc_swing = reg_state_swing_original[['A', 'duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct','partisan_flag','pop_a','pop_rv']].describe()
 
 print("\n\nSwing State Questions (N={})".format(len(reg_state_swing_original)))
 print(desc_swing.to_string())
@@ -1916,6 +1916,100 @@ nonpartisan_dist = Counter(nonpartisan_questions_per_poll)
 for n_q in sorted(nonpartisan_dist.keys()):
     count = nonpartisan_dist[n_q]
     pct = 100 * count / len(nonpartisan_polls)
+    print(f"    {n_q} question(s): {count} polls ({pct:.1f}%)")
+
+print("\n" + "="*110)
+print("PARTISAN FLAG COMPOSITION EFFECT - NATIONAL LEVEL")
+print("="*110)
+
+# Check questions per poll by partisan status - NATIONAL
+print("\nNational - Questions per poll by partisan status:")
+
+partisan_polls_nat = reg_national_original[reg_national_original['partisan_flag'] == 1]['poll_id'].unique()
+nonpartisan_polls_nat = reg_national_original[reg_national_original['partisan_flag'] == 0]['poll_id'].unique()
+
+# Count questions per partisan poll
+partisan_questions_per_poll_nat = []
+for poll_id in partisan_polls_nat:
+    n_questions = len(reg_national_original[reg_national_original['poll_id'] == poll_id])
+    partisan_questions_per_poll_nat.append(n_questions)
+
+# Count questions per non-partisan poll
+nonpartisan_questions_per_poll_nat = []
+for poll_id in nonpartisan_polls_nat:
+    n_questions = len(reg_national_original[reg_national_original['poll_id'] == poll_id])
+    nonpartisan_questions_per_poll_nat.append(n_questions)
+
+print(f"\nPartisan polls (partisan_flag=1):")
+print(f"  Number of polls: {len(partisan_polls_nat)}")
+print(f"  Total questions: {sum(partisan_questions_per_poll_nat)}")
+print(f"  Questions per poll (mean): {np.mean(partisan_questions_per_poll_nat):.2f}")
+print(f"  Questions per poll (median): {np.median(partisan_questions_per_poll_nat):.1f}")
+print(f"  Distribution:")
+from collections import Counter
+partisan_dist_nat = Counter(partisan_questions_per_poll_nat)
+for n_q in sorted(partisan_dist_nat.keys()):
+    count = partisan_dist_nat[n_q]
+    pct = 100 * count / len(partisan_polls_nat)
+    print(f"    {n_q} question(s): {count} polls ({pct:.1f}%)")
+
+print(f"\nNon-partisan polls (partisan_flag=0):")
+print(f"  Number of polls: {len(nonpartisan_polls_nat)}")
+print(f"  Total questions: {sum(nonpartisan_questions_per_poll_nat)}")
+print(f"  Questions per poll (mean): {np.mean(nonpartisan_questions_per_poll_nat):.2f}")
+print(f"  Questions per poll (median): {np.median(nonpartisan_questions_per_poll_nat):.1f}")
+print(f"  Distribution:")
+nonpartisan_dist_nat = Counter(nonpartisan_questions_per_poll_nat)
+for n_q in sorted(nonpartisan_dist_nat.keys()):
+    count = nonpartisan_dist_nat[n_q]
+    pct = 100 * count / len(nonpartisan_polls_nat)
+    print(f"    {n_q} question(s): {count} polls ({pct:.1f}%)")
+
+
+print("\n" + "="*110)
+print("PARTISAN FLAG COMPOSITION EFFECT - ALL STATES LEVEL")
+print("="*110)
+
+# Check questions per poll by partisan status - ALL STATES
+print("\nAll States - Questions per poll by partisan status:")
+
+partisan_polls_all = reg_state_original[reg_state_original['partisan_flag'] == 1]['poll_id'].unique()
+nonpartisan_polls_all = reg_state_original[reg_state_original['partisan_flag'] == 0]['poll_id'].unique()
+
+# Count questions per partisan poll
+partisan_questions_per_poll_all = []
+for poll_id in partisan_polls_all:
+    n_questions = len(reg_state_original[reg_state_original['poll_id'] == poll_id])
+    partisan_questions_per_poll_all.append(n_questions)
+
+# Count questions per non-partisan poll
+nonpartisan_questions_per_poll_all = []
+for poll_id in nonpartisan_polls_all:
+    n_questions = len(reg_state_original[reg_state_original['poll_id'] == poll_id])
+    nonpartisan_questions_per_poll_all.append(n_questions)
+
+print(f"\nPartisan polls (partisan_flag=1):")
+print(f"  Number of polls: {len(partisan_polls_all)}")
+print(f"  Total questions: {sum(partisan_questions_per_poll_all)}")
+print(f"  Questions per poll (mean): {np.mean(partisan_questions_per_poll_all):.2f}")
+print(f"  Questions per poll (median): {np.median(partisan_questions_per_poll_all):.1f}")
+print(f"  Distribution:")
+partisan_dist_all = Counter(partisan_questions_per_poll_all)
+for n_q in sorted(partisan_dist_all.keys()):
+    count = partisan_dist_all[n_q]
+    pct = 100 * count / len(partisan_polls_all)
+    print(f"    {n_q} question(s): {count} polls ({pct:.1f}%)")
+
+print(f"\nNon-partisan polls (partisan_flag=0):")
+print(f"  Number of polls: {len(nonpartisan_polls_all)}")
+print(f"  Total questions: {sum(nonpartisan_questions_per_poll_all)}")
+print(f"  Questions per poll (mean): {np.mean(nonpartisan_questions_per_poll_all):.2f}")
+print(f"  Questions per poll (median): {np.median(nonpartisan_questions_per_poll_all):.1f}")
+print(f"  Distribution:")
+nonpartisan_dist_all = Counter(nonpartisan_questions_per_poll_all)
+for n_q in sorted(nonpartisan_dist_all.keys()):
+    count = nonpartisan_dist_all[n_q]
+    pct = 100 * count / len(nonpartisan_polls_all)
     print(f"    {n_q} question(s): {count} polls ({pct:.1f}%)")
 
 # Calculate weighted proportion
