@@ -1641,444 +1641,338 @@ mode_Text_to_Web                 0.006388             -0.039124 -0.103486       
 ==============================================================================================================
 
 
-==============================================================================================================
-VARIANCE INFLATION FACTORS (VIF) - MULTICOLLINEARITY CHECK
-==============================================================================================================
+Pollster distribution swing state:
+                                                   n_polls  n_questions
+pollster                                                               
+Morning Consult                                         55          125
+Siena/NYT                                               22           88
+Redfield & Wilton Strategies                            86           86
+AtlasIntel                                              42           84
+Focaldata                                               21           77
+YouGov                                                  19           50
+Emerson                                                 42           48
+Beacon/Shaw                                             14           42
+TIPP                                                     9           33
+Quinnipiac                                              16           32
+InsiderAdvantage                                        30           30
+Trafalgar Group                                         29           29
+Benenson Strategy Group/GS Strategy Group               14           28
+Marist College                                          12           24
+Bullfinch                                               10           18
+Patriot Polling                                         17           17
+ActiVote                                                16           16
+Marquette Law School                                     4           16
+Fabrizio/Impact                                          8           16
+Washington Post/George Mason University                  7           14
+Fabrizio/GBAO                                            7           14
+CES / YouGov                                             7           14
+CNN/SSRS                                                14           14
+Global Strategy Group/North Star Opinion Research        7           14
+Mitchell                                                 6           11
+Florida Atlantic University/Mainstreet Research          5           10
+SoCal Strategies                                         9           10
+RMG Research                                            10           10
+Spry Strategies                                          5           10
+Navigator                                                5           10
+The Washington Post                                      4            8
+Noble Predictive Insights                                4            8
+Fabrizio/McLaughlin                                      7            7
+OnMessage Inc.                                           7            7
+University of Massachusetts Lowell/YouGov                6            6
+Z to A Research                                          3            6
+OnMessage Public Strategies                              6            6
+Fabrizio Ward                                            3            6
+Research Co.                                             6            6
+Cygnal                                                   5            6
+Echelon Insights                                         3            6
+Suffolk                                                  6            6
+Franklin and Marshall College                            3            5
+East Carolina University                                 5            5
+SurveyUSA                                                4            5
+Susquehanna                                              5            5
+Public Opinion Strategies                                5            5
+Data for Progress                                        4            4
+MassINC Polling Group                                    2            4
+Quantus Insights                                         4            4
+Remington                                                4            4
+Glengariff Group Inc.                                    4            4
+HighGround                                               3            3
+RG Strategies                                            3            3
+co/efficient                                             3            3
+Quantus Polls and News                                   3            3
+EPIC-MRA                                                 2            3
+PPP                                                      3            3
+Data Orbital                                             2            2
+American Pulse                                           1            2
+U. Arizona/TrueDot                                       2            2
+U. Georgia SPIA                                          2            2
+J.L. Partners                                            2            2
+Fabrizio                                                 1            2
+Wick                                                     1            2
+Victory Insights                                         2            2
+SoCal Research                                           2            2
+Strategies 360                                           2            2
+Monmouth                                                 2            2
+Landmark Communications                                  1            2
+High Point University                                    1            2
+Institute for Global Affairs/YouGov                      2            2
+Muhlenberg                                               2            2
+Hunt Research                                            1            2
+The Citadel                                              1            2
+Arc Insights                                             1            1
+GQR                                                      1            1
+BK Strategies                                            1            1
+National Research                                        1            1
+North Star Opinion Research                              1            1
+Iron Light                                               1            1
+MRG (Marketing Resource Group)                           1            1
+Michigan State University/YouGov                         1            1
+Meredith College                                         1            1
+Peak Insights                                            1            1
+National Public Affairs                                  1            1
+Survation                                                1            1
+RABA Research                                            1            1
+Trafalgar Group/InsiderAdvantage                         1            1
+Tarrance                                                 1            1
+YouGov/Center for Working Class Politics                 1            1
+YouGov Blue                                              1            1
 
-==============================================================================================================
-WITHOUT MODE VARIABLES
-==============================================================================================================
+Pollster distribution all state:
+                                                       n_polls  n_questions
+pollster                                                                   
+Morning Consult                                             76          146
+Siena/NYT                                                   28          112
+Redfield & Wilton Strategies                               108          108
+AtlasIntel                                                  47           94
+Focaldata                                                   24           87
+Emerson                                                     65           74
+ActiVote                                                    66           66
+YouGov                                                      26           61
+Beacon/Shaw                                                 15           44
+TIPP                                                         9           33
+Quinnipiac                                                  16           32
+InsiderAdvantage                                            31           31
+Trafalgar Group                                             31           31
+Marist College                                              15           30
+Benenson Strategy Group/GS Strategy Group                   14           28
+CES / YouGov                                                13           26
+Washington Post/George Mason University                      9           20
+Bullfinch                                                   12           20
+Fabrizio/Impact                                             10           20
+U. New Hampshire                                            13           18
+Florida Atlantic University/Mainstreet Research              8           18
+Patriot Polling                                             17           17
+Cygnal                                                      14           16
+RMG Research                                                16           16
+Marquette Law School                                         4           16
+PPP                                                         12           16
+SurveyUSA                                                   14           15
+CNN/SSRS                                                    14           14
+Global Strategy Group/North Star Opinion Research            7           14
+Fabrizio/GBAO                                                7           14
+Research Co.                                                14           14
+SoCal Strategies                                            11           13
+Noble Predictive Insights                                    6           13
+Mitchell                                                     6           11
+Navigator                                                    5           10
+Spry Strategies                                              5           10
+The Washington Post                                          5           10
+MassINC Polling Group                                        6           10
+Suffolk                                                      8            8
+OnMessage Inc.                                               8            8
+University of Massachusetts Lowell/YouGov                    8            8
+Fabrizio/McLaughlin                                          7            7
+St. Anselm                                                   5            6
+Fabrizio Ward                                                3            6
+OnMessage Public Strategies                                  6            6
+Alaska Survey Research                                       4            6
+Echelon Insights                                             3            6
+East Carolina University                                     6            6
+Siena                                                        3            6
+Z to A Research                                              3            6
+Remington                                                    6            6
+Franklin and Marshall College                                3            5
+University of Maryland/Washington Post                       2            5
+Research America                                             2            5
+Susquehanna                                                  5            5
+Victory Insights                                             5            5
+Quantus Polls and News                                       5            5
+Public Opinion Strategies                                    5            5
+Quantus Insights                                             5            5
+Data for Progress                                            4            4
+Virginia Commonwealth U.                                     2            4
+Glengariff Group Inc.                                        4            4
+Hunt Research                                                2            4
+The Citadel                                                  2            4
+Capitol Weekly                                               4            4
+Change Research                                              4            4
+RG Strategies                                                3            3
+co/efficient                                                 3            3
+Mason-Dixon                                                  3            3
+Embold Research                                              3            3
+UC Berkeley                                                  3            3
+American Pulse                                               2            3
+Chism Strategies                                             3            3
+EPIC-MRA                                                     2            3
+Roanoke College                                              2            3
+U. Texas/YouGov                                              2            3
+HighGround                                                   3            3
+J.L. Partners                                                3            3
+Lake Research                                                3            3
+HarrisX                                                      2            3
+WPAi                                                         2            2
+SoCal Research                                               2            2
+Research & Polling                                           2            2
+Data Orbital                                                 2            2
+Bowling Green State University/YouGov                        2            2
+Cherry Communications                                        2            2
+Dartmouth Poll                                               2            2
+Selzer                                                       2            2
+U. North Florida                                             2            2
+U. Arizona/TrueDot                                           2            2
+CWS Research                                                 2            2
+Muhlenberg                                                   2            2
+Monmouth                                                     2            2
+Institute for Global Affairs/YouGov                          2            2
+Hoffman Research                                             1            2
+Landmark Communications                                      1            2
+Fabrizio                                                     1            2
+Elway                                                        2            2
+U. Georgia SPIA                                              2            2
+Strategies 360                                               2            2
+Rutgers-Eagleton                                             1            2
+Wick                                                         1            2
+Keating Research                                             2            2
+GQR                                                          2            2
+McLaughlin                                                   2            2
+PPIC                                                         2            2
+Tarrance                                                     2            2
+Targoz Market Research                                       1            2
+Fort Hays State University                                   1            2
+High Point University                                        1            2
+Digital Research                                             1            1
+Claflin University                                           1            1
+BK Strategies                                                1            1
+ARW Strategies                                               1            1
+Christopher Newport U.                                       1            1
+Arc Insights                                                 1            1
+Global Strategy Group                                        1            1
+Fabrizio/David Binder Research                               1            1
+MSU - Billings                                               1            1
+MRG (Marketing Resource Group)                               1            1
+Gonzales Research & Media Services                           1            1
+Hendrix College                                              1            1
+Iron Light                                                   1            1
+Impact Research                                              1            1
+RABA Research                                                1            1
+Praecones Analytica                                          1            1
+Peak Insights                                                1            1
+Pan Atlantic Research                                        1            1
+North Star Opinion Research                                  1            1
+Michigan State University/YouGov                             1            1
+National Public Affairs                                      1            1
+National Research                                            1            1
+Miami University (Ohio)                                      1            1
+Meredith College                                             1            1
+Stetson University Center for Public Opinion Research        1            1
+Texas Hispanic Policy Foundation                             1            1
+St. Pete Polls                                               1            1
+SoonerPoll.com                                               1            1
+Slingshot Strategies                                         1            1
+Survation                                                    1            1
+Torchlight Strategies                                        1            1
+University of Houston/Texas Southern University              1            1
+University of Akron                                          1            1
+USC Dornsife/CSU Long Beach/Cal Poly Pomona                  1            1
+UMass Amherst/YouGov                                         1            1
+UMBC                                                         1            1
+U. Houston                                                   1            1
+U. Rhode Island                                              1            1
+Trafalgar Group/InsiderAdvantage                             1            1
+University of Delaware                                       1            1
+University of Maryland/YouGov                                1            1
+University of Texas at Tyler                                 1            1
+University of Wyoming                                        1            1
+Winthrop U.                                                  1            1
+YouGov/Center for Working Class Politics                     1            1
+YouGov Blue                                                  1            1
 
-swing state-level polls (no mode) (N=1182):
-            Variable      VIF
-       duration_days 1.037756
-days_before_election 1.055198
-              pct_dk 1.071869
-          abs_margin 4.904109
-         turnout_pct 4.917185
-
-state-level polls (no mode) (N=1629):
-            Variable      VIF
-       duration_days 1.094506
-days_before_election 1.053756
-              pct_dk 1.077772
-          abs_margin 1.480086
-         turnout_pct 1.453303
-
-national polls (no mode) (N=671):
-            Variable      VIF
-       duration_days 1.002724
-days_before_election 1.056150
-              pct_dk 1.053489
-
-==============================================================================================================
-WITH MODE VARIABLES
-reference mode: Live Phone
-==============================================================================================================
-
-swing state-level polls (with mode) (N=1734):
-                  Variable      VIF
-             duration_days 1.405474
-      days_before_election 1.104880
-                    pct_dk 1.125474
-                abs_margin 4.872407
-               turnout_pct 4.899194
-            mode_App Panel 1.220569
-                mode_Email 1.115939
-                  mode_IVR 1.207180
-        mode_Mail_to_Phone 1.024192
-          mode_Mail_to_Web 1.079696
-            mode_Online Ad 1.230710
-mode_Online Matched Sample 1.169045
-  mode_Online Opt_In Panel 1.485306
-    mode_Probability Panel 1.032909
-                 mode_Text 1.162294
-          mode_Text_to_Web 1.378077
-
-state-level polls (with mode) (N=2359):
-                  Variable      VIF
-             duration_days 1.715022
-      days_before_election 1.107721
-                    pct_dk 1.132584
-                abs_margin 1.505654
-               turnout_pct 1.445314
-            mode_App Panel 1.654715
-                mode_Email 1.102514
-                  mode_IVR 1.210196
-        mode_Mail_to_Phone 1.019661
-          mode_Mail_to_Web 1.067612
-            mode_Online Ad 1.202805
-mode_Online Matched Sample 1.204773
-  mode_Online Opt_In Panel 1.505030
-    mode_Probability Panel 1.057881
-                 mode_Text 1.139947
-          mode_Text_to_Web 1.417555
-
-national polls (with mode) (N=786):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 12, expected: 15
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
-==============================================================================================================
-TIME WINDOW ANALYSIS (NO MODE)
-==============================================================================================================
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 107 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (107d window) (N=1182):
-            Variable      VIF
-       duration_days 1.037756
-days_before_election 1.055198
-              pct_dk 1.071869
-          abs_margin 4.904109
-         turnout_pct 4.917185
-
-all states (107d window) (N=1629):
-            Variable      VIF
-       duration_days 1.094506
-days_before_election 1.053756
-              pct_dk 1.077772
-          abs_margin 1.480086
-         turnout_pct 1.453303
-
-national (107d window) (N=671):
-            Variable      VIF
-       duration_days 1.002724
-days_before_election 1.056150
-              pct_dk 1.053489
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 90 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (90d window) (N=1092):
-            Variable      VIF
-       duration_days 1.032627
-days_before_election 1.034293
-              pct_dk 1.058875
-          abs_margin 4.898374
-         turnout_pct 4.909666
-
-all states (90d window) (N=1513):
-            Variable      VIF
-       duration_days 1.088479
-days_before_election 1.031928
-              pct_dk 1.075059
-          abs_margin 1.491053
-         turnout_pct 1.461226
-
-national (90d window) (N=561):
-            Variable      VIF
-       duration_days 1.005271
-days_before_election 1.059547
-              pct_dk 1.064353
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 60 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (60d window) (N=852):
-            Variable      VIF
-       duration_days 1.023671
-days_before_election 1.013790
-              pct_dk 1.042785
-          abs_margin 4.735297
-         turnout_pct 4.759397
-
-all states (60d window) (N=1205):
-            Variable      VIF
-       duration_days 1.077573
-days_before_election 1.028676
-              pct_dk 1.078706
-          abs_margin 1.478068
-         turnout_pct 1.445125
-
-national (60d window) (N=380):
-            Variable      VIF
-       duration_days 1.008539
-days_before_election 1.029180
-              pct_dk 1.031548
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 30 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (30d window) (N=526):
-            Variable      VIF
-       duration_days 1.011359
-days_before_election 1.022214
-              pct_dk 1.035051
-          abs_margin 4.969148
-         turnout_pct 4.981180
-
-all states (30d window) (N=751):
-            Variable      VIF
-       duration_days 1.087101
-days_before_election 1.032653
-              pct_dk 1.069534
-          abs_margin 1.541590
-         turnout_pct 1.492178
-
-national (30d window) (N=234):
-            Variable      VIF
-       duration_days 1.028089
-days_before_election 1.032084
-              pct_dk 1.009912
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 7 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (7d window) (N=228):
-            Variable      VIF
-       duration_days 1.017547
-days_before_election 1.004863
-              pct_dk 1.019654
-          abs_margin 5.174807
-         turnout_pct 5.172823
-  WARNING: 2 variable(s) with VIF > 5 (caution warranted)
-
-all states (7d window) (N=296):
-            Variable      VIF
-       duration_days 1.090208
-days_before_election 1.017534
-              pct_dk 1.057081
-          abs_margin 1.316477
-         turnout_pct 1.306856
-
-national (7d window) (N=73):
-            Variable      VIF
-       duration_days 1.052677
-days_before_election 1.014203
-              pct_dk 1.050763
-
-==============================================================================================================
-TIME WINDOW ANALYSIS (WITH MODE)
-==============================================================================================================
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 107 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (107d window, with mode) (N=1734):
-                  Variable      VIF
-             duration_days 1.405474
-      days_before_election 1.104880
-                    pct_dk 1.125474
-                abs_margin 4.872407
-               turnout_pct 4.899194
-            mode_App Panel 1.220569
-                mode_Email 1.115939
-                  mode_IVR 1.207180
-        mode_Mail_to_Phone 1.024192
-          mode_Mail_to_Web 1.079696
-            mode_Online Ad 1.230710
-mode_Online Matched Sample 1.169045
-  mode_Online Opt_In Panel 1.485306
-    mode_Probability Panel 1.032909
-                 mode_Text 1.162294
-          mode_Text_to_Web 1.378077
-
-all states (107d window, with mode) (N=2359):
-                  Variable      VIF
-             duration_days 1.715022
-      days_before_election 1.107721
-                    pct_dk 1.132584
-                abs_margin 1.505654
-               turnout_pct 1.445314
-            mode_App Panel 1.654715
-                mode_Email 1.102514
-                  mode_IVR 1.210196
-        mode_Mail_to_Phone 1.019661
-          mode_Mail_to_Web 1.067612
-            mode_Online Ad 1.202805
-mode_Online Matched Sample 1.204773
-  mode_Online Opt_In Panel 1.505030
-    mode_Probability Panel 1.057881
-                 mode_Text 1.139947
-          mode_Text_to_Web 1.417555
-
-national (107d window, with mode) (N=786):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 12, expected: 15
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 90 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (90d window, with mode) (N=1589):
-                  Variable      VIF
-             duration_days 1.405554
-      days_before_election 1.085376
-                    pct_dk 1.139815
-                abs_margin 4.853704
-               turnout_pct 4.875294
-            mode_App Panel 1.226455
-                mode_Email 1.119164
-                  mode_IVR 1.197608
-        mode_Mail_to_Phone 1.025331
-          mode_Mail_to_Web 1.082502
-            mode_Online Ad 1.252744
-mode_Online Matched Sample 1.174077
-  mode_Online Opt_In Panel 1.466859
-    mode_Probability Panel 1.035423
-                 mode_Text 1.167757
-          mode_Text_to_Web 1.363817
-
-all states (90d window, with mode) (N=2176):
-                  Variable      VIF
-             duration_days 1.707687
-      days_before_election 1.084158
-                    pct_dk 1.148157
-                abs_margin 1.518353
-               turnout_pct 1.454008
-            mode_App Panel 1.670618
-                mode_Email 1.104110
-                  mode_IVR 1.206278
-        mode_Mail_to_Phone 1.020479
-          mode_Mail_to_Web 1.069881
-            mode_Online Ad 1.218257
-mode_Online Matched Sample 1.210502
-  mode_Online Opt_In Panel 1.489725
-    mode_Probability Panel 1.062715
-                 mode_Text 1.144377
-          mode_Text_to_Web 1.404168
-
-national (90d window, with mode) (N=645):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 12, expected: 15
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 60 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (60d window, with mode) (N=1254):
-                  Variable      VIF
-             duration_days 1.360297
-      days_before_election 1.093930
-                    pct_dk 1.186806
-                abs_margin 4.702157
-               turnout_pct 4.761487
-            mode_App Panel 1.217624
-                mode_Email 1.132793
-                  mode_IVR 1.174745
-        mode_Mail_to_Phone 1.028125
-          mode_Mail_to_Web 1.087850
-            mode_Online Ad 1.315295
-mode_Online Matched Sample 1.204479
-  mode_Online Opt_In Panel 1.477307
-    mode_Probability Panel 1.039984
-                 mode_Text 1.174702
-          mode_Text_to_Web 1.385923
-
-all states (60d window, with mode) (N=1745):
-                  Variable      VIF
-             duration_days 1.666815
-      days_before_election 1.098122
-                    pct_dk 1.183498
-                abs_margin 1.501227
-               turnout_pct 1.432077
-            mode_App Panel 1.685885
-                mode_Email 1.114663
-                  mode_IVR 1.179259
-        mode_Mail_to_Phone 1.022660
-          mode_Mail_to_Web 1.076821
-            mode_Online Ad 1.257452
-mode_Online Matched Sample 1.254817
-  mode_Online Opt_In Panel 1.495419
-    mode_Probability Panel 1.052642
-                 mode_Text 1.148111
-          mode_Text_to_Web 1.406883
-
-national (60d window, with mode) (N=439):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 12, expected: 15
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 30 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (30d window, with mode) (N=789):
-                  Variable      VIF
-             duration_days 1.326911
-      days_before_election 1.121858
-                    pct_dk 1.234469
-                abs_margin 4.855675
-               turnout_pct 4.896296
-            mode_App Panel 1.225315
-                mode_Email 1.187034
-                  mode_IVR 1.231213
-        mode_Mail_to_Phone 1.043205
-          mode_Mail_to_Web 1.137562
-            mode_Online Ad 1.461266
-mode_Online Matched Sample 1.323851
-  mode_Online Opt_In Panel 1.652689
-    mode_Probability Panel 1.041394
-                 mode_Text 1.225216
-          mode_Text_to_Web 1.480070
-
-all states (30d window, with mode) (N=1106):
-                  Variable      VIF
-             duration_days 1.602647
-      days_before_election 1.111916
-                    pct_dk 1.271324
-                abs_margin 1.595727
-               turnout_pct 1.501061
-            mode_App Panel 1.761798
-                mode_Email 1.167927
-                  mode_IVR 1.241001
-        mode_Mail_to_Phone 1.033966
-          mode_Mail_to_Web 1.116891
-            mode_Online Ad 1.408309
-mode_Online Matched Sample 1.383205
-  mode_Online Opt_In Panel 1.669364
-    mode_Probability Panel 1.060844
-                 mode_Text 1.192924
-          mode_Text_to_Web 1.518299
-
-national (30d window, with mode) (N=276):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 12, expected: 15
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
---------------------------------------------------------------------------------------------------------------
-TIME WINDOW: 7 days before election
---------------------------------------------------------------------------------------------------------------
-
-swing states (7d window, with mode) (N=303):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 14, expected: 17
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
-all states (7d window, with mode) (N=391):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 16, expected: 17
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
-national (7d window, with mode) (N=97):
-  NOTE: perfect collinearity detected (likely mode variables with no variation)
-  matrix rank: 12, expected: 15
-  VIF cannot be computed - this is expected in small time windows with limited mode diversity
-
-==============================================================================================================
-VIF DIAGNOSTICS SUMMARY
-==============================================================================================================
-
-WARNING: MULTICOLLINEARITY CONCERNS DETECTED:
---------------------------------------------------------------------------------------------------------------
-  * swing (no mode, 7d): VIF concerns
-
-recommendation: review variables with VIF > 5 and consider removing or combining correlated predictors
-
-note: VIF > 10 suggests problematic multicollinearity
-      VIF > 5 warrants caution
-==============================================================================================================
-
+Pollster distribution national:
+                                                 n_polls  n_questions
+pollster                                                             
+Morning Consult                                      103          145
+YouGov                                                28           50
+HarrisX                                               10           41
+TIPP                                                  27           38
+Ipsos                                                 12           37
+Big Village                                            9           30
+ABC News/Ipsos                                         5           23
+Siena/NYT                                              5           18
+ActiVote                                              14           16
+RMG Research                                          13           16
+Big Data Poll                                          3           15
+AtlasIntel                                             7           14
+Outward Intelligence                                   6           12
+Marist College                                         6           11
+Redfield & Wilton Strategies                          10           10
+Florida Atlantic University/Mainstreet Research        4           10
+HarrisX/Harris Poll                                    3            9
+Hart/POS                                               5            8
+Cygnal                                                 4            8
+Marquette Law School                                   2            8
+Echelon Insights                                       3            7
+Emerson                                                6            7
+Leger                                                  5            7
+Fabrizio/GBAO                                          3            6
+Beacon/Shaw                                            3            6
+McLaughlin                                             2            6
+J.L. Partners                                          4            6
+ABC/Washington Post                                    1            5
+Angus Reid                                             4            5
+Data for Progress                                      4            5
+Noble Predictive Insights                              2            5
+American Pulse                                         2            4
+SoCal Strategies                                       3            4
+CNN/SSRS                                               2            4
+Clarity                                                4            4
+Pew                                                    3            4
+Change Research                                        4            4
+Quinnipiac                                             2            4
+Suffolk                                                2            3
+Kaplan Strategies                                      2            3
+PRRI                                                   1            3
+SurveyMonkey                                           2            3
+OnMessage Inc.                                         3            3
+UMass Amherst/YouGov                                   2            2
+Research Co.                                           2            2
+Patriot Polling                                        2            2
+Targoz Market Research                                 1            2
+Quantus Insights                                       2            2
+Tufts                                                  1            2
+Monmouth                                               2            2
+Fairleigh Dickinson                                    2            2
+CES / YouGov                                           1            2
+Bullfinch                                              1            2
+John Zogby Strategies                                  1            2
+Navigator                                              1            2
+SoCal Research                                         1            2
+Quantus Polls and News                                 2            2
+McCourtney Institute/YouGov                            1            1
+Kaiser Family Foundation                               1            1
+Gateway Political Strategies                           1            1
+Institute for Global Affairs/YouGov                    1            1
+Civiqs                                                 1            1
+Embold Research                                        1            1
+Deltapoll                                              1            1
+Echelon Insights/GBAO                                  1            1
+RABA Research                                          1            1
+Paradigm                                               1            1
+Survey Center on American Life                         1            1
+SurveyUSA                                              1            1
+Susquehanna                                            1            1
+Yale Youth Poll                                        1            1
+YouGov/SNF Agora                                       1            1
+co/efficient                                           1            1
 
 ==============================================================================================================
 RESIDUAL AUTOCORRELATION DIAGNOSTICS

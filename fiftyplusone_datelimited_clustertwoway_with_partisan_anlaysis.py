@@ -1512,6 +1512,31 @@ print("="*110 + "\n")
 
 
 ########################################################################################
+#################### POLLSTER DIST ######################
+########################################################################################
+print("\nPollster distribution swing state:")
+pollster_counts = reg_state_swing_original.groupby('pollster').agg({
+    'poll_id': 'nunique',
+    'question_id': 'count'
+}).rename(columns={'poll_id': 'n_polls', 'question_id': 'n_questions'})
+print(pollster_counts.sort_values('n_questions', ascending=False).to_string())
+
+print("\nPollster distribution all state:")
+pollster_counts = reg_state_original.groupby('pollster').agg({
+    'poll_id': 'nunique',
+    'question_id': 'count'
+}).rename(columns={'poll_id': 'n_polls', 'question_id': 'n_questions'})
+print(pollster_counts.sort_values('n_questions', ascending=False).to_string())
+
+print("\nPollster distribution national:")
+pollster_counts = reg_national_original.groupby('pollster').agg({
+    'poll_id': 'nunique',
+    'question_id': 'count'
+}).rename(columns={'poll_id': 'n_polls', 'question_id': 'n_questions'})
+print(pollster_counts.sort_values('n_questions', ascending=False).to_string())
+
+
+########################################################################################
 #################### RESIDUAL AUTOCORRELATION TEST #####################################
 ########################################################################################
 

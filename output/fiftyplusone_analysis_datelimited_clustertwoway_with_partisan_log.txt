@@ -1573,6 +1573,339 @@ mode_Text_to_Web                 0.006388             -0.039124      -0.044425 -
 ==============================================================================================================
 
 
+Pollster distribution swing state:
+                                                   n_polls  n_questions
+pollster                                                               
+Morning Consult                                         55          125
+Siena/NYT                                               22           88
+Redfield & Wilton Strategies                            86           86
+AtlasIntel                                              42           84
+Focaldata                                               21           77
+YouGov                                                  19           50
+Emerson                                                 42           48
+Beacon/Shaw                                             14           42
+TIPP                                                     9           33
+Quinnipiac                                              16           32
+InsiderAdvantage                                        30           30
+Trafalgar Group                                         29           29
+Benenson Strategy Group/GS Strategy Group               14           28
+Marist College                                          12           24
+Bullfinch                                               10           18
+Patriot Polling                                         17           17
+ActiVote                                                16           16
+Marquette Law School                                     4           16
+Fabrizio/Impact                                          8           16
+Washington Post/George Mason University                  7           14
+Fabrizio/GBAO                                            7           14
+CES / YouGov                                             7           14
+CNN/SSRS                                                14           14
+Global Strategy Group/North Star Opinion Research        7           14
+Mitchell                                                 6           11
+Florida Atlantic University/Mainstreet Research          5           10
+SoCal Strategies                                         9           10
+RMG Research                                            10           10
+Spry Strategies                                          5           10
+Navigator                                                5           10
+The Washington Post                                      4            8
+Noble Predictive Insights                                4            8
+Fabrizio/McLaughlin                                      7            7
+OnMessage Inc.                                           7            7
+University of Massachusetts Lowell/YouGov                6            6
+Z to A Research                                          3            6
+OnMessage Public Strategies                              6            6
+Fabrizio Ward                                            3            6
+Research Co.                                             6            6
+Cygnal                                                   5            6
+Echelon Insights                                         3            6
+Suffolk                                                  6            6
+Franklin and Marshall College                            3            5
+East Carolina University                                 5            5
+SurveyUSA                                                4            5
+Susquehanna                                              5            5
+Public Opinion Strategies                                5            5
+Data for Progress                                        4            4
+MassINC Polling Group                                    2            4
+Quantus Insights                                         4            4
+Remington                                                4            4
+Glengariff Group Inc.                                    4            4
+HighGround                                               3            3
+RG Strategies                                            3            3
+co/efficient                                             3            3
+Quantus Polls and News                                   3            3
+EPIC-MRA                                                 2            3
+PPP                                                      3            3
+Data Orbital                                             2            2
+American Pulse                                           1            2
+U. Arizona/TrueDot                                       2            2
+U. Georgia SPIA                                          2            2
+J.L. Partners                                            2            2
+Fabrizio                                                 1            2
+Wick                                                     1            2
+Victory Insights                                         2            2
+SoCal Research                                           2            2
+Strategies 360                                           2            2
+Monmouth                                                 2            2
+Landmark Communications                                  1            2
+High Point University                                    1            2
+Institute for Global Affairs/YouGov                      2            2
+Muhlenberg                                               2            2
+Hunt Research                                            1            2
+The Citadel                                              1            2
+Arc Insights                                             1            1
+GQR                                                      1            1
+BK Strategies                                            1            1
+National Research                                        1            1
+North Star Opinion Research                              1            1
+Iron Light                                               1            1
+MRG (Marketing Resource Group)                           1            1
+Michigan State University/YouGov                         1            1
+Meredith College                                         1            1
+Peak Insights                                            1            1
+National Public Affairs                                  1            1
+Survation                                                1            1
+RABA Research                                            1            1
+Trafalgar Group/InsiderAdvantage                         1            1
+Tarrance                                                 1            1
+YouGov/Center for Working Class Politics                 1            1
+YouGov Blue                                              1            1
+
+Pollster distribution all state:
+                                                       n_polls  n_questions
+pollster                                                                   
+Morning Consult                                             76          146
+Siena/NYT                                                   28          112
+Redfield & Wilton Strategies                               108          108
+AtlasIntel                                                  47           94
+Focaldata                                                   24           87
+Emerson                                                     65           74
+ActiVote                                                    66           66
+YouGov                                                      26           61
+Beacon/Shaw                                                 15           44
+TIPP                                                         9           33
+Quinnipiac                                                  16           32
+InsiderAdvantage                                            31           31
+Trafalgar Group                                             31           31
+Marist College                                              15           30
+Benenson Strategy Group/GS Strategy Group                   14           28
+CES / YouGov                                                13           26
+Washington Post/George Mason University                      9           20
+Bullfinch                                                   12           20
+Fabrizio/Impact                                             10           20
+U. New Hampshire                                            13           18
+Florida Atlantic University/Mainstreet Research              8           18
+Patriot Polling                                             17           17
+Cygnal                                                      14           16
+RMG Research                                                16           16
+Marquette Law School                                         4           16
+PPP                                                         12           16
+SurveyUSA                                                   14           15
+CNN/SSRS                                                    14           14
+Global Strategy Group/North Star Opinion Research            7           14
+Fabrizio/GBAO                                                7           14
+Research Co.                                                14           14
+SoCal Strategies                                            11           13
+Noble Predictive Insights                                    6           13
+Mitchell                                                     6           11
+Navigator                                                    5           10
+Spry Strategies                                              5           10
+The Washington Post                                          5           10
+MassINC Polling Group                                        6           10
+Suffolk                                                      8            8
+OnMessage Inc.                                               8            8
+University of Massachusetts Lowell/YouGov                    8            8
+Fabrizio/McLaughlin                                          7            7
+St. Anselm                                                   5            6
+Fabrizio Ward                                                3            6
+OnMessage Public Strategies                                  6            6
+Alaska Survey Research                                       4            6
+Echelon Insights                                             3            6
+East Carolina University                                     6            6
+Siena                                                        3            6
+Z to A Research                                              3            6
+Remington                                                    6            6
+Franklin and Marshall College                                3            5
+University of Maryland/Washington Post                       2            5
+Research America                                             2            5
+Susquehanna                                                  5            5
+Victory Insights                                             5            5
+Quantus Polls and News                                       5            5
+Public Opinion Strategies                                    5            5
+Quantus Insights                                             5            5
+Data for Progress                                            4            4
+Virginia Commonwealth U.                                     2            4
+Glengariff Group Inc.                                        4            4
+Hunt Research                                                2            4
+The Citadel                                                  2            4
+Capitol Weekly                                               4            4
+Change Research                                              4            4
+RG Strategies                                                3            3
+co/efficient                                                 3            3
+Mason-Dixon                                                  3            3
+Embold Research                                              3            3
+UC Berkeley                                                  3            3
+American Pulse                                               2            3
+Chism Strategies                                             3            3
+EPIC-MRA                                                     2            3
+Roanoke College                                              2            3
+U. Texas/YouGov                                              2            3
+HighGround                                                   3            3
+J.L. Partners                                                3            3
+Lake Research                                                3            3
+HarrisX                                                      2            3
+WPAi                                                         2            2
+SoCal Research                                               2            2
+Research & Polling                                           2            2
+Data Orbital                                                 2            2
+Bowling Green State University/YouGov                        2            2
+Cherry Communications                                        2            2
+Dartmouth Poll                                               2            2
+Selzer                                                       2            2
+U. North Florida                                             2            2
+U. Arizona/TrueDot                                           2            2
+CWS Research                                                 2            2
+Muhlenberg                                                   2            2
+Monmouth                                                     2            2
+Institute for Global Affairs/YouGov                          2            2
+Hoffman Research                                             1            2
+Landmark Communications                                      1            2
+Fabrizio                                                     1            2
+Elway                                                        2            2
+U. Georgia SPIA                                              2            2
+Strategies 360                                               2            2
+Rutgers-Eagleton                                             1            2
+Wick                                                         1            2
+Keating Research                                             2            2
+GQR                                                          2            2
+McLaughlin                                                   2            2
+PPIC                                                         2            2
+Tarrance                                                     2            2
+Targoz Market Research                                       1            2
+Fort Hays State University                                   1            2
+High Point University                                        1            2
+Digital Research                                             1            1
+Claflin University                                           1            1
+BK Strategies                                                1            1
+ARW Strategies                                               1            1
+Christopher Newport U.                                       1            1
+Arc Insights                                                 1            1
+Global Strategy Group                                        1            1
+Fabrizio/David Binder Research                               1            1
+MSU - Billings                                               1            1
+MRG (Marketing Resource Group)                               1            1
+Gonzales Research & Media Services                           1            1
+Hendrix College                                              1            1
+Iron Light                                                   1            1
+Impact Research                                              1            1
+RABA Research                                                1            1
+Praecones Analytica                                          1            1
+Peak Insights                                                1            1
+Pan Atlantic Research                                        1            1
+North Star Opinion Research                                  1            1
+Michigan State University/YouGov                             1            1
+National Public Affairs                                      1            1
+National Research                                            1            1
+Miami University (Ohio)                                      1            1
+Meredith College                                             1            1
+Stetson University Center for Public Opinion Research        1            1
+Texas Hispanic Policy Foundation                             1            1
+St. Pete Polls                                               1            1
+SoonerPoll.com                                               1            1
+Slingshot Strategies                                         1            1
+Survation                                                    1            1
+Torchlight Strategies                                        1            1
+University of Houston/Texas Southern University              1            1
+University of Akron                                          1            1
+USC Dornsife/CSU Long Beach/Cal Poly Pomona                  1            1
+UMass Amherst/YouGov                                         1            1
+UMBC                                                         1            1
+U. Houston                                                   1            1
+U. Rhode Island                                              1            1
+Trafalgar Group/InsiderAdvantage                             1            1
+University of Delaware                                       1            1
+University of Maryland/YouGov                                1            1
+University of Texas at Tyler                                 1            1
+University of Wyoming                                        1            1
+Winthrop U.                                                  1            1
+YouGov/Center for Working Class Politics                     1            1
+YouGov Blue                                                  1            1
+
+Pollster distribution national:
+                                                 n_polls  n_questions
+pollster                                                             
+Morning Consult                                      103          145
+YouGov                                                28           50
+HarrisX                                               10           41
+TIPP                                                  27           38
+Ipsos                                                 12           37
+Big Village                                            9           30
+ABC News/Ipsos                                         5           23
+Siena/NYT                                              5           18
+ActiVote                                              14           16
+RMG Research                                          13           16
+Big Data Poll                                          3           15
+AtlasIntel                                             7           14
+Outward Intelligence                                   6           12
+Marist College                                         6           11
+Redfield & Wilton Strategies                          10           10
+Florida Atlantic University/Mainstreet Research        4           10
+HarrisX/Harris Poll                                    3            9
+Hart/POS                                               5            8
+Cygnal                                                 4            8
+Marquette Law School                                   2            8
+Echelon Insights                                       3            7
+Emerson                                                6            7
+Leger                                                  5            7
+Fabrizio/GBAO                                          3            6
+Beacon/Shaw                                            3            6
+McLaughlin                                             2            6
+J.L. Partners                                          4            6
+ABC/Washington Post                                    1            5
+Angus Reid                                             4            5
+Data for Progress                                      4            5
+Noble Predictive Insights                              2            5
+American Pulse                                         2            4
+SoCal Strategies                                       3            4
+CNN/SSRS                                               2            4
+Clarity                                                4            4
+Pew                                                    3            4
+Change Research                                        4            4
+Quinnipiac                                             2            4
+Suffolk                                                2            3
+Kaplan Strategies                                      2            3
+PRRI                                                   1            3
+SurveyMonkey                                           2            3
+OnMessage Inc.                                         3            3
+UMass Amherst/YouGov                                   2            2
+Research Co.                                           2            2
+Patriot Polling                                        2            2
+Targoz Market Research                                 1            2
+Quantus Insights                                       2            2
+Tufts                                                  1            2
+Monmouth                                               2            2
+Fairleigh Dickinson                                    2            2
+CES / YouGov                                           1            2
+Bullfinch                                              1            2
+John Zogby Strategies                                  1            2
+Navigator                                              1            2
+SoCal Research                                         1            2
+Quantus Polls and News                                 2            2
+McCourtney Institute/YouGov                            1            1
+Kaiser Family Foundation                               1            1
+Gateway Political Strategies                           1            1
+Institute for Global Affairs/YouGov                    1            1
+Civiqs                                                 1            1
+Embold Research                                        1            1
+Deltapoll                                              1            1
+Echelon Insights/GBAO                                  1            1
+RABA Research                                          1            1
+Paradigm                                               1            1
+Survey Center on American Life                         1            1
+SurveyUSA                                              1            1
+Susquehanna                                            1            1
+Yale Youth Poll                                        1            1
+YouGov/SNF Agora                                       1            1
+co/efficient                                           1            1
+
 ==============================================================================================================
 RESIDUAL AUTOCORRELATION DIAGNOSTICS
 ==============================================================================================================
