@@ -1740,6 +1740,71 @@ pop_rv                           0.036055              0.186508      -0.030590  
   Saved: figures/correlation_all_states_with_mode.png
   Saved: figures/correlation_national_with_mode.png
 
+==============================================================================================================
+CORRECTED CORRELATION COMPARISON: ORIGINAL vs EXPLODED DATA
+==============================================================================================================
+
+Swing States - Shared Variables:
+Variable Pair                                          Original     Exploded   Difference
+--------------------------------------------------------------------------------------
+duration_days × days_before_election                     -0.1266      -0.1374      -0.0108
+duration_days × pct_dk                                   -0.1635      -0.1187       0.0448
+duration_days × abs_margin                                0.0156       0.0078      -0.0078
+duration_days × turnout_pct                              -0.0178      -0.0142       0.0037
+duration_days × partisan_flag                            -0.1401      -0.2096      -0.0695 ***
+days_before_election × pct_dk                                    0.2061       0.1490      -0.0571 ***
+days_before_election × abs_margin                               -0.0213      -0.0210       0.0003
+days_before_election × turnout_pct                               0.0215       0.0204      -0.0011
+days_before_election × partisan_flag                             0.0766       0.0613      -0.0153
+pct_dk × abs_margin                                0.0342       0.0308      -0.0034
+pct_dk × turnout_pct                              -0.0571      -0.0638      -0.0067
+pct_dk × partisan_flag                             0.1606       0.3151       0.1546 ***
+abs_margin × turnout_pct                              -0.8921      -0.8909       0.0012
+abs_margin × partisan_flag                            -0.0022       0.0122       0.0144
+turnout_pct × partisan_flag                             0.0067      -0.0087      -0.0154
+
+Sample sizes:
+  Original (no-mode): 1182
+  Exploded (with-mode): 1734
+
+Analyzing mode explosion patterns:
+
+Polls with >50% explosion (top 10):
+Poll ID           Original   Exploded     Factor
+---------------------------------------------
+87717                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 3 days, Partisan: 1, pct_dk: 4.0
+87716                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 3 days, Partisan: 1, pct_dk: 2.5
+87715                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 3 days, Partisan: 1, pct_dk: 5.9
+87718                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 3 days, Partisan: 1, pct_dk: 2.7
+87658                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 2 days, Partisan: 1, pct_dk: 4.0
+88197                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 4 days, Partisan: 1, pct_dk: 9.3
+88180                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 3 days, Partisan: 1, pct_dk: 11.2
+88169                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 2 days, Partisan: 1, pct_dk: 5.6
+87991                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 3 days, Partisan: 1, pct_dk: 6.5
+87993                    1          5       5.00x
+  Mode: IVR/Live Phone/Text/Online Opt-In Panel/Email
+  Duration: 3 days, Partisan: 1, pct_dk: 8.1
+==============================================================================================================
+
+
 Pollster distribution swing state:
                                                    n_polls  n_questions
 pollster                                                               

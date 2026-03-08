@@ -1515,18 +1515,18 @@ print("="*110)
 
 # State variables
 print("\nSwing state-level polls:")
-corr_state_swing = reg_state_swing_original[state_x_vars_no_mode].corr()
-print(corr_state_swing.to_string())
+corr_state_swing_no_mode = reg_state_swing_original[state_x_vars_no_mode].corr()
+print(corr_state_swing_no_mode.to_string())
 
 # State variables
 print("\nState-level polls:")
-corr_state = reg_state_original[state_x_vars_no_mode].corr()
-print(corr_state.to_string())
+corr_state_no_mode = reg_state_original[state_x_vars_no_mode].corr()
+print(corr_state_no_mode.to_string())
 
 # National variables
 print("\n\nNational polls:")
-corr_national = reg_national_original[national_x_vars_no_mode].corr()
-print(corr_national.to_string())
+corr_national_no_mode = reg_national_original[national_x_vars_no_mode].corr()
+print(corr_national_no_mode.to_string())
 
 print("="*110 + "\n")
 
@@ -1564,11 +1564,16 @@ def create_correlation_heatmap(corr_matrix, title, filename, figsize=(12, 10)):
     """
     fig, ax = plt.subplots(figsize=figsize)
     
+    # adjust annotation font size based on matrix size
+    n_vars = len(corr_matrix)
+    annot_fontsize = 10 if n_vars <= 8 else 8
+    
     # Create heatmap using a purple-green colormap (avoiding red/blue)
     sns.heatmap(
         corr_matrix,
         annot=True,           # Show correlation values
         fmt='.3f',            # Format to 3 decimal places
+        annot_kws={'fontsize': annot_fontsize},  # font size control
         cmap='PiYG',          # Purple-Yellow-Green colormap
         center=0,             # Center colormap at 0
         square=True,          # Make cells square
@@ -1584,8 +1589,8 @@ def create_correlation_heatmap(corr_matrix, title, filename, figsize=(12, 10)):
     
     # Formatting
     ax.set_title(title, fontsize=14, fontweight='bold', pad=20)
-    plt.xticks(rotation=45, ha='right')
-    plt.yticks(rotation=0)
+    plt.xticks(rotation=45, ha='right', fontsize=10)
+    plt.yticks(rotation=0, fontsize=10)
     plt.tight_layout()
     
     # Save figure
@@ -1593,63 +1598,148 @@ def create_correlation_heatmap(corr_matrix, title, filename, figsize=(12, 10)):
     print(f"  Saved: {filename}")
     plt.close()
 
-# NO MODE CORRELATIONS
 
-# Swing States (no mode)
+# define consistent variable ordering
+# shared variables first, then population variables, then mode variables
+shared_vars_state = ['duration_days', 'days_before_election', 'partisan_flag', 
+                     'pct_dk', 'abs_margin', 'turnout_pct']
+shared_vars_national = ['duration_days', 'days_before_election', 'partisan_flag', 'pct_dk']
+pop_vars_ordered = ['pop_a', 'pop_rv']  # alphabetical for consistency
+
+# NO MODE CORRELATIONS (with reordering)
+
+# Swing States (no mode) - reorder to match shared_vars_state + pop_vars
+var_order_state_no_mode = [v for v in shared_vars_state + pop_vars_ordered if v in corr_state_swing_no_mode.columns]
+corr_state_swing_no_mode_reordered = corr_state_swing_no_mode.loc[var_order_state_no_mode, var_order_state_no_mode]
+
 create_correlation_heatmap(
-    corr_state_swing,
+    corr_state_swing_no_mode_reordered,
     'Correlation Matrix: Swing State Polls (No Mode Controls)',
     'figures/correlation_swing_no_mode.png',
-    figsize=(10, 8)
+    figsize=(14, 12)
 )
 
-# All States (no mode)
+# All States (no mode) - reorder to match shared_vars_state + pop_vars
+var_order_state_no_mode_all = [v for v in shared_vars_state + pop_vars_ordered if v in corr_state_no_mode.columns]
+corr_state_no_mode_reordered = corr_state_no_mode.loc[var_order_state_no_mode_all, var_order_state_no_mode_all]
+
 create_correlation_heatmap(
-    corr_state,
+    corr_state_no_mode_reordered,
     'Correlation Matrix: All State Polls (No Mode Controls)',
     'figures/correlation_all_states_no_mode.png',
-    figsize=(10, 8)
+    figsize=(14, 12)
 )
 
-# National (no mode)
+# National (no mode) - reorder to match shared_vars_national + pop_vars
+var_order_national_no_mode = [v for v in shared_vars_national + pop_vars_ordered if v in corr_national_no_mode.columns]
+corr_national_no_mode_reordered = corr_national_no_mode.loc[var_order_national_no_mode, var_order_national_no_mode]
+
 create_correlation_heatmap(
-    corr_national,
+    corr_national_no_mode_reordered,
     'Correlation Matrix: National Polls (No Mode Controls)',
     'figures/correlation_national_no_mode.png',
-    figsize=(8, 6)
+    figsize=(14, 12)
 )
 
-# WITH MODE CORRELATIONS
+# WITH MODE CORRELATIONS (with reordering)
 
-# Recalculate for proper variable order in heatmap
+# Recalculate correlations for with-mode versions
 corr_state_swing_mode = reg_state_swing[state_x_vars_with_mode].corr()
 corr_state_mode = reg_state[state_x_vars_with_mode].corr()
 corr_national_mode = reg_national[national_x_vars_with_mode].corr()
 
-# Swing States (with mode)
+# get mode variables in sorted order
+mode_vars_sorted = sorted([v for v in mode_vars if v.startswith('mode_')])
+
+# Swing States (with mode) - shared vars + pop vars + mode vars
+var_order_state_with_mode = [v for v in shared_vars_state + pop_vars_ordered + mode_vars_sorted 
+                             if v in corr_state_swing_mode.columns]
+corr_state_swing_mode_reordered = corr_state_swing_mode.loc[var_order_state_with_mode, var_order_state_with_mode]
+
 create_correlation_heatmap(
-    corr_state_swing_mode,
+    corr_state_swing_mode_reordered,
     'Correlation Matrix: Swing State Polls (With Mode Controls)',
     'figures/correlation_swing_with_mode.png',
     figsize=(14, 12)
 )
 
-# All States (with mode)
+# All States (with mode) - shared vars + pop vars + mode vars
+var_order_state_with_mode_all = [v for v in shared_vars_state + pop_vars_ordered + mode_vars_sorted 
+                                 if v in corr_state_mode.columns]
+corr_state_mode_reordered = corr_state_mode.loc[var_order_state_with_mode_all, var_order_state_with_mode_all]
+
 create_correlation_heatmap(
-    corr_state_mode,
+    corr_state_mode_reordered,
     'Correlation Matrix: All State Polls (With Mode Controls)',
     'figures/correlation_all_states_with_mode.png',
     figsize=(14, 12)
 )
 
-# National (with mode)
+# National (with mode) - shared vars + pop vars + mode vars
+var_order_national_with_mode = [v for v in shared_vars_national + pop_vars_ordered + mode_vars_sorted 
+                                if v in corr_national_mode.columns]
+corr_national_mode_reordered = corr_national_mode.loc[var_order_national_with_mode, var_order_national_with_mode]
+
 create_correlation_heatmap(
-    corr_national_mode,
+    corr_national_mode_reordered,
     'Correlation Matrix: National Polls (With Mode Controls)',
     'figures/correlation_national_with_mode.png',
-    figsize=(12, 10)
+    figsize=(14, 12)
 )
 
+# CORRECTED CORRELATION COMPARISON
+print("\n" + "="*110)
+print("CORRECTED CORRELATION COMPARISON: ORIGINAL vs EXPLODED DATA")
+print("="*110)
+
+shared_vars = ['duration_days', 'days_before_election', 'pct_dk', 'abs_margin', 'turnout_pct', 'partisan_flag']
+
+# Get the actual correlation matrices being plotted
+corr_orig_swing = reg_state_swing_original[shared_vars + ['pop_a', 'pop_rv']].corr()
+corr_expl_swing = reg_state_swing[shared_vars + ['pop_a', 'pop_rv']].corr()
+
+print("\nSwing States - Shared Variables:")
+print(f"{'Variable Pair':<50} {'Original':>12} {'Exploded':>12} {'Difference':>12}")
+print("-" * 86)
+
+for i, var1 in enumerate(shared_vars):
+    for var2 in shared_vars[i+1:]:
+        corr_orig = corr_orig_swing.loc[var1, var2]
+        corr_expl = corr_expl_swing.loc[var1, var2]
+        diff = corr_expl - corr_orig
+        marker = " ***" if abs(diff) > 0.05 else ""
+        print(f"{var1} × {var2:<35} {corr_orig:>12.4f} {corr_expl:>12.4f} {diff:>12.4f}{marker}")
+
+print(f"\nSample sizes:")
+print(f"  Original (no-mode): {len(reg_state_swing_original)}")
+print(f"  Exploded (with-mode): {len(reg_state_swing)}")
+
+# Check which polls got exploded the most
+print(f"\nAnalyzing mode explosion patterns:")
+mode_counts = reg_state_swing.groupby('poll_id').size()
+orig_counts = reg_state_swing_original.groupby('poll_id').size()
+
+# Find polls that increased in size
+explosion_factor = mode_counts / orig_counts
+high_explosion = explosion_factor[explosion_factor > 1.5].sort_values(ascending=False)
+
+print(f"\nPolls with >50% explosion (top 10):")
+print(f"{'Poll ID':<15} {'Original':>10} {'Exploded':>10} {'Factor':>10}")
+print("-" * 45)
+for poll_id in high_explosion.head(10).index:
+    orig = orig_counts.loc[poll_id]
+    expl = mode_counts.loc[poll_id]
+    factor = expl / orig
+    
+    # Get poll characteristics
+    poll_data = reg_state_swing_original[reg_state_swing_original['poll_id'] == poll_id].iloc[0]
+    print(f"{poll_id:<15} {int(orig):>10} {int(expl):>10} {factor:>10.2f}x")
+    print(f"  Mode: {poll_data['mode']}")
+    print(f"  Duration: {poll_data['duration_days']:.0f} days, "
+          f"Partisan: {poll_data['partisan_flag']}, "
+          f"pct_dk: {poll_data['pct_dk']:.1f}")
+
+print("="*110 + "\n")
 
 ########################################################################################
 #################### POLLSTER DIST ######################
