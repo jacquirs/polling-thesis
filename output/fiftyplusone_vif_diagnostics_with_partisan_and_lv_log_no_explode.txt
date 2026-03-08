@@ -1,0 +1,673 @@
+==============================================================================================================
+MULTICOLLINEARITY DIAGNOSTICS (VIF), WITH PARTISAN AND LV CONTROL (MODE INDICATORS - NO EXPLOSION)
+source data: data/harris_trump_mode_indicators_with_partisan_and_lv_regression_no_explode.csv
+==============================================================================================================
+
+dataset size: 2299
+
+population dummies: ['pop_a', 'pop_rv']
+mode indicators:    ['mode_App_Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+reference mode:     Live Phone (mode_Live_Phone excluded)
+
+sample sizes:
+  swing states: 1182
+  all states:   1628
+  national:     671
+
+==============================================================================================================
+WITHOUT MODE VARIABLES
+==============================================================================================================
+
+swing state-level polls (no mode) (N=1182):
+            Variable      VIF
+       duration_days 1.231194
+days_before_election 1.075254
+       partisan_flag 1.069146
+              pct_dk 1.129641
+          abs_margin 4.905525
+         turnout_pct 4.918864
+               pop_a 1.202741
+              pop_rv 1.069623
+
+state-level polls (no mode) (N=1628):
+            Variable      VIF
+       duration_days 1.265780
+days_before_election 1.068312
+       partisan_flag 1.046643
+              pct_dk 1.150904
+          abs_margin 1.502464
+         turnout_pct 1.461500
+               pop_a 1.175308
+              pop_rv 1.060923
+
+national polls (no mode) (N=671):
+            Variable      VIF
+       duration_days 1.041752
+days_before_election 1.095516
+       partisan_flag 1.009307
+              pct_dk 1.470004
+               pop_a 1.489410
+              pop_rv 1.155105
+
+==============================================================================================================
+WITH MODE INDICATOR VARIABLES (NO EXPLOSION)
+reference mode: Live Phone
+each poll retains its original row; multi-mode polls get 1 on every active mode indicator
+zero-observation mode indicators dropped automatically per sample
+==============================================================================================================
+
+swing state-level polls (with mode indicators) (N=1182):
+                  Variable      VIF
+             duration_days 1.816902
+      days_before_election 1.201035
+             partisan_flag 1.369314
+                    pct_dk 1.280790
+                abs_margin 4.916147
+               turnout_pct 4.948220
+                     pop_a 1.319558
+                    pop_rv 1.108987
+            mode_App_Panel 1.332359
+                mode_Email 1.891589
+                  mode_IVR 1.641653
+        mode_Mail_to_Phone 1.893860
+          mode_Mail_to_Web 2.789936
+            mode_Online_Ad 1.320586
+mode_Online_Matched_Sample 1.238580
+  mode_Online_Opt_In_Panel 1.244594
+    mode_Probability_Panel 1.043415
+            mode_Text_only 1.740688
+          mode_Text_to_Web 1.370999
+
+state-level polls (with mode indicators) (N=1628):
+                  Variable      VIF
+             duration_days 2.255601
+      days_before_election 1.180329
+             partisan_flag 1.293084
+                    pct_dk 1.275717
+                abs_margin 1.580861
+               turnout_pct 1.483613
+                     pop_a 1.307648
+                    pop_rv 1.104033
+            mode_App_Panel 1.944130
+                mode_Email 1.618468
+                  mode_IVR 1.570092
+        mode_Mail_to_Phone 1.687653
+          mode_Mail_to_Web 2.235496
+            mode_Online_Ad 1.263608
+mode_Online_Matched_Sample 1.275195
+  mode_Online_Opt_In_Panel 1.269838
+    mode_Probability_Panel 1.080232
+            mode_Text_only 1.682072
+          mode_Text_to_Web 1.317725
+
+  [national polls (with mode indicators)] dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
+national polls (with mode indicators) (N=671):
+  active mode indicators (8): ['mode_App_Panel', 'mode_IVR', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable      VIF
+             duration_days 1.182755
+      days_before_election 1.134286
+             partisan_flag 1.032437
+                    pct_dk 1.516038
+                     pop_a 1.615421
+                    pop_rv 1.255887
+            mode_App_Panel 1.249290
+                  mode_IVR 1.202105
+            mode_Online_Ad 1.210081
+mode_Online_Matched_Sample 1.626389
+  mode_Online_Opt_In_Panel 2.345254
+    mode_Probability_Panel 2.029285
+            mode_Text_only 1.177730
+          mode_Text_to_Web 1.142542
+
+==============================================================================================================
+TIME WINDOW ANALYSIS (NO MODE)
+==============================================================================================================
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 107 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (107d window) (N=1182):
+            Variable      VIF
+       duration_days 1.231194
+days_before_election 1.075254
+       partisan_flag 1.069146
+              pct_dk 1.129641
+          abs_margin 4.905525
+         turnout_pct 4.918864
+               pop_a 1.202741
+              pop_rv 1.069623
+
+all states (107d window) (N=1628):
+            Variable      VIF
+       duration_days 1.265780
+days_before_election 1.068312
+       partisan_flag 1.046643
+              pct_dk 1.150904
+          abs_margin 1.502464
+         turnout_pct 1.461500
+               pop_a 1.175308
+              pop_rv 1.060923
+
+national (107d window) (N=671):
+            Variable      VIF
+       duration_days 1.041752
+days_before_election 1.095516
+       partisan_flag 1.009307
+              pct_dk 1.470004
+               pop_a 1.489410
+              pop_rv 1.155105
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 90 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (90d window) (N=1092):
+            Variable      VIF
+       duration_days 1.236706
+days_before_election 1.046340
+       partisan_flag 1.087572
+              pct_dk 1.158898
+          abs_margin 4.900567
+         turnout_pct 4.913221
+               pop_a 1.222697
+              pop_rv 1.092879
+
+all states (90d window) (N=1512):
+            Variable      VIF
+       duration_days 1.267117
+days_before_election 1.041693
+       partisan_flag 1.056066
+              pct_dk 1.186136
+          abs_margin 1.516843
+         turnout_pct 1.472690
+               pop_a 1.191546
+              pop_rv 1.078190
+
+national (90d window) (N=561):
+            Variable      VIF
+       duration_days 1.049227
+days_before_election 1.077669
+       partisan_flag 1.012820
+              pct_dk 1.444003
+               pop_a 1.455489
+              pop_rv 1.135645
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 60 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (60d window) (N=852):
+            Variable      VIF
+       duration_days 1.291554
+days_before_election 1.015673
+       partisan_flag 1.126094
+              pct_dk 1.177013
+          abs_margin 4.737942
+         turnout_pct 4.764719
+               pop_a 1.252004
+              pop_rv 1.113762
+
+all states (60d window) (N=1204):
+            Variable      VIF
+       duration_days 1.285049
+days_before_election 1.029953
+       partisan_flag 1.065947
+              pct_dk 1.201645
+          abs_margin 1.506618
+         turnout_pct 1.454383
+               pop_a 1.195170
+              pop_rv 1.092142
+
+national (60d window) (N=380):
+            Variable      VIF
+       duration_days 1.061991
+days_before_election 1.034866
+       partisan_flag 1.023101
+              pct_dk 1.395650
+               pop_a 1.419193
+              pop_rv 1.067915
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 30 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (30d window) (N=526):
+            Variable      VIF
+       duration_days 1.394264
+days_before_election 1.040769
+       partisan_flag 1.102871
+              pct_dk 1.158823
+          abs_margin 4.977691
+         turnout_pct 4.987077
+               pop_a 1.362562
+              pop_rv 1.151203
+
+all states (30d window) (N=751):
+            Variable      VIF
+       duration_days 1.366636
+days_before_election 1.048513
+       partisan_flag 1.066060
+              pct_dk 1.192069
+          abs_margin 1.568063
+         turnout_pct 1.497119
+               pop_a 1.247896
+              pop_rv 1.133582
+
+national (30d window) (N=234):
+            Variable      VIF
+       duration_days 1.104038
+days_before_election 1.034384
+       partisan_flag 1.026052
+              pct_dk 1.343386
+               pop_a 1.426992
+              pop_rv 1.067899
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 7 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (7d window) (N=228):
+            Variable      VIF
+       duration_days 1.456616
+days_before_election 1.008904
+       partisan_flag 1.031478
+              pct_dk 1.115361
+          abs_margin 5.200367
+         turnout_pct 5.210529
+               pop_a 1.392996
+              pop_rv 1.166597
+  WARNING: 2 variable(s) with VIF > 5 (caution warranted)
+
+all states (7d window) (N=296):
+            Variable      VIF
+       duration_days 1.548247
+days_before_election 1.029743
+       partisan_flag 1.031751
+              pct_dk 1.159433
+          abs_margin 1.388948
+         turnout_pct 1.314666
+               pop_a 1.358197
+              pop_rv 1.173317
+
+national (7d window) (N=73):
+            Variable      VIF
+       duration_days 1.112828
+days_before_election 1.045275
+       partisan_flag 1.047819
+              pct_dk 1.593367
+               pop_a 1.549048
+              pop_rv 1.025165
+
+==============================================================================================================
+TIME WINDOW ANALYSIS (WITH MODE INDICATORS)
+zero-observation mode indicators dropped automatically per window/sample
+==============================================================================================================
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 107 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (107d window, with mode) (N=1182):
+                  Variable      VIF
+             duration_days 1.816902
+      days_before_election 1.201035
+             partisan_flag 1.369314
+                    pct_dk 1.280790
+                abs_margin 4.916147
+               turnout_pct 4.948220
+                     pop_a 1.319558
+                    pop_rv 1.108987
+            mode_App_Panel 1.332359
+                mode_Email 1.891589
+                  mode_IVR 1.641653
+        mode_Mail_to_Phone 1.893860
+          mode_Mail_to_Web 2.789936
+            mode_Online_Ad 1.320586
+mode_Online_Matched_Sample 1.238580
+  mode_Online_Opt_In_Panel 1.244594
+    mode_Probability_Panel 1.043415
+            mode_Text_only 1.740688
+          mode_Text_to_Web 1.370999
+
+all states (107d window, with mode) (N=1628):
+                  Variable      VIF
+             duration_days 2.255601
+      days_before_election 1.180329
+             partisan_flag 1.293084
+                    pct_dk 1.275717
+                abs_margin 1.580861
+               turnout_pct 1.483613
+                     pop_a 1.307648
+                    pop_rv 1.104033
+            mode_App_Panel 1.944130
+                mode_Email 1.618468
+                  mode_IVR 1.570092
+        mode_Mail_to_Phone 1.687653
+          mode_Mail_to_Web 2.235496
+            mode_Online_Ad 1.263608
+mode_Online_Matched_Sample 1.275195
+  mode_Online_Opt_In_Panel 1.269838
+    mode_Probability_Panel 1.080232
+            mode_Text_only 1.682072
+          mode_Text_to_Web 1.317725
+
+  [national (107d window, with mode)] dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
+national (107d window, with mode) (N=671):
+  active mode indicators (8): ['mode_App_Panel', 'mode_IVR', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable      VIF
+             duration_days 1.182755
+      days_before_election 1.134286
+             partisan_flag 1.032437
+                    pct_dk 1.516038
+                     pop_a 1.615421
+                    pop_rv 1.255887
+            mode_App_Panel 1.249290
+                  mode_IVR 1.202105
+            mode_Online_Ad 1.210081
+mode_Online_Matched_Sample 1.626389
+  mode_Online_Opt_In_Panel 2.345254
+    mode_Probability_Panel 2.029285
+            mode_Text_only 1.177730
+          mode_Text_to_Web 1.142542
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 90 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (90d window, with mode) (N=1092):
+                  Variable      VIF
+             duration_days 1.846382
+      days_before_election 1.172941
+             partisan_flag 1.449181
+                    pct_dk 1.324185
+                abs_margin 4.910770
+               turnout_pct 4.940039
+                     pop_a 1.340032
+                    pop_rv 1.137587
+            mode_App_Panel 1.341289
+                mode_Email 2.032076
+                  mode_IVR 1.672390
+        mode_Mail_to_Phone 1.907862
+          mode_Mail_to_Web 2.920462
+            mode_Online_Ad 1.377744
+mode_Online_Matched_Sample 1.247819
+  mode_Online_Opt_In_Panel 1.262567
+    mode_Probability_Panel 1.047427
+            mode_Text_only 1.791942
+          mode_Text_to_Web 1.409080
+
+all states (90d window, with mode) (N=1512):
+                  Variable      VIF
+             duration_days 2.263287
+      days_before_election 1.150511
+             partisan_flag 1.326446
+                    pct_dk 1.315497
+                abs_margin 1.596847
+               turnout_pct 1.495970
+                     pop_a 1.324391
+                    pop_rv 1.126437
+            mode_App_Panel 1.965395
+                mode_Email 1.685641
+                  mode_IVR 1.593434
+        mode_Mail_to_Phone 1.690280
+          mode_Mail_to_Web 2.287280
+            mode_Online_Ad 1.297045
+mode_Online_Matched_Sample 1.286409
+  mode_Online_Opt_In_Panel 1.287706
+    mode_Probability_Panel 1.087207
+            mode_Text_only 1.725063
+          mode_Text_to_Web 1.345473
+
+  [national (90d window, with mode)] dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
+national (90d window, with mode) (N=561):
+  active mode indicators (8): ['mode_App_Panel', 'mode_IVR', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable      VIF
+             duration_days 1.181698
+      days_before_election 1.123972
+             partisan_flag 1.037123
+                    pct_dk 1.471281
+                     pop_a 1.592638
+                    pop_rv 1.252317
+            mode_App_Panel 1.185583
+                  mode_IVR 1.264278
+            mode_Online_Ad 1.195142
+mode_Online_Matched_Sample 1.631090
+  mode_Online_Opt_In_Panel 2.283996
+    mode_Probability_Panel 2.032013
+            mode_Text_only 1.242271
+          mode_Text_to_Web 1.183298
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 60 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (60d window, with mode) (N=852):
+                  Variable      VIF
+             duration_days 1.965282
+      days_before_election 1.148596
+             partisan_flag 1.491017
+                    pct_dk 1.434796
+                abs_margin 4.755290
+               turnout_pct 4.823310
+                     pop_a 1.367726
+                    pop_rv 1.167465
+            mode_App_Panel 1.380707
+                mode_Email 2.358196
+                  mode_IVR 1.568564
+        mode_Mail_to_Phone 1.842489
+          mode_Mail_to_Web 3.113180
+            mode_Online_Ad 1.553231
+mode_Online_Matched_Sample 1.285050
+  mode_Online_Opt_In_Panel 1.323650
+    mode_Probability_Panel 1.068585
+            mode_Text_only 1.703543
+          mode_Text_to_Web 1.472753
+
+all states (60d window, with mode) (N=1204):
+                  Variable      VIF
+             duration_days 2.366167
+      days_before_election 1.135290
+             partisan_flag 1.348325
+                    pct_dk 1.365116
+                abs_margin 1.600051
+               turnout_pct 1.472899
+                     pop_a 1.342497
+                    pop_rv 1.146251
+            mode_App_Panel 2.076435
+                mode_Email 1.805557
+                  mode_IVR 1.520802
+        mode_Mail_to_Phone 1.630162
+          mode_Mail_to_Web 2.322945
+            mode_Online_Ad 1.383523
+mode_Online_Matched_Sample 1.345162
+  mode_Online_Opt_In_Panel 1.345088
+    mode_Probability_Panel 1.081125
+            mode_Text_only 1.689530
+          mode_Text_to_Web 1.337987
+
+  [national (60d window, with mode)] dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
+national (60d window, with mode) (N=380):
+  active mode indicators (8): ['mode_App_Panel', 'mode_IVR', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable      VIF
+             duration_days 1.215011
+      days_before_election 1.120240
+             partisan_flag 1.093741
+                    pct_dk 1.438324
+                     pop_a 1.556144
+                    pop_rv 1.185989
+            mode_App_Panel 1.181712
+                  mode_IVR 1.333861
+            mode_Online_Ad 1.304313
+mode_Online_Matched_Sample 1.672392
+  mode_Online_Opt_In_Panel 2.541756
+    mode_Probability_Panel 2.067351
+            mode_Text_only 1.403374
+          mode_Text_to_Web 1.177112
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 30 days before election
+--------------------------------------------------------------------------------------------------------------
+
+swing states (30d window, with mode) (N=526):
+                  Variable      VIF
+             duration_days 2.086294
+      days_before_election 1.185248
+             partisan_flag 1.471665
+                    pct_dk 1.512989
+                abs_margin 5.008006
+               turnout_pct 5.053859
+                     pop_a 1.510027
+                    pop_rv 1.235599
+            mode_App_Panel 1.415161
+                mode_Email 2.578350
+                  mode_IVR 1.687563
+        mode_Mail_to_Phone 1.745898
+          mode_Mail_to_Web 3.460821
+            mode_Online_Ad 1.909298
+mode_Online_Matched_Sample 1.496381
+  mode_Online_Opt_In_Panel 1.643584
+    mode_Probability_Panel 1.075067
+            mode_Text_only 1.778735
+          mode_Text_to_Web 1.742995
+  WARNING: 2 variable(s) with VIF > 5 (caution warranted)
+
+all states (30d window, with mode) (N=751):
+                  Variable      VIF
+             duration_days 2.382361
+      days_before_election 1.142950
+             partisan_flag 1.339336
+                    pct_dk 1.509851
+                abs_margin 1.691130
+               turnout_pct 1.527373
+                     pop_a 1.445183
+                    pop_rv 1.191534
+            mode_App_Panel 2.258172
+                mode_Email 2.027123
+                  mode_IVR 1.528850
+        mode_Mail_to_Phone 1.521571
+          mode_Mail_to_Web 2.447138
+            mode_Online_Ad 1.663336
+mode_Online_Matched_Sample 1.556879
+  mode_Online_Opt_In_Panel 1.614615
+    mode_Probability_Panel 1.098055
+            mode_Text_only 1.701898
+          mode_Text_to_Web 1.521980
+
+  [national (30d window, with mode)] dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
+national (30d window, with mode) (N=234):
+  active mode indicators (8): ['mode_App_Panel', 'mode_IVR', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable      VIF
+             duration_days 1.271275
+      days_before_election 1.130266
+             partisan_flag 1.121422
+                    pct_dk 1.492715
+                     pop_a 1.538815
+                    pop_rv 1.241881
+            mode_App_Panel 1.273262
+                  mode_IVR 1.513926
+            mode_Online_Ad 1.662054
+mode_Online_Matched_Sample 2.029671
+  mode_Online_Opt_In_Panel 3.832682
+    mode_Probability_Panel 2.823351
+            mode_Text_only 1.676286
+          mode_Text_to_Web 1.224501
+
+--------------------------------------------------------------------------------------------------------------
+TIME WINDOW: 7 days before election
+--------------------------------------------------------------------------------------------------------------
+
+  [swing states (7d window, with mode)] dropping zero-observation mode indicators: ['mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Probability_Panel']
+
+swing states (7d window, with mode) (N=228):
+  active mode indicators (8): ['mode_App_Panel', 'mode_Email', 'mode_IVR', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable      VIF
+             duration_days 2.805473
+      days_before_election 1.411757
+             partisan_flag 2.428164
+                    pct_dk 2.274979
+                abs_margin 5.214948
+               turnout_pct 5.277466
+                     pop_a 1.502805
+                    pop_rv 1.452468
+            mode_App_Panel 1.593926
+                mode_Email 2.893716
+                  mode_IVR 2.137705
+            mode_Online_Ad 3.495740
+mode_Online_Matched_Sample 1.997018
+  mode_Online_Opt_In_Panel 2.226971
+            mode_Text_only 1.896779
+          mode_Text_to_Web 2.152373
+  WARNING: 2 variable(s) with VIF > 5 (caution warranted)
+
+  [all states (7d window, with mode)] dropping zero-observation mode indicators: ['mode_Mail_to_Phone']
+
+all states (7d window, with mode) (N=296):
+  active mode indicators (10): ['mode_App_Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Web', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable      VIF
+             duration_days 2.849920
+      days_before_election 1.337942
+             partisan_flag 1.668137
+                    pct_dk 2.061570
+                abs_margin 1.683992
+               turnout_pct 1.427729
+                     pop_a 1.499699
+                    pop_rv 1.415243
+            mode_App_Panel 2.303888
+                mode_Email 1.909604
+                  mode_IVR 1.728326
+          mode_Mail_to_Web 1.032717
+            mode_Online_Ad 3.104503
+mode_Online_Matched_Sample 1.753741
+  mode_Online_Opt_In_Panel 2.269147
+    mode_Probability_Panel 1.329154
+            mode_Text_only 1.726268
+          mode_Text_to_Web 1.781896
+
+  [national (7d window, with mode)] dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
+national (7d window, with mode) (N=73):
+  active mode indicators (8): ['mode_App_Panel', 'mode_IVR', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_only', 'mode_Text_to_Web']
+                  Variable       VIF
+             duration_days  1.780919
+      days_before_election  1.250242
+             partisan_flag  1.085532
+                    pct_dk  1.803381
+                     pop_a  2.099402
+                    pop_rv  1.479456
+            mode_App_Panel  1.826949
+                  mode_IVR  1.389972
+            mode_Online_Ad  5.874303
+mode_Online_Matched_Sample  4.477512
+  mode_Online_Opt_In_Panel 10.752300
+    mode_Probability_Panel  4.144874
+            mode_Text_only  1.893674
+          mode_Text_to_Web  1.241427
+  WARNING: 1 variable(s) with VIF > 10 (problematic)
+  WARNING: 1 variable(s) with VIF > 5 (caution warranted)
+
+==============================================================================================================
+VIF DIAGNOSTICS SUMMARY
+==============================================================================================================
+
+WARNING: MULTICOLLINEARITY CONCERNS DETECTED:
+--------------------------------------------------------------------------------------------------------------
+  * swing states (7d window) (no mode): VIF concerns
+  * swing states (30d window, with mode): VIF concerns
+  * swing states (7d window, with mode): VIF concerns
+  * national (7d window, with mode): VIF concerns
+
+review variables with VIF > 5
+
+note: VIF > 10 suggests problematic multicollinearity
+      VIF > 5 warrants caution
+      mode indicator strategy: multi-mode polls get 1 on all active indicators;
+      higher correlation between mode dummies is expected but VIF should still be acceptable
+      zero-observation mode indicators are dropped per sample before VIF calculation
+==============================================================================================================
+

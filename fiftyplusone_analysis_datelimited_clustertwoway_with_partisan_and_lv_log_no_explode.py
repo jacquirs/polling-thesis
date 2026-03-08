@@ -477,6 +477,22 @@ for mode in sorted(all_modes):
     pct_with_mode = 100 * n_with_mode / len(reg_df_original)
     print(f"  {var_name}: {n_with_mode} questions ({pct_with_mode:.1f}%)")
 
+# recode Text and Text_to_Web into mutually exclusive categories
+# mode_Text_only: uses Text but NOT Text-to-Web (94 cases)
+# mode_Text_to_Web: uses Text-to-Web (479 cases, implicitly also Text)
+# drop the original mode_Text indicator since it's now redundant
+# Update your reference category note in any write-up to clarify that mode_Text_to_Web means 
+# Text-to-Web (which always involves Text recruitment), and mode_Text_only means Text recruitment with non-web response
+
+reg_df_original['mode_Text_only'] = (
+    (reg_df_original['mode_Text'] == 1) & 
+    (reg_df_original['mode_Text_to_Web'] == 0)
+).astype(int)
+
+# mode_Text_to_Web already exists and is correct, no change needed
+# drop original mode_Text since it's now split into the two above
+reg_df_original = reg_df_original.drop(columns=['mode_Text'])
+
 # Get list of all mode indicator variables
 mode_vars = [col for col in reg_df_original.columns if col.startswith('mode_')]
 

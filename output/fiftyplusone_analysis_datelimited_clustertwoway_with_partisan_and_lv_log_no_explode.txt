@@ -69,7 +69,7 @@ Unique mode types found: ['App Panel', 'Email', 'IVR', 'Live Phone', 'Mail-to-Ph
 Reference category: Live Phone
 Dropped from regression: mode_Live_Phone
 
-Mode indicators to include in regression: ['mode_App_Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text', 'mode_Text_to_Web']
+Mode indicators to include in regression: ['mode_App_Panel', 'mode_Email', 'mode_IVR', 'mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Online_Ad', 'mode_Online_Matched_Sample', 'mode_Online_Opt_In_Panel', 'mode_Probability_Panel', 'mode_Text_to_Web', 'mode_Text_only']
 All coefficients will be interpreted relative to polls using Live Phone
 
 --------------------------------------------------------------------------------------------------------------
@@ -77,13 +77,13 @@ EXAMPLE: How multi-mode polls are encoded
 --------------------------------------------------------------------------------------------------------------
 
 Original mode string: IVR/Online Opt-In Panel/Text-to-Web
-Active indicators: IVR, Online_Opt_In_Panel, Text, Text_to_Web
+Active indicators: IVR, Online_Opt_In_Panel, Text_to_Web
 
 Original mode string: IVR/Online Opt-In Panel/Text-to-Web
-Active indicators: IVR, Online_Opt_In_Panel, Text, Text_to_Web
+Active indicators: IVR, Online_Opt_In_Panel, Text_to_Web
 
 Original mode string: IVR/Online Opt-In Panel/Text-to-Web
-Active indicators: IVR, Online_Opt_In_Panel, Text, Text_to_Web
+Active indicators: IVR, Online_Opt_In_Panel, Text_to_Web
 
 ==============================================================================================================
 SAMPLE SIZES (MODE INDICATORS - NO EXPLOSION)
@@ -202,16 +202,16 @@ REGRESSIONS WITH MODE CONTROLS
   partisan_flag                           0.0367     0.0165     **
   pct_dk                                 -0.0024     0.0011     **
   mode_App_Panel                          0.0285     0.0174       
-  mode_Email                             -0.0000     0.0000       
+  mode_Email                              0.0000     0.0000       
   mode_IVR                               -0.0006     0.0116       
-  mode_Mail_to_Phone                      0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000       
+  mode_Mail_to_Phone                      0.0000     0.0000     **
+  mode_Mail_to_Web                       -0.0000     0.0000      *
   mode_Online_Ad                          0.0547     0.0248     **
   mode_Online_Matched_Sample             -0.0174     0.0139       
   mode_Online_Opt_In_Panel               -0.0263     0.0131     **
   mode_Probability_Panel                 -0.0254     0.0161       
-  mode_Text                              -0.0131     0.0178       
-  mode_Text_to_Web                        0.0301     0.0207       
+  mode_Text_to_Web                        0.0170     0.0169       
+  mode_Text_only                            ----       ----       
   pop_a                                   0.0123     0.0126       
   pop_rv                                  0.0140     0.0073      *
   const                                  -0.0376     0.0176     **
@@ -219,6 +219,7 @@ REGRESSIONS WITH MODE CONTROLS
   adjusted r2:  0.1975
   n:            671
   clusters:     380 poll_id, 73 pollster
+  note:         ---- indicates <10 observations in category
 ===========================================================================
 
 
@@ -244,8 +245,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0125     0.0065      *
   mode_Online_Opt_In_Panel               -0.0078     0.0062       
   mode_Probability_Panel                 -0.0456     0.0150    ***
-  mode_Text                               0.0105     0.0096       
-  mode_Text_to_Web                       -0.0025     0.0107       
+  mode_Text_to_Web                        0.0080     0.0065       
+  mode_Text_only                          0.0105     0.0096       
   pop_a                                  -0.0227     0.0134      *
   pop_rv                                 -0.0159     0.0068     **
   const                                  -0.2148     0.0440    ***
@@ -278,8 +279,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0044     0.0060       
   mode_Online_Opt_In_Panel               -0.0122     0.0058     **
   mode_Probability_Panel                 -0.0164     0.0037    ***
-  mode_Text                               0.0133     0.0068      *
-  mode_Text_to_Web                       -0.0069     0.0073       
+  mode_Text_to_Web                        0.0064     0.0054       
+  mode_Text_only                          0.0133     0.0068      *
   pop_a                                  -0.0332     0.0077    ***
   pop_rv                                 -0.0177     0.0062    ***
   const                                   0.2036     0.0833     **
@@ -700,8 +701,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0044     0.0060       
   mode_Online_Opt_In_Panel               -0.0122     0.0058     **
   mode_Probability_Panel                 -0.0164     0.0037    ***
-  mode_Text                               0.0133     0.0068      *
-  mode_Text_to_Web                       -0.0069     0.0073       
+  mode_Text_to_Web                        0.0064     0.0054       
+  mode_Text_only                          0.0133     0.0068      *
   pop_a                                  -0.0332     0.0077    ***
   pop_rv                                 -0.0177     0.0062    ***
   const                                   0.2036     0.0833     **
@@ -737,8 +738,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0077     0.0048       
   mode_Online_Opt_In_Panel               -0.0151     0.0046    ***
   mode_Probability_Panel                 -0.0154     0.0031    ***
-  mode_Text                               0.0166     0.0071     **
-  mode_Text_to_Web                       -0.0116     0.0069      *
+  mode_Text_to_Web                        0.0050     0.0050       
+  mode_Text_only                          0.0166     0.0071     **
   pop_a                                  -0.0338     0.0078    ***
   pop_rv                                 -0.0228     0.0065    ***
   const                                   0.1779     0.0828     **
@@ -774,8 +775,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0141     0.0057     **
   mode_Online_Opt_In_Panel               -0.0155     0.0044    ***
   mode_Probability_Panel                 -0.0255     0.0048    ***
-  mode_Text                               0.0088     0.0063       
-  mode_Text_to_Web                       -0.0087     0.0058       
+  mode_Text_to_Web                        0.0001     0.0047       
+  mode_Text_only                          0.0088     0.0063       
   pop_a                                  -0.0351     0.0077    ***
   pop_rv                                 -0.0203     0.0065    ***
   const                                   0.1278     0.0903       
@@ -811,8 +812,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0165     0.0060    ***
   mode_Online_Opt_In_Panel               -0.0143     0.0055     **
   mode_Probability_Panel                    ----       ----       
-  mode_Text                               0.0157     0.0065     **
-  mode_Text_to_Web                       -0.0122     0.0059     **
+  mode_Text_to_Web                        0.0035     0.0062       
+  mode_Text_only                          0.0157     0.0065     **
   pop_a                                  -0.0285     0.0138     **
   pop_rv                                 -0.0177     0.0066    ***
   const                                   0.1590     0.1067       
@@ -843,14 +844,14 @@ REGRESSIONS WITH MODE CONTROLS
   mode_App_Panel                            ----       ----       
   mode_Email                                ----       ----       
   mode_IVR                                0.0060     0.0138       
-  mode_Mail_to_Phone                     -0.0000     0.0000    ***
+  mode_Mail_to_Phone                      0.0000     0.0000    ***
   mode_Mail_to_Web                        0.0000     0.0000    ***
   mode_Online_Ad                          0.0164     0.0119       
   mode_Online_Matched_Sample             -0.0343     0.0087    ***
   mode_Online_Opt_In_Panel               -0.0181     0.0112       
-  mode_Probability_Panel                 -0.0000     0.0000       
-  mode_Text                               0.0027     0.0061       
-  mode_Text_to_Web                       -0.0224     0.0111      *
+  mode_Probability_Panel                 -0.0000     0.0000    ***
+  mode_Text_to_Web                       -0.0197     0.0131       
+  mode_Text_only                          0.0027     0.0061       
   pop_a                                     ----       ----       
   pop_rv                                 -0.0128     0.0107       
   const                                   0.1729     0.1026       
@@ -887,8 +888,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0125     0.0065      *
   mode_Online_Opt_In_Panel               -0.0078     0.0062       
   mode_Probability_Panel                 -0.0456     0.0150    ***
-  mode_Text                               0.0105     0.0096       
-  mode_Text_to_Web                       -0.0025     0.0107       
+  mode_Text_to_Web                        0.0080     0.0065       
+  mode_Text_only                          0.0105     0.0096       
   pop_a                                  -0.0227     0.0134      *
   pop_rv                                 -0.0159     0.0068     **
   const                                  -0.2148     0.0440    ***
@@ -924,8 +925,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0140     0.0060     **
   mode_Online_Opt_In_Panel               -0.0078     0.0061       
   mode_Probability_Panel                 -0.0426     0.0153    ***
-  mode_Text                               0.0142     0.0096       
-  mode_Text_to_Web                       -0.0053     0.0101       
+  mode_Text_to_Web                        0.0089     0.0067       
+  mode_Text_only                          0.0142     0.0096       
   pop_a                                  -0.0228     0.0129      *
   pop_rv                                 -0.0183     0.0074     **
   const                                  -0.2042     0.0462    ***
@@ -961,8 +962,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0195     0.0063    ***
   mode_Online_Opt_In_Panel               -0.0106     0.0055      *
   mode_Probability_Panel                 -0.0477     0.0197     **
-  mode_Text                               0.0028     0.0112       
-  mode_Text_to_Web                        0.0037     0.0106       
+  mode_Text_to_Web                        0.0065     0.0074       
+  mode_Text_only                          0.0028     0.0112       
   pop_a                                  -0.0154     0.0180       
   pop_rv                                 -0.0170     0.0068     **
   const                                  -0.2156     0.0457    ***
@@ -998,8 +999,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0265     0.0076    ***
   mode_Online_Opt_In_Panel               -0.0145     0.0076      *
   mode_Probability_Panel                 -0.0378     0.0313       
-  mode_Text                               0.0109     0.0099       
-  mode_Text_to_Web                       -0.0052     0.0103       
+  mode_Text_to_Web                        0.0056     0.0112       
+  mode_Text_only                          0.0109     0.0099       
   pop_a                                  -0.0142     0.0116       
   pop_rv                                 -0.0106     0.0077       
   const                                  -0.2225     0.0453    ***
@@ -1030,14 +1031,14 @@ REGRESSIONS WITH MODE CONTROLS
   mode_App_Panel                          0.0680     0.0174    ***
   mode_Email                                ----       ----       
   mode_IVR                                0.0237     0.0116     **
-  mode_Mail_to_Phone                      0.0000     0.0000       
+  mode_Mail_to_Phone                     -0.0000     0.0000      *
   mode_Mail_to_Web                          ----       ----       
   mode_Online_Ad                          0.0523     0.0140    ***
   mode_Online_Matched_Sample             -0.0105     0.0105       
   mode_Online_Opt_In_Panel               -0.0099     0.0098       
   mode_Probability_Panel                    ----       ----       
-  mode_Text                               0.0153     0.0095       
-  mode_Text_to_Web                       -0.0138     0.0125       
+  mode_Text_to_Web                        0.0015     0.0142       
+  mode_Text_only                          0.0153     0.0095       
   pop_a                                     ----       ----       
   pop_rv                                 -0.0175     0.0103      *
   const                                  -0.1537     0.0590     **
@@ -1064,16 +1065,16 @@ REGRESSIONS WITH MODE CONTROLS
   partisan_flag                           0.0367     0.0165     **
   pct_dk                                 -0.0024     0.0011     **
   mode_App_Panel                          0.0285     0.0174       
-  mode_Email                             -0.0000     0.0000       
+  mode_Email                              0.0000     0.0000       
   mode_IVR                               -0.0006     0.0116       
-  mode_Mail_to_Phone                      0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000       
+  mode_Mail_to_Phone                      0.0000     0.0000     **
+  mode_Mail_to_Web                       -0.0000     0.0000      *
   mode_Online_Ad                          0.0547     0.0248     **
   mode_Online_Matched_Sample             -0.0174     0.0139       
   mode_Online_Opt_In_Panel               -0.0263     0.0131     **
   mode_Probability_Panel                 -0.0254     0.0161       
-  mode_Text                              -0.0131     0.0178       
-  mode_Text_to_Web                        0.0301     0.0207       
+  mode_Text_to_Web                        0.0170     0.0169       
+  mode_Text_only                            ----       ----       
   pop_a                                   0.0123     0.0126       
   pop_rv                                  0.0140     0.0073      *
   const                                  -0.0376     0.0176     **
@@ -1081,6 +1082,7 @@ REGRESSIONS WITH MODE CONTROLS
   adjusted r2:  0.1975
   n:            671
   clusters:     380 poll_id, 73 pollster
+  note:         ---- indicates <10 observations in category
 ===========================================================================
 
 
@@ -1099,16 +1101,16 @@ REGRESSIONS WITH MODE CONTROLS
   partisan_flag                           0.0509     0.0133    ***
   pct_dk                                 -0.0021     0.0009     **
   mode_App_Panel                          0.0211     0.0247       
-  mode_Email                             -0.0000     0.0000       
+  mode_Email                             -0.0000     0.0000     **
   mode_IVR                               -0.0065     0.0099       
-  mode_Mail_to_Phone                      0.0000     0.0000       
-  mode_Mail_to_Web                        0.0000     0.0000       
+  mode_Mail_to_Phone                     -0.0000     0.0000       
+  mode_Mail_to_Web                       -0.0000     0.0000       
   mode_Online_Ad                          0.0305     0.0208       
   mode_Online_Matched_Sample             -0.0228     0.0134      *
   mode_Online_Opt_In_Panel               -0.0288     0.0126     **
   mode_Probability_Panel                 -0.0221     0.0156       
-  mode_Text                              -0.0078     0.0220       
-  mode_Text_to_Web                        0.0185     0.0238       
+  mode_Text_to_Web                        0.0107     0.0135       
+  mode_Text_only                            ----       ----       
   pop_a                                   0.0027     0.0102       
   pop_rv                                  0.0123     0.0079       
   const                                  -0.0247     0.0173       
@@ -1116,6 +1118,7 @@ REGRESSIONS WITH MODE CONTROLS
   adjusted r2:  0.3164
   n:            561
   clusters:     325 poll_id, 69 pollster
+  note:         ---- indicates <10 observations in category
 ===========================================================================
 
 
@@ -1134,7 +1137,7 @@ REGRESSIONS WITH MODE CONTROLS
   partisan_flag                             ----       ----       
   pct_dk                                 -0.0024     0.0009    ***
   mode_App_Panel                          0.0210     0.0242       
-  mode_Email                              0.0000     0.0000     **
+  mode_Email                              0.0000     0.0000       
   mode_IVR                                0.0109     0.0121       
   mode_Mail_to_Phone                      0.0000     0.0000    ***
   mode_Mail_to_Web                       -0.0000     0.0000    ***
@@ -1142,8 +1145,8 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Online_Matched_Sample             -0.0398     0.0168     **
   mode_Online_Opt_In_Panel               -0.0466     0.0149    ***
   mode_Probability_Panel                 -0.0356     0.0184      *
-  mode_Text                              -0.0766     0.0225    ***
-  mode_Text_to_Web                        0.0848     0.0207    ***
+  mode_Text_to_Web                        0.0082     0.0129       
+  mode_Text_only                            ----       ----       
   pop_a                                   0.0070     0.0119       
   pop_rv                                  0.0108     0.0075       
   const                                   0.0091     0.0188       
@@ -1173,13 +1176,13 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Email                              0.0000     0.0000       
   mode_IVR                                  ----       ----       
   mode_Mail_to_Phone                     -0.0000     0.0000    ***
-  mode_Mail_to_Web                       -0.0000     0.0000    ***
+  mode_Mail_to_Web                        0.0000     0.0000       
   mode_Online_Ad                          0.0250     0.0112     **
   mode_Online_Matched_Sample             -0.0435     0.0102    ***
   mode_Online_Opt_In_Panel               -0.0452     0.0122    ***
   mode_Probability_Panel                 -0.0269     0.0122     **
-  mode_Text                              -0.0788     0.0252    ***
-  mode_Text_to_Web                        0.0893     0.0259    ***
+  mode_Text_to_Web                        0.0105     0.0147       
+  mode_Text_only                            ----       ----       
   pop_a                                   0.0135     0.0118       
   pop_rv                                  0.0083     0.0075       
   const                                   0.0137     0.0155       
@@ -1209,13 +1212,13 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Email                             -0.0000     0.0000       
   mode_IVR                                  ----       ----       
   mode_Mail_to_Phone                     -0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000       
+  mode_Mail_to_Web                        0.0000     0.0000       
   mode_Online_Ad                            ----       ----       
   mode_Online_Matched_Sample                ----       ----       
   mode_Online_Opt_In_Panel               -0.0324     0.0139     **
   mode_Probability_Panel                    ----       ----       
-  mode_Text                              -0.0110     0.0155       
-  mode_Text_to_Web                        0.0484     0.0239      *
+  mode_Text_to_Web                        0.0374     0.0213      *
+  mode_Text_only                            ----       ----       
   pop_a                                     ----       ----       
   pop_rv                                 -0.0074     0.0125       
   const                                  -0.0447     0.0243      *
@@ -1264,16 +1267,16 @@ pct_dk                            -0.002      0.001   ***    -0.002      0.001  
 pop_a                              0.012      0.009           0.003      0.008           0.007      0.009           0.014      0.011          -0.004      0.030      
 pop_rv                             0.014      0.004   ***     0.012      0.004   ***     0.011      0.005    **     0.008      0.005          -0.007      0.010      
 mode_App_Panel                     0.028      0.012    **     0.021      0.011     *     0.021      0.013           0.026      0.019          -0.022      0.039      
-mode_Email                        -0.000      0.000          -0.000      0.000           0.000      0.000    **     0.000      0.000          -0.000      0.000      
+mode_Email                         0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000           0.000      0.000          -0.000      0.000      
 mode_IVR                          -0.001      0.011          -0.006      0.011           0.011      0.014           0.009      0.016          -0.018      0.017      
-mode_Mail_to_Phone                 0.000      0.000           0.000      0.000           0.000      0.000    **    -0.000      0.000   ***    -0.000      0.000      
-mode_Mail_to_Web                  -0.000      0.000           0.000      0.000          -0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000      
+mode_Mail_to_Phone                 0.000      0.000    **    -0.000      0.000           0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000      
+mode_Mail_to_Web                  -0.000      0.000   ***    -0.000      0.000          -0.000      0.000   ***     0.000      0.000           0.000      0.000      
 mode_Online_Ad                     0.055      0.012   ***     0.030      0.012   ***     0.022      0.012     *     0.025      0.013     *     0.027      0.026      
 mode_Online_Matched_Sample        -0.017      0.008    **    -0.023      0.007   ***    -0.040      0.008   ***    -0.043      0.011   ***    -0.028      0.024      
 mode_Online_Opt_In_Panel          -0.026      0.006   ***    -0.029      0.005   ***    -0.047      0.006   ***    -0.045      0.009   ***    -0.032      0.023      
 mode_Probability_Panel            -0.025      0.007   ***    -0.022      0.007   ***    -0.036      0.008   ***    -0.027      0.010   ***    -0.068      0.027    **
-mode_Text                         -0.013      0.025          -0.008      0.022          -0.077      0.031    **    -0.079      0.031    **    -0.011      0.040      
-mode_Text_to_Web                   0.030      0.025           0.019      0.022           0.085      0.031   ***     0.089      0.030   ***     0.048      0.041      
+mode_Text_only                    -0.013      0.025          -0.008      0.022          -0.077      0.031    **    -0.079      0.031    **    -0.011      0.040      
+mode_Text_to_Web                   0.017      0.007    **     0.011      0.007           0.008      0.007           0.011      0.008           0.037      0.011   ***
 
 Constant                          -0.038      0.007          -0.025      0.006           0.009      0.009           0.014      0.011          -0.045      0.032      
 
@@ -1327,14 +1330,14 @@ pop_rv                            -0.016      0.004   ***    -0.018      0.004  
 mode_App_Panel                     0.044      0.011   ***     0.041      0.011   ***     0.035      0.012   ***     0.024      0.014     *     0.068      0.020   ***
 mode_Email                         0.011      0.009           0.009      0.010           0.014      0.010           0.012      0.012          -0.005      0.027      
 mode_IVR                           0.010      0.007           0.005      0.007           0.011      0.008           0.005      0.009           0.024      0.012     *
-mode_Mail_to_Phone                 0.030      0.025           0.031      0.025           0.022      0.024           0.024      0.025           0.000      0.000      
+mode_Mail_to_Phone                 0.030      0.025           0.031      0.025           0.022      0.024           0.024      0.025          -0.000      0.000   ***
 mode_Mail_to_Web                  -0.062      0.018   ***    -0.064      0.018   ***    -0.065      0.018   ***    -0.073      0.018   ***    -0.510      0.048   ***
 mode_Online_Ad                     0.040      0.007   ***     0.037      0.007   ***     0.030      0.007   ***     0.035      0.009   ***     0.052      0.012   ***
 mode_Online_Matched_Sample        -0.013      0.007     *    -0.014      0.007     *    -0.020      0.008    **    -0.026      0.009   ***    -0.010      0.012      
 mode_Online_Opt_In_Panel          -0.008      0.004    **    -0.008      0.004    **    -0.011      0.004    **    -0.015      0.006   ***    -0.010      0.009      
 mode_Probability_Panel            -0.046      0.011   ***    -0.043      0.011   ***    -0.048      0.013   ***    -0.038      0.016    **     0.035      0.025      
-mode_Text                          0.010      0.009           0.014      0.009           0.003      0.009           0.011      0.011           0.015      0.013      
-mode_Text_to_Web                  -0.002      0.009          -0.005      0.009           0.004      0.009          -0.005      0.010          -0.014      0.014      
+mode_Text_only                     0.010      0.009           0.014      0.009           0.003      0.009           0.011      0.011           0.015      0.013      
+mode_Text_to_Web                   0.008      0.004     *     0.009      0.004    **     0.006      0.005           0.006      0.006           0.002      0.010      
 
 Constant                          -0.215      0.028          -0.204      0.028          -0.216      0.031          -0.222      0.038          -0.154      0.051      
 
@@ -1388,14 +1391,14 @@ pop_rv                            -0.018      0.003   ***    -0.023      0.004  
 mode_App_Panel                     0.046      0.014   ***     0.040      0.014   ***     0.030      0.014    **     0.021      0.016           0.025      0.018      
 mode_Email                        -0.018      0.008    **    -0.028      0.009   ***    -0.035      0.010   ***    -0.032      0.011   ***     0.027      0.029      
 mode_IVR                           0.026      0.006   ***     0.023      0.006   ***     0.027      0.007   ***     0.014      0.008     *     0.006      0.011      
-mode_Mail_to_Phone                -0.038      0.020     *    -0.040      0.020    **    -0.051      0.019   ***    -0.047      0.019    **    -0.000      0.000   ***
+mode_Mail_to_Phone                -0.038      0.020     *    -0.040      0.020    **    -0.051      0.019   ***    -0.047      0.019    **     0.000      0.000   ***
 mode_Mail_to_Web                   0.021      0.016           0.027      0.016     *     0.038      0.016    **     0.023      0.017           0.000      0.000   ***
 mode_Online_Ad                     0.035      0.006   ***     0.029      0.006   ***     0.024      0.006   ***     0.028      0.007   ***     0.016      0.010     *
 mode_Online_Matched_Sample        -0.004      0.007          -0.008      0.006          -0.014      0.007    **    -0.016      0.007    **    -0.034      0.010   ***
 mode_Online_Opt_In_Panel          -0.012      0.003   ***    -0.015      0.003   ***    -0.016      0.004   ***    -0.014      0.005   ***    -0.018      0.007    **
-mode_Probability_Panel            -0.016      0.013          -0.015      0.012          -0.026      0.014     *    -0.019      0.017          -0.000      0.000      
-mode_Text                          0.013      0.008     *     0.017      0.007    **     0.009      0.007           0.016      0.008     *     0.003      0.010      
-mode_Text_to_Web                  -0.007      0.007          -0.012      0.007          -0.009      0.007          -0.012      0.008          -0.022      0.011    **
+mode_Probability_Panel            -0.016      0.013          -0.015      0.012          -0.026      0.014     *    -0.019      0.017          -0.000      0.000   ***
+mode_Text_only                     0.013      0.008     *     0.017      0.007    **     0.009      0.007           0.016      0.008     *     0.003      0.010      
+mode_Text_to_Web                   0.006      0.004           0.005      0.004           0.000      0.004           0.003      0.006          -0.020      0.009    **
 
 Constant                           0.204      0.058           0.178      0.058           0.128      0.061           0.159      0.074           0.173      0.091      
 
@@ -1409,16 +1412,16 @@ MODE COEFFICIENTS ACROSS SAMPLES
 Mode                        National      All States           Swing
 ......................................................................
 App_Panel                   0.03**         0.04***        0.05***
-Email                      -0.00           0.01          -0.02** 
+Email                       0.00***        0.01          -0.02** 
 IVR                        -0.00           0.01           0.03***
-Mail_to_Phone               0.00           0.03          -0.04*  
-Mail_to_Web                -0.00          -0.06***        0.02   
+Mail_to_Phone               0.00**         0.03          -0.04*  
+Mail_to_Web                -0.00***       -0.06***        0.02   
 Online_Ad                   0.05***        0.04***        0.03***
 Online_Matched_Sample       -0.02**        -0.01*         -0.00   
 Online_Opt_In_Panel        -0.03***       -0.01**        -0.01***
 Probability_Panel          -0.03***       -0.05***       -0.02   
-Text                       -0.01           0.01           0.01*  
-Text_to_Web                 0.03          -0.00          -0.01   
+Text_only                  -0.01           0.01           0.01*  
+Text_to_Web                 0.02**         0.01*          0.01   
 
 note: *** p<0.01, ** p<0.05, * p<0.10
 all coefficients relative to Live Phone (reference category)
@@ -1554,69 +1557,69 @@ CORRELATION MATRIX INDEPENDENT VARIABLES, WITH MODE
 ==============================================================================================================
 
 Swing state-level polls:
-                            duration_days  days_before_election  partisan_flag    pct_dk  abs_margin  turnout_pct  mode_App_Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online_Ad  mode_Online_Matched_Sample  mode_Online_Opt_In_Panel  mode_Probability_Panel  mode_Text  mode_Text_to_Web     pop_a    pop_rv
-duration_days                    1.000000             -0.126638      -0.140082 -0.163536    0.015603    -0.017846        0.409246    0.032618 -0.184839            0.055210          0.181054       -0.151217                    0.212035                 -0.110418                0.028396  -0.182057         -0.100312  0.359895  0.005182
-days_before_election            -0.126638              1.000000       0.076630  0.206115   -0.021305     0.021545       -0.043911   -0.044887  0.071945           -0.052271         -0.087776       -0.203990                   -0.121636                  0.088070               -0.003999   0.029905          0.086679  0.023505  0.124552
-partisan_flag                   -0.140082              0.076630       1.000000  0.160553   -0.002218     0.006747       -0.035612    0.352209  0.332725           -0.029465         -0.044688       -0.009801                   -0.066016                  0.030703               -0.035612   0.224521          0.054729 -0.053882 -0.128851
-pct_dk                          -0.163536              0.206115       0.160553  1.000000    0.034247    -0.057134       -0.176656    0.105849 -0.007500           -0.029617          0.021367       -0.196774                    0.049835                  0.114895               -0.076788  -0.055899         -0.122237  0.076232  0.104074
-abs_margin                       0.015603             -0.021305      -0.002218  0.034247    1.000000    -0.892075       -0.003532   -0.042815  0.011717           -0.034980         -0.015395        0.006478                   -0.036233                  0.050185               -0.044199   0.001582          0.008195 -0.012949  0.020083
-turnout_pct                     -0.017846              0.021545       0.006747 -0.057134   -0.892075     1.000000        0.008277    0.048577 -0.016917            0.025261          0.007040       -0.013410                    0.032618                 -0.056173                0.057537   0.004177         -0.002643  0.007171 -0.023510
-mode_App_Panel                   0.409246             -0.043911      -0.035612 -0.176656   -0.003532     0.008277        1.000000   -0.029167 -0.039194           -0.011353         -0.017219       -0.034232                   -0.030273                 -0.097716               -0.013722  -0.078297         -0.066335 -0.020762 -0.068471
-mode_Email                       0.032618             -0.044887       0.352209  0.105849   -0.042815     0.048577       -0.029167    1.000000  0.276464            0.201355          0.464978       -0.072762                   -0.064346                  0.012382               -0.029167   0.263164          0.069398 -0.044130 -0.046144
-mode_IVR                        -0.184839              0.071945       0.332725 -0.007500    0.011717    -0.016917       -0.039194    0.276464  1.000000           -0.032428         -0.049182       -0.097776                   -0.086467                  0.155313               -0.039194   0.470148          0.230199 -0.059302 -0.008414
-mode_Mail_to_Phone               0.055210             -0.052271      -0.029465 -0.029617   -0.034980     0.025261       -0.011353    0.201355 -0.032428            1.000000          0.659348       -0.028323                   -0.025047                 -0.080849               -0.011353   0.049647          0.068410 -0.017178  0.024245
-mode_Mail_to_Web                 0.181054             -0.087776      -0.044688  0.021367   -0.015395     0.007040       -0.017219    0.464978 -0.049182            0.659348          1.000000       -0.042957                   -0.037988                 -0.122619               -0.017219   0.156287          0.191017 -0.026053  0.062537
-mode_Online_Ad                  -0.151217             -0.203990      -0.009801 -0.196774    0.006478    -0.013410       -0.034232   -0.072762 -0.097776           -0.028323         -0.042957        1.000000                   -0.075522                 -0.243771               -0.034232  -0.154518         -0.121514 -0.051795 -0.149176
-mode_Online_Matched_Sample       0.212035             -0.121636      -0.066016  0.049835   -0.036233     0.032618       -0.030273   -0.064346 -0.086467           -0.025047         -0.037988       -0.075522                    1.000000                 -0.215576               -0.030273  -0.172735         -0.146344  0.259041 -0.006768
-mode_Online_Opt_In_Panel        -0.110418              0.088070       0.030703  0.114895    0.050185    -0.056173       -0.097716    0.012382  0.155313           -0.080849         -0.122619       -0.243771                   -0.215576                  1.000000               -0.097716   0.030649          0.016999 -0.077785  0.021686
-mode_Probability_Panel           0.028396             -0.003999      -0.035612 -0.076788   -0.044199     0.057537       -0.013722   -0.029167 -0.039194           -0.011353         -0.017219       -0.034232                   -0.030273                 -0.097716                1.000000  -0.078297         -0.066335 -0.020762 -0.001251
-mode_Text                       -0.182057              0.029905       0.224521 -0.055899    0.001582     0.004177       -0.078297    0.263164  0.470148            0.049647          0.156287       -0.154518                   -0.172735                  0.030649               -0.078297   1.000000          0.847216 -0.118466 -0.025003
-mode_Text_to_Web                -0.100312              0.086679       0.054729 -0.122237    0.008195    -0.002643       -0.066335    0.069398  0.230199            0.068410          0.191017       -0.121514                   -0.146344                  0.016999               -0.066335   0.847216          1.000000 -0.100366 -0.032089
-pop_a                            0.359895              0.023505      -0.053882  0.076232   -0.012949     0.007171       -0.020762   -0.044130 -0.059302           -0.017178         -0.026053       -0.051795                    0.259041                 -0.077785               -0.020762  -0.118466         -0.100366  1.000000 -0.103599
-pop_rv                           0.005182              0.124552      -0.128851  0.104074    0.020083    -0.023510       -0.068471   -0.046144 -0.008414            0.024245          0.062537       -0.149176                   -0.006768                  0.021686               -0.001251  -0.025003         -0.032089 -0.103599  1.000000
+                            duration_days  days_before_election  partisan_flag    pct_dk  abs_margin  turnout_pct  mode_App_Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online_Ad  mode_Online_Matched_Sample  mode_Online_Opt_In_Panel  mode_Probability_Panel  mode_Text_to_Web  mode_Text_only     pop_a    pop_rv
+duration_days                    1.000000             -0.126638      -0.140082 -0.163536    0.015603    -0.017846        0.409246    0.032618 -0.184839            0.055210          0.181054       -0.151217                    0.212035                 -0.110418                0.028396         -0.100312       -0.165542  0.359895  0.005182
+days_before_election            -0.126638              1.000000       0.076630  0.206115   -0.021305     0.021545       -0.043911   -0.044887  0.071945           -0.052271         -0.087776       -0.203990                   -0.121636                  0.088070               -0.003999          0.086679       -0.094054  0.023505  0.124552
+partisan_flag                   -0.140082              0.076630       1.000000  0.160553   -0.002218     0.006747       -0.035612    0.352209  0.332725           -0.029465         -0.044688       -0.009801                   -0.066016                  0.030703               -0.035612          0.054729        0.323290 -0.053882 -0.128851
+pct_dk                          -0.163536              0.206115       0.160553  1.000000    0.034247    -0.057134       -0.176656    0.105849 -0.007500           -0.029617          0.021367       -0.196774                    0.049835                  0.114895               -0.076788         -0.122237        0.107094  0.076232  0.104074
+abs_margin                       0.015603             -0.021305      -0.002218  0.034247    1.000000    -0.892075       -0.003532   -0.042815  0.011717           -0.034980         -0.015395        0.006478                   -0.036233                  0.050185               -0.044199          0.008195       -0.011210 -0.012949  0.020083
+turnout_pct                     -0.017846              0.021545       0.006747 -0.057134   -0.892075     1.000000        0.008277    0.048577 -0.016917            0.025261          0.007040       -0.013410                    0.032618                 -0.056173                0.057537         -0.002643        0.012338  0.007171 -0.023510
+mode_App_Panel                   0.409246             -0.043911      -0.035612 -0.176656   -0.003532     0.008277        1.000000   -0.029167 -0.039194           -0.011353         -0.017219       -0.034232                   -0.030273                 -0.097716               -0.013722         -0.066335       -0.031137 -0.020762 -0.068471
+mode_Email                       0.032618             -0.044887       0.352209  0.105849   -0.042815     0.048577       -0.029167    1.000000  0.276464            0.201355          0.464978       -0.072762                   -0.064346                  0.012382               -0.029167          0.069398        0.369866 -0.044130 -0.046144
+mode_IVR                        -0.184839              0.071945       0.332725 -0.007500    0.011717    -0.016917       -0.039194    0.276464  1.000000           -0.032428         -0.049182       -0.097776                   -0.086467                  0.155313               -0.039194          0.230199        0.477325 -0.059302 -0.008414
+mode_Mail_to_Phone               0.055210             -0.052271      -0.029465 -0.029617   -0.034980     0.025261       -0.011353    0.201355 -0.032428            1.000000          0.659348       -0.028323                   -0.025047                 -0.080849               -0.011353          0.068410       -0.025762 -0.017178  0.024245
+mode_Mail_to_Web                 0.181054             -0.087776      -0.044688  0.021367   -0.015395     0.007040       -0.017219    0.464978 -0.049182            0.659348          1.000000       -0.042957                   -0.037988                 -0.122619               -0.017219          0.191017       -0.039072 -0.026053  0.062537
+mode_Online_Ad                  -0.151217             -0.203990      -0.009801 -0.196774    0.006478    -0.013410       -0.034232   -0.072762 -0.097776           -0.028323         -0.042957        1.000000                   -0.075522                 -0.243771               -0.034232         -0.121514       -0.077677 -0.051795 -0.149176
+mode_Online_Matched_Sample       0.212035             -0.121636      -0.066016  0.049835   -0.036233     0.032618       -0.030273   -0.064346 -0.086467           -0.025047         -0.037988       -0.075522                    1.000000                 -0.215576               -0.030273         -0.146344       -0.068692  0.259041 -0.006768
+mode_Online_Opt_In_Panel        -0.110418              0.088070       0.030703  0.114895    0.050185    -0.056173       -0.097716    0.012382  0.155313           -0.080849         -0.122619       -0.243771                   -0.215576                  1.000000               -0.097716          0.016999        0.027676 -0.077785  0.021686
+mode_Probability_Panel           0.028396             -0.003999      -0.035612 -0.076788   -0.044199     0.057537       -0.013722   -0.029167 -0.039194           -0.011353         -0.017219       -0.034232                   -0.030273                 -0.097716                1.000000         -0.066335       -0.031137 -0.020762 -0.001251
+mode_Text_to_Web                -0.100312              0.086679       0.054729 -0.122237    0.008195    -0.002643       -0.066335    0.069398  0.230199            0.068410          0.191017       -0.121514                   -0.146344                  0.016999               -0.066335          1.000000       -0.150519 -0.100366 -0.032089
+mode_Text_only                  -0.165542             -0.094054       0.323290  0.107094   -0.011210     0.012338       -0.031137    0.369866  0.477325           -0.025762         -0.039072       -0.077677                   -0.068692                  0.027676               -0.031137         -0.150519        1.000000 -0.047111  0.008894
+pop_a                            0.359895              0.023505      -0.053882  0.076232   -0.012949     0.007171       -0.020762   -0.044130 -0.059302           -0.017178         -0.026053       -0.051795                    0.259041                 -0.077785               -0.020762         -0.100366       -0.047111  1.000000 -0.103599
+pop_rv                           0.005182              0.124552      -0.128851  0.104074    0.020083    -0.023510       -0.068471   -0.046144 -0.008414            0.024245          0.062537       -0.149176                   -0.006768                  0.021686               -0.001251         -0.032089        0.008894 -0.103599  1.000000
 
 State-level polls:
-                            duration_days  days_before_election  partisan_flag    pct_dk  abs_margin  turnout_pct  mode_App_Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online_Ad  mode_Online_Matched_Sample  mode_Online_Opt_In_Panel  mode_Probability_Panel  mode_Text  mode_Text_to_Web     pop_a    pop_rv
-duration_days                    1.000000             -0.161782      -0.151623 -0.214950    0.160507    -0.107721        0.578994    0.030818 -0.187624            0.030838          0.130042       -0.138108                    0.212071                 -0.150338               -0.010372  -0.237909         -0.172758  0.307660 -0.042925
-days_before_election            -0.161782              1.000000       0.068012  0.178357   -0.071139     0.054950       -0.070747   -0.049907  0.061625           -0.042573         -0.082018       -0.190394                   -0.128355                  0.108941                0.002542   0.034787          0.080112 -0.003612  0.127493
-partisan_flag                   -0.151623              0.068012       1.000000  0.125919    0.020972    -0.010519       -0.062805    0.289038  0.330498           -0.025200         -0.040418        0.005325                   -0.072167                 -0.000701               -0.045288   0.219636          0.060515 -0.056048 -0.071001
-pct_dk                          -0.214950              0.178357       0.125919  1.000000    0.028957    -0.005923       -0.296349    0.074288 -0.008446           -0.026931          0.020458       -0.152157                    0.027734                  0.099280               -0.062715  -0.005838         -0.045778  0.110474  0.126858
-abs_margin                       0.160507             -0.071139       0.020972  0.028957    1.000000    -0.559948        0.227851   -0.042313 -0.007568           -0.045873         -0.034960       -0.065616                   -0.011740                 -0.080077                0.064683   0.025788          0.055733 -0.015942 -0.060125
-turnout_pct                     -0.107721              0.054950      -0.010519 -0.005923   -0.559948     1.000000       -0.149489    0.043774 -0.036397            0.037841          0.034405        0.036705                    0.000365                  0.017127                0.042790  -0.004266         -0.019159  0.017778 -0.003180
-mode_App_Panel                   0.578994             -0.070747      -0.062805 -0.296349    0.227851    -0.149489        1.000000   -0.046422 -0.067391           -0.016954         -0.027193       -0.055334                   -0.054520                 -0.166722               -0.030469  -0.139032         -0.121400 -0.037708 -0.114011
-mode_Email                       0.030818             -0.049907       0.289038  0.074288   -0.042313     0.043774       -0.046422    1.000000  0.234975            0.190744          0.431863       -0.060792                   -0.059898                  0.003812               -0.033474   0.223011          0.055954 -0.041427 -0.030903
-mode_IVR                        -0.187624              0.061625       0.330498 -0.008446   -0.007568    -0.036397       -0.067391    0.234975  1.000000           -0.027040         -0.043370       -0.088253                   -0.086956                  0.141254               -0.048595   0.435531          0.218656 -0.060141  0.033408
-mode_Mail_to_Phone               0.030838             -0.042573      -0.025200 -0.026931   -0.045873     0.037841       -0.016954    0.190744 -0.027040            1.000000          0.623480       -0.022202                   -0.021876                 -0.066896               -0.012226   0.041157          0.054034 -0.015130  0.024963
-mode_Mail_to_Web                 0.130042             -0.082018      -0.040418  0.020458   -0.034960     0.034405       -0.027193    0.431863 -0.043370            0.623480          1.000000       -0.035611                   -0.035087                 -0.107295               -0.019609   0.114139          0.137672 -0.024267  0.060291
-mode_Online_Ad                  -0.138108             -0.190394       0.005325 -0.152157   -0.065616     0.036705       -0.055334   -0.060792 -0.088253           -0.022202         -0.035611        1.000000                   -0.071398                 -0.218334               -0.039901  -0.113519         -0.086326 -0.049381 -0.126227
-mode_Online_Matched_Sample       0.212071             -0.128355      -0.072167  0.027734   -0.011740     0.000365       -0.054520   -0.059898 -0.086956           -0.021876         -0.035087       -0.071398                    1.000000                 -0.215123               -0.039315  -0.179395         -0.156644  0.258631 -0.006853
-mode_Online_Opt_In_Panel        -0.150338              0.108941      -0.000701  0.099280   -0.080077     0.017127       -0.166722    0.003812  0.141254           -0.066896         -0.107295       -0.218334                   -0.215123                  1.000000               -0.120223   0.016861          0.011311 -0.049740  0.014869
-mode_Probability_Panel          -0.010372              0.002542      -0.045288 -0.062715    0.064683     0.042790       -0.030469   -0.033474 -0.048595           -0.012226         -0.019609       -0.039901                   -0.039315                 -0.120223                1.000000  -0.100256         -0.087541 -0.027191 -0.022306
-mode_Text                       -0.237909              0.034787       0.219636 -0.005838    0.025788    -0.004266       -0.139032    0.223011  0.435531            0.041157          0.114139       -0.113519                   -0.179395                  0.016861               -0.100256   1.000000          0.873180 -0.109158  0.014926
-mode_Text_to_Web                -0.172758              0.080112       0.060515 -0.045778    0.055733    -0.019159       -0.121400    0.055954  0.218656            0.054034          0.137672       -0.086326                   -0.156644                  0.011311               -0.087541   0.873180          1.000000 -0.092530  0.003163
-pop_a                            0.307660             -0.003612      -0.056048  0.110474   -0.015942     0.017778       -0.037708   -0.041427 -0.060141           -0.015130         -0.024267       -0.049381                    0.258631                 -0.049740               -0.027191  -0.109158         -0.092530  1.000000 -0.101745
-pop_rv                          -0.042925              0.127493      -0.071001  0.126858   -0.060125    -0.003180       -0.114011   -0.030903  0.033408            0.024963          0.060291       -0.126227                   -0.006853                  0.014869               -0.022306   0.014926          0.003163 -0.101745  1.000000
+                            duration_days  days_before_election  partisan_flag    pct_dk  abs_margin  turnout_pct  mode_App_Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online_Ad  mode_Online_Matched_Sample  mode_Online_Opt_In_Panel  mode_Probability_Panel  mode_Text_to_Web  mode_Text_only     pop_a    pop_rv
+duration_days                    1.000000             -0.161782      -0.151623 -0.214950    0.160507    -0.107721        0.578994    0.030818 -0.187624            0.030838          0.130042       -0.138108                    0.212071                 -0.150338               -0.010372         -0.172758       -0.152109  0.307660 -0.042925
+days_before_election            -0.161782              1.000000       0.068012  0.178357   -0.071139     0.054950       -0.070747   -0.049907  0.061625           -0.042573         -0.082018       -0.190394                   -0.128355                  0.108941                0.002542          0.080112       -0.082853 -0.003612  0.127493
+partisan_flag                   -0.151623              0.068012       1.000000  0.125919    0.020972    -0.010519       -0.062805    0.289038  0.330498           -0.025200         -0.040418        0.005325                   -0.072167                 -0.000701               -0.045288          0.060515        0.330060 -0.056048 -0.071001
+pct_dk                          -0.214950              0.178357       0.125919  1.000000    0.028957    -0.005923       -0.296349    0.074288 -0.008446           -0.026931          0.020458       -0.152157                    0.027734                  0.099280               -0.062715         -0.045778        0.075856  0.110474  0.126858
+abs_margin                       0.160507             -0.071139       0.020972  0.028957    1.000000    -0.559948        0.227851   -0.042313 -0.007568           -0.045873         -0.034960       -0.065616                   -0.011740                 -0.080077                0.064683          0.055733       -0.054417 -0.015942 -0.060125
+turnout_pct                     -0.107721              0.054950      -0.010519 -0.005923   -0.559948     1.000000       -0.149489    0.043774 -0.036397            0.037841          0.034405        0.036705                    0.000365                  0.017127                0.042790         -0.019159        0.028046  0.017778 -0.003180
+mode_App_Panel                   0.578994             -0.070747      -0.062805 -0.296349    0.227851    -0.149489        1.000000   -0.046422 -0.067391           -0.016954         -0.027193       -0.055334                   -0.054520                 -0.166722               -0.030469         -0.121400       -0.049725 -0.037708 -0.114011
+mode_Email                       0.030818             -0.049907       0.289038  0.074288   -0.042313     0.043774       -0.046422    1.000000  0.234975            0.190744          0.431863       -0.060792                   -0.059898                  0.003812               -0.033474          0.055954        0.345652 -0.041427 -0.030903
+mode_IVR                        -0.187624              0.061625       0.330498 -0.008446   -0.007568    -0.036397       -0.067391    0.234975  1.000000           -0.027040         -0.043370       -0.088253                   -0.086956                  0.141254               -0.048595          0.218656        0.465470 -0.060141  0.033408
+mode_Mail_to_Phone               0.030838             -0.042573      -0.025200 -0.026931   -0.045873     0.037841       -0.016954    0.190744 -0.027040            1.000000          0.623480       -0.022202                   -0.021876                 -0.066896               -0.012226          0.054034       -0.019952 -0.015130  0.024963
+mode_Mail_to_Web                 0.130042             -0.082018      -0.040418  0.020458   -0.034960     0.034405       -0.027193    0.431863 -0.043370            0.623480          1.000000       -0.035611                   -0.035087                 -0.107295               -0.019609          0.137672       -0.032001 -0.024267  0.060291
+mode_Online_Ad                  -0.138108             -0.190394       0.005325 -0.152157   -0.065616     0.036705       -0.055334   -0.060792 -0.088253           -0.022202         -0.035611        1.000000                   -0.071398                 -0.218334               -0.039901         -0.086326       -0.065118 -0.049381 -0.126227
+mode_Online_Matched_Sample       0.212071             -0.128355      -0.072167  0.027734   -0.011740     0.000365       -0.054520   -0.059898 -0.086956           -0.021876         -0.035087       -0.071398                    1.000000                 -0.215123               -0.039315         -0.156644       -0.064161  0.258631 -0.006853
+mode_Online_Opt_In_Panel        -0.150338              0.108941      -0.000701  0.099280   -0.080077     0.017127       -0.166722    0.003812  0.141254           -0.066896         -0.107295       -0.218334                   -0.215123                  1.000000               -0.120223          0.011311        0.012567 -0.049740  0.014869
+mode_Probability_Panel          -0.010372              0.002542      -0.045288 -0.062715    0.064683     0.042790       -0.030469   -0.033474 -0.048595           -0.012226         -0.019609       -0.039901                   -0.039315                 -0.120223                1.000000         -0.087541       -0.035857 -0.027191 -0.022306
+mode_Text_to_Web                -0.172758              0.080112       0.060515 -0.045778    0.055733    -0.019159       -0.121400    0.055954  0.218656            0.054034          0.137672       -0.086326                   -0.156644                  0.011311               -0.087541          1.000000       -0.142867 -0.092530  0.003163
+mode_Text_only                  -0.152109             -0.082853       0.330060  0.075856   -0.054417     0.028046       -0.049725    0.345652  0.465470           -0.019952         -0.032001       -0.065118                   -0.064161                  0.012567               -0.035857         -0.142867        1.000000 -0.044375  0.024250
+pop_a                            0.307660             -0.003612      -0.056048  0.110474   -0.015942     0.017778       -0.037708   -0.041427 -0.060141           -0.015130         -0.024267       -0.049381                    0.258631                 -0.049740               -0.027191         -0.092530       -0.044375  1.000000 -0.101745
+pop_rv                          -0.042925              0.127493      -0.071001  0.126858   -0.060125    -0.003180       -0.114011   -0.030903  0.033408            0.024963          0.060291       -0.126227                   -0.006853                  0.014869               -0.022306          0.003163        0.024250 -0.101745  1.000000
 
 
 National polls:
-                            duration_days  days_before_election  partisan_flag    pct_dk  mode_App_Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online_Ad  mode_Online_Matched_Sample  mode_Online_Opt_In_Panel  mode_Probability_Panel  mode_Text  mode_Text_to_Web     pop_a    pop_rv
-duration_days                    1.000000             -0.050241      -0.071520  0.002234        0.204250         NaN -0.088000                 NaN               NaN       -0.018385                    0.084442                 -0.265844                0.256009   0.002387          0.010640  0.147971  0.025264
-days_before_election            -0.050241              1.000000      -0.013844  0.224921        0.044294         NaN  0.030310                 NaN               NaN       -0.042081                   -0.054063                  0.070646               -0.039015  -0.048349         -0.041546  0.014164  0.202742
-partisan_flag                   -0.071520             -0.013844       1.000000  0.008301       -0.028342         NaN  0.021228                 NaN               NaN        0.027265                   -0.050586                  0.091103               -0.063658  -0.021123         -0.051070 -0.045566 -0.025214
-pct_dk                           0.002234              0.224921       0.008301  1.000000       -0.150218         NaN -0.044981                 NaN               NaN       -0.047042                    0.028732                 -0.053109                0.210154  -0.127504         -0.123573  0.481229  0.125172
-mode_App_Panel                   0.204250              0.044294      -0.028342 -0.150218        1.000000         NaN -0.031430                 NaN               NaN       -0.029141                   -0.052012                 -0.163807               -0.065452  -0.054468         -0.052509 -0.046850 -0.125327
-mode_Email                            NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN       NaN       NaN
-mode_IVR                        -0.088000              0.030310       0.021228 -0.044981       -0.031430         NaN  1.000000                 NaN               NaN       -0.031430                   -0.056097                  0.091435               -0.070593   0.288044          0.211399 -0.050530 -0.029910
-mode_Mail_to_Phone                    NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN       NaN       NaN
-mode_Mail_to_Web                      NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN        NaN               NaN       NaN       NaN
-mode_Online_Ad                  -0.018385             -0.042081       0.027265 -0.047042       -0.029141         NaN -0.031430                 NaN               NaN        1.000000                   -0.052012                 -0.219422               -0.065452   0.069634          0.075381 -0.046850 -0.049990
-mode_Online_Matched_Sample       0.084442             -0.054063      -0.050586  0.028732       -0.052012         NaN -0.056097                 NaN               NaN       -0.052012                    1.000000                 -0.391635               -0.116822  -0.097217         -0.093721  0.021100  0.090060
-mode_Online_Opt_In_Panel        -0.265844              0.070646       0.091103 -0.053109       -0.163807         NaN  0.091435                 NaN               NaN       -0.219422                   -0.391635                  1.000000               -0.465235   0.014622          0.031393 -0.135891 -0.112120
-mode_Probability_Panel           0.256009             -0.039015      -0.063658  0.210154       -0.065452         NaN -0.070593                 NaN               NaN       -0.065452                   -0.116822                 -0.465235                1.000000  -0.122337         -0.117938  0.331484  0.082998
-mode_Text                        0.002387             -0.048349      -0.021123 -0.127504       -0.054468         NaN  0.288044                 NaN               NaN        0.069634                   -0.097217                  0.014622               -0.122337   1.000000          0.964043 -0.067404  0.067815
-mode_Text_to_Web                 0.010640             -0.041546      -0.051070 -0.123573       -0.052509         NaN  0.211399                 NaN               NaN        0.075381                   -0.093721                  0.031393               -0.117938   0.964043          1.000000 -0.063639  0.052107
-pop_a                            0.147971              0.014164      -0.045566  0.481229       -0.046850         NaN -0.050530                 NaN               NaN       -0.046850                    0.021100                 -0.135891                0.331484  -0.067404         -0.063639  1.000000 -0.201487
-pop_rv                           0.025264              0.202742      -0.025214  0.125172       -0.125327         NaN -0.029910                 NaN               NaN       -0.049990                    0.090060                 -0.112120                0.082998   0.067815          0.052107 -0.201487  1.000000
+                            duration_days  days_before_election  partisan_flag    pct_dk  mode_App_Panel  mode_Email  mode_IVR  mode_Mail_to_Phone  mode_Mail_to_Web  mode_Online_Ad  mode_Online_Matched_Sample  mode_Online_Opt_In_Panel  mode_Probability_Panel  mode_Text_to_Web  mode_Text_only     pop_a    pop_rv
+duration_days                    1.000000             -0.050241      -0.071520  0.002234        0.204250         NaN -0.088000                 NaN               NaN       -0.018385                    0.084442                 -0.265844                0.256009          0.010640       -0.029864  0.147971  0.025264
+days_before_election            -0.050241              1.000000      -0.013844  0.224921        0.044294         NaN  0.030310                 NaN               NaN       -0.042081                   -0.054063                  0.070646               -0.039015         -0.041546       -0.030223  0.014164  0.202742
+partisan_flag                   -0.071520             -0.013844       1.000000  0.008301       -0.028342         NaN  0.021228                 NaN               NaN        0.027265                   -0.050586                  0.091103               -0.063658         -0.051070        0.106965 -0.045566 -0.025214
+pct_dk                           0.002234              0.224921       0.008301  1.000000       -0.150218         NaN -0.044981                 NaN               NaN       -0.047042                    0.028732                 -0.053109                0.210154         -0.123573       -0.028561  0.481229  0.125172
+mode_App_Panel                   0.204250              0.044294      -0.028342 -0.150218        1.000000         NaN -0.031430                 NaN               NaN       -0.029141                   -0.052012                 -0.163807               -0.065452         -0.052509       -0.013220 -0.046850 -0.125327
+mode_Email                            NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN               NaN             NaN       NaN       NaN
+mode_IVR                        -0.088000              0.030310       0.021228 -0.044981       -0.031430         NaN  1.000000                 NaN               NaN       -0.031430                   -0.056097                  0.091435               -0.070593          0.211399        0.311892 -0.050530 -0.029910
+mode_Mail_to_Phone                    NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN               NaN             NaN       NaN       NaN
+mode_Mail_to_Web                      NaN                   NaN            NaN       NaN             NaN         NaN       NaN                 NaN               NaN             NaN                         NaN                       NaN                     NaN               NaN             NaN       NaN       NaN
+mode_Online_Ad                  -0.018385             -0.042081       0.027265 -0.047042       -0.029141         NaN -0.031430                 NaN               NaN        1.000000                   -0.052012                 -0.219422               -0.065452          0.075381       -0.013220 -0.046850 -0.049990
+mode_Online_Matched_Sample       0.084442             -0.054063      -0.050586  0.028732       -0.052012         NaN -0.056097                 NaN               NaN       -0.052012                    1.000000                 -0.391635               -0.116822         -0.093721       -0.023595  0.021100  0.090060
+mode_Online_Opt_In_Panel        -0.265844              0.070646       0.091103 -0.053109       -0.163807         NaN  0.091435                 NaN               NaN       -0.219422                   -0.391635                  1.000000               -0.465235          0.031393       -0.059593 -0.135891 -0.112120
+mode_Probability_Panel           0.256009             -0.039015      -0.063658  0.210154       -0.065452         NaN -0.070593                 NaN               NaN       -0.065452                   -0.116822                 -0.465235                1.000000         -0.117938       -0.029692  0.331484  0.082998
+mode_Text_to_Web                 0.010640             -0.041546      -0.051070 -0.123573       -0.052509         NaN  0.211399                 NaN               NaN        0.075381                   -0.093721                  0.031393               -0.117938          1.000000       -0.023820 -0.063639  0.052107
+mode_Text_only                  -0.029864             -0.030223       0.106965 -0.028561       -0.013220         NaN  0.311892                 NaN               NaN       -0.013220                   -0.023595                 -0.059593               -0.029692         -0.023820        1.000000 -0.021253  0.064898
+pop_a                            0.147971              0.014164      -0.045566  0.481229       -0.046850         NaN -0.050530                 NaN               NaN       -0.046850                    0.021100                 -0.135891                0.331484         -0.063639       -0.021253  1.000000 -0.201487
+pop_rv                           0.025264              0.202742      -0.025214  0.125172       -0.125327         NaN -0.029910                 NaN               NaN       -0.049990                    0.090060                 -0.112120                0.082998          0.052107        0.064898 -0.201487  1.000000
 ==============================================================================================================
 
   Saved: figures/correlation_swing_no_mode_no_explosion.png
