@@ -1733,6 +1733,12 @@ pop_a                            0.162709              0.013052      -0.041023  
 pop_rv                           0.036055              0.186508      -0.030590  0.118628       -0.117080         NaN -0.029591                 NaN               NaN       -0.047888                    0.078824                 -0.105983                0.071183   0.056911          0.044088 -0.193888  1.000000
 ==============================================================================================================
 
+  Saved: figures/correlation_swing_no_mode.png
+  Saved: figures/correlation_all_states_no_mode.png
+  Saved: figures/correlation_national_no_mode.png
+  Saved: figures/correlation_swing_with_mode.png
+  Saved: figures/correlation_all_states_with_mode.png
+  Saved: figures/correlation_national_with_mode.png
 
 Pollster distribution swing state:
                                                    n_polls  n_questions

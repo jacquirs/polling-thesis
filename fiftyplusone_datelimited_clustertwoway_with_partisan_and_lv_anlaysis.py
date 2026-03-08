@@ -6,7 +6,7 @@ from scipy import stats
 import matplotlib.pyplot as plt
 from statsmodels.stats.sandwich_covariance import cov_cluster_2groups
 from statsmodels.stats.stattools import durbin_watson
-
+import seaborn as sns
 
 # redirect all print output to a log file
 log_file = open('output/fiftyplusone_analysis_datelimited_clustertwoway_with_partisan_and_lv_log.txt', 'w')
@@ -1550,6 +1550,105 @@ corr_national = reg_national[national_x_vars_with_mode].corr()
 print(corr_national.to_string())
 
 print("="*110 + "\n")
+
+
+########################################################################################
+#################### CORRELATION HEATMAPS ##############################################
+########################################################################################
+plt.style.use('default')
+
+def create_correlation_heatmap(corr_matrix, title, filename, figsize=(12, 10)):
+    """
+    create a correlation heatmap with annotations
+    corr_matrix: correlation matrix to visualize
+    """
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    # Create heatmap using a purple-green colormap (avoiding red/blue)
+    sns.heatmap(
+        corr_matrix,
+        annot=True,           # Show correlation values
+        fmt='.3f',            # Format to 3 decimal places
+        cmap='PiYG',          # Purple-Yellow-Green colormap
+        center=0,             # Center colormap at 0
+        square=True,          # Make cells square
+        linewidths=0.5,       # Add gridlines
+        cbar_kws={
+            'label': 'Correlation Coefficient',
+            'shrink': 0.8
+        },
+        vmin=-1,              # Set min value
+        vmax=1,               # Set max value
+        ax=ax
+    )
+    
+    # Formatting
+    ax.set_title(title, fontsize=14, fontweight='bold', pad=20)
+    plt.xticks(rotation=45, ha='right')
+    plt.yticks(rotation=0)
+    plt.tight_layout()
+    
+    # Save figure
+    plt.savefig(filename, dpi=300, bbox_inches='tight')
+    print(f"  Saved: {filename}")
+    plt.close()
+
+# NO MODE CORRELATIONS
+
+# Swing States (no mode)
+create_correlation_heatmap(
+    corr_state_swing,
+    'Correlation Matrix: Swing State Polls (No Mode Controls)',
+    'figures/correlation_swing_no_mode.png',
+    figsize=(10, 8)
+)
+
+# All States (no mode)
+create_correlation_heatmap(
+    corr_state,
+    'Correlation Matrix: All State Polls (No Mode Controls)',
+    'figures/correlation_all_states_no_mode.png',
+    figsize=(10, 8)
+)
+
+# National (no mode)
+create_correlation_heatmap(
+    corr_national,
+    'Correlation Matrix: National Polls (No Mode Controls)',
+    'figures/correlation_national_no_mode.png',
+    figsize=(8, 6)
+)
+
+# WITH MODE CORRELATIONS
+
+# Recalculate for proper variable order in heatmap
+corr_state_swing_mode = reg_state_swing[state_x_vars_with_mode].corr()
+corr_state_mode = reg_state[state_x_vars_with_mode].corr()
+corr_national_mode = reg_national[national_x_vars_with_mode].corr()
+
+# Swing States (with mode)
+create_correlation_heatmap(
+    corr_state_swing_mode,
+    'Correlation Matrix: Swing State Polls (With Mode Controls)',
+    'figures/correlation_swing_with_mode.png',
+    figsize=(14, 12)
+)
+
+# All States (with mode)
+create_correlation_heatmap(
+    corr_state_mode,
+    'Correlation Matrix: All State Polls (With Mode Controls)',
+    'figures/correlation_all_states_with_mode.png',
+    figsize=(14, 12)
+)
+
+# National (with mode)
+create_correlation_heatmap(
+    corr_national_mode,
+    'Correlation Matrix: National Polls (With Mode Controls)',
+    'figures/correlation_national_with_mode.png',
+    figsize=(12, 10)
+)
 
 
 ########################################################################################
