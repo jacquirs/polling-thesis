@@ -231,20 +231,46 @@ def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, labe
     prints a formatted regression table with stars, adj-r2, constant, and n.
     returns the fitted statsmodels results object.
     
+    Mode variables (starting with 'mode_') are automatically filtered to only 
+    those with at least one observation in df.
+    
     if any variable has fewer than min_obs_threshold observations with variation,
     it will be displayed as '----' instead of a coefficient.
     """
-    # drop rows with any missing values in the variables used
-    df_reg = df[x_cols + [y_col, cluster_col1, cluster_col2]].dropna()
+    
+    # STEP 1: FILTER MODE VARIABLES TO ACTIVE ONES
+    # Separate mode vars from non-mode vars
+    non_mode_x = [v for v in x_cols if not v.startswith('mode_')]
+    all_mode_x = [v for v in x_cols if v.startswith('mode_')]
+    
+    # Keep only mode indicators with at least one observation in THIS specific df
+    active_mode_x = [v for v in all_mode_x if v in df.columns and df[v].sum() > 0]
+    dropped_modes = [v for v in all_mode_x if v not in active_mode_x]
+    
+    if dropped_modes:
+        print(f"\n  [{label}] Dropping zero-observation mode indicators: {dropped_modes}")
+    
+    # Reconstruct x_cols with only active modes
+    x_cols_filtered = non_mode_x + active_mode_x
+    
+    # STEP 2: CHECK NON-MODE VARIABLES EXIST
+    missing = [v for v in non_mode_x if v not in df.columns]
+    if missing:
+        print(f"  [{label}] Non-mode variables not found, skipped: {missing}")
+    
+    available = [v for v in non_mode_x if v not in missing] + active_mode_x
+    
+    # STEP 3: DROP ROWS WITH MISSING VALUES
+    df_reg = df[available + [y_col, cluster_col1, cluster_col2]].dropna()
 
     # add intercept column
-    X = sm.add_constant(df_reg[x_cols], has_constant='add')
+    X = sm.add_constant(df_reg[available], has_constant='add')
     y = df_reg[y_col]
     
     # check for low-variance variables (modes with very few observations)
     # these will cause numerical issues
     low_variance_vars = []
-    for col in x_cols:
+    for col in available:
         if col in df_reg.columns:
             # for dummy variables, check if we have enough observations in each category
             if df_reg[col].nunique() == 2:  # binary variable
@@ -304,6 +330,11 @@ def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, labe
     print(f"  ols regression: {label}")
     print(f"  dependent variable: method a  (+ = republican bias)")
     print(f"  standard errors: two-way clustered ({cluster_col1} & {cluster_col2})")
+    
+    # SHOW ACTIVE MODE COUNT IF MODES WERE INCLUDED
+    if active_mode_x:
+        print(f"  active mode indicators: {len(active_mode_x)} (out of {len(all_mode_x)} total)")
+    
     print(f"{'='*75}")
     print(f"  {'variable':<35} {'coef':>10} {'se':>10} {'sig':>6}")
     print(f"  {'-'*68}")
@@ -333,6 +364,8 @@ def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, labe
     print(f"  clusters:     {n_cluster1} {cluster_col1}, {n_cluster2} {cluster_col2}")
     if low_variance_vars:
         print(f"  note:         ---- indicates <{min_obs_threshold} observations in category")
+    if dropped_modes:
+        print(f"  note:         {len(dropped_modes)} mode(s) dropped (zero observations)")
     print(f"{'='*75}\n")
 
     # store two-way clustered results in the result object for later use
@@ -340,6 +373,8 @@ def run_ols_twoway_clustered(df, y_col, x_cols, cluster_col1, cluster_col2, labe
     result.pvalues_twoway = pvalues
     result.cov_params_twoway = cov_twoway
     result.low_variance_vars = low_variance_vars  # store for later reference
+    result.active_mode_vars = active_mode_x  # store which modes were actually used
+    result.dropped_mode_vars = dropped_modes  # store which modes were dropped
     
     return result
 

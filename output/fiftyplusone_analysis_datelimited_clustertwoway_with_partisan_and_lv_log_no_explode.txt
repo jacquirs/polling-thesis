@@ -190,10 +190,13 @@ Multi-mode polls: 340 (28.8%)
 
 REGRESSIONS WITH MODE CONTROLS
 
+  [national polls with mode controls] Dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
 ===========================================================================
   ols regression: national polls with mode controls
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 8 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -201,25 +204,23 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0000     0.0001       
   partisan_flag                           0.0367     0.0165     **
   pct_dk                                 -0.0024     0.0011     **
-  mode_App_Panel                          0.0285     0.0174       
-  mode_Email                              0.0000     0.0000       
-  mode_IVR                               -0.0006     0.0116       
-  mode_Mail_to_Phone                      0.0000     0.0000     **
-  mode_Mail_to_Web                       -0.0000     0.0000      *
-  mode_Online_Ad                          0.0547     0.0248     **
-  mode_Online_Matched_Sample             -0.0174     0.0139       
-  mode_Online_Opt_In_Panel               -0.0263     0.0131     **
-  mode_Probability_Panel                 -0.0254     0.0161       
-  mode_Text_to_Web                        0.0170     0.0169       
-  mode_Text_only                            ----       ----       
   pop_a                                   0.0123     0.0126       
   pop_rv                                  0.0140     0.0073      *
-  const                                  -0.0376     0.0176     **
+  mode_App_Panel                          0.0285     0.0174       
+  mode_IVR                               -0.0006     0.0116       
+  mode_Online_Ad                          0.0547     0.0247     **
+  mode_Online_Matched_Sample             -0.0174     0.0139       
+  mode_Online_Opt_In_Panel               -0.0263     0.0131     **
+  mode_Probability_Panel                 -0.0254     0.0160       
+  mode_Text_to_Web                        0.0170     0.0169       
+  mode_Text_only                            ----       ----       
+  const                                  -0.0376     0.0175     **
   --------------------------------------------------------------------
   adjusted r2:  0.1975
   n:            671
   clusters:     380 poll_id, 73 pollster
   note:         ---- indicates <10 observations in category
+  note:         3 mode(s) dropped (zero observations)
 ===========================================================================
 
 
@@ -227,6 +228,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: all state polls with mode controls
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -236,6 +238,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0027     0.0011     **
   abs_margin                             -0.1392     0.0652     **
   turnout_pct                             0.0024     0.0006    ***
+  pop_a                                  -0.0227     0.0134      *
+  pop_rv                                 -0.0159     0.0068     **
   mode_App_Panel                          0.0438     0.0098    ***
   mode_Email                              0.0111     0.0176       
   mode_IVR                                0.0099     0.0098       
@@ -247,8 +251,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0456     0.0150    ***
   mode_Text_to_Web                        0.0080     0.0065       
   mode_Text_only                          0.0105     0.0096       
-  pop_a                                  -0.0227     0.0134      *
-  pop_rv                                 -0.0159     0.0068     **
   const                                  -0.2148     0.0440    ***
   --------------------------------------------------------------------
   adjusted r2:  0.1646
@@ -261,6 +263,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: swing states with mode controls
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -270,6 +273,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0033     0.0010    ***
   abs_margin                             -1.4994     0.2803    ***
   turnout_pct                            -0.0030     0.0011    ***
+  pop_a                                  -0.0332     0.0077    ***
+  pop_rv                                 -0.0177     0.0062    ***
   mode_App_Panel                          0.0458     0.0094    ***
   mode_Email                             -0.0182     0.0120       
   mode_IVR                                0.0261     0.0073    ***
@@ -281,8 +286,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0164     0.0037    ***
   mode_Text_to_Web                        0.0064     0.0054       
   mode_Text_only                          0.0133     0.0068      *
-  pop_a                                  -0.0332     0.0077    ***
-  pop_rv                                 -0.0177     0.0062    ***
   const                                   0.2036     0.0833     **
   --------------------------------------------------------------------
   adjusted r2:  0.2387
@@ -683,6 +686,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: swing states 107 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -692,6 +696,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0033     0.0010    ***
   abs_margin                             -1.4994     0.2803    ***
   turnout_pct                            -0.0030     0.0011    ***
+  pop_a                                  -0.0332     0.0077    ***
+  pop_rv                                 -0.0177     0.0062    ***
   mode_App_Panel                          0.0458     0.0094    ***
   mode_Email                             -0.0182     0.0120       
   mode_IVR                                0.0261     0.0073    ***
@@ -703,8 +709,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0164     0.0037    ***
   mode_Text_to_Web                        0.0064     0.0054       
   mode_Text_only                          0.0133     0.0068      *
-  pop_a                                  -0.0332     0.0077    ***
-  pop_rv                                 -0.0177     0.0062    ***
   const                                   0.2036     0.0833     **
   --------------------------------------------------------------------
   adjusted r2:  0.2387
@@ -720,6 +724,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: swing states 90 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -729,6 +734,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0037     0.0008    ***
   abs_margin                             -1.3391     0.2705    ***
   turnout_pct                            -0.0026     0.0011     **
+  pop_a                                  -0.0338     0.0078    ***
+  pop_rv                                 -0.0228     0.0065    ***
   mode_App_Panel                          0.0404     0.0082    ***
   mode_Email                             -0.0281     0.0110     **
   mode_IVR                                0.0229     0.0065    ***
@@ -740,8 +747,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0154     0.0031    ***
   mode_Text_to_Web                        0.0050     0.0050       
   mode_Text_only                          0.0166     0.0071     **
-  pop_a                                  -0.0338     0.0078    ***
-  pop_rv                                 -0.0228     0.0065    ***
   const                                   0.1779     0.0828     **
   --------------------------------------------------------------------
   adjusted r2:  0.2781
@@ -757,6 +762,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: swing states 60 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -766,6 +772,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0023     0.0009    ***
   abs_margin                             -1.1839     0.3881    ***
   turnout_pct                            -0.0018     0.0011       
+  pop_a                                  -0.0351     0.0077    ***
+  pop_rv                                 -0.0203     0.0065    ***
   mode_App_Panel                          0.0297     0.0090    ***
   mode_Email                             -0.0354     0.0132    ***
   mode_IVR                                0.0273     0.0064    ***
@@ -777,8 +785,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0255     0.0048    ***
   mode_Text_to_Web                        0.0001     0.0047       
   mode_Text_only                          0.0088     0.0063       
-  pop_a                                  -0.0351     0.0077    ***
-  pop_rv                                 -0.0203     0.0065    ***
   const                                   0.1278     0.0903       
   --------------------------------------------------------------------
   adjusted r2:  0.2828
@@ -794,6 +800,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: swing states 30 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -803,6 +810,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0007     0.0013       
   abs_margin                             -1.2781     0.4541    ***
   turnout_pct                            -0.0023     0.0013      *
+  pop_a                                  -0.0285     0.0138     **
+  pop_rv                                 -0.0177     0.0066    ***
   mode_App_Panel                          0.0212     0.0097     **
   mode_Email                             -0.0316     0.0178      *
   mode_IVR                                0.0135     0.0067     **
@@ -814,8 +823,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                    ----       ----       
   mode_Text_to_Web                        0.0035     0.0062       
   mode_Text_only                          0.0157     0.0065     **
-  pop_a                                  -0.0285     0.0138     **
-  pop_rv                                 -0.0177     0.0066    ***
   const                                   0.1590     0.1067       
   --------------------------------------------------------------------
   adjusted r2:  0.2991
@@ -828,10 +835,13 @@ REGRESSIONS WITH MODE CONTROLS
   window: 7 days before election
   swing state questions in window: 228
 
+  [swing states 7 days before election (with mode)] Dropping zero-observation mode indicators: ['mode_Mail_to_Phone', 'mode_Mail_to_Web', 'mode_Probability_Panel']
+
 ===========================================================================
   ols regression: swing states 7 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 8 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -839,27 +849,25 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                    0.0023     0.0024       
   partisan_flag                             ----       ----       
   pct_dk                                 -0.0032     0.0015     **
-  abs_margin                             -1.1481     0.3655    ***
+  abs_margin                             -1.1481     0.3629    ***
   turnout_pct                            -0.0023     0.0012      *
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0128     0.0106       
   mode_App_Panel                            ----       ----       
   mode_Email                                ----       ----       
-  mode_IVR                                0.0060     0.0138       
-  mode_Mail_to_Phone                      0.0000     0.0000    ***
-  mode_Mail_to_Web                        0.0000     0.0000    ***
-  mode_Online_Ad                          0.0164     0.0119       
+  mode_IVR                                0.0060     0.0137       
+  mode_Online_Ad                          0.0164     0.0118       
   mode_Online_Matched_Sample             -0.0343     0.0087    ***
-  mode_Online_Opt_In_Panel               -0.0181     0.0112       
-  mode_Probability_Panel                 -0.0000     0.0000    ***
-  mode_Text_to_Web                       -0.0197     0.0131       
+  mode_Online_Opt_In_Panel               -0.0181     0.0111       
+  mode_Text_to_Web                       -0.0197     0.0130       
   mode_Text_only                          0.0027     0.0061       
-  pop_a                                     ----       ----       
-  pop_rv                                 -0.0128     0.0107       
-  const                                   0.1729     0.1026       
+  const                                   0.1729     0.1019       
   --------------------------------------------------------------------
   adjusted r2:  0.4801
   n:            228
   clusters:     130 poll_id, 29 pollster
   note:         ---- indicates <10 observations in category
+  note:         3 mode(s) dropped (zero observations)
 ===========================================================================
 
 
@@ -870,6 +878,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: all states 107 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -879,6 +888,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0027     0.0011     **
   abs_margin                             -0.1392     0.0652     **
   turnout_pct                             0.0024     0.0006    ***
+  pop_a                                  -0.0227     0.0134      *
+  pop_rv                                 -0.0159     0.0068     **
   mode_App_Panel                          0.0438     0.0098    ***
   mode_Email                              0.0111     0.0176       
   mode_IVR                                0.0099     0.0098       
@@ -890,8 +901,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0456     0.0150    ***
   mode_Text_to_Web                        0.0080     0.0065       
   mode_Text_only                          0.0105     0.0096       
-  pop_a                                  -0.0227     0.0134      *
-  pop_rv                                 -0.0159     0.0068     **
   const                                  -0.2148     0.0440    ***
   --------------------------------------------------------------------
   adjusted r2:  0.1646
@@ -907,6 +916,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: all states 90 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -916,6 +926,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0029     0.0011    ***
   abs_margin                             -0.1491     0.0663     **
   turnout_pct                             0.0023     0.0006    ***
+  pop_a                                  -0.0228     0.0129      *
+  pop_rv                                 -0.0183     0.0074     **
   mode_App_Panel                          0.0414     0.0092    ***
   mode_Email                              0.0086     0.0200       
   mode_IVR                                0.0050     0.0082       
@@ -927,8 +939,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0426     0.0153    ***
   mode_Text_to_Web                        0.0089     0.0067       
   mode_Text_only                          0.0142     0.0096       
-  pop_a                                  -0.0228     0.0129      *
-  pop_rv                                 -0.0183     0.0074     **
   const                                  -0.2042     0.0462    ***
   --------------------------------------------------------------------
   adjusted r2:  0.1817
@@ -944,6 +954,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: all states 60 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -953,6 +964,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                  0.0008     0.0012       
   abs_margin                             -0.1322     0.0624     **
   turnout_pct                             0.0026     0.0006    ***
+  pop_a                                  -0.0154     0.0180       
+  pop_rv                                 -0.0170     0.0068     **
   mode_App_Panel                          0.0348     0.0107    ***
   mode_Email                              0.0136     0.0247       
   mode_IVR                                0.0112     0.0076       
@@ -964,8 +977,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0477     0.0197     **
   mode_Text_to_Web                        0.0065     0.0074       
   mode_Text_only                          0.0028     0.0112       
-  pop_a                                  -0.0154     0.0180       
-  pop_rv                                 -0.0170     0.0068     **
   const                                  -0.2156     0.0457    ***
   --------------------------------------------------------------------
   adjusted r2:  0.2020
@@ -981,6 +992,7 @@ REGRESSIONS WITH MODE CONTROLS
   ols regression: all states 30 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 11 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -990,6 +1002,8 @@ REGRESSIONS WITH MODE CONTROLS
   pct_dk                                 -0.0006     0.0019       
   abs_margin                             -0.0834     0.0632       
   turnout_pct                             0.0026     0.0007    ***
+  pop_a                                  -0.0142     0.0116       
+  pop_rv                                 -0.0106     0.0077       
   mode_App_Panel                          0.0240     0.0120     **
   mode_Email                              0.0123     0.0344       
   mode_IVR                                0.0050     0.0095       
@@ -1001,8 +1015,6 @@ REGRESSIONS WITH MODE CONTROLS
   mode_Probability_Panel                 -0.0378     0.0313       
   mode_Text_to_Web                        0.0056     0.0112       
   mode_Text_only                          0.0109     0.0099       
-  pop_a                                  -0.0142     0.0116       
-  pop_rv                                 -0.0106     0.0077       
   const                                  -0.2225     0.0453    ***
   --------------------------------------------------------------------
   adjusted r2:  0.2189
@@ -1015,10 +1027,13 @@ REGRESSIONS WITH MODE CONTROLS
   window: 7 days before election
   all state questions in window: 296
 
+  [all states 7 days before election (with mode)] Dropping zero-observation mode indicators: ['mode_Mail_to_Phone']
+
 ===========================================================================
   ols regression: all states 7 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 10 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -1026,37 +1041,40 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                    0.0027     0.0030       
   partisan_flag                          -0.0080     0.0082       
   pct_dk                                  0.0031     0.0032       
-  abs_margin                             -0.1507     0.0922       
+  abs_margin                             -0.1507     0.0921       
   turnout_pct                             0.0013     0.0007      *
-  mode_App_Panel                          0.0680     0.0174    ***
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0175     0.0103      *
+  mode_App_Panel                          0.0680     0.0173    ***
   mode_Email                                ----       ----       
   mode_IVR                                0.0237     0.0116     **
-  mode_Mail_to_Phone                     -0.0000     0.0000      *
   mode_Mail_to_Web                          ----       ----       
   mode_Online_Ad                          0.0523     0.0140    ***
   mode_Online_Matched_Sample             -0.0105     0.0105       
   mode_Online_Opt_In_Panel               -0.0099     0.0098       
   mode_Probability_Panel                    ----       ----       
   mode_Text_to_Web                        0.0015     0.0142       
-  mode_Text_only                          0.0153     0.0095       
-  pop_a                                     ----       ----       
-  pop_rv                                 -0.0175     0.0103      *
-  const                                  -0.1537     0.0590     **
+  mode_Text_only                          0.0153     0.0094       
+  const                                  -0.1537     0.0589     **
   --------------------------------------------------------------------
   adjusted r2:  0.4575
   n:            296
   clusters:     188 poll_id, 44 pollster
   note:         ---- indicates <10 observations in category
+  note:         1 mode(s) dropped (zero observations)
 ===========================================================================
 
 
   window: 107 days before election
   national questions in window: 671
 
+  [national 107 days before election (with mode)] Dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
 ===========================================================================
   ols regression: national 107 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 8 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -1064,71 +1082,73 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0000     0.0001       
   partisan_flag                           0.0367     0.0165     **
   pct_dk                                 -0.0024     0.0011     **
-  mode_App_Panel                          0.0285     0.0174       
-  mode_Email                              0.0000     0.0000       
-  mode_IVR                               -0.0006     0.0116       
-  mode_Mail_to_Phone                      0.0000     0.0000     **
-  mode_Mail_to_Web                       -0.0000     0.0000      *
-  mode_Online_Ad                          0.0547     0.0248     **
-  mode_Online_Matched_Sample             -0.0174     0.0139       
-  mode_Online_Opt_In_Panel               -0.0263     0.0131     **
-  mode_Probability_Panel                 -0.0254     0.0161       
-  mode_Text_to_Web                        0.0170     0.0169       
-  mode_Text_only                            ----       ----       
   pop_a                                   0.0123     0.0126       
   pop_rv                                  0.0140     0.0073      *
-  const                                  -0.0376     0.0176     **
+  mode_App_Panel                          0.0285     0.0174       
+  mode_IVR                               -0.0006     0.0116       
+  mode_Online_Ad                          0.0547     0.0247     **
+  mode_Online_Matched_Sample             -0.0174     0.0139       
+  mode_Online_Opt_In_Panel               -0.0263     0.0131     **
+  mode_Probability_Panel                 -0.0254     0.0160       
+  mode_Text_to_Web                        0.0170     0.0169       
+  mode_Text_only                            ----       ----       
+  const                                  -0.0376     0.0175     **
   --------------------------------------------------------------------
   adjusted r2:  0.1975
   n:            671
   clusters:     380 poll_id, 73 pollster
   note:         ---- indicates <10 observations in category
+  note:         3 mode(s) dropped (zero observations)
 ===========================================================================
 
 
   window: 90 days before election
   national questions in window: 561
 
+  [national 90 days before election (with mode)] Dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
 ===========================================================================
   ols regression: national 90 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 8 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
   duration_days                          -0.0025     0.0010     **
   days_before_election                   -0.0006     0.0001    ***
-  partisan_flag                           0.0509     0.0133    ***
+  partisan_flag                           0.0509     0.0132    ***
   pct_dk                                 -0.0021     0.0009     **
-  mode_App_Panel                          0.0211     0.0247       
-  mode_Email                             -0.0000     0.0000     **
+  pop_a                                   0.0027     0.0102       
+  pop_rv                                  0.0123     0.0078       
+  mode_App_Panel                          0.0211     0.0246       
   mode_IVR                               -0.0065     0.0099       
-  mode_Mail_to_Phone                     -0.0000     0.0000       
-  mode_Mail_to_Web                       -0.0000     0.0000       
   mode_Online_Ad                          0.0305     0.0208       
-  mode_Online_Matched_Sample             -0.0228     0.0134      *
-  mode_Online_Opt_In_Panel               -0.0288     0.0126     **
-  mode_Probability_Panel                 -0.0221     0.0156       
+  mode_Online_Matched_Sample             -0.0228     0.0133      *
+  mode_Online_Opt_In_Panel               -0.0288     0.0125     **
+  mode_Probability_Panel                 -0.0221     0.0155       
   mode_Text_to_Web                        0.0107     0.0135       
   mode_Text_only                            ----       ----       
-  pop_a                                   0.0027     0.0102       
-  pop_rv                                  0.0123     0.0079       
   const                                  -0.0247     0.0173       
   --------------------------------------------------------------------
   adjusted r2:  0.3164
   n:            561
   clusters:     325 poll_id, 69 pollster
   note:         ---- indicates <10 observations in category
+  note:         3 mode(s) dropped (zero observations)
 ===========================================================================
 
 
   window: 60 days before election
   national questions in window: 380
 
+  [national 60 days before election (with mode)] Dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
 ===========================================================================
   ols regression: national 60 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 8 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -1136,35 +1156,36 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0012     0.0002    ***
   partisan_flag                             ----       ----       
   pct_dk                                 -0.0024     0.0009    ***
-  mode_App_Panel                          0.0210     0.0242       
-  mode_Email                              0.0000     0.0000       
-  mode_IVR                                0.0109     0.0121       
-  mode_Mail_to_Phone                      0.0000     0.0000    ***
-  mode_Mail_to_Web                       -0.0000     0.0000    ***
-  mode_Online_Ad                          0.0217     0.0161       
-  mode_Online_Matched_Sample             -0.0398     0.0168     **
-  mode_Online_Opt_In_Panel               -0.0466     0.0149    ***
-  mode_Probability_Panel                 -0.0356     0.0184      *
-  mode_Text_to_Web                        0.0082     0.0129       
-  mode_Text_only                            ----       ----       
-  pop_a                                   0.0070     0.0119       
+  pop_a                                   0.0070     0.0118       
   pop_rv                                  0.0108     0.0075       
+  mode_App_Panel                          0.0210     0.0241       
+  mode_IVR                                0.0109     0.0120       
+  mode_Online_Ad                          0.0217     0.0161       
+  mode_Online_Matched_Sample             -0.0398     0.0167     **
+  mode_Online_Opt_In_Panel               -0.0466     0.0149    ***
+  mode_Probability_Panel                 -0.0356     0.0183      *
+  mode_Text_to_Web                        0.0082     0.0128       
+  mode_Text_only                            ----       ----       
   const                                   0.0091     0.0188       
   --------------------------------------------------------------------
   adjusted r2:  0.4092
   n:            380
   clusters:     229 poll_id, 58 pollster
   note:         ---- indicates <10 observations in category
+  note:         3 mode(s) dropped (zero observations)
 ===========================================================================
 
 
   window: 30 days before election
   national questions in window: 234
 
+  [national 30 days before election (with mode)] Dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
 ===========================================================================
   ols regression: national 30 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 8 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
@@ -1172,61 +1193,60 @@ REGRESSIONS WITH MODE CONTROLS
   days_before_election                   -0.0013     0.0005    ***
   partisan_flag                             ----       ----       
   pct_dk                                 -0.0034     0.0010    ***
-  mode_App_Panel                            ----       ----       
-  mode_Email                              0.0000     0.0000       
-  mode_IVR                                  ----       ----       
-  mode_Mail_to_Phone                     -0.0000     0.0000    ***
-  mode_Mail_to_Web                        0.0000     0.0000       
-  mode_Online_Ad                          0.0250     0.0112     **
-  mode_Online_Matched_Sample             -0.0435     0.0102    ***
-  mode_Online_Opt_In_Panel               -0.0452     0.0122    ***
-  mode_Probability_Panel                 -0.0269     0.0122     **
-  mode_Text_to_Web                        0.0105     0.0147       
-  mode_Text_only                            ----       ----       
-  pop_a                                   0.0135     0.0118       
+  pop_a                                   0.0135     0.0117       
   pop_rv                                  0.0083     0.0075       
-  const                                   0.0137     0.0155       
+  mode_App_Panel                            ----       ----       
+  mode_IVR                                  ----       ----       
+  mode_Online_Ad                          0.0250     0.0111     **
+  mode_Online_Matched_Sample             -0.0435     0.0101    ***
+  mode_Online_Opt_In_Panel               -0.0452     0.0121    ***
+  mode_Probability_Panel                 -0.0269     0.0121     **
+  mode_Text_to_Web                        0.0105     0.0146       
+  mode_Text_only                            ----       ----       
+  const                                   0.0137     0.0154       
   --------------------------------------------------------------------
   adjusted r2:  0.4040
   n:            234
   clusters:     138 poll_id, 53 pollster
   note:         ---- indicates <10 observations in category
+  note:         3 mode(s) dropped (zero observations)
 ===========================================================================
 
 
   window: 7 days before election
   national questions in window: 73
 
+  [national 7 days before election (with mode)] Dropping zero-observation mode indicators: ['mode_Email', 'mode_Mail_to_Phone', 'mode_Mail_to_Web']
+
 ===========================================================================
   ols regression: national 7 days before election (with mode)
   dependent variable: method a  (+ = republican bias)
   standard errors: two-way clustered (poll_id & pollster)
+  active mode indicators: 8 (out of 11 total)
 ===========================================================================
   variable                                  coef         se    sig
   --------------------------------------------------------------------
-  duration_days                           0.0083     0.0053       
+  duration_days                           0.0083     0.0052       
   days_before_election                   -0.0004     0.0025       
   partisan_flag                             ----       ----       
   pct_dk                                  0.0003     0.0011       
+  pop_a                                     ----       ----       
+  pop_rv                                 -0.0074     0.0122       
   mode_App_Panel                            ----       ----       
-  mode_Email                             -0.0000     0.0000       
   mode_IVR                                  ----       ----       
-  mode_Mail_to_Phone                     -0.0000     0.0000       
-  mode_Mail_to_Web                        0.0000     0.0000       
   mode_Online_Ad                            ----       ----       
   mode_Online_Matched_Sample                ----       ----       
-  mode_Online_Opt_In_Panel               -0.0324     0.0139     **
+  mode_Online_Opt_In_Panel               -0.0324     0.0135     **
   mode_Probability_Panel                    ----       ----       
-  mode_Text_to_Web                        0.0374     0.0213      *
+  mode_Text_to_Web                        0.0374     0.0208      *
   mode_Text_only                            ----       ----       
-  pop_a                                     ----       ----       
-  pop_rv                                 -0.0074     0.0125       
-  const                                  -0.0447     0.0243      *
+  const                                  -0.0447     0.0237      *
   --------------------------------------------------------------------
   adjusted r2:  0.3770
   n:            73
   clusters:     39 poll_id, 25 pollster
   note:         ---- indicates <10 observations in category
+  note:         3 mode(s) dropped (zero observations)
 ===========================================================================
 
 
@@ -1267,10 +1287,10 @@ pct_dk                            -0.002      0.001   ***    -0.002      0.001  
 pop_a                              0.012      0.009           0.003      0.008           0.007      0.009           0.014      0.011          -0.004      0.030      
 pop_rv                             0.014      0.004   ***     0.012      0.004   ***     0.011      0.005    **     0.008      0.005          -0.007      0.010      
 mode_App_Panel                     0.028      0.012    **     0.021      0.011     *     0.021      0.013           0.026      0.019          -0.022      0.039      
-mode_Email                         0.000      0.000   ***    -0.000      0.000   ***     0.000      0.000           0.000      0.000          -0.000      0.000      
+mode_Email                                                                                                                                                           
 mode_IVR                          -0.001      0.011          -0.006      0.011           0.011      0.014           0.009      0.016          -0.018      0.017      
-mode_Mail_to_Phone                 0.000      0.000    **    -0.000      0.000           0.000      0.000   ***    -0.000      0.000   ***    -0.000      0.000      
-mode_Mail_to_Web                  -0.000      0.000   ***    -0.000      0.000          -0.000      0.000   ***     0.000      0.000           0.000      0.000      
+mode_Mail_to_Phone                                                                                                                                                   
+mode_Mail_to_Web                                                                                                                                                     
 mode_Online_Ad                     0.055      0.012   ***     0.030      0.012   ***     0.022      0.012     *     0.025      0.013     *     0.027      0.026      
 mode_Online_Matched_Sample        -0.017      0.008    **    -0.023      0.007   ***    -0.040      0.008   ***    -0.043      0.011   ***    -0.028      0.024      
 mode_Online_Opt_In_Panel          -0.026      0.006   ***    -0.029      0.005   ***    -0.047      0.006   ***    -0.045      0.009   ***    -0.032      0.023      
@@ -1330,7 +1350,7 @@ pop_rv                            -0.016      0.004   ***    -0.018      0.004  
 mode_App_Panel                     0.044      0.011   ***     0.041      0.011   ***     0.035      0.012   ***     0.024      0.014     *     0.068      0.020   ***
 mode_Email                         0.011      0.009           0.009      0.010           0.014      0.010           0.012      0.012          -0.005      0.027      
 mode_IVR                           0.010      0.007           0.005      0.007           0.011      0.008           0.005      0.009           0.024      0.012     *
-mode_Mail_to_Phone                 0.030      0.025           0.031      0.025           0.022      0.024           0.024      0.025          -0.000      0.000   ***
+mode_Mail_to_Phone                 0.030      0.025           0.031      0.025           0.022      0.024           0.024      0.025                                 
 mode_Mail_to_Web                  -0.062      0.018   ***    -0.064      0.018   ***    -0.065      0.018   ***    -0.073      0.018   ***    -0.510      0.048   ***
 mode_Online_Ad                     0.040      0.007   ***     0.037      0.007   ***     0.030      0.007   ***     0.035      0.009   ***     0.052      0.012   ***
 mode_Online_Matched_Sample        -0.013      0.007     *    -0.014      0.007     *    -0.020      0.008    **    -0.026      0.009   ***    -0.010      0.012      
@@ -1391,12 +1411,12 @@ pop_rv                            -0.018      0.003   ***    -0.023      0.004  
 mode_App_Panel                     0.046      0.014   ***     0.040      0.014   ***     0.030      0.014    **     0.021      0.016           0.025      0.018      
 mode_Email                        -0.018      0.008    **    -0.028      0.009   ***    -0.035      0.010   ***    -0.032      0.011   ***     0.027      0.029      
 mode_IVR                           0.026      0.006   ***     0.023      0.006   ***     0.027      0.007   ***     0.014      0.008     *     0.006      0.011      
-mode_Mail_to_Phone                -0.038      0.020     *    -0.040      0.020    **    -0.051      0.019   ***    -0.047      0.019    **     0.000      0.000   ***
-mode_Mail_to_Web                   0.021      0.016           0.027      0.016     *     0.038      0.016    **     0.023      0.017           0.000      0.000   ***
+mode_Mail_to_Phone                -0.038      0.020     *    -0.040      0.020    **    -0.051      0.019   ***    -0.047      0.019    **                           
+mode_Mail_to_Web                   0.021      0.016           0.027      0.016     *     0.038      0.016    **     0.023      0.017                                 
 mode_Online_Ad                     0.035      0.006   ***     0.029      0.006   ***     0.024      0.006   ***     0.028      0.007   ***     0.016      0.010     *
 mode_Online_Matched_Sample        -0.004      0.007          -0.008      0.006          -0.014      0.007    **    -0.016      0.007    **    -0.034      0.010   ***
 mode_Online_Opt_In_Panel          -0.012      0.003   ***    -0.015      0.003   ***    -0.016      0.004   ***    -0.014      0.005   ***    -0.018      0.007    **
-mode_Probability_Panel            -0.016      0.013          -0.015      0.012          -0.026      0.014     *    -0.019      0.017          -0.000      0.000   ***
+mode_Probability_Panel            -0.016      0.013          -0.015      0.012          -0.026      0.014     *    -0.019      0.017                                 
 mode_Text_only                     0.013      0.008     *     0.017      0.007    **     0.009      0.007           0.016      0.008     *     0.003      0.010      
 mode_Text_to_Web                   0.006      0.004           0.005      0.004           0.000      0.004           0.003      0.006          -0.020      0.009    **
 
@@ -1412,10 +1432,10 @@ MODE COEFFICIENTS ACROSS SAMPLES
 Mode                        National      All States           Swing
 ......................................................................
 App_Panel                   0.03**         0.04***        0.05***
-Email                       0.00***        0.01          -0.02** 
+Email                            ..        0.01          -0.02** 
 IVR                        -0.00           0.01           0.03***
-Mail_to_Phone               0.00**         0.03          -0.04*  
-Mail_to_Web                -0.00***       -0.06***        0.02   
+Mail_to_Phone                    ..        0.03          -0.04*  
+Mail_to_Web                      ..       -0.06***        0.02   
 Online_Ad                   0.05***        0.04***        0.03***
 Online_Matched_Sample       -0.02**        -0.01*         -0.00   
 Online_Opt_In_Panel        -0.03***       -0.01**        -0.01***
