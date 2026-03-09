@@ -662,8 +662,8 @@ if __name__ == '__main__':
     DATA_PATH     = 'data/harris_trump_accuracy.csv'
     ELECTION_DATE = '2024-11-05'
     
-    # time windows to analyze: None = all data, 200 = last 200 days, 107 = last 107 days, etc.
-    TIME_WINDOWS = [None, 200, 107]
+    # time windows to analyze: last X days
+    TIME_WINDOWS = [107, 60, 30]
 
     # set up logging to capture all terminal output
     log_filename = f'output/kalman/kalman_national_avgday_harrisonly_anlaysis_log.txt'

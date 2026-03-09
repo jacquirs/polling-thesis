@@ -13,11 +13,11 @@ def create_figure2_national_bias_comparison():
     compare residual/systematic bias trajectories across all four implementations
     to test robustness of findings to methodological choices.
     """
-    # load data from all four implementations (all_data window)
-    em_anch = pd.read_csv('data/kalman_he_polls_anchored_all_data.csv')
-    em_unanch = pd.read_csv('data/kalman_he_polls_unanchored_all_data.csv')
-    agg_anch = pd.read_csv('data/kalman_agg_results_anchored_all_data.csv')
-    agg_unanch = pd.read_csv('data/kalman_agg_results_unanchored_all_data.csv')
+    # load data from all four implementations (107 day window)
+    em_anch = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+    em_unanch = pd.read_csv('data/kalman_he_polls_unanchored_last_107_days.csv')
+    agg_anch = pd.read_csv('data/kalman_agg_results_anchored_last_107_days.csv')
+    agg_unanch = pd.read_csv('data/kalman_agg_results_unanchored_last_107_days.csv')
     
     # convert dates
     em_anch['end_date'] = pd.to_datetime(em_anch['end_date'])
@@ -44,7 +44,7 @@ def create_figure2_national_bias_comparison():
     # formatting
     ax.set_xlabel('Date', fontsize=12)
     ax.set_ylabel('Systematic Bias (pp, positive = polls overstated Trump)', fontsize=12)
-    ax.set_title('National Polling Bias Across Four Implementations\n(Trump margin, 2021-2024)', 
+    ax.set_title('National Polling Bias Across Four Implementations\n(Trump margin, 107 Days)', 
                  fontsize=14, fontweight='bold')
     ax.legend(loc='upper left', fontsize=11, framealpha=0.95)
     ax.grid(True, alpha=0.3)
@@ -83,7 +83,7 @@ def create_figure3_swing_states_bias_trajectories():
         
         # load state data
         try:
-            df = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_all_data.csv')
+            df = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_last_107_days.csv')
             df['end_date'] = pd.to_datetime(df['end_date'])
             
             # plot residual systematic bias
@@ -123,7 +123,7 @@ def create_figure3_swing_states_bias_trajectories():
     # common labels
     fig.text(0.5, 0.02, 'Date', ha='center', fontsize=13)
     fig.text(0.02, 0.5, 'Residual Systematic Bias (pp)', va='center', rotation='vertical', fontsize=13)
-    fig.suptitle('Swing State Polling Bias Trajectories (EM Anchored, All Data)\nPositive = polls overstated Trump relative to certified result',
+    fig.suptitle('Swing State Polling Bias Trajectories (EM Anchored, Last 107 Days)\n',
                 fontsize=14, fontweight='bold', y=0.98)
     
     plt.tight_layout(rect=[0.03, 0.03, 1, 0.96])
@@ -154,7 +154,7 @@ def create_figure4_swing_states_error_decomposition():
     for state in states:
         # unanchored for forecast error
         try:
-            df_unanch = pd.read_csv(f'data/kalman_he_polls_{state}_unanchored_all_data.csv')
+            df_unanch = pd.read_csv(f'data/kalman_he_polls_{state}_unanchored_last_107_days.csv')
             final_smoothed = df_unanch['smoothed'].iloc[-1]
             true_margin = df_unanch['true_margin'].iloc[0]
             forecast_errors[state] = final_smoothed - true_margin
@@ -163,7 +163,7 @@ def create_figure4_swing_states_error_decomposition():
         
         # anchored for variance decomposition
         try:
-            df_anch = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_all_data.csv')
+            df_anch = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_last_107_days.csv')
             var_total = df_anch['total_error'].var()
             var_he = df_anch['house_effect_assigned'].var()
             var_noise = df_anch['sampling_noise'].var()
@@ -190,8 +190,8 @@ def create_figure4_swing_states_error_decomposition():
     ax1.set_yticks(y_pos)
     ax1.set_yticklabels(state_labels)
     ax1.axvline(0, color='black', linewidth=1)
-    ax1.set_xlabel('Final Forecast Error (pp)\n(Positive = overstated Trump)', fontsize=11)
-    ax1.set_title('State-Level Forecast Accuracy\n(EM Unanchored, All Data)', 
+    ax1.set_xlabel('Final Forecast Error (pp)', fontsize=11)
+    ax1.set_title('State-Level Forecast Accuracy\n(EM Unanchored, Last 107 Days)', 
                   fontsize=12, fontweight='bold')
     ax1.grid(True, alpha=0.3, axis='x')
     
@@ -218,7 +218,7 @@ def create_figure4_swing_states_error_decomposition():
     ax2.set_yticks(y_pos)
     ax2.set_yticklabels(state_labels_sorted)
     ax2.set_xlabel('Percent of Total Error Variance', fontsize=11)
-    ax2.set_title('Error Source Decomposition\n(EM Anchored, All Data)', 
+    ax2.set_title('Error Source Decomposition\n(EM Anchored, Last 107 Days)', 
                   fontsize=12, fontweight='bold')
     ax2.legend(loc='lower right', fontsize=10)
     ax2.set_xlim([0, 100])
@@ -235,45 +235,45 @@ def create_figure4_swing_states_error_decomposition():
 
 def create_figure5_national_stability_temporal():
     """
-    left: house effect stability (all data vs last 107 days). right: mean absolute bias across time windows.
+    left: house effect stability (107 data vs last 30 days). right: mean absolute bias across time windows.
     tests whether pollster biases are stable and whether systematic bias accelerated near election day.
     """
     # load house effects from different time windows
-    he_all = pd.read_csv('data/kalman_he_effects_anchored_all_data.csv')
     he_107 = pd.read_csv('data/kalman_he_effects_anchored_last_107_days.csv')
+    he_30 = pd.read_csv('data/kalman_he_effects_anchored_last_30_days.csv')
     
     # merge on pollster
-    he_compare = he_all.merge(he_107, on='pollster', suffixes=('_all', '_107'), how='inner')
-    he_compare = he_compare[he_compare['n_polls_all'] >= 5]  # min 5 polls in all data
+    he_compare = he_107.merge(he_30, on='pollster', suffixes=('_107', '_30'), how='inner')
+    he_compare = he_compare[he_compare['n_polls_107'] >= 5]  # min 5 polls in all data
     
     # load poll-level data for temporal dynamics
-    polls_all = pd.read_csv('data/kalman_he_polls_anchored_all_data.csv')
-    polls_200 = pd.read_csv('data/kalman_he_polls_anchored_last_200_days.csv')
     polls_107 = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+    polls_60 = pd.read_csv('data/kalman_he_polls_anchored_last_60_days.csv')
+    polls_30 = pd.read_csv('data/kalman_he_polls_anchored_last_30_days.csv')
     
     # create two-panel figure
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
     
     # left panel: house effect stability
-    ax1.scatter(he_compare['house_effect_all'], he_compare['house_effect_107'],
-               s=he_compare['n_polls_all']*3, alpha=0.6, color='#1f77b4')
+    ax1.scatter(he_compare['house_effect_107'], he_compare['house_effect_30'],
+               s=he_compare['n_polls_30']*3, alpha=0.6, color='#1f77b4')
     
-    lims = [he_compare[['house_effect_all', 'house_effect_107']].min().min() - 0.5,
-            he_compare[['house_effect_all', 'house_effect_107']].max().max() + 0.5]
+    lims = [he_compare[['house_effect_107', 'house_effect_30']].min().min() - 0.5,
+            he_compare[['house_effect_107', 'house_effect_30']].max().max() + 0.5]
     ax1.plot(lims, lims, 'k--', alpha=0.5, linewidth=1, label='Perfect stability')
     
     # label outliers
-    he_compare['distance'] = abs(he_compare['house_effect_all'] - he_compare['house_effect_107'])
+    he_compare['distance'] = abs(he_compare['house_effect_107'] - he_compare['house_effect_30'])
     outliers = he_compare.nlargest(5, 'distance')
     for _, row in outliers.iterrows():
         ax1.annotate(row['pollster'], 
-                    xy=(row['house_effect_all'], row['house_effect_107']),
+                    xy=(row['house_effect_107'], row['house_effect_30']),
                     xytext=(5, 5), textcoords='offset points', fontsize=8, alpha=0.8)
     
     ax1.axhline(0, color='gray', linewidth=0.5, linestyle=':')
     ax1.axvline(0, color='gray', linewidth=0.5, linestyle=':')
-    ax1.set_xlabel('House Effect - All Data (pp)', fontsize=11)
-    ax1.set_ylabel('House Effect - Last 107 Days (pp)', fontsize=11)
+    ax1.set_xlabel('House Effect - Last 107 Days (pp)', fontsize=11)
+    ax1.set_ylabel('House Effect - Last 30 Days (pp)', fontsize=11)
     ax1.set_title('House Effect Stability Across Time Windows\n(Point size = number of polls)', 
                   fontsize=12, fontweight='bold')
     ax1.legend(fontsize=10)
@@ -282,18 +282,18 @@ def create_figure5_national_stability_temporal():
     
     # right panel: temporal dynamics of systematic bias
     # calculate mean absolute residual systematic bias for each window
-    windows = ['All Data\n(2021-2024)', 'Last 200 Days\n(~6.5 months)', 'Last 107 Days\n(~3.5 months)']
+    windows = ['Last 107 Days\n', 'Last 60 Days\n', 'Last 30 Days\n']
     mean_abs_bias = [
-        polls_all['residual_systematic_bias'].abs().mean(),
-        polls_200['residual_systematic_bias'].abs().mean(),
-        polls_107['residual_systematic_bias'].abs().mean()
+        polls_107['residual_systematic_bias'].abs().mean(),
+        polls_60['residual_systematic_bias'].abs().mean(),
+        polls_30['residual_systematic_bias'].abs().mean()
     ]
     
     # also show final bias (last observation in each window)
     final_bias = [
-        polls_all['residual_systematic_bias'].iloc[-1],
-        polls_200['residual_systematic_bias'].iloc[-1],
-        polls_107['residual_systematic_bias'].iloc[-1]
+        polls_107['residual_systematic_bias'].iloc[-1],
+        polls_60['residual_systematic_bias'].iloc[-1],
+        polls_30['residual_systematic_bias'].iloc[-1]
     ]
     
     x = np.arange(len(windows))
@@ -570,8 +570,8 @@ def create_table1_national_summary():
     shows how all methodological choices affect core estimates.
     """
     implementations = ['EM_anchored', 'EM_unanchored', 'Agg_anchored', 'Agg_unanchored']
-    windows = ['all_data', 'last_200_days', 'last_107_days']
-    window_labels = ['All Data', 'Last 200 Days', 'Last 107 Days']
+    windows = ['last_107_days', 'last_60_days', 'last_30_days']
+    window_labels = ['Last 107 Days', 'Last 60 Days', 'Last 30 Days']
     
     results = []
     
@@ -664,17 +664,17 @@ def create_table2_house_effects_variance():
     the two most-cited results in one table.
     """
     # part a: top 20 house effects (all data)
-    he_all = pd.read_csv('data/kalman_he_effects_anchored_all_data.csv')
-    he_all = he_all[he_all['n_polls'] >= 5]  # min 5 polls
-    he_all = he_all.nlargest(20, 'house_effect', keep='all')  # top 20 by house effect (most pro-trump first)
+    he_107 = pd.read_csv('data/kalman_he_effects_anchored_last_107_days.csv')
+    he_107 = he_107[he_107['n_polls'] >= 5]  # min 5 polls
+    he_107 = he_107.nlargest(20, 'house_effect', keep='all')  # top 20 by house effect (most pro-trump first)
     
-    house_effects_table = he_all[['pollster', 'house_effect', 'n_polls']].copy()
+    house_effects_table = he_107[['pollster', 'house_effect', 'n_polls']].copy()
     house_effects_table.columns = ['Pollster', 'House Effect (pp)', 'N Polls']
     house_effects_table = house_effects_table.round({'House Effect (pp)': 3})
     
     # part b: variance decomposition across time windows
-    windows = ['all_data', 'last_200_days', 'last_107_days']
-    window_labels = ['All Data', 'Last 200 Days', 'Last 107 Days']
+    windows = ['last_107_days', 'last_60_days', 'last_30_days']
+    window_labels = ['Last 107 Days', 'Last 60 Days', 'Last 30 Days']
     
     var_decomp_rows = []
     for window, label in zip(windows, window_labels):
@@ -733,10 +733,10 @@ def create_table3_swing_states_summary():
     for state in states:
         try:
             # anchored for error decomposition
-            df_anch = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_all_data.csv')
+            df_anch = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_last_107_days.csv')
             
             # unanchored for forecast error
-            df_unanch = pd.read_csv(f'data/kalman_he_polls_{state}_unanchored_all_data.csv')
+            df_unanch = pd.read_csv(f'data/kalman_he_polls_{state}_unanchored_last_107_days.csv')
             
             var_total = df_anch['total_error'].var()
             var_he = df_anch['house_effect_assigned'].var()

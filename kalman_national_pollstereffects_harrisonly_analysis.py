@@ -746,7 +746,7 @@ if __name__ == '__main__':
     # important values
     DATA_PATH     = 'data/harris_trump_accuracy.csv'
     ELECTION_DATE = '2024-11-05'
-    TIME_WINDOWS  = [None, 200, 107]
+    TIME_WINDOWS  = [107, 60, 30]
 
     # set up logging
     log_filename = f'output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt'

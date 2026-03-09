@@ -767,7 +767,7 @@ if __name__ == '__main__':
     # important values
     DATA_PATH     = 'data/harris_trump_accuracy.csv'
     ELECTION_DATE = '2024-11-05'
-    TIME_WINDOWS  = [None, 200, 107]
+    TIME_WINDOWS  = [107, 60, 30]
     
     # analyze each swing state separately
     SWING_STATES  = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
