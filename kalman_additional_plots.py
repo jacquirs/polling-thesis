@@ -325,6 +325,242 @@ def create_figure5_national_stability_temporal():
 
 
 ########################################################################
+# figure 6: swing states - bias trajectory overlay with national comparison
+########################################################################
+
+def create_figure6_swing_states_bias_overlay():
+    """
+    overlay residual systematic bias trajectories from all seven swing states
+    on a single plot, with national em anchored trajectory as reference.
+    
+    shows:
+    - whether swing state polls were biased in the same direction as national polls
+    - whether bias was uniform across battlegrounds or geographically heterogeneous
+    - whether individual states were outliers in magnitude or direction
+    - how state-level bias evolved relative to the national trajectory
+    """
+    states = ['AZ', 'GA', 'MI', 'NV', 'NC', 'PA', 'WI']
+    state_names = {
+        'AZ': 'Arizona', 'GA': 'Georgia', 'MI': 'Michigan',
+        'NV': 'Nevada', 'NC': 'North Carolina',
+        'PA': 'Pennsylvania', 'WI': 'Wisconsin'
+    }
+
+    # distinct colors for each state
+    state_colors = {
+        'AZ': '#1f77b4',
+        'GA': '#ff7f0e',
+        'MI': '#2ca02c',
+        'NV': '#d62728',
+        'NC': '#9467bd',
+        'PA': '#8c564b',
+        'WI': '#e377c2',
+    }
+
+    # filter to last 107 days
+    election_date = pd.Timestamp('2024-11-05')
+    cutoff = election_date - pd.Timedelta(days=107)
+
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    # plot each swing state trajectory
+    for state in states:
+        try:
+            df = pd.read_csv(
+                f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
+            )
+            df['end_date'] = pd.to_datetime(df['end_date'])
+            df = df[df['end_date'] >= cutoff]
+
+            ax.plot(
+                df['end_date'],
+                df['residual_systematic_bias'],
+                color=state_colors[state],
+                linewidth=1.8,
+                alpha=0.75,
+                label=state_names[state],
+                zorder=3
+            )
+        except FileNotFoundError:
+            print(f"Warning: data not found for {state}")
+            continue
+
+    # overlay national trajectory as bold reference
+    try:
+        nat = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+        nat['end_date'] = pd.to_datetime(nat['end_date'])
+        nat = nat[nat['end_date'] >= cutoff]
+
+        ax.plot(
+            nat['end_date'],
+            nat['residual_systematic_bias'],
+            color='black',
+            linewidth=3.0,
+            linestyle='--',
+            label='National',
+            zorder=5
+        )
+    except FileNotFoundError:
+        print("Warning: national data not found")
+
+    # reference line at zero
+    ax.axhline(0, color='gray', linewidth=1.0, linestyle=':')
+
+    # shading to show pro-trump vs pro-harris regions
+    ax.fill_between(
+        [cutoff, election_date], -10, 0,
+        color='#4C72B0', alpha=0.04, zorder=1
+    )
+    ax.fill_between(
+        [cutoff, election_date], 0, 10,
+        color='#d62728', alpha=0.04, zorder=1
+    )
+
+    # formatting
+    ax.set_xlabel('Date', fontsize=12)
+    ax.set_ylabel(
+        'Residual Systematic Bias (pp)\nPositive = polls overstated Trump',
+        fontsize=11
+    )
+    ax.set_title(
+        'Swing State and National Polling Bias Trajectories\n'
+        '(EM Anchored, Last 107 Days)',
+        fontsize=14, fontweight='bold'
+    )
+    ax.legend(
+        loc='upper left', fontsize=10, framealpha=0.95,
+        ncol=2
+    )
+    ax.grid(True, alpha=0.3)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')
+
+    plt.tight_layout()
+    plt.savefig(
+        'figures/kalman_swing_states_bias_overlay_with_national.png',
+        dpi=300, bbox_inches='tight'
+    )
+    plt.close()
+    print("Figure 6 saved.")
+
+
+########################################################################
+# figure 7: swing states - bias correlation across final 60 and 30 days
+########################################################################
+
+def create_figure7_swing_states_bias_correlation():
+    """
+    two-panel correlation matrix of residual systematic bias trajectories
+    across all seven swing states, for the final 60 days (left) and
+    final 30 days (right).
+
+    shows:
+    - whether bias accelerated at the same time across states
+    - whether the industry failure was uniform (high correlations) or
+      state-specific (low or heterogeneous correlations)
+    - whether the correlation structure tightened closer to election day,
+      consistent with industry-wide herding in the final weeks
+    """
+    states = ['AZ', 'GA', 'MI', 'NV', 'NC', 'PA', 'WI']
+    state_names = {
+        'AZ': 'Arizona', 'GA': 'Georgia', 'MI': 'Michigan',
+        'NV': 'Nevada', 'NC': 'North Carolina',
+        'PA': 'Pennsylvania', 'WI': 'Wisconsin'
+    }
+
+    election_date = pd.Timestamp('2024-11-05')
+    windows = {
+        'Final 60 Days': 60,
+        'Final 30 Days': 30
+    }
+
+    fig, axes = plt.subplots(1, 2, figsize=(16, 7))
+
+    for ax, (window_label, days) in zip(axes, windows.items()):
+        cutoff = election_date - pd.Timedelta(days=days)
+
+        # build a common date index and collect bias series per state
+        bias_dict = {}
+        for state in states:
+            try:
+                df = pd.read_csv(
+                    f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
+                )
+                df['end_date'] = pd.to_datetime(df['end_date'])
+                df = df[df['end_date'] >= cutoff].copy()
+
+                # one value per date (take mean if duplicates)
+                df = df.groupby('end_date')[
+                    'residual_systematic_bias'
+                ].mean()
+                bias_dict[state_names[state]] = df
+
+            except FileNotFoundError:
+                print(f"Warning: data not found for {state} ({window_label})")
+                continue
+
+        # align all series to a common date index via outer join
+        bias_df = pd.DataFrame(bias_dict)
+
+        # interpolate any missing dates linearly
+        # (states may not have polls on every single day)
+        bias_df = bias_df.interpolate(method='linear', limit_direction='both')
+
+        # compute correlation matrix
+        corr = bias_df.corr()
+
+        # plot heatmap
+        im = ax.imshow(
+            corr.values,
+            cmap='RdBu_r',
+            vmin=-1, vmax=1,
+            aspect='auto'
+        )
+
+        # axis labels
+        ax.set_xticks(range(len(corr.columns)))
+        ax.set_yticks(range(len(corr.index)))
+        ax.set_xticklabels(corr.columns, rotation=45, ha='right', fontsize=10)
+        ax.set_yticklabels(corr.index, fontsize=10)
+
+        # annotate cells with correlation values
+        for i in range(len(corr.index)):
+            for j in range(len(corr.columns)):
+                val = corr.values[i, j]
+                text_color = 'white' if abs(val) > 0.6 else 'black'
+                ax.text(
+                    j, i, f'{val:.2f}',
+                    ha='center', va='center',
+                    fontsize=9, color=text_color,
+                    fontweight='bold'
+                )
+
+        ax.set_title(
+            f'Bias Trajectory Correlations\n{window_label}',
+            fontsize=12, fontweight='bold'
+        )
+
+        # colorbar
+        plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04,
+                     label='Pearson correlation')
+
+    fig.suptitle(
+        'Cross-State Correlation of Residual Systematic Bias Trajectories\n'
+        '(EM Anchored — do high correlations indicate industry-wide failure?)',
+        fontsize=13, fontweight='bold', y=1.02
+    )
+
+    plt.tight_layout()
+    plt.savefig(
+        'figures/kalman_swing_states_bias_correlation_60_30_days.png',
+        dpi=300, bbox_inches='tight'
+    )
+    plt.close()
+    print("Figure 7 saved.")
+
+
+########################################################################
 # national summary - all four implementations × three time windows
 ########################################################################
 
@@ -553,6 +789,309 @@ def create_table3_swing_states_summary():
     
     return table3_formatted
 
+########################################################################
+# figure A1: national - rolling pollster bias dispersion over time
+########################################################################
+
+def create_figureA1_national_rolling_dispersion():
+    """
+    plots the rolling standard deviation of total errors across pollsters
+    over time, within the last 107 days.
+
+    answers: as the election approaches, do pollsters spread apart or
+    converge in their individual bias levels? declining rolling SD suggests
+    herding/convergence; increasing rolling SD suggests methodological
+    divergence.
+
+    computed as: for each day, take the standard deviation of total_error
+    across all polls on that day, then smooth with a rolling window to
+    reduce day-to-day noise from uneven pollster coverage.
+    """
+    election_date = pd.Timestamp('2024-11-05')
+    cutoff = election_date - pd.Timedelta(days=107)
+
+    try:
+        df = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+        df['end_date'] = pd.to_datetime(df['end_date'])
+        df = df[df['end_date'] >= cutoff].copy()
+    except FileNotFoundError:
+        print("Warning: national anchored 107 days data not found")
+        return
+
+    # compute daily cross-pollster SD of total error
+    # only meaningful on days with multiple pollsters
+    daily_sd = (
+        df.groupby('end_date')['total_error']
+        .std()
+        .reset_index()
+        .rename(columns={'total_error': 'cross_pollster_sd'})
+    )
+    daily_sd = daily_sd[daily_sd['cross_pollster_sd'].notna()]
+
+    # rolling 7-day mean of the daily SD to smooth day-to-day noise
+    daily_sd = daily_sd.sort_values('end_date')
+    daily_sd['rolling_sd'] = (
+        daily_sd['cross_pollster_sd']
+        .rolling(window=7, min_periods=3, center=True)
+        .mean()
+    )
+
+    # also compute daily poll count for context
+    daily_n = df.groupby('end_date').size().reset_index(name='n_polls')
+    daily_sd = daily_sd.merge(daily_n, on='end_date', how='left')
+
+    fig, (ax1, ax2) = plt.subplots(
+        2, 1, figsize=(14, 9), sharex=True,
+        gridspec_kw={'height_ratios': [3, 1]}
+    )
+
+    # panel 1: rolling SD over time
+    ax1.scatter(
+        daily_sd['end_date'], daily_sd['cross_pollster_sd'],
+        color='#aaaaaa', alpha=0.4, s=15,
+        label='Daily cross-pollster SD', zorder=2
+    )
+    ax1.plot(
+        daily_sd['end_date'], daily_sd['rolling_sd'],
+        color='#d62728', linewidth=2.5,
+        label='7-day rolling mean SD', zorder=3
+    )
+
+    # add trend line
+    x_numeric = (
+        daily_sd['end_date'] - daily_sd['end_date'].min()
+    ).dt.days.values
+    valid = daily_sd['rolling_sd'].notna()
+    if valid.sum() > 2:
+        z = np.polyfit(
+            x_numeric[valid], daily_sd['rolling_sd'].values[valid], 1
+        )
+        p = np.poly1d(z)
+        ax1.plot(
+            daily_sd['end_date'], p(x_numeric),
+            color='#1f77b4', linewidth=1.5, linestyle='--',
+            label=f'Linear trend (slope={z[0]:.4f} pp/day)', zorder=4
+        )
+
+    ax1.set_ylabel('Cross-Pollster SD of Total Error (pp)', fontsize=11)
+    ax1.set_title(
+        'National Pollster Bias Dispersion Over Time\n'
+        '(Does pollster spread narrow or widen as Election Day approaches?)',
+        fontsize=13, fontweight='bold'
+    )
+    ax1.legend(fontsize=10)
+    ax1.grid(True, alpha=0.3)
+    ax1.axhline(
+        daily_sd['rolling_sd'].mean(), color='gray',
+        linewidth=1, linestyle=':', label='Mean SD'
+    )
+
+    # panel 2: poll count per day for context
+    ax2.bar(
+        daily_n['end_date'], daily_n['n_polls'],
+        color='#aaaaaa', alpha=0.6, width=1
+    )
+    ax2.set_ylabel('N Polls', fontsize=10)
+    ax2.set_xlabel('Date', fontsize=11)
+    ax2.grid(True, alpha=0.3)
+
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
+
+    plt.tight_layout()
+    plt.savefig(
+        'figures/kalman_national_rolling_pollster_dispersion.png',
+        dpi=300, bbox_inches='tight'
+    )
+    plt.close()
+    print("Figure A1 saved.")
+
+
+########################################################################
+# figure A2: national - rolling pollster-industry bias correlation
+########################################################################
+
+def create_figureA2_national_pollster_industry_correlation():
+    """
+    for each pollster with sufficient polls, computes the rolling
+    correlation between that pollster's daily total error and the
+    smoothed residual systematic bias (industry-wide trajectory).
+    then plots the mean and distribution of these correlations over time.
+
+    answers: do individual pollsters' errors start moving in sync with
+    the industry average as the election approaches? increasing mean
+    correlation over time is consistent with herding — pollsters
+    increasingly tracking the same biased consensus rather than making
+    independent methodological choices.
+
+    note: this is distinct from dispersion (figure a1). high correlation
+    with low dispersion means pollsters are close together and moving
+    together (strong herding). high correlation with high dispersion means
+    pollsters are spread apart but all drifting in the same direction
+    simultaneously.
+    """
+    election_date = pd.Timestamp('2024-11-05')
+    cutoff = election_date - pd.Timedelta(days=107)
+    window_days = 21  # rolling window for correlation: 3 weeks
+
+    try:
+        df = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+        df['end_date'] = pd.to_datetime(df['end_date'])
+        df = df[df['end_date'] >= cutoff].copy()
+    except FileNotFoundError:
+        print("Warning: national anchored 107 days data not found")
+        return
+
+    # get industry residual systematic bias — one value per day
+    # (same for all pollsters on a given day, take first)
+    industry_bias = (
+        df.groupby('end_date')['residual_systematic_bias']
+        .first()
+        .reset_index()
+        .sort_values('end_date')
+    )
+
+    # identify pollsters with enough polls for meaningful correlation
+    min_polls = 15
+    pollster_counts = df['pollster'].value_counts()
+    eligible_pollsters = pollster_counts[
+        pollster_counts >= min_polls
+    ].index.tolist()
+
+    print(
+        f"Computing rolling correlations for "
+        f"{len(eligible_pollsters)} pollsters "
+        f"(min {min_polls} polls each)"
+    )
+
+    # for each eligible pollster, compute daily mean error
+    # then rolling correlation with industry bias
+    all_rolling_corrs = []
+
+    for pollster in eligible_pollsters:
+        pdf = (
+            df[df['pollster'] == pollster]
+            .groupby('end_date')['total_error']
+            .mean()
+            .reset_index()
+            .rename(columns={'total_error': 'pollster_error'})
+        )
+
+        # merge with industry bias on date
+        merged = industry_bias.merge(pdf, on='end_date', how='inner')
+        merged = merged.sort_values('end_date').set_index('end_date')
+
+        # rolling correlation over window_days
+        if len(merged) < window_days:
+            continue
+
+        rolling_corr = (
+            merged['pollster_error']
+            .rolling(window=window_days, min_periods=10)
+            .corr(merged['residual_systematic_bias'])
+            .reset_index()
+        )
+        rolling_corr['pollster'] = pollster
+        all_rolling_corrs.append(rolling_corr)
+
+    if not all_rolling_corrs:
+        print("No eligible pollsters found for Figure A2")
+        return
+
+    corr_df = pd.concat(all_rolling_corrs, ignore_index=True)
+    corr_df.columns = ['end_date', 'rolling_corr', 'pollster']
+    corr_df = corr_df.dropna(subset=['rolling_corr'])
+
+    # compute daily mean and percentile bands across pollsters
+    daily_stats = (
+        corr_df.groupby('end_date')['rolling_corr']
+        .agg(['mean', 'median',
+              lambda x: x.quantile(0.25),
+              lambda x: x.quantile(0.75)])
+        .reset_index()
+    )
+    daily_stats.columns = [
+        'end_date', 'mean', 'median', 'p25', 'p75'
+    ]
+
+    fig, (ax1, ax2) = plt.subplots(
+        2, 1, figsize=(14, 10), sharex=True,
+        gridspec_kw={'height_ratios': [3, 2]}
+    )
+
+    # panel 1: mean rolling correlation with IQR band
+    ax1.fill_between(
+        daily_stats['end_date'],
+        daily_stats['p25'],
+        daily_stats['p75'],
+        color='#1f77b4', alpha=0.2,
+        label='IQR across pollsters'
+    )
+    ax1.plot(
+        daily_stats['end_date'], daily_stats['mean'],
+        color='#1f77b4', linewidth=2.5,
+        label='Mean rolling correlation', zorder=3
+    )
+    ax1.plot(
+        daily_stats['end_date'], daily_stats['median'],
+        color='#ff7f0e', linewidth=1.5, linestyle='--',
+        label='Median rolling correlation', zorder=3
+    )
+    ax1.axhline(0, color='black', linewidth=0.8, linestyle=':')
+    ax1.axhline(
+        0.5, color='gray', linewidth=0.8, linestyle=':',
+        alpha=0.5
+    )
+    ax1.set_ylabel(
+        f'{window_days}-Day Rolling Correlation\n'
+        'Pollster Error vs Industry Bias',
+        fontsize=11
+    )
+    ax1.set_title(
+        'Do Individual Pollsters Track the Industry Bias Trajectory?\n'
+        '(Increasing correlation over time = consistent with herding)',
+        fontsize=13, fontweight='bold'
+    )
+    ax1.legend(fontsize=10)
+    ax1.grid(True, alpha=0.3)
+    ax1.set_ylim([-1.05, 1.05])
+
+    # panel 2: individual pollster traces (faint) to show heterogeneity
+    for pollster in eligible_pollsters:
+        pdata = corr_df[corr_df['pollster'] == pollster]
+        ax2.plot(
+            pdata['end_date'], pdata['rolling_corr'],
+            color='#aaaaaa', linewidth=0.8, alpha=0.3, zorder=1
+        )
+
+    ax2.plot(
+        daily_stats['end_date'], daily_stats['mean'],
+        color='#1f77b4', linewidth=2.5,
+        label='Mean across pollsters', zorder=3
+    )
+    ax2.axhline(0, color='black', linewidth=0.8, linestyle=':')
+    ax2.set_ylabel(
+        'Individual Pollster\nRolling Correlations',
+        fontsize=10
+    )
+    ax2.set_xlabel('Date', fontsize=11)
+    ax2.legend(fontsize=10)
+    ax2.grid(True, alpha=0.3)
+    ax2.set_ylim([-1.05, 1.05])
+
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
+
+    plt.tight_layout()
+    plt.savefig(
+        'figures/kalman_national_pollster_industry_correlation.png',
+        dpi=300, bbox_inches='tight'
+    )
+    plt.close()
+    print("Figure A2 saved.")
+
 
 ########################################################################
 # main execution
@@ -563,13 +1102,19 @@ if __name__ == '__main__':
     Path('figures').mkdir(exist_ok=True)
     Path('output/kalman').mkdir(parents=True, exist_ok=True)
     
-    # generate all 4 figures
+    # generate all 6 figures
     create_figure2_national_bias_comparison()
     create_figure3_swing_states_bias_trajectories()
     create_figure4_swing_states_error_decomposition()
     create_figure5_national_stability_temporal()
+    create_figure6_swing_states_bias_overlay()
+    create_figure7_swing_states_bias_correlation()
     
     # generate all 3 tables
     create_table1_national_summary()
     create_table2_house_effects_variance()
     create_table3_swing_states_summary()
+
+    # appendix figures
+    create_figureA1_national_rolling_dispersion()
+    create_figureA2_national_pollster_industry_correlation()
