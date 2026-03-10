@@ -1,5 +1,5 @@
 kalman filter with house effects analysis
-started: 2026-03-09 21:49:27
+started: 2026-03-09 22:21:26
 log file: output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt
 time windows: [107, 60, 30]
 
@@ -566,5 +566,5 @@ poll results exported to: data/kalman_he_polls_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_unanchored_last_30_days.csv
 
 ======================================================================
-analysis completed: 2026-03-09 21:51:05
+analysis completed: 2026-03-09 22:22:30
 log saved to: output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt

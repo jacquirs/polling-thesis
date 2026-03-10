@@ -1,5 +1,5 @@
 kalman filtering & smoothing analysis — within-day aggregated version
-started: 2026-03-09 21:56:50
+started: 2026-03-09 22:24:45
 log file: output/kalman/kalman_national_avgday_harrisonly_anlaysis_log.txt
 time windows: [107, 60, 30]
 
@@ -370,5 +370,5 @@ unanchored forecast error:            -1.660 pp
 anchored terminal adjustment:         0.919 pp
 
 ======================================================================
-analysis completed: 2026-03-09 21:57:01
+analysis completed: 2026-03-09 22:24:50
 log saved to: output/kalman/kalman_national_avgday_harrisonly_anlaysis_log.txt

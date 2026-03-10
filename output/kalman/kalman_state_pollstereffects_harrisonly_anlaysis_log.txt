@@ -1,5 +1,5 @@
 kalman filter with house effects analysis — swing states
-started: 2026-03-09 21:51:21
+started: 2026-03-09 22:22:42
 log file: output/kalman/kalman_state_pollstereffects_harrisonly_anlaysis_log.txt
 states: ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
 time windows: [107, 60, 30]
@@ -3165,5 +3165,5 @@ poll results exported to: data/kalman_he_polls_WI_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_WI_unanchored_last_30_days.csv
 
 ======================================================================
-analysis completed: 2026-03-09 21:55:38
+analysis completed: 2026-03-09 22:24:37
 log saved to: output/kalman/kalman_state_pollstereffects_harrisonly_anlaysis_log.txt
