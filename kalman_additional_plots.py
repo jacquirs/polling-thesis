@@ -132,101 +132,175 @@ def create_figure3_swing_states_bias_trajectories():
 
 
 ########################################################################
-# figure 4: swing states - forecast error + variance decomposition (two-panel)
+# figure 4: swing states - three-component bias decomposition (anchored)
 ########################################################################
 
 def create_figure4_swing_states_error_decomposition():
     """
-    left: final forecast error by state (unanchored). right: variance decomposition by state (anchored).
-    shows both how much states missed and what drove the errors.
+    two-panel figure showing where swing state polling error came from.
+
+    left panel: mean signed three-component decomposition by state (anchored em).
+        each bar shows mean total error broken into:
+            - mean house effect contribution (pollster composition bias)
+            - mean sampling noise (expected ~0, confirms random component washes out)
+            - mean residual systematic bias (industry-wide directional error)
+        the three components sum to mean total error by construction.
+        shows both magnitude, direction, and source of polling error.
+
+    right panel: variance decomposition by state (anchored em).
+        shows what share of cross-poll error variance was attributable to
+        each component. complements the left panel by showing whether
+        errors were consistent (high residual bias share) or noisy
+        (high sampling noise share).
+
+    all data from anchored em implementation, last 107 days.
+    no unanchored data used.
     """
     states = ['AZ', 'GA', 'MI', 'NV', 'NC', 'PA', 'WI']
     state_names = {
-        'AZ': 'Arizona', 'GA': 'Georgia', 'MI': 'Michigan', 
-        'NV': 'Nevada', 'NC': 'North Carolina', 
+        'AZ': 'Arizona', 'GA': 'Georgia', 'MI': 'Michigan',
+        'NV': 'Nevada', 'NC': 'North Carolina',
         'PA': 'Pennsylvania', 'WI': 'Wisconsin'
     }
-    
+
+    # colors for three components
+    color_he     = '#ff7f0e'   # orange: house effects
+    color_noise  = '#2ca02c'   # green:  sampling noise
+    color_resid  = '#d62728'   # red:    residual systematic bias
+
     # collect data
-    forecast_errors = {}
-    var_decomp = {}
-    
+    mean_decomp = {}
+    var_decomp  = {}
+
     for state in states:
-        # unanchored for forecast error
         try:
-            df_unanch = pd.read_csv(f'data/kalman_he_polls_{state}_unanchored_last_107_days.csv')
-            final_smoothed = df_unanch['smoothed'].iloc[-1]
-            true_margin = df_unanch['true_margin'].iloc[0]
-            forecast_errors[state] = final_smoothed - true_margin
-        except:
-            forecast_errors[state] = np.nan
-        
-        # anchored for variance decomposition
-        try:
-            df_anch = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_last_107_days.csv')
-            var_total = df_anch['total_error'].var()
-            var_he = df_anch['house_effect_assigned'].var()
-            var_noise = df_anch['sampling_noise'].var()
-            var_resid = df_anch['residual_systematic_bias'].var()
-            
-            var_decomp[state] = {
-                'house': 100 * var_he / var_total,
-                'noise': 100 * var_noise / var_total,
-                'residual': 100 * var_resid / var_total
+            df = pd.read_csv(
+                f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
+            )
+
+            # mean signed components
+            mean_he    = df['house_effect_assigned'].mean()
+            mean_noise = df['sampling_noise'].mean()
+            mean_resid = df['residual_systematic_bias'].mean()
+            mean_total = df['total_error'].mean()
+
+            mean_decomp[state] = {
+                'house':   mean_he,
+                'noise':   mean_noise,
+                'residual': mean_resid,
+                'total':   mean_total,
             }
-        except:
-            var_decomp[state] = {'house': np.nan, 'noise': np.nan, 'residual': np.nan}
-    
-    # create two-panel figure
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-    
-    # left panel: forecast error
-    errors = [forecast_errors[s] for s in states]
-    state_labels = [state_names[s] for s in states]
-    colors = ['#d62728' if e > 0 else '#1f77b4' for e in errors]
-    
-    y_pos = np.arange(len(states))
-    ax1.barh(y_pos, errors, color=colors, alpha=0.8)
-    ax1.set_yticks(y_pos)
-    ax1.set_yticklabels(state_labels)
-    ax1.axvline(0, color='black', linewidth=1)
-    ax1.set_xlabel('Final Forecast Error (pp)', fontsize=11)
-    ax1.set_title('State-Level Forecast Accuracy\n(EM Unanchored, Last 107 Days)', 
-                  fontsize=12, fontweight='bold')
-    ax1.grid(True, alpha=0.3, axis='x')
-    
-    # right panel: variance decomposition
-    house_pcts = [var_decomp[s]['house'] for s in states]
-    noise_pcts = [var_decomp[s]['noise'] for s in states]
-    resid_pcts = [var_decomp[s]['residual'] for s in states]
-    
-    # sort by residual systematic bias (descending)
-    sorted_indices = np.argsort(resid_pcts)[::-1]
-    states_sorted = [states[i] for i in sorted_indices]
-    state_labels_sorted = [state_names[s] for s in states_sorted]
-    house_sorted = [house_pcts[i] for i in sorted_indices]
-    noise_sorted = [noise_pcts[i] for i in sorted_indices]
-    resid_sorted = [resid_pcts[i] for i in sorted_indices]
-    
+
+            # variance shares
+            var_total = df['total_error'].var()
+            var_he    = df['house_effect_assigned'].var()
+            var_noise = df['sampling_noise'].var()
+            var_resid = df['residual_systematic_bias'].var()
+
+            var_decomp[state] = {
+                'house':    100 * var_he    / var_total,
+                'noise':    100 * var_noise / var_total,
+                'residual': 100 * var_resid / var_total,
+            }
+
+        except FileNotFoundError:
+            print(f"Warning: data not found for {state}")
+            continue
+
+    # sort states by mean total error (most negative first)
+    states_sorted = sorted(
+        [s for s in states if s in mean_decomp],
+        key=lambda s: mean_decomp[s]['total']
+    )
+    state_labels = [state_names[s] for s in states_sorted]
     y_pos = np.arange(len(states_sorted))
-    
-    ax2.barh(y_pos, house_sorted, color='#ff7f0e', alpha=0.8, label='House Effects')
-    ax2.barh(y_pos, noise_sorted, left=house_sorted, color='#2ca02c', alpha=0.8, label='Sampling Noise')
-    ax2.barh(y_pos, resid_sorted, left=np.array(house_sorted) + np.array(noise_sorted), 
-            color='#d62728', alpha=0.8, label='Residual Systematic Bias')
-    
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+
+    # ----------------------------------------------------------------
+    # left panel: mean signed decomposition
+    # stacked horizontal bars; components can be negative so we
+    # handle positive and negative segments separately to stack correctly
+    # ----------------------------------------------------------------
+
+    he_vals    = np.array([mean_decomp[s]['house']    for s in states_sorted])
+    noise_vals = np.array([mean_decomp[s]['noise']    for s in states_sorted])
+    resid_vals = np.array([mean_decomp[s]['residual'] for s in states_sorted])
+    total_vals = np.array([mean_decomp[s]['total']    for s in states_sorted])
+
+    # plot each component as a horizontal bar starting from its cumulative left edge
+    # components are signed so we stack them additively left to right
+    left_he    = np.zeros(len(states_sorted))
+    left_noise = he_vals
+    left_resid = he_vals + noise_vals
+
+    ax1.barh(y_pos, he_vals,    left=left_he,    color=color_he,
+             alpha=0.85, label='House Effects', height=0.6)
+    ax1.barh(y_pos, noise_vals, left=left_noise, color=color_noise,
+             alpha=0.85, label='Sampling Noise', height=0.6)
+    ax1.barh(y_pos, resid_vals, left=left_resid, color=color_resid,
+             alpha=0.85, label='Residual Systematic Bias', height=0.6)
+
+    # annotate total error at end of bar
+    for i, total in enumerate(total_vals):
+        offset = 0.08 if total >= 0 else -0.08
+        ha     = 'left' if total >= 0 else 'right'
+        ax1.text(total + offset, y_pos[i], f'{total:.2f} pp',
+                 va='center', ha=ha, fontsize=9, fontweight='bold')
+
+    ax1.axvline(0, color='black', linewidth=1)
+    ax1.set_yticks(y_pos)
+    ax1.set_yticklabels(state_labels, fontsize=11)
+    ax1.set_xlabel('Mean Error Component (pp)', fontsize=11)
+    ax1.set_title(
+        'Mean Polling Error Decomposition by State\n'
+        '(EM Anchored, Last 107 Days)',
+        fontsize=12, fontweight='bold'
+    )
+    ax1.legend(loc='lower right', fontsize=10)
+    ax1.grid(True, alpha=0.3, axis='x')
+
+    # ----------------------------------------------------------------
+    # right panel: variance decomposition (% of total error variance)
+    # ----------------------------------------------------------------
+
+    house_pcts = [var_decomp[s]['house']    for s in states_sorted]
+    noise_pcts = [var_decomp[s]['noise']    for s in states_sorted]
+    resid_pcts = [var_decomp[s]['residual'] for s in states_sorted]
+
+    ax2.barh(y_pos, house_pcts, color=color_he,
+             alpha=0.85, label='House Effects', height=0.6)
+    ax2.barh(y_pos, noise_pcts, left=house_pcts, color=color_noise,
+             alpha=0.85, label='Sampling Noise', height=0.6)
+    ax2.barh(y_pos, resid_pcts,
+             left=np.array(house_pcts) + np.array(noise_pcts),
+             color=color_resid, alpha=0.85,
+             label='Residual Systematic Bias', height=0.6)
+
     ax2.set_yticks(y_pos)
-    ax2.set_yticklabels(state_labels_sorted)
-    ax2.set_xlabel('Percent of Total Error Variance', fontsize=11)
-    ax2.set_title('Error Source Decomposition\n(EM Anchored, Last 107 Days)', 
-                  fontsize=12, fontweight='bold')
+    ax2.set_yticklabels(state_labels, fontsize=11)
+    ax2.set_xlabel('Share of Total Error Variance (%)', fontsize=11)
+    ax2.set_title(
+        'Error Variance Decomposition by State\n'
+        '(EM Anchored, Last 107 Days)',
+        fontsize=12, fontweight='bold'
+    )
     ax2.legend(loc='lower right', fontsize=10)
-    ax2.set_xlim([0, 100])
+    ax2.set_xlim([0, 105])
     ax2.grid(True, alpha=0.3, axis='x')
-    
+
+    # annotate variance shares
+    for i, (h, n, r) in enumerate(zip(house_pcts, noise_pcts, resid_pcts)):
+        ax2.text(105, y_pos[i], f'{h:.0f} / {n:.0f} / {r:.0f}',
+                 va='center', ha='right', fontsize=8, color='#444444')
+
     plt.tight_layout()
-    plt.savefig('figures/kalman_swing_states_forecast_error_and_variance_decomposition.png', dpi=300, bbox_inches='tight')
+    plt.savefig(
+        'figures/kalman_swing_states_forecast_error_and_variance_decomposition.png',
+        dpi=300, bbox_inches='tight'
+    )
     plt.close()
+    print("Figure 4 saved.")
 
 
 ########################################################################
@@ -751,7 +825,6 @@ def create_table3_swing_states_summary():
                 'Mean Residual Bias (pp)': df_anch['residual_systematic_bias'].mean(),
                 '$\\sigma^2_u$ (per day)': df_anch['sigma2_u'].iloc[0],
                 'var(HE)/var(Total) \\%': 100 * var_he / var_total,
-                'Forecast Error (pp)': df_unanch['smoothed'].iloc[-1] - df_unanch['true_margin'].iloc[0]
             }
             results.append(row)
             
@@ -759,12 +832,6 @@ def create_table3_swing_states_summary():
             continue
     
     table3 = pd.DataFrame(results)
-    
-    # add rank by forecast error magnitude
-    table3['Rank'] = table3['Forecast Error (pp)'].abs().rank(ascending=True).astype(int)
-    
-    # sort by forecast error magnitude
-    table3 = table3.sort_values('Forecast Error (pp)', key=abs, ascending=False)
     
     # format
     table3_formatted = table3.round({
@@ -775,14 +842,13 @@ def create_table3_swing_states_summary():
         'Mean Residual Bias (pp)': 2,
         '$\\sigma^2_u$ (per day)': 6,
         'var(HE)/var(Total) \\%': 1,
-        'Forecast Error (pp)': 2
     })
     
     # save
     table3_formatted.to_csv('output/kalman/swing_states_polling_quality_and_forecast_performance.csv', index=False)
     
     latex_str = table3_formatted.to_latex(index=False, escape=False,
-                                          caption='Swing State Summary: Polling Quality and Forecast Performance',
+                                          caption='Swing State Summary (Poll-Adjusted, Anchored, 107 Days)',
                                           label='tab:swing_states_summary')
     with open('output/kalman/swing_states_polling_quality_and_forecast_performance.tex', 'w') as f:
         f.write(latex_str)
