@@ -660,7 +660,7 @@ def export_results(df: pd.DataFrame, out_path: str = 'kalman_results.csv') -> pd
 if __name__ == '__main__':
 
     # important values
-    DATA_PATH     = 'data/harris_trump_accuracy.csv'
+    DATA_PATH     = 'data/harris_trump_datelimted_accuracy_no_explode.csv'
     ELECTION_DATE = '2024-11-05'
     
     # time windows to analyze: last X days

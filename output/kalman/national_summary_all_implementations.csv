@@ -1,8 +1,8 @@
 Window,Implementation,N_obs,True_margin,Mean_poll_margin,Mean_total_error,SD_total_error,Mean_abs_house_effect,Mean_residual_bias,Sigma2_u,Final_smoothed,Final_forecast_error,Var_systematic_pct
-Last 107 Days,Em Anchored,674,1.472,-2.129,-3.601,2.487,1.257,-3.652,0.199696,0.379,,24.9
-Last 107 Days,Em Unanchored,674,1.472,-2.129,-3.601,2.487,1.257,-3.652,0.199696,0.379,,24.9
-Last 107 Days,Agg Anchored,107,1.472,-3.036,-4.508,1.647,,-4.444,0.448094,0.611,,75.2
-Last 107 Days,Agg Unanchored,107,1.472,-3.036,-4.508,1.647,,-4.444,0.448094,0.611,,75.2
+Last 107 Days,Em Anchored,663,1.472,-2.234,-3.706,2.351,1.251,-3.757,0.165466,0.454,,21.8
+Last 107 Days,Em Unanchored,663,1.472,-2.234,-3.706,2.351,1.251,-3.757,0.165466,0.454,,21.8
+Last 107 Days,Agg Anchored,107,1.472,-3.021,-4.493,1.726,,-4.464,0.355443,0.642,,60.6
+Last 107 Days,Agg Unanchored,107,1.472,-3.021,-4.493,1.726,,-4.464,0.355443,0.642,,60.6
 Last 60 Days,Em Anchored,378,1.472,-2.229,-3.702,2.26,1.292,-3.702,0.220044,0.401,,16.7
 Last 60 Days,Em Unanchored,378,1.472,-2.229,-3.702,2.26,1.292,-3.702,0.220044,0.401,,16.7
 Last 60 Days,Agg Anchored,60,1.472,-3.31,-4.782,1.439,,-4.681,0.541876,0.588,,75.7

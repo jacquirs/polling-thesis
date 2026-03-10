@@ -1,5 +1,5 @@
 kalman filter with house effects analysis — swing states
-started: 2026-03-08 22:19:43
+started: 2026-03-09 21:51:21
 log file: output/kalman/kalman_state_pollstereffects_harrisonly_anlaysis_log.txt
 states: ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
 time windows: [107, 60, 30]
@@ -14,9 +14,9 @@ ANALYZING: arizona (AZ) | LAST 107 DAYS
 ANCHORED MODE (arizona | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  157
-  polls dropped:       7
+  polls dropped:       0
 arizona polls loaded: 156 questions from 97 polls, 44 pollsters
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -95,9 +95,9 @@ house effects exported to: data/kalman_he_effects_AZ_anchored_last_107_days.csv
 UNANCHORED MODE (arizona | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  157
-  polls dropped:       7
+  polls dropped:       0
 arizona polls loaded: 156 questions from 97 polls, 44 pollsters
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -185,9 +185,9 @@ ANALYZING: arizona (AZ) | LAST 60 DAYS
 ANCHORED MODE (arizona | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  111
-  polls dropped:       53
+  polls dropped:       46
 arizona polls loaded: 111 questions from 70 polls, 36 pollsters
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -261,9 +261,9 @@ house effects exported to: data/kalman_he_effects_AZ_anchored_last_60_days.csv
 UNANCHORED MODE (arizona | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  111
-  polls dropped:       53
+  polls dropped:       46
 arizona polls loaded: 111 questions from 70 polls, 36 pollsters
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -344,9 +344,9 @@ ANALYZING: arizona (AZ) | LAST 30 DAYS
 ANCHORED MODE (arizona | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  70
-  polls dropped:       94
+  polls dropped:       87
 arizona polls loaded: 70 questions from 46 polls, 28 pollsters
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -420,9 +420,9 @@ house effects exported to: data/kalman_he_effects_AZ_anchored_last_30_days.csv
 UNANCHORED MODE (arizona | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  70
-  polls dropped:       94
+  polls dropped:       87
 arizona polls loaded: 70 questions from 46 polls, 28 pollsters
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -485,9 +485,9 @@ ANALYZING: georgia (GA) | LAST 107 DAYS
 ANCHORED MODE (georgia | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  152
-  polls dropped:       14
+  polls dropped:       0
 georgia polls loaded: 150 questions from 88 polls, 38 pollsters
 date range: 2024-07-22 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -563,9 +563,9 @@ house effects exported to: data/kalman_he_effects_GA_anchored_last_107_days.csv
 UNANCHORED MODE (georgia | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  152
-  polls dropped:       14
+  polls dropped:       0
 georgia polls loaded: 150 questions from 88 polls, 38 pollsters
 date range: 2024-07-22 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -633,9 +633,9 @@ ANALYZING: georgia (GA) | LAST 60 DAYS
 ANCHORED MODE (georgia | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  114
-  polls dropped:       52
+  polls dropped:       38
 georgia polls loaded: 114 questions from 67 polls, 32 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -704,9 +704,9 @@ house effects exported to: data/kalman_he_effects_GA_anchored_last_60_days.csv
 UNANCHORED MODE (georgia | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  114
-  polls dropped:       52
+  polls dropped:       38
 georgia polls loaded: 114 questions from 67 polls, 32 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -773,9 +773,9 @@ ANALYZING: georgia (GA) | LAST 30 DAYS
 ANCHORED MODE (georgia | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  67
-  polls dropped:       99
+  polls dropped:       85
 georgia polls loaded: 67 questions from 42 polls, 26 pollsters
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -842,9 +842,9 @@ house effects exported to: data/kalman_he_effects_GA_anchored_last_30_days.csv
 UNANCHORED MODE (georgia | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  67
-  polls dropped:       99
+  polls dropped:       85
 georgia polls loaded: 67 questions from 42 polls, 26 pollsters
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -905,9 +905,9 @@ ANALYZING: michigan (MI) | LAST 107 DAYS
 ANCHORED MODE (michigan | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  188
-  polls dropped:       6
+  polls dropped:       0
 michigan polls loaded: 184 questions from 114 polls, 50 pollsters
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -988,9 +988,9 @@ house effects exported to: data/kalman_he_effects_MI_anchored_last_107_days.csv
 UNANCHORED MODE (michigan | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  188
-  polls dropped:       6
+  polls dropped:       0
 michigan polls loaded: 184 questions from 114 polls, 50 pollsters
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -1059,9 +1059,9 @@ ANALYZING: michigan (MI) | LAST 60 DAYS
 ANCHORED MODE (michigan | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  133
-  polls dropped:       61
+  polls dropped:       55
 michigan polls loaded: 132 questions from 84 polls, 43 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -1140,9 +1140,9 @@ house effects exported to: data/kalman_he_effects_MI_anchored_last_60_days.csv
 UNANCHORED MODE (michigan | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  133
-  polls dropped:       61
+  polls dropped:       55
 michigan polls loaded: 132 questions from 84 polls, 43 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -1212,9 +1212,9 @@ ANALYZING: michigan (MI) | LAST 30 DAYS
 ANCHORED MODE (michigan | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  90
-  polls dropped:       104
+  polls dropped:       98
 michigan polls loaded: 89 questions from 57 polls, 37 pollsters
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -1293,9 +1293,9 @@ house effects exported to: data/kalman_he_effects_MI_anchored_last_30_days.csv
 UNANCHORED MODE (michigan | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  90
-  polls dropped:       104
+  polls dropped:       98
 michigan polls loaded: 89 questions from 57 polls, 37 pollsters
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -1360,9 +1360,9 @@ ANALYZING: nevada (NV) | LAST 107 DAYS
 ANCHORED MODE (nevada | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  116
-  polls dropped:       5
+  polls dropped:       0
 nevada polls loaded: 115 questions from 69 polls, 31 pollsters
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1438,9 +1438,9 @@ house effects exported to: data/kalman_he_effects_NV_anchored_last_107_days.csv
 UNANCHORED MODE (nevada | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  116
-  polls dropped:       5
+  polls dropped:       0
 nevada polls loaded: 115 questions from 69 polls, 31 pollsters
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1507,9 +1507,9 @@ ANALYZING: nevada (NV) | LAST 60 DAYS
 ANCHORED MODE (nevada | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  87
-  polls dropped:       34
+  polls dropped:       29
 nevada polls loaded: 87 questions from 52 polls, 28 pollsters
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1582,9 +1582,9 @@ house effects exported to: data/kalman_he_effects_NV_anchored_last_60_days.csv
 UNANCHORED MODE (nevada | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  87
-  polls dropped:       34
+  polls dropped:       29
 nevada polls loaded: 87 questions from 52 polls, 28 pollsters
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1694,9 +1694,9 @@ ANALYZING: nevada (NV) | LAST 30 DAYS
 ANCHORED MODE (nevada | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  52
-  polls dropped:       69
+  polls dropped:       64
 nevada polls loaded: 52 questions from 32 polls, 20 pollsters
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1770,9 +1770,9 @@ house effects exported to: data/kalman_he_effects_NV_anchored_last_30_days.csv
 UNANCHORED MODE (nevada | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  52
-  polls dropped:       69
+  polls dropped:       64
 nevada polls loaded: 52 questions from 32 polls, 20 pollsters
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1833,9 +1833,9 @@ ANALYZING: north carolina (NC) | LAST 107 DAYS
 ANCHORED MODE (north carolina | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  158
-  polls dropped:       3
+  polls dropped:       0
 north carolina polls loaded: 157 questions from 97 polls, 39 pollsters
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1911,9 +1911,9 @@ house effects exported to: data/kalman_he_effects_NC_anchored_last_107_days.csv
 UNANCHORED MODE (north carolina | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  158
-  polls dropped:       3
+  polls dropped:       0
 north carolina polls loaded: 157 questions from 97 polls, 39 pollsters
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1981,9 +1981,9 @@ ANALYZING: north carolina (NC) | LAST 60 DAYS
 ANCHORED MODE (north carolina | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  121
-  polls dropped:       40
+  polls dropped:       37
 north carolina polls loaded: 121 questions from 75 polls, 36 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -2058,9 +2058,9 @@ house effects exported to: data/kalman_he_effects_NC_anchored_last_60_days.csv
 UNANCHORED MODE (north carolina | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  121
-  polls dropped:       40
+  polls dropped:       37
 north carolina polls loaded: 121 questions from 75 polls, 36 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -2127,9 +2127,9 @@ ANALYZING: north carolina (NC) | LAST 30 DAYS
 ANCHORED MODE (north carolina | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  65
-  polls dropped:       96
+  polls dropped:       93
 north carolina polls loaded: 65 questions from 41 polls, 24 pollsters
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -2201,9 +2201,9 @@ house effects exported to: data/kalman_he_effects_NC_anchored_last_30_days.csv
 UNANCHORED MODE (north carolina | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  65
-  polls dropped:       96
+  polls dropped:       93
 north carolina polls loaded: 65 questions from 41 polls, 24 pollsters
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -2265,79 +2265,78 @@ ANALYZING: pennsylvania (PA) | LAST 107 DAYS
 ANCHORED MODE (pennsylvania | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 241
-  polls after filter:  229
-  polls dropped:       12
-pennsylvania polls loaded: 226 questions from 140 polls, 63 pollsters
-date range: 2024-07-21 to 2024-11-04
+  polls before filter: 227
+  polls after filter:  227
+  polls dropped:       0
+pennsylvania polls loaded: 224 questions from 138 polls, 62 pollsters
+date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.710 pp
 poll margin range: -6.0 to 6.0 pp
-mean poll margin: -0.734 pp
+mean poll margin: -0.768 pp
 
 sanity check — unique true_margin values: [1.70973099]
 
 election result appended: margin = 1.710 pp on 2024-11-05
 
 initializing sigma2_u from raw (uncorrected) margins...
-  initial sigma2_u: 0.132672
+  initial sigma2_u: 0.128496
 
 starting em algorithm (max_iter=50, tol=0.0001)
  iter   max_he_change    sigma2_u   mean_|he|
 --------------------------------------------------
-    1        5.671220    0.132672      1.6238
-    2        0.436458    0.101832      1.6879
-    3        0.122069    0.098798      1.7068
-    4        0.036055    0.096297      1.7127
-    5        0.020541    0.095505      1.7147
-    6        0.009063    0.095132      1.7154
-    7        0.004128    0.094979      1.7157
-    8        0.001805    0.094935      1.7158
-    9        0.000691    0.094891      1.7158
-   10        0.000382    0.094891      1.7159
-   11        0.000106    0.094891      1.7159
-   12        0.000031    0.094891      1.7159
+    1        5.672472    0.128496      1.5838
+    2        0.442833    0.102256      1.6453
+    3        0.123149    0.099832      1.6624
+    4        0.032013    0.097779      1.6674
+    5        0.015920    0.097128      1.6689
+    6        0.007091    0.096836      1.6694
+    7        0.003183    0.096724      1.6695
+    8        0.001341    0.096679      1.6696
+    9        0.000555    0.096656      1.6696
+   10        0.000246    0.096656      1.6696
+   11        0.000067    0.096656      1.6696
 
-em converged at iteration 12 (max change 3.12e-05 < tol 1.00e-04)
+em converged at iteration 11 (max change 6.69e-05 < tol 1.00e-04)
 
 ======================================================================
 polling bias decomposition with house effects — pennsylvania (trump margin, anchored)
 ======================================================================
 
 true margin (certified result): 1.710 pp
-estimated sigma2_u:             0.094891 per day
-interpretation: true opinion can move ~0.308 pp/day (1 sd)
+estimated sigma2_u:             0.096656 per day
+interpretation: true opinion can move ~0.311 pp/day (1 sd)
 
 --- overall poll error ---
-  mean poll margin:              -0.734 pp
-  mean total error:              -2.444 pp
-  sd of total error:             2.256 pp
+  mean poll margin:              -0.768 pp
+  mean total error:              -2.477 pp
+  sd of total error:             2.236 pp
 
 --- three-component decomposition ---
-  mean |house effect|:           1.476 pp
-  mean |sampling noise|:         1.048 pp
-  mean residual systematic bias: -2.298 pp
+  mean |house effect|:           1.459 pp
+  mean |sampling noise|:         1.050 pp
+  mean residual systematic bias: -2.332 pp
 
 --- variance decomposition ---
-  var(total error):              5.0873
-  var(house effects):            2.9209  (57.4%)
-  var(sampling noise):           1.8872  (37.1%)
-  var(residual systematic bias): 0.5001  (9.8%)
+  var(total error):              4.9978
+  var(house effects):            2.8662  (57.3%)
+  var(sampling noise):           1.8995  (38.0%)
+  var(residual systematic bias): 0.5038  (10.1%)
 
 --- house effects (top 20 by absolute effect, min 5 polls) ---
                      pollster  house_effect  n_polls
-              Trafalgar Group         2.766        5
-                   AtlasIntel         2.028       12
-             InsiderAdvantage         1.877        5
-Franklin and Marshall College        -1.855        5
-                    Siena/NYT        -1.632       16
-                      Emerson         1.567       10
-                    Bullfinch        -1.508        8
-                   Quinnipiac        -1.429        8
-              Morning Consult        -1.409       18
-                       YouGov        -1.277       10
-                    Focaldata        -1.193       10
- Redfield & Wilton Strategies         0.999       13
-                  Beacon/Shaw        -0.239       10
+              Trafalgar Group         2.791        5
+                   AtlasIntel         2.046       12
+             InsiderAdvantage         1.900        5
+Franklin and Marshall College        -1.832        5
+                    Siena/NYT        -1.605       16
+                      Emerson         1.600       10
+                    Bullfinch        -1.474        8
+                   Quinnipiac        -1.403        8
+              Morning Consult        -1.381       18
+                       YouGov        -1.255       10
+                    Focaldata        -1.166       10
+ Redfield & Wilton Strategies         1.027       13
+                  Beacon/Shaw        -0.213       10
 
 figure saved to: figures/kalman_he_PA_anchored_last_107_days.png
 poll results exported to: data/kalman_he_polls_PA_anchored_last_107_days.csv
@@ -2347,14 +2346,14 @@ house effects exported to: data/kalman_he_effects_PA_anchored_last_107_days.csv
 UNANCHORED MODE (pennsylvania | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 241
-  polls after filter:  229
-  polls dropped:       12
-pennsylvania polls loaded: 226 questions from 140 polls, 63 pollsters
-date range: 2024-07-21 to 2024-11-04
+  polls before filter: 227
+  polls after filter:  227
+  polls dropped:       0
+pennsylvania polls loaded: 224 questions from 138 polls, 62 pollsters
+date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.710 pp
 poll margin range: -6.0 to 6.0 pp
-mean poll margin: -0.734 pp
+mean poll margin: -0.768 pp
 
 sanity check — unique true_margin values: [1.70973099]
 
@@ -2362,20 +2361,20 @@ skipping election result anchor (unanchored mode)
 true margin: 1.710 pp (not used as constraint)
 
 initializing sigma2_u from raw (uncorrected) margins...
-  initial sigma2_u: 0.015757
+  initial sigma2_u: 0.012493
 
 starting em algorithm (max_iter=50, tol=0.0001)
  iter   max_he_change    sigma2_u   mean_|he|
 --------------------------------------------------
-    1        5.896580    0.015757      1.6196
-    2        0.168333    0.002214      1.6266
-    3        0.304958    0.001523      1.6134
-    4        0.032742    0.000100      1.6104
-    5        0.066253    0.000100      1.6041
-    6        0.000325    0.000100      1.6040
-    7        0.000003    0.000100      1.6040
+    1        5.930799    0.012493      1.5635
+    2        0.138460    0.002189      1.5678
+    3        0.210130    0.001549      1.5501
+    4        0.032694    0.000100      1.5469
+    5        0.070012    0.000100      1.5402
+    6        0.000358    0.000100      1.5401
+    7        0.000003    0.000100      1.5401
 
-em converged at iteration 7 (max change 2.81e-06 < tol 1.00e-04)
+em converged at iteration 7 (max change 3.13e-06 < tol 1.00e-04)
 
 ======================================================================
 polling opinion trajectory with house effects — pennsylvania (trump margin, unanchored)
@@ -2386,29 +2385,29 @@ estimated sigma2_u:             0.000100 per day
 interpretation: true opinion can move ~0.010 pp/day (1 sd)
 
 --- overall poll error ---
-  mean poll margin:              -0.734 pp
-  mean total error:              -2.444 pp
-  sd of total error:             2.256 pp
+  mean poll margin:              -0.768 pp
+  mean total error:              -2.477 pp
+  sd of total error:             2.236 pp
 
 --- three-component decomposition ---
-  mean |house effect|:           1.483 pp
+  mean |house effect|:           1.457 pp
   mean |sampling noise|:         1.008 pp
 
 --- house effects (top 20 by absolute effect, min 5 polls) ---
                      pollster  house_effect  n_polls
-              Trafalgar Group         2.834        5
-                   AtlasIntel         2.723       12
-             InsiderAdvantage         1.934        5
-Franklin and Marshall College        -1.866        5
-                    Siena/NYT        -1.641       16
-                   Quinnipiac        -1.640        8
-              Morning Consult        -1.600       18
-                      Emerson         1.565       10
-                    Bullfinch        -1.515        8
-                    Focaldata        -1.325       10
-                       YouGov        -1.018       10
- Redfield & Wilton Strategies         0.965       13
-                  Beacon/Shaw        -0.066       10
+              Trafalgar Group         2.868        5
+                   AtlasIntel         2.756       12
+             InsiderAdvantage         1.967        5
+Franklin and Marshall College        -1.833        5
+                    Siena/NYT        -1.607       16
+                   Quinnipiac        -1.607        8
+                      Emerson         1.598       10
+              Morning Consult        -1.567       18
+                    Bullfinch        -1.482        8
+                    Focaldata        -1.291       10
+ Redfield & Wilton Strategies         0.998       13
+                       YouGov        -0.985       10
+                  Beacon/Shaw        -0.033       10
 
 figure saved to: figures/kalman_he_PA_unanchored_last_107_days.png
 poll results exported to: data/kalman_he_polls_PA_unanchored_last_107_days.csv
@@ -2424,9 +2423,9 @@ ANALYZING: pennsylvania (PA) | LAST 60 DAYS
 ANCHORED MODE (pennsylvania | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  161
-  polls dropped:       80
+  polls dropped:       66
 pennsylvania polls loaded: 161 questions from 100 polls, 50 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2501,9 +2500,9 @@ house effects exported to: data/kalman_he_effects_PA_anchored_last_60_days.csv
 UNANCHORED MODE (pennsylvania | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  161
-  polls dropped:       80
+  polls dropped:       66
 pennsylvania polls loaded: 161 questions from 100 polls, 50 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2579,9 +2578,9 @@ ANALYZING: pennsylvania (PA) | LAST 30 DAYS
 ANCHORED MODE (pennsylvania | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  102
-  polls dropped:       139
+  polls dropped:       125
 pennsylvania polls loaded: 102 questions from 62 polls, 40 pollsters
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2655,9 +2654,9 @@ house effects exported to: data/kalman_he_effects_PA_anchored_last_30_days.csv
 UNANCHORED MODE (pennsylvania | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  102
-  polls dropped:       139
+  polls dropped:       125
 pennsylvania polls loaded: 102 questions from 62 polls, 40 pollsters
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2720,9 +2719,9 @@ ANALYZING: wisconsin (WI) | LAST 107 DAYS
 ANCHORED MODE (wisconsin | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  184
-  polls dropped:       7
+  polls dropped:       0
 wisconsin polls loaded: 181 questions from 104 polls, 46 pollsters
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2802,9 +2801,9 @@ house effects exported to: data/kalman_he_effects_WI_anchored_last_107_days.csv
 UNANCHORED MODE (wisconsin | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  184
-  polls dropped:       7
+  polls dropped:       0
 wisconsin polls loaded: 181 questions from 104 polls, 46 pollsters
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2885,9 +2884,9 @@ ANALYZING: wisconsin (WI) | LAST 60 DAYS
 ANCHORED MODE (wisconsin | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  125
-  polls dropped:       66
+  polls dropped:       59
 wisconsin polls loaded: 125 questions from 75 polls, 38 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2963,9 +2962,9 @@ house effects exported to: data/kalman_he_effects_WI_anchored_last_60_days.csv
 UNANCHORED MODE (wisconsin | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  125
-  polls dropped:       66
+  polls dropped:       59
 wisconsin polls loaded: 125 questions from 75 polls, 38 pollsters
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -3035,9 +3034,9 @@ ANALYZING: wisconsin (WI) | LAST 30 DAYS
 ANCHORED MODE (wisconsin | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  80
-  polls dropped:       111
+  polls dropped:       104
 wisconsin polls loaded: 80 questions from 49 polls, 30 pollsters
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -3110,9 +3109,9 @@ house effects exported to: data/kalman_he_effects_WI_anchored_last_30_days.csv
 UNANCHORED MODE (wisconsin | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  80
-  polls dropped:       111
+  polls dropped:       104
 wisconsin polls loaded: 80 questions from 49 polls, 30 pollsters
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -3166,5 +3165,5 @@ poll results exported to: data/kalman_he_polls_WI_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_WI_unanchored_last_30_days.csv
 
 ======================================================================
-analysis completed: 2026-03-08 22:22:42
+analysis completed: 2026-03-09 21:55:38
 log saved to: output/kalman/kalman_state_pollstereffects_harrisonly_anlaysis_log.txt

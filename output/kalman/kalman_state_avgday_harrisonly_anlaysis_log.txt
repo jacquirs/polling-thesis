@@ -1,5 +1,5 @@
 kalman filtering & smoothing analysis — swing states (within-day aggregated version)
-started: 2026-03-08 22:49:22
+started: 2026-03-09 21:57:53
 log file: output/kalman/kalman_state_avgday_harrisonly_anlaysis_log.txt
 states: ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
 time windows: [107, 60, 30]
@@ -14,9 +14,9 @@ ANALYZING: arizona (AZ) | LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (arizona | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  157
-  polls dropped:       7
+  polls dropped:       0
 arizona polls loaded: 156 questions from 97 polls
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -68,9 +68,9 @@ results exported to: data/kalman_agg_AZ_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (arizona | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  157
-  polls dropped:       7
+  polls dropped:       0
 arizona polls loaded: 156 questions from 97 polls
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -136,9 +136,9 @@ ANALYZING: arizona (AZ) | LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (arizona | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  111
-  polls dropped:       53
+  polls dropped:       46
 arizona polls loaded: 111 questions from 70 polls
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -190,9 +190,9 @@ results exported to: data/kalman_agg_AZ_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (arizona | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  111
-  polls dropped:       53
+  polls dropped:       46
 arizona polls loaded: 111 questions from 70 polls
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -258,9 +258,9 @@ ANALYZING: arizona (AZ) | LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (arizona | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  70
-  polls dropped:       94
+  polls dropped:       87
 arizona polls loaded: 70 questions from 46 polls
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -312,9 +312,9 @@ results exported to: data/kalman_agg_AZ_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (arizona | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 164
+  polls before filter: 157
   polls after filter:  70
-  polls dropped:       94
+  polls dropped:       87
 arizona polls loaded: 70 questions from 46 polls
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 5.529 pp
@@ -380,9 +380,9 @@ ANALYZING: georgia (GA) | LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (georgia | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  152
-  polls dropped:       14
+  polls dropped:       0
 georgia polls loaded: 150 questions from 88 polls
 date range: 2024-07-22 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -434,9 +434,9 @@ results exported to: data/kalman_agg_GA_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (georgia | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  152
-  polls dropped:       14
+  polls dropped:       0
 georgia polls loaded: 150 questions from 88 polls
 date range: 2024-07-22 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -502,9 +502,9 @@ ANALYZING: georgia (GA) | LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (georgia | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  114
-  polls dropped:       52
+  polls dropped:       38
 georgia polls loaded: 114 questions from 67 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -556,9 +556,9 @@ results exported to: data/kalman_agg_GA_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (georgia | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  114
-  polls dropped:       52
+  polls dropped:       38
 georgia polls loaded: 114 questions from 67 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -624,9 +624,9 @@ ANALYZING: georgia (GA) | LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (georgia | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  67
-  polls dropped:       99
+  polls dropped:       85
 georgia polls loaded: 67 questions from 42 polls
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -678,9 +678,9 @@ results exported to: data/kalman_agg_GA_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (georgia | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 166
+  polls before filter: 152
   polls after filter:  67
-  polls dropped:       99
+  polls dropped:       85
 georgia polls loaded: 67 questions from 42 polls
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 2.192 pp
@@ -746,9 +746,9 @@ ANALYZING: michigan (MI) | LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (michigan | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  188
-  polls dropped:       6
+  polls dropped:       0
 michigan polls loaded: 184 questions from 114 polls
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -800,9 +800,9 @@ results exported to: data/kalman_agg_MI_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (michigan | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  188
-  polls dropped:       6
+  polls dropped:       0
 michigan polls loaded: 184 questions from 114 polls
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -868,9 +868,9 @@ ANALYZING: michigan (MI) | LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (michigan | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  133
-  polls dropped:       61
+  polls dropped:       55
 michigan polls loaded: 132 questions from 84 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -922,9 +922,9 @@ results exported to: data/kalman_agg_MI_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (michigan | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  133
-  polls dropped:       61
+  polls dropped:       55
 michigan polls loaded: 132 questions from 84 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -990,9 +990,9 @@ ANALYZING: michigan (MI) | LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (michigan | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  90
-  polls dropped:       104
+  polls dropped:       98
 michigan polls loaded: 89 questions from 57 polls
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -1044,9 +1044,9 @@ results exported to: data/kalman_agg_MI_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (michigan | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 194
+  polls before filter: 188
   polls after filter:  90
-  polls dropped:       104
+  polls dropped:       98
 michigan polls loaded: 89 questions from 57 polls
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.414 pp
@@ -1112,9 +1112,9 @@ ANALYZING: nevada (NV) | LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (nevada | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  116
-  polls dropped:       5
+  polls dropped:       0
 nevada polls loaded: 115 questions from 69 polls
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1166,9 +1166,9 @@ results exported to: data/kalman_agg_NV_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (nevada | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  116
-  polls dropped:       5
+  polls dropped:       0
 nevada polls loaded: 115 questions from 69 polls
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1234,9 +1234,9 @@ ANALYZING: nevada (NV) | LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (nevada | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  87
-  polls dropped:       34
+  polls dropped:       29
 nevada polls loaded: 87 questions from 52 polls
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1288,9 +1288,9 @@ results exported to: data/kalman_agg_NV_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (nevada | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  87
-  polls dropped:       34
+  polls dropped:       29
 nevada polls loaded: 87 questions from 52 polls
 date range: 2024-09-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1356,9 +1356,9 @@ ANALYZING: nevada (NV) | LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (nevada | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  52
-  polls dropped:       69
+  polls dropped:       64
 nevada polls loaded: 52 questions from 32 polls
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1410,9 +1410,9 @@ results exported to: data/kalman_agg_NV_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (nevada | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 121
+  polls before filter: 116
   polls after filter:  52
-  polls dropped:       69
+  polls dropped:       64
 nevada polls loaded: 52 questions from 32 polls
 date range: 2024-10-08 to 2024-11-04
 true margin (constant across rows): 3.140 pp
@@ -1478,9 +1478,9 @@ ANALYZING: north carolina (NC) | LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (north carolina | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  158
-  polls dropped:       3
+  polls dropped:       0
 north carolina polls loaded: 157 questions from 97 polls
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1532,9 +1532,9 @@ results exported to: data/kalman_agg_NC_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (north carolina | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  158
-  polls dropped:       3
+  polls dropped:       0
 north carolina polls loaded: 157 questions from 97 polls
 date range: 2024-07-24 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1600,9 +1600,9 @@ ANALYZING: north carolina (NC) | LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (north carolina | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  121
-  polls dropped:       40
+  polls dropped:       37
 north carolina polls loaded: 121 questions from 75 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1654,9 +1654,9 @@ results exported to: data/kalman_agg_NC_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (north carolina | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  121
-  polls dropped:       40
+  polls dropped:       37
 north carolina polls loaded: 121 questions from 75 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1722,9 +1722,9 @@ ANALYZING: north carolina (NC) | LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (north carolina | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  65
-  polls dropped:       96
+  polls dropped:       93
 north carolina polls loaded: 65 questions from 41 polls
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1776,9 +1776,9 @@ results exported to: data/kalman_agg_NC_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (north carolina | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 161
+  polls before filter: 158
   polls after filter:  65
-  polls dropped:       96
+  polls dropped:       93
 north carolina polls loaded: 65 questions from 41 polls
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 3.212 pp
@@ -1844,32 +1844,32 @@ ANALYZING: pennsylvania (PA) | LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (pennsylvania | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 241
-  polls after filter:  229
-  polls dropped:       12
-pennsylvania polls loaded: 226 questions from 140 polls
-date range: 2024-07-21 to 2024-11-04
+  polls before filter: 227
+  polls after filter:  227
+  polls dropped:       0
+pennsylvania polls loaded: 224 questions from 138 polls
+date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.710 pp
 poll margin range: -6.0 to 6.0 pp
-mean poll margin: -0.734 pp
+mean poll margin: -0.768 pp
 
 sanity check — unique true_margin values: [1.70973099]
 
 within-day aggregation complete:
-  observations before: 226 (individual poll questions)
-  observations after:  67 (one per unique end_date)
-  unique days:         67 -> 67
+  observations before: 224 (individual poll questions)
+  observations after:  66 (one per unique end_date)
+  unique days:         66 -> 66
   mean polls per day:  3.4
-  mean combined n:     3406
-  mean combined var:   5.8048 pp^2
-  mean individual var (pre-agg): 11.5346 pp^2
+  mean combined n:     3441
+  mean combined var:   5.6249 pp^2
+  mean individual var (pre-agg): 11.4836 pp^2
   variance reduction factor: 2.0x
 
 election result appended: margin = 1.710 pp on 2024-11-05
 
 estimating sigma2_u via grid search mle...
-  sigma2_u estimated (two-stage grid mle): 0.132672 per day
-  interpretation: true opinion can move ~0.364 pp/day (1 sd)
+  sigma2_u estimated (two-stage grid mle): 0.128466 per day
+  interpretation: true opinion can move ~0.358 pp/day (1 sd)
 
 ============================================================
 polling bias decomposition — pennsylvania (trump margin, anchored)
@@ -1878,18 +1878,18 @@ polling bias decomposition — pennsylvania (trump margin, anchored)
 true margin (certified result): 1.710 pp
 
 --- overall poll error ---
-  mean poll margin:          -0.416 pp
-  mean total error:          -2.126 pp
-  sd of total error:         1.600 pp
+  mean poll margin:          -0.483 pp
+  mean total error:          -2.193 pp
+  sd of total error:         1.515 pp
 
 --- decomposition (means) ---
-  mean systematic bias:      -2.349 pp
-  mean |sampling noise|:     1.175 pp
+  mean systematic bias:      -2.388 pp
+  mean |sampling noise|:     1.145 pp
 
 --- variance decomposition ---
-  var(total error):          2.5613
-  var(systematic bias):      0.4392  (17.1%)
-  var(sampling noise):       2.1597  (84.3%)
+  var(total error):          2.2960
+  var(systematic bias):      0.4006  (17.4%)
+  var(sampling noise):       2.0193  (88.0%)
 
 figure saved to: figures/kalman_agg_PA_bias_anchored_last_107_days.png
 results exported to: data/kalman_agg_PA_results_anchored_last_107_days.csv
@@ -1898,31 +1898,31 @@ results exported to: data/kalman_agg_PA_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (pennsylvania | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 241
-  polls after filter:  229
-  polls dropped:       12
-pennsylvania polls loaded: 226 questions from 140 polls
-date range: 2024-07-21 to 2024-11-04
+  polls before filter: 227
+  polls after filter:  227
+  polls dropped:       0
+pennsylvania polls loaded: 224 questions from 138 polls
+date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 1.710 pp
 poll margin range: -6.0 to 6.0 pp
-mean poll margin: -0.734 pp
+mean poll margin: -0.768 pp
 
 within-day aggregation complete:
-  observations before: 226 (individual poll questions)
-  observations after:  67 (one per unique end_date)
-  unique days:         67 -> 67
+  observations before: 224 (individual poll questions)
+  observations after:  66 (one per unique end_date)
+  unique days:         66 -> 66
   mean polls per day:  3.4
-  mean combined n:     3406
-  mean combined var:   5.8048 pp^2
-  mean individual var (pre-agg): 11.5346 pp^2
+  mean combined n:     3441
+  mean combined var:   5.6249 pp^2
+  mean individual var (pre-agg): 11.4836 pp^2
   variance reduction factor: 2.0x
 
 skipping election result anchor (unanchored mode)
 true margin: 1.710 pp (not used as constraint)
 
 estimating sigma2_u via grid search mle...
-  sigma2_u estimated (two-stage grid mle): 0.015757 per day
-  interpretation: true opinion can move ~0.126 pp/day (1 sd)
+  sigma2_u estimated (two-stage grid mle): 0.012502 per day
+  interpretation: true opinion can move ~0.112 pp/day (1 sd)
 
 ============================================================
 polling opinion trajectory — pennsylvania (trump margin, unanchored)
@@ -1931,14 +1931,14 @@ polling opinion trajectory — pennsylvania (trump margin, unanchored)
 true margin (certified result): 1.710 pp
 
 --- overall poll error ---
-  mean poll margin:          -0.416 pp
-  mean total error:          -2.126 pp
-  sd of total error:         1.600 pp
+  mean poll margin:          -0.483 pp
+  mean total error:          -2.193 pp
+  sd of total error:         1.515 pp
 
 --- decomposition (means) ---
-  final forecast error:      -2.059 pp
-  mean smoothed-poll gap:    1.248 pp
-  mean |sampling noise|:     1.248 pp
+  final forecast error:      -2.090 pp
+  mean smoothed-poll gap:    1.211 pp
+  mean |sampling noise|:     1.211 pp
 
 figure saved to: figures/kalman_agg_PA_trajectory_unanchored_last_107_days.png
 results exported to: data/kalman_agg_PA_results_unanchored_last_107_days.csv
@@ -1946,15 +1946,15 @@ results exported to: data/kalman_agg_PA_results_unanchored_last_107_days.csv
 ======================================================================
 COMPARISON: anchored vs unanchored (pennsylvania | LAST 107 DAYS)
 ======================================================================
-sigma2_u (anchored):   0.132672
-sigma2_u (unanchored): 0.015757
-ratio (anchored/unanchored): 8.420
+sigma2_u (anchored):   0.128466
+sigma2_u (unanchored): 0.012502
+ratio (anchored/unanchored): 10.276
 
-final smoothed estimate (anchored):   1.264 pp
-final smoothed estimate (unanchored): -0.349 pp
+final smoothed estimate (anchored):   1.269 pp
+final smoothed estimate (unanchored): -0.380 pp
 true margin:                          1.710 pp
-unanchored forecast error:            -2.059 pp
-anchored terminal adjustment:         0.446 pp
+unanchored forecast error:            -2.090 pp
+anchored terminal adjustment:         0.441 pp
 
 ======================================================================
 ======================================================================
@@ -1966,9 +1966,9 @@ ANALYZING: pennsylvania (PA) | LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (pennsylvania | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  161
-  polls dropped:       80
+  polls dropped:       66
 pennsylvania polls loaded: 161 questions from 100 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2020,9 +2020,9 @@ results exported to: data/kalman_agg_PA_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (pennsylvania | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  161
-  polls dropped:       80
+  polls dropped:       66
 pennsylvania polls loaded: 161 questions from 100 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2088,9 +2088,9 @@ ANALYZING: pennsylvania (PA) | LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (pennsylvania | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  102
-  polls dropped:       139
+  polls dropped:       125
 pennsylvania polls loaded: 102 questions from 62 polls
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2142,9 +2142,9 @@ results exported to: data/kalman_agg_PA_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (pennsylvania | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 241
+  polls before filter: 227
   polls after filter:  102
-  polls dropped:       139
+  polls dropped:       125
 pennsylvania polls loaded: 102 questions from 62 polls
 date range: 2024-10-07 to 2024-11-04
 true margin (constant across rows): 1.710 pp
@@ -2210,9 +2210,9 @@ ANALYZING: wisconsin (WI) | LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (wisconsin | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  184
-  polls dropped:       7
+  polls dropped:       0
 wisconsin polls loaded: 181 questions from 104 polls
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2264,9 +2264,9 @@ results exported to: data/kalman_agg_WI_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (wisconsin | LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  184
-  polls dropped:       7
+  polls dropped:       0
 wisconsin polls loaded: 181 questions from 104 polls
 date range: 2024-07-23 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2332,9 +2332,9 @@ ANALYZING: wisconsin (WI) | LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (wisconsin | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  125
-  polls dropped:       66
+  polls dropped:       59
 wisconsin polls loaded: 125 questions from 75 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2386,9 +2386,9 @@ results exported to: data/kalman_agg_WI_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (wisconsin | LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  125
-  polls dropped:       66
+  polls dropped:       59
 wisconsin polls loaded: 125 questions from 75 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2454,9 +2454,9 @@ ANALYZING: wisconsin (WI) | LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (wisconsin | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  80
-  polls dropped:       111
+  polls dropped:       104
 wisconsin polls loaded: 80 questions from 49 polls
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2508,9 +2508,9 @@ results exported to: data/kalman_agg_WI_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (wisconsin | LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 191
+  polls before filter: 184
   polls after filter:  80
-  polls dropped:       111
+  polls dropped:       104
 wisconsin polls loaded: 80 questions from 49 polls
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 0.859 pp
@@ -2567,5 +2567,5 @@ unanchored forecast error:            -2.196 pp
 anchored terminal adjustment:         0.603 pp
 
 ======================================================================
-analysis completed: 2026-03-08 22:50:03
+analysis completed: 2026-03-09 21:59:13
 log saved to: output/kalman/kalman_state_avgday_harrisonly_anlaysis_log.txt

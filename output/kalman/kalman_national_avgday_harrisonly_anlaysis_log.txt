@@ -1,5 +1,5 @@
 kalman filtering & smoothing analysis — within-day aggregated version
-started: 2026-03-08 22:48:24
+started: 2026-03-09 21:56:50
 log file: output/kalman/kalman_national_avgday_harrisonly_anlaysis_log.txt
 time windows: [107, 60, 30]
 
@@ -13,32 +13,32 @@ ANALYZING TIME WINDOW: LAST 107 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 861
-  polls after filter:  682
-  polls dropped:       179
-national polls loaded: 674 questions from 384 polls
+  polls before filter: 671
+  polls after filter:  671
+  polls dropped:       0
+national polls loaded: 663 questions from 379 polls
 date range: 2024-07-21 to 2024-11-04
 true margin (constant across rows): 1.472 pp
 poll margin range: -8.0 to 8.0 pp
-mean poll margin: -2.129 pp
+mean poll margin: -2.234 pp
 
 sanity check — unique true_margin values: [1.47233556]
 
 within-day aggregation complete:
-  observations before: 674 (individual poll questions)
+  observations before: 663 (individual poll questions)
   observations after:  107 (one per unique end_date)
   unique days:         107 -> 107
-  mean polls per day:  6.3
-  mean combined n:     21624
-  mean combined var:   0.5435 pp^2
-  mean individual var (pre-agg): 5.4807 pp^2
-  variance reduction factor: 10.1x
+  mean polls per day:  6.2
+  mean combined n:     21496
+  mean combined var:   0.5909 pp^2
+  mean individual var (pre-agg): 5.4295 pp^2
+  variance reduction factor: 9.2x
 
 election result appended: margin = 1.472 pp on 2024-11-05
 
 estimating sigma2_u via grid search mle...
-  sigma2_u estimated (two-stage grid mle): 0.448094 per day
-  interpretation: true opinion can move ~0.669 pp/day (1 sd)
+  sigma2_u estimated (two-stage grid mle): 0.355443 per day
+  interpretation: true opinion can move ~0.596 pp/day (1 sd)
 
 ============================================================
 polling bias decomposition — national (trump margin, anchored)
@@ -47,18 +47,18 @@ polling bias decomposition — national (trump margin, anchored)
 true margin (certified result): 1.472 pp
 
 --- overall poll error ---
-  mean poll margin:          -3.036 pp
-  mean total error:          -4.508 pp
-  sd of total error:         1.647 pp
+  mean poll margin:          -3.021 pp
+  mean total error:          -4.493 pp
+  sd of total error:         1.726 pp
 
 --- decomposition (means) ---
-  mean systematic bias:      -4.444 pp
-  mean |sampling noise|:     0.412 pp
+  mean systematic bias:      -4.464 pp
+  mean |sampling noise|:     0.463 pp
 
 --- variance decomposition ---
-  var(total error):          2.7138
-  var(systematic bias):      2.0407  (75.2%)
-  var(sampling noise):       0.3464  (12.8%)
+  var(total error):          2.9802
+  var(systematic bias):      1.8047  (60.6%)
+  var(sampling noise):       0.6200  (20.8%)
 
 figure saved to: figures/kalman_agg_bias_anchored_last_107_days.png
 results exported to: data/kalman_agg_results_anchored_last_107_days.csv
@@ -67,31 +67,31 @@ results exported to: data/kalman_agg_results_anchored_last_107_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (LAST 107 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-07-21 onward
-  polls before filter: 861
-  polls after filter:  682
-  polls dropped:       179
-national polls loaded: 674 questions from 384 polls
+  polls before filter: 671
+  polls after filter:  671
+  polls dropped:       0
+national polls loaded: 663 questions from 379 polls
 date range: 2024-07-21 to 2024-11-04
 true margin (constant across rows): 1.472 pp
 poll margin range: -8.0 to 8.0 pp
-mean poll margin: -2.129 pp
+mean poll margin: -2.234 pp
 
 within-day aggregation complete:
-  observations before: 674 (individual poll questions)
+  observations before: 663 (individual poll questions)
   observations after:  107 (one per unique end_date)
   unique days:         107 -> 107
-  mean polls per day:  6.3
-  mean combined n:     21624
-  mean combined var:   0.5435 pp^2
-  mean individual var (pre-agg): 5.4807 pp^2
-  variance reduction factor: 10.1x
+  mean polls per day:  6.2
+  mean combined n:     21496
+  mean combined var:   0.5909 pp^2
+  mean individual var (pre-agg): 5.4295 pp^2
+  variance reduction factor: 9.2x
 
 skipping election result anchor (unanchored mode)
 true margin: 1.472 pp (not used as constraint)
 
 estimating sigma2_u via grid search mle...
-  sigma2_u estimated (two-stage grid mle): 0.402490 per day
-  interpretation: true opinion can move ~0.634 pp/day (1 sd)
+  sigma2_u estimated (two-stage grid mle): 0.301112 per day
+  interpretation: true opinion can move ~0.549 pp/day (1 sd)
 
 ============================================================
 polling opinion trajectory — national (trump margin, unanchored)
@@ -100,14 +100,14 @@ polling opinion trajectory — national (trump margin, unanchored)
 true margin (certified result): 1.472 pp
 
 --- overall poll error ---
-  mean poll margin:          -3.036 pp
-  mean total error:          -4.508 pp
-  sd of total error:         1.647 pp
+  mean poll margin:          -3.021 pp
+  mean total error:          -4.493 pp
+  sd of total error:         1.726 pp
 
 --- decomposition (means) ---
-  final forecast error:      -1.784 pp
-  mean smoothed-poll gap:    0.430 pp
-  mean |sampling noise|:     0.430 pp
+  final forecast error:      -1.859 pp
+  mean smoothed-poll gap:    0.486 pp
+  mean |sampling noise|:     0.486 pp
 
 figure saved to: figures/kalman_agg_trajectory_unanchored_last_107_days.png
 results exported to: data/kalman_agg_results_unanchored_last_107_days.csv
@@ -115,15 +115,15 @@ results exported to: data/kalman_agg_results_unanchored_last_107_days.csv
 ======================================================================
 COMPARISON: anchored vs unanchored (LAST 107 DAYS)
 ======================================================================
-sigma2_u (anchored):   0.448094
-sigma2_u (unanchored): 0.402490
-ratio (anchored/unanchored): 1.113
+sigma2_u (anchored):   0.355443
+sigma2_u (unanchored): 0.301112
+ratio (anchored/unanchored): 1.180
 
-final smoothed estimate (anchored):   0.611 pp
-final smoothed estimate (unanchored): -0.312 pp
+final smoothed estimate (anchored):   0.642 pp
+final smoothed estimate (unanchored): -0.387 pp
 true margin:                          1.472 pp
-unanchored forecast error:            -1.784 pp
-anchored terminal adjustment:         0.861 pp
+unanchored forecast error:            -1.859 pp
+anchored terminal adjustment:         0.830 pp
 
 ======================================================================
 ======================================================================
@@ -135,9 +135,9 @@ ANALYZING TIME WINDOW: LAST 60 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 861
+  polls before filter: 671
   polls after filter:  380
-  polls dropped:       481
+  polls dropped:       291
 national polls loaded: 378 questions from 228 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.472 pp
@@ -189,9 +189,9 @@ results exported to: data/kalman_agg_results_anchored_last_60_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (LAST 60 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-09-06 onward
-  polls before filter: 861
+  polls before filter: 671
   polls after filter:  380
-  polls dropped:       481
+  polls dropped:       291
 national polls loaded: 378 questions from 228 polls
 date range: 2024-09-06 to 2024-11-04
 true margin (constant across rows): 1.472 pp
@@ -257,9 +257,9 @@ ANALYZING TIME WINDOW: LAST 30 DAYS
 ANCHORED MODE: bias decomposition conditional on known outcome (LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 861
+  polls before filter: 671
   polls after filter:  234
-  polls dropped:       627
+  polls dropped:       437
 national polls loaded: 232 questions from 137 polls
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 1.472 pp
@@ -311,9 +311,9 @@ results exported to: data/kalman_agg_results_anchored_last_30_days.csv
 UNANCHORED MODE: real-time opinion trajectory from polls alone (LAST 30 DAYS)
 ======================================================================
 date filter applied: keeping polls from 2024-10-06 onward
-  polls before filter: 861
+  polls before filter: 671
   polls after filter:  234
-  polls dropped:       627
+  polls dropped:       437
 national polls loaded: 232 questions from 137 polls
 date range: 2024-10-06 to 2024-11-04
 true margin (constant across rows): 1.472 pp
@@ -370,5 +370,5 @@ unanchored forecast error:            -1.660 pp
 anchored terminal adjustment:         0.919 pp
 
 ======================================================================
-analysis completed: 2026-03-08 22:48:30
+analysis completed: 2026-03-09 21:57:01
 log saved to: output/kalman/kalman_national_avgday_harrisonly_anlaysis_log.txt
