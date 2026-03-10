@@ -303,99 +303,67 @@ def create_figure4_swing_states_error_decomposition():
     print("Figure 4 saved.")
 
 
-########################################################################
-# figure 5: national - house effect stability & temporal dynamics (two-panel)
-########################################################################
-
 def create_figure5_national_stability_temporal():
     """
-    left: house effect stability (107 data vs last 30 days). right: mean absolute bias across time windows.
-    tests whether pollster biases are stable and whether systematic bias accelerated near election day.
+    single-panel house effect stability scatter (107 days vs 30 days).
+    tests whether pollster-level biases estimated by the em algorithm
+    reflect stable methodological tendencies or window-specific noise.
+    points close to the 45-degree line indicate stable house effects.
     """
-    # load house effects from different time windows
     he_107 = pd.read_csv('data/kalman_he_effects_anchored_last_107_days.csv')
-    he_30 = pd.read_csv('data/kalman_he_effects_anchored_last_30_days.csv')
-    
-    # merge on pollster
+    he_30  = pd.read_csv('data/kalman_he_effects_anchored_last_30_days.csv')
+
     he_compare = he_107.merge(he_30, on='pollster', suffixes=('_107', '_30'), how='inner')
-    he_compare = he_compare[he_compare['n_polls_107'] >= 5]  # min 5 polls in all data
-    
-    # load poll-level data for temporal dynamics
-    polls_107 = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
-    polls_60 = pd.read_csv('data/kalman_he_polls_anchored_last_60_days.csv')
-    polls_30 = pd.read_csv('data/kalman_he_polls_anchored_last_30_days.csv')
-    
-    # create two-panel figure
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
-    
-    # left panel: house effect stability
-    ax1.scatter(he_compare['house_effect_107'], he_compare['house_effect_30'],
-               s=he_compare['n_polls_30']*3, alpha=0.6, color='#1f77b4')
-    
-    lims = [he_compare[['house_effect_107', 'house_effect_30']].min().min() - 0.5,
-            he_compare[['house_effect_107', 'house_effect_30']].max().max() + 0.5]
-    ax1.plot(lims, lims, 'k--', alpha=0.5, linewidth=1, label='Perfect stability')
-    
-    # label outliers
-    he_compare['distance'] = abs(he_compare['house_effect_107'] - he_compare['house_effect_30'])
+    he_compare = he_compare[he_compare['n_polls_107'] >= 5]
+
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    ax.scatter(
+        he_compare['house_effect_107'],
+        he_compare['house_effect_30'],
+        s=he_compare['n_polls_30'] * 3,
+        alpha=0.6, color='#1f77b4'
+    )
+
+    lims = [
+        he_compare[['house_effect_107', 'house_effect_30']].min().min() - 0.5,
+        he_compare[['house_effect_107', 'house_effect_30']].max().max() + 0.5
+    ]
+    ax.plot(lims, lims, 'k--', alpha=0.5, linewidth=1, label='Perfect stability')
+
+    # label top 5 outliers by distance from 45-degree line
+    he_compare['distance'] = abs(
+        he_compare['house_effect_107'] - he_compare['house_effect_30']
+    )
     outliers = he_compare.nlargest(5, 'distance')
     for _, row in outliers.iterrows():
-        ax1.annotate(row['pollster'], 
-                    xy=(row['house_effect_107'], row['house_effect_30']),
-                    xytext=(5, 5), textcoords='offset points', fontsize=8, alpha=0.8)
-    
-    ax1.axhline(0, color='gray', linewidth=0.5, linestyle=':')
-    ax1.axvline(0, color='gray', linewidth=0.5, linestyle=':')
-    ax1.set_xlabel('House Effect - Last 107 Days (pp)', fontsize=11)
-    ax1.set_ylabel('House Effect - Last 30 Days (pp)', fontsize=11)
-    ax1.set_title('House Effect Stability Across Time Windows\n(Point size = number of polls)', 
-                  fontsize=12, fontweight='bold')
-    ax1.legend(fontsize=10)
-    ax1.grid(True, alpha=0.3)
-    ax1.set_aspect('equal', adjustable='box')
-    
-    # right panel: temporal dynamics of systematic bias
-    # calculate mean absolute residual systematic bias for each window
-    windows = ['Last 107 Days\n', 'Last 60 Days\n', 'Last 30 Days\n']
-    mean_abs_bias = [
-        polls_107['residual_systematic_bias'].abs().mean(),
-        polls_60['residual_systematic_bias'].abs().mean(),
-        polls_30['residual_systematic_bias'].abs().mean()
-    ]
-    
-    # also show final bias (last observation in each window)
-    final_bias = [
-        polls_107['residual_systematic_bias'].iloc[-1],
-        polls_60['residual_systematic_bias'].iloc[-1],
-        polls_30['residual_systematic_bias'].iloc[-1]
-    ]
-    
-    x = np.arange(len(windows))
-    width = 0.35
-    
-    ax2.bar(x - width/2, mean_abs_bias, width, label='Mean |Residual Bias|', 
-           color='#ff7f0e', alpha=0.8)
-    ax2.bar(x + width/2, [abs(b) for b in final_bias], width, label='|Final Bias|', 
-           color='#d62728', alpha=0.8)
-    
-    ax2.set_ylabel('Absolute Systematic Bias (pp)', fontsize=11)
-    ax2.set_title('Systematic Bias Magnitude Across Time Windows\n(EM Anchored)', 
-                  fontsize=12, fontweight='bold')
-    ax2.set_xticks(x)
-    ax2.set_xticklabels(windows, fontsize=10)
-    ax2.legend(fontsize=10)
-    ax2.grid(True, alpha=0.3, axis='y')
-    
-    # add text annotations
-    for i, (mean_val, final_val) in enumerate(zip(mean_abs_bias, final_bias)):
-        ax2.text(i - width/2, mean_val + 0.1, f'{mean_val:.2f}', 
-                ha='center', fontsize=9, fontweight='bold')
-        ax2.text(i + width/2, abs(final_val) + 0.1, f'{abs(final_val):.2f}', 
-                ha='center', fontsize=9, fontweight='bold')
-    
+        ax.annotate(
+            row['pollster'],
+            xy=(row['house_effect_107'], row['house_effect_30']),
+            xytext=(5, 5), textcoords='offset points',
+            fontsize=8, alpha=0.8
+        )
+
+    ax.axhline(0, color='gray', linewidth=0.5, linestyle=':')
+    ax.axvline(0, color='gray', linewidth=0.5, linestyle=':')
+    ax.set_xlabel('House Effect — Last 107 Days (pp)', fontsize=12)
+    ax.set_ylabel('House Effect — Last 30 Days (pp)', fontsize=12)
+    ax.set_title(
+        'House Effect Stability Across Time Windows\n'
+        '(EM Anchored | Point size = number of polls in 30-day window)',
+        fontsize=12, fontweight='bold'
+    )
+    ax.legend(fontsize=10)
+    ax.grid(True, alpha=0.3)
+    ax.set_aspect('equal', adjustable='box')
+
     plt.tight_layout()
-    plt.savefig('figures/kalman_national_house_effect_stability_and_temporal_dynamics.png', dpi=300, bbox_inches='tight')
+    plt.savefig(
+        'figures/kalman_national_house_effect_stability_and_temporal_dynamics.png',
+        dpi=300, bbox_inches='tight'
+    )
     plt.close()
+    print("Figure 5 saved.")
 
 
 ########################################################################
@@ -640,7 +608,7 @@ def create_figure7_swing_states_bias_correlation():
 
 def create_table1_national_summary():
     """
-    comprehensive comparison table: 4 implementations × 3 time windows.
+    comprehensive comparison table: 4 implementations x 3 time windows.
     shows how all methodological choices affect core estimates.
     """
     implementations = ['EM_anchored', 'EM_unanchored', 'Agg_anchored', 'Agg_unanchored']
@@ -740,7 +708,7 @@ def create_table2_house_effects_variance():
     # part a: top 20 house effects (all data)
     he_107 = pd.read_csv('data/kalman_he_effects_anchored_last_107_days.csv')
     he_107 = he_107[he_107['n_polls'] >= 5]  # min 5 polls
-    he_107 = he_107.nlargest(20, 'house_effect', keep='all')  # top 20 by house effect (most pro-trump first)
+    he_107 = he_107.reindex(he_107['house_effect'].abs().nlargest(20).index)  # top 20 by |house effect|
     
     house_effects_table = he_107[['pollster', 'house_effect', 'n_polls']].copy()
     house_effects_table.columns = ['Pollster', 'House Effect (pp)', 'N Polls']
