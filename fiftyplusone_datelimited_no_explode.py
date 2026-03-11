@@ -683,6 +683,19 @@ def print_accuracy_table(df, group_col, label):
 
 print_accuracy_table(harris_trump_pivot,  'population', 'target population')
 
+# accuracy by mode indicator - split by state/national
+mode_long_rows = []
+for var in _desc_mode_vars:
+    mode_name = var.replace('mode_', '').replace('_', ' ')
+    subdf = _mode_indicator_df[_mode_indicator_df[var] == 1].copy()
+    subdf['base_mode'] = mode_name
+    mode_long_rows.append(subdf)
+
+mode_long_df = pd.concat(mode_long_rows, ignore_index=True)
+
+print_accuracy_table(mode_long_df, 'base_mode', 'polling mode')
+print("\nnote: a poll with multiple modes contributes to each mode's row")
+print("      mode_Text_only = Text recruitment without Text-to-Web; mode_Text_to_Web = Text-to-Web response")
 
 ########################################################################################
 ###################### Multivariate Regression Analysis Set Up #########################
