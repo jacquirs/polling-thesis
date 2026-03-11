@@ -7,7 +7,7 @@ from pathlib import Path
 ########################################################################
 # figure 2: national - residual systematic bias comparison (all four implementations)
 ########################################################################
-
+# USED
 def create_figure2_national_bias_comparison():
     """
     compare residual/systematic bias trajectories across all four implementations
@@ -30,29 +30,28 @@ def create_figure2_national_bias_comparison():
     
     # plot all four trajectories
     ax.plot(em_anch['end_date'], em_anch['residual_systematic_bias'],
-            color='#d62728', linewidth=2.5, label='EM Anchored', zorder=4)
+            color='#d62728', linewidth=2.5, label='Pollster-Adjusted Anchored', zorder=4)
     ax.plot(em_unanch['end_date'], em_unanch['residual_systematic_bias'],
-            color='#d62728', linewidth=2.5, linestyle='--', label='EM Unanchored', zorder=3)
+            color='#d62728', linewidth=2.5, linestyle='--', label='Pollster-Adjusted Unanchored', zorder=3)
     ax.plot(agg_anch['end_date'], agg_anch['systematic_bias'],
-            color='#1f77b4', linewidth=2, label='Aggregated Anchored', zorder=2)
+            color='#1f77b4', linewidth=2, label='Daily-Aggregated Anchored', zorder=2)
     ax.plot(agg_unanch['end_date'], agg_unanch['systematic_bias'],
-            color='#1f77b4', linewidth=2, linestyle='--', label='Aggregated Unanchored', zorder=1)
+            color='#1f77b4', linewidth=2, linestyle='--', label='Daily-Aggregated Unanchored', zorder=1)
     
     # reference line at zero
     ax.axhline(0, color='black', linewidth=1, linestyle=':')
     
     # formatting
-    ax.set_xlabel('Date', fontsize=12)
-    ax.set_ylabel('Systematic Bias (pp, positive = polls overstated Trump)', fontsize=12)
-    ax.set_title('National Polling Bias Across Four Implementations\n(Trump margin, 107 Days)', 
-                 fontsize=14, fontweight='bold')
-    ax.legend(loc='upper left', fontsize=11, framealpha=0.95)
+    ax.set_xlabel(r'$\bf{Date}$', fontsize=12)
+    ax.set_ylabel(r'$\bf{Systematic\ Bias\ (pp)}$', fontsize=12)
+    ax.set_title(r'$\bf{National\ Systematic\ Bias\ Trajectories\ Across\ Four\ Implementations}$' + '\n Last 107 Days', 
+                 fontsize=14)
+    ax.legend(loc='lower left', fontsize=11, framealpha=0.95)
     ax.grid(True, alpha=0.3)
     
     # format x-axis
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
-    plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    ax.xaxis.set_major_locator(mdates.MonthLocator())
     
     plt.tight_layout()
     plt.savefig('figures/kalman_national_bias_comparison_four_implementations.png', dpi=300, bbox_inches='tight')
@@ -62,12 +61,8 @@ def create_figure2_national_bias_comparison():
 ########################################################################
 # figure 3: swing states - composite residual bias trajectories
 ########################################################################
-
+## USED
 def create_figure3_swing_states_bias_trajectories():
-    """
-    small multiples showing residual systematic bias over time for all 7 swing states
-    (em anchored, all data) to reveal geographic variation in bias dynamics.
-    """
     states = ['AZ', 'GA', 'MI', 'NV', 'NC', 'PA', 'WI']
     state_names = {
         'AZ': 'Arizona', 'GA': 'Georgia', 'MI': 'Michigan', 
@@ -78,58 +73,92 @@ def create_figure3_swing_states_bias_trajectories():
     fig, axes = plt.subplots(2, 4, figsize=(18, 9), sharex=True, sharey=True)
     axes = axes.flatten()
     
+    legend_handles = None
+
+    df_nat_he = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+    df_nat_he['end_date'] = pd.to_datetime(df_nat_he['end_date'])
+
+    df_nat_agg = pd.read_csv('data/kalman_agg_results_anchored_last_107_days.csv')
+    df_nat_agg['end_date'] = pd.to_datetime(df_nat_agg['end_date'])
+
     for idx, state in enumerate(states):
         ax = axes[idx]
         
-        # load state data
-        try:
-            df = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_last_107_days.csv')
-            df['end_date'] = pd.to_datetime(df['end_date'])
-            
-            # plot residual systematic bias
-            ax.plot(df['end_date'], df['residual_systematic_bias'],
-                   color='#d62728', linewidth=2)
-            
-            # fill regions
-            ax.fill_between(df['end_date'], 0, df['residual_systematic_bias'],
-                          where=df['residual_systematic_bias'] > 0,
-                          color='#d62728', alpha=0.15, label='Pro-Trump bias')
-            ax.fill_between(df['end_date'], 0, df['residual_systematic_bias'],
-                          where=df['residual_systematic_bias'] <= 0,
-                          color='#1f77b4', alpha=0.15, label='Pro-Harris bias')
-            
-            # reference line
-            ax.axhline(0, color='black', linewidth=0.8, linestyle=':')
-            
-            # state label and true margin
-            true_margin = df['true_margin'].iloc[0]
-            ax.set_title(f"{state_names[state]}\n(True: Trump{true_margin:+.1f})", 
-                        fontsize=11, fontweight='bold')
-            
-            ax.grid(True, alpha=0.2)
-            
-            # format x-axis
-            ax.xaxis.set_major_formatter(mdates.DateFormatter('%b\n%Y'))
-            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=4))
-            
-        except FileNotFoundError:
-            ax.text(0.5, 0.5, f'{state}\nData not found', 
-                   ha='center', va='center', fontsize=12)
-            ax.set_xlim([pd.Timestamp('2021-01-01'), pd.Timestamp('2024-11-05')])
+        df = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_last_107_days.csv')
+        df['end_date'] = pd.to_datetime(df['end_date'])
+        
+        df_agg = pd.read_csv(f'data/kalman_agg_{state}_results_anchored_last_107_days.csv')
+        df_agg['end_date'] = pd.to_datetime(df_agg['end_date'])
+        
+        line_1 = ax.plot(df['end_date'], df['residual_systematic_bias'],
+               color='#d62728', linewidth=2, label='State bias')[0]
+        
+        ax.fill_between(df['end_date'], 0, df['residual_systematic_bias'],
+                      where=df['residual_systematic_bias'] > 0,
+                      color='#d62728', alpha=0.15)
+        ax.fill_between(df['end_date'], 0, df['residual_systematic_bias'],
+                      where=df['residual_systematic_bias'] <= 0,
+                      color='#1f77b4', alpha=0.15)
+        
+        line_2 = ax.plot(df_agg['end_date'], df_agg['systematic_bias'],
+               color='#2ca02c', linewidth=1.5, linestyle='--', label='Aggregated anchored')[0]
+        
+        ax.axhline(0, color='black', linewidth=0.8, linestyle=':')
+        
+        true_margin = df['true_margin'].iloc[0]
+        ax.set_title(f"{state_names[state]}\n(True: Trump{true_margin:+.1f})", 
+                    fontsize=11, fontweight='bold')
+        ax.grid(True, alpha=0.2)
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%b\n%Y'))
+        ax.xaxis.set_major_locator(mdates.MonthLocator())
     
-    # remove empty subplot
-    fig.delaxes(axes[7])
-    
-    # common labels
-    fig.text(0.5, 0.02, 'Date', ha='center', fontsize=13)
-    fig.text(0.02, 0.5, 'Residual Systematic Bias (pp)', va='center', rotation='vertical', fontsize=13)
-    fig.suptitle('Swing State Polling Bias Trajectories (EM Anchored, Last 107 Days)\n',
-                fontsize=14, fontweight='bold', y=0.98)
-    
+        if legend_handles is None:
+            legend_handles = [line_1, line_2]
+
+    ax = axes[7]
+
+    ax.plot(df_nat_he['end_date'], df_nat_he['residual_systematic_bias'],
+               color='#d62728', linewidth=2)
+
+    ax.fill_between(df_nat_he['end_date'], 0, df_nat_he['residual_systematic_bias'],
+                  where=df_nat_he['residual_systematic_bias'] > 0,
+                  color='#d62728', alpha=0.15)
+    ax.fill_between(df_nat_he['end_date'], 0, df_nat_he['residual_systematic_bias'],
+                  where=df_nat_he['residual_systematic_bias'] <= 0,
+                  color='#1f77b4', alpha=0.15)
+
+    ax.plot(df_nat_agg['end_date'], df_nat_agg['systematic_bias'],
+               color='#2ca02c', linewidth=1.5, linestyle='--')
+
+    ax.axhline(0, color='black', linewidth=0.8, linestyle=':')
+    ax.set_title('National\n(True: Trump+1.5)', fontsize=11, fontweight='bold')
+    ax.grid(True, alpha=0.2)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b\n%Y'))
+    ax.xaxis.set_major_locator(mdates.MonthLocator())
+
+    fig.legend(
+        legend_handles,
+        ['Pollster-Adjusted Residual Bias',
+        'Daily Aggregated Systematic Bias'],
+        loc='upper center',
+        bbox_to_anchor=(0.5, 0.91),
+        ncol=2,
+        frameon=False,
+        fontsize=11
+    )
+
+    fig.text(0.5, 0.02, r'$\bf{Date}$', ha='center', fontsize=13)
+    fig.text(0.02, 0.5, r'$\bf{Smoothed\ Bias\ (pp)}$', va='center', rotation='vertical', fontsize=13)
+    fig.suptitle(
+        r'$\bf{Swing\ State\ and\ National\ Polling\ Bias\ Trajectories}$' + '\n'
+        'Pollster-Adjusted and Daily-Aggregated Models\n'
+        'Anchored, Last 107 Days',
+        fontsize=14,
+        y=0.98
+    )        
     plt.tight_layout(rect=[0.03, 0.03, 1, 0.96])
     plt.savefig('figures/kalman_swing_states_bias_trajectories_over_time.png', dpi=300, bbox_inches='tight')
     plt.close()
-
 
 ########################################################################
 # figure 4: swing states - three-component bias decomposition (anchored)
@@ -173,39 +202,34 @@ def create_figure4_swing_states_error_decomposition():
     var_decomp  = {}
 
     for state in states:
-        try:
-            df = pd.read_csv(
-                f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
-            )
+        df = pd.read_csv(
+            f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
+        )
 
-            # mean signed components
-            mean_he    = df['house_effect_assigned'].mean()
-            mean_noise = df['sampling_noise'].mean()
-            mean_resid = df['residual_systematic_bias'].mean()
-            mean_total = df['total_error'].mean()
+        # mean signed components
+        mean_he    = df['house_effect_assigned'].mean()
+        mean_noise = df['sampling_noise'].mean()
+        mean_resid = df['residual_systematic_bias'].mean()
+        mean_total = df['total_error'].mean()
 
-            mean_decomp[state] = {
-                'house':   mean_he,
-                'noise':   mean_noise,
-                'residual': mean_resid,
-                'total':   mean_total,
-            }
+        mean_decomp[state] = {
+            'house':   mean_he,
+            'noise':   mean_noise,
+            'residual': mean_resid,
+            'total':   mean_total,
+        }
 
-            # variance shares
-            var_total = df['total_error'].var()
-            var_he    = df['house_effect_assigned'].var()
-            var_noise = df['sampling_noise'].var()
-            var_resid = df['residual_systematic_bias'].var()
+        # variance shares
+        var_total = df['total_error'].var()
+        var_he    = df['house_effect_assigned'].var()
+        var_noise = df['sampling_noise'].var()
+        var_resid = df['residual_systematic_bias'].var()
 
-            var_decomp[state] = {
-                'house':    100 * var_he    / var_total,
-                'noise':    100 * var_noise / var_total,
-                'residual': 100 * var_resid / var_total,
-            }
-
-        except FileNotFoundError:
-            print(f"Warning: data not found for {state}")
-            continue
+        var_decomp[state] = {
+            'house':    100 * var_he    / var_total,
+            'noise':    100 * var_noise / var_total,
+            'residual': 100 * var_resid / var_total,
+        }
 
     # sort states by mean total error (most negative first)
     states_sorted = sorted(
@@ -300,7 +324,6 @@ def create_figure4_swing_states_error_decomposition():
         dpi=300, bbox_inches='tight'
     )
     plt.close()
-    print("Figure 4 saved.")
 
 
 def create_figure5_national_stability_temporal():
@@ -363,13 +386,12 @@ def create_figure5_national_stability_temporal():
         dpi=300, bbox_inches='tight'
     )
     plt.close()
-    print("Figure 5 saved.")
 
 
 ########################################################################
 # figure 6: swing states - bias trajectory overlay with national comparison
 ########################################################################
-
+# USED
 def create_figure6_swing_states_bias_overlay():
     """
     overlay residual systematic bias trajectories from all seven swing states
@@ -407,44 +429,37 @@ def create_figure6_swing_states_bias_overlay():
 
     # plot each swing state trajectory
     for state in states:
-        try:
-            df = pd.read_csv(
-                f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
-            )
-            df['end_date'] = pd.to_datetime(df['end_date'])
-            df = df[df['end_date'] >= cutoff]
-
-            ax.plot(
-                df['end_date'],
-                df['residual_systematic_bias'],
-                color=state_colors[state],
-                linewidth=1.8,
-                alpha=0.75,
-                label=state_names[state],
-                zorder=3
-            )
-        except FileNotFoundError:
-            print(f"Warning: data not found for {state}")
-            continue
-
-    # overlay national trajectory as bold reference
-    try:
-        nat = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
-        nat['end_date'] = pd.to_datetime(nat['end_date'])
-        nat = nat[nat['end_date'] >= cutoff]
+        df = pd.read_csv(
+            f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
+        )
+        df['end_date'] = pd.to_datetime(df['end_date'])
+        df = df[df['end_date'] >= cutoff]
 
         ax.plot(
-            nat['end_date'],
-            nat['residual_systematic_bias'],
-            color='black',
-            linewidth=3.0,
-            linestyle='--',
-            label='National',
-            zorder=5
+            df['end_date'],
+            df['residual_systematic_bias'],
+            color=state_colors[state],
+            linewidth=1.8,
+            alpha=0.75,
+            label=state_names[state],
+            zorder=3
         )
-    except FileNotFoundError:
-        print("Warning: national data not found")
+    
+    # overlay national trajectory as bold reference
+    nat = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+    nat['end_date'] = pd.to_datetime(nat['end_date'])
+    nat = nat[nat['end_date'] >= cutoff]
 
+    ax.plot(
+        nat['end_date'],
+        nat['residual_systematic_bias'],
+        color='black',
+        linewidth=3.0,
+        linestyle='--',
+        label='National',
+        zorder=5
+    )
+  
     # reference line at zero
     ax.axhline(0, color='gray', linewidth=1.0, linestyle=':')
 
@@ -459,15 +474,16 @@ def create_figure6_swing_states_bias_overlay():
     )
 
     # formatting
-    ax.set_xlabel('Date', fontsize=12)
+    ax.set_xlabel(r'$\bf{Date}$', fontsize=12)
     ax.set_ylabel(
-        'Residual Systematic Bias (pp)\nPositive = polls overstated Trump',
+        r'$\bf{Residual\ Systematic\ Bias\ (pp)}$',
         fontsize=11
     )
     ax.set_title(
-        'Swing State and National Polling Bias Trajectories\n'
-        '(EM Anchored, Last 107 Days)',
-        fontsize=14, fontweight='bold'
+        r'$\bf{Swing\ State\ and\ National\ Residual\ Systematic\ Bias\ Trajectories}$' +' \n' +
+        'Pollster Adjusted, Anchored\n'
+        'Last 107 Days)',
+        fontsize=14,
     )
     ax.legend(
         loc='upper left', fontsize=10, framealpha=0.95,
@@ -475,8 +491,7 @@ def create_figure6_swing_states_bias_overlay():
     )
     ax.grid(True, alpha=0.3)
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-    plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    ax.xaxis.set_major_locator(mdates.MonthLocator())
 
     plt.tight_layout()
     plt.savefig(
@@ -484,7 +499,6 @@ def create_figure6_swing_states_bias_overlay():
         dpi=300, bbox_inches='tight'
     )
     plt.close()
-    print("Figure 6 saved.")
 
 
 ########################################################################
@@ -525,23 +539,19 @@ def create_figure7_swing_states_bias_correlation():
         # build a common date index and collect bias series per state
         bias_dict = {}
         for state in states:
-            try:
-                df = pd.read_csv(
-                    f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
-                )
-                df['end_date'] = pd.to_datetime(df['end_date'])
-                df = df[df['end_date'] >= cutoff].copy()
+            df = pd.read_csv(
+                f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
+            )
+            df['end_date'] = pd.to_datetime(df['end_date'])
+            df = df[df['end_date'] >= cutoff].copy()
 
-                # one value per date (take mean if duplicates)
-                df = df.groupby('end_date')[
-                    'residual_systematic_bias'
-                ].mean()
-                bias_dict[state_names[state]] = df
+            # one value per date (take mean if duplicates)
+            df = df.groupby('end_date')[
+                'residual_systematic_bias'
+            ].mean()
+            bias_dict[state_names[state]] = df
 
-            except FileNotFoundError:
-                print(f"Warning: data not found for {state} ({window_label})")
-                continue
-
+          
         # align all series to a common date index via outer join
         bias_df = pd.DataFrame(bias_dict)
 
@@ -599,7 +609,6 @@ def create_figure7_swing_states_bias_correlation():
         dpi=300, bbox_inches='tight'
     )
     plt.close()
-    print("Figure 7 saved.")
 
 
 ########################################################################
@@ -844,13 +853,9 @@ def create_figureA1_national_rolling_dispersion():
     election_date = pd.Timestamp('2024-11-05')
     cutoff = election_date - pd.Timedelta(days=107)
 
-    try:
-        df = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
-        df['end_date'] = pd.to_datetime(df['end_date'])
-        df = df[df['end_date'] >= cutoff].copy()
-    except FileNotFoundError:
-        print("Warning: national anchored 107 days data not found")
-        return
+    df = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+    df['end_date'] = pd.to_datetime(df['end_date'])
+    df = df[df['end_date'] >= cutoff].copy()
 
     # compute daily cross-pollster SD of total error
     # only meaningful on days with multiple pollsters
@@ -939,13 +944,12 @@ def create_figureA1_national_rolling_dispersion():
         dpi=300, bbox_inches='tight'
     )
     plt.close()
-    print("Figure A1 saved.")
 
 
 ########################################################################
 # figure A2: national - rolling pollster-industry bias correlation
 ########################################################################
-
+## NOT USED (only 11 fit criteria)
 def create_figureA2_national_pollster_industry_correlation():
     """
     for each pollster with sufficient polls, computes the rolling
@@ -969,13 +973,10 @@ def create_figureA2_national_pollster_industry_correlation():
     cutoff = election_date - pd.Timedelta(days=107)
     window_days = 21  # rolling window for correlation: 3 weeks
 
-    try:
-        df = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
-        df['end_date'] = pd.to_datetime(df['end_date'])
-        df = df[df['end_date'] >= cutoff].copy()
-    except FileNotFoundError:
-        print("Warning: national anchored 107 days data not found")
-        return
+    df = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+    df['end_date'] = pd.to_datetime(df['end_date'])
+    df = df[df['end_date'] >= cutoff].copy()
+   
 
     # get industry residual systematic bias — one value per day
     # (same for all pollsters on a given day, take first)
@@ -1028,10 +1029,6 @@ def create_figureA2_national_pollster_industry_correlation():
         )
         rolling_corr['pollster'] = pollster
         all_rolling_corrs.append(rolling_corr)
-
-    if not all_rolling_corrs:
-        print("No eligible pollsters found for Figure A2")
-        return
 
     corr_df = pd.concat(all_rolling_corrs, ignore_index=True)
     corr_df.columns = ['end_date', 'rolling_corr', 'pollster']
@@ -1124,7 +1121,6 @@ def create_figureA2_national_pollster_industry_correlation():
         dpi=300, bbox_inches='tight'
     )
     plt.close()
-    print("Figure A2 saved.")
 
 
 ########################################################################
@@ -1137,11 +1133,11 @@ if __name__ == '__main__':
     Path('output/kalman').mkdir(parents=True, exist_ok=True)
     
     # generate all 6 figures
-    create_figure2_national_bias_comparison()
-    create_figure3_swing_states_bias_trajectories()
+    create_figure2_national_bias_comparison() #USED
+    create_figure3_swing_states_bias_trajectories() # USED
     create_figure4_swing_states_error_decomposition()
     create_figure5_national_stability_temporal()
-    create_figure6_swing_states_bias_overlay()
+    create_figure6_swing_states_bias_overlay() #USED
     create_figure7_swing_states_bias_correlation()
     
     # generate all 3 tables
@@ -1151,4 +1147,4 @@ if __name__ == '__main__':
 
     # appendix figures
     create_figureA1_national_rolling_dispersion()
-    create_figureA2_national_pollster_industry_correlation()
+    create_figureA2_national_pollster_industry_correlation() # NOT USED
