@@ -163,28 +163,7 @@ def create_figure3_swing_states_bias_trajectories():
 ########################################################################
 # figure 4: swing states - three-component bias decomposition (anchored)
 ########################################################################
-
-def create_figure4_swing_states_error_decomposition():
-    """
-    two-panel figure showing where swing state polling error came from.
-
-    left panel: mean signed three-component decomposition by state (anchored em).
-        each bar shows mean total error broken into:
-            - mean house effect contribution (pollster composition bias)
-            - mean sampling noise (expected ~0, confirms random component washes out)
-            - mean residual systematic bias (industry-wide directional error)
-        the three components sum to mean total error by construction.
-        shows both magnitude, direction, and source of polling error.
-
-    right panel: variance decomposition by state (anchored em).
-        shows what share of cross-poll error variance was attributable to
-        each component. complements the left panel by showing whether
-        errors were consistent (high residual bias share) or noisy
-        (high sampling noise share).
-
-    all data from anchored em implementation, last 107 days.
-    no unanchored data used.
-    """
+def create_figure4_variance_decomposition():
     states = ['AZ', 'GA', 'MI', 'NV', 'NC', 'PA', 'WI']
     state_names = {
         'AZ': 'Arizona', 'GA': 'Georgia', 'MI': 'Michigan',
@@ -192,140 +171,94 @@ def create_figure4_swing_states_error_decomposition():
         'PA': 'Pennsylvania', 'WI': 'Wisconsin'
     }
 
-    # colors for three components
-    color_he     = '#ff7f0e'   # orange: house effects
-    color_noise  = '#2ca02c'   # green:  sampling noise
-    color_resid  = '#d62728'   # red:    residual systematic bias
+    color_he    = '#ff7f0e'
+    color_noise = '#2ca02c'
+    color_resid = '#d62728'
 
-    # collect data
-    mean_decomp = {}
-    var_decomp  = {}
+    var_decomp = {}
 
     for state in states:
-        df = pd.read_csv(
-            f'data/kalman_he_polls_{state}_anchored_last_107_days.csv'
-        )
-
-        # mean signed components
-        mean_he    = df['house_effect_assigned'].mean()
-        mean_noise = df['sampling_noise'].mean()
-        mean_resid = df['residual_systematic_bias'].mean()
-        mean_total = df['total_error'].mean()
-
-        mean_decomp[state] = {
-            'house':   mean_he,
-            'noise':   mean_noise,
-            'residual': mean_resid,
-            'total':   mean_total,
-        }
-
-        # variance shares
-        var_total = df['total_error'].var()
+        df = pd.read_csv(f'data/kalman_he_polls_{state}_anchored_last_107_days.csv')
         var_he    = df['house_effect_assigned'].var()
         var_noise = df['sampling_noise'].var()
         var_resid = df['residual_systematic_bias'].var()
-
+        total_shares = var_he + var_noise + var_resid
         var_decomp[state] = {
-            'house':    100 * var_he    / var_total,
-            'noise':    100 * var_noise / var_total,
-            'residual': 100 * var_resid / var_total,
+            'house':    100 * var_he    / total_shares,
+            'noise':    100 * var_noise / total_shares,
+            'residual': 100 * var_resid / total_shares,
         }
 
-    # sort states by mean total error (most negative first)
-    states_sorted = sorted(
-        [s for s in states if s in mean_decomp],
-        key=lambda s: mean_decomp[s]['total']
-    )
-    state_labels = [state_names[s] for s in states_sorted]
+    df_nat = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
+    var_he    = df_nat['house_effect_assigned'].var()
+    var_noise = df_nat['sampling_noise'].var()
+    var_resid = df_nat['residual_systematic_bias'].var()
+    total_shares = var_he + var_noise + var_resid
+    var_decomp['NAT'] = {
+        'house':    100 * var_he    / total_shares,
+        'noise':    100 * var_noise / total_shares,
+        'residual': 100 * var_resid / total_shares,
+    }
+
+    states_sorted = sorted(states, key=lambda s: var_decomp[s]['residual']) + ['NAT']
+    state_labels  = [state_names.get(s, 'National') for s in states_sorted]
     y_pos = np.arange(len(states_sorted))
-
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-
-    # ----------------------------------------------------------------
-    # left panel: mean signed decomposition
-    # stacked horizontal bars; components can be negative so we
-    # handle positive and negative segments separately to stack correctly
-    # ----------------------------------------------------------------
-
-    he_vals    = np.array([mean_decomp[s]['house']    for s in states_sorted])
-    noise_vals = np.array([mean_decomp[s]['noise']    for s in states_sorted])
-    resid_vals = np.array([mean_decomp[s]['residual'] for s in states_sorted])
-    total_vals = np.array([mean_decomp[s]['total']    for s in states_sorted])
-
-    # plot each component as a horizontal bar starting from its cumulative left edge
-    # components are signed so we stack them additively left to right
-    left_he    = np.zeros(len(states_sorted))
-    left_noise = he_vals
-    left_resid = he_vals + noise_vals
-
-    ax1.barh(y_pos, he_vals,    left=left_he,    color=color_he,
-             alpha=0.85, label='House Effects', height=0.6)
-    ax1.barh(y_pos, noise_vals, left=left_noise, color=color_noise,
-             alpha=0.85, label='Sampling Noise', height=0.6)
-    ax1.barh(y_pos, resid_vals, left=left_resid, color=color_resid,
-             alpha=0.85, label='Residual Systematic Bias', height=0.6)
-
-    # annotate total error at end of bar
-    for i, total in enumerate(total_vals):
-        offset = 0.08 if total >= 0 else -0.08
-        ha     = 'left' if total >= 0 else 'right'
-        ax1.text(total + offset, y_pos[i], f'{total:.2f} pp',
-                 va='center', ha=ha, fontsize=9, fontweight='bold')
-
-    ax1.axvline(0, color='black', linewidth=1)
-    ax1.set_yticks(y_pos)
-    ax1.set_yticklabels(state_labels, fontsize=11)
-    ax1.set_xlabel('Mean Error Component (pp)', fontsize=11)
-    ax1.set_title(
-        'Mean Polling Error Decomposition by State\n'
-        '(EM Anchored, Last 107 Days)',
-        fontsize=12, fontweight='bold'
-    )
-    ax1.legend(loc='lower right', fontsize=10)
-    ax1.grid(True, alpha=0.3, axis='x')
-
-    # ----------------------------------------------------------------
-    # right panel: variance decomposition (% of total error variance)
-    # ----------------------------------------------------------------
 
     house_pcts = [var_decomp[s]['house']    for s in states_sorted]
     noise_pcts = [var_decomp[s]['noise']    for s in states_sorted]
     resid_pcts = [var_decomp[s]['residual'] for s in states_sorted]
 
-    ax2.barh(y_pos, house_pcts, color=color_he,
-             alpha=0.85, label='House Effects', height=0.6)
-    ax2.barh(y_pos, noise_pcts, left=house_pcts, color=color_noise,
-             alpha=0.85, label='Sampling Noise', height=0.6)
-    ax2.barh(y_pos, resid_pcts,
-             left=np.array(house_pcts) + np.array(noise_pcts),
-             color=color_resid, alpha=0.85,
-             label='Residual Systematic Bias', height=0.6)
+    fig, ax = plt.subplots(figsize=(11, 7))
 
-    ax2.set_yticks(y_pos)
-    ax2.set_yticklabels(state_labels, fontsize=11)
-    ax2.set_xlabel('Share of Total Error Variance (%)', fontsize=11)
-    ax2.set_title(
-        'Error Variance Decomposition by State\n'
-        '(EM Anchored, Last 107 Days)',
-        fontsize=12, fontweight='bold'
+    ax.barh(y_pos, house_pcts,
+        color=color_he, alpha=0.85, label=r'House Effects $h_i$', height=0.6)
+    ax.barh(y_pos, noise_pcts,
+        left=house_pcts,
+        color=color_noise, alpha=0.85, label=r'Sampling Noise $e_{it}$', height=0.6)
+    ax.barh(y_pos, resid_pcts,
+        left=np.array(house_pcts) + np.array(noise_pcts),
+        color=color_resid, alpha=0.85, label=r'Latent Opinion Trajectory $\xi_t$', height=0.6)
+
+
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(state_labels, fontsize=11)
+    ax.set_xlabel('Scaled Share of Total Poll Variance (%)', fontweight="bold", fontsize=11)
+    ax.set_title(
+        r'$\bf{Error\ Variance\ Decomposition\ by\ Geography}$' + '\n'
+        'Pollster-Adjusted Anchored\nLast 107 Days',
+        fontsize=13,
+        pad=30
     )
-    ax2.legend(loc='lower right', fontsize=10)
-    ax2.set_xlim([0, 105])
-    ax2.grid(True, alpha=0.3, axis='x')
+    ax.legend(
+        loc='upper center',
+        bbox_to_anchor=(0.5, 1.08),
+        ncol=3,
+        frameon=False,
+        fontsize=10
+    )
+    ax.set_xlim([0, 100])
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
 
-    # annotate variance shares
     for i, (h, n, r) in enumerate(zip(house_pcts, noise_pcts, resid_pcts)):
-        ax2.text(105, y_pos[i], f'{h:.0f} / {n:.0f} / {r:.0f}',
-                 va='center', ha='right', fontsize=8, color='#444444')
+        ax.text(101, y_pos[i], f'{h:.0f} / {n:.0f} / {r:.0f}',
+                va='center', ha='left', fontsize=9, color='#444444')   
+    
+    ax.grid(True, alpha=0.3, axis='x')
 
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0, 1, 0.92])
     plt.savefig(
-        'figures/kalman_swing_states_forecast_error_and_variance_decomposition.png',
+        'figures/kalman_variance_decomposition_by_geography.png',
         dpi=300, bbox_inches='tight'
     )
     plt.close()
 
 
+
+
+########################################################################
+# figure 5
+########################################################################
 def create_figure5_national_stability_temporal():
     """
     single-panel house effect stability scatter (107 days vs 30 days).
@@ -1135,15 +1068,15 @@ if __name__ == '__main__':
     # generate all 6 figures
     create_figure2_national_bias_comparison() #USED
     create_figure3_swing_states_bias_trajectories() # USED
-    create_figure4_swing_states_error_decomposition()
-    create_figure5_national_stability_temporal()
+    create_figure4_variance_decomposition() # USED
+    create_figure5_national_stability_temporal() #USED APPENDIX
     create_figure6_swing_states_bias_overlay() #USED
-    create_figure7_swing_states_bias_correlation()
+    create_figure7_swing_states_bias_correlation() # NOT USED
     
     # generate all 3 tables
-    create_table1_national_summary()
-    create_table2_house_effects_variance()
-    create_table3_swing_states_summary()
+    create_table1_national_summary() #USED APPENDIX
+    create_table2_house_effects_variance() # PARTLY USED
+    create_table3_swing_states_summary() #USED APPENDIX
 
     # appendix figures
     create_figureA1_national_rolling_dispersion()
