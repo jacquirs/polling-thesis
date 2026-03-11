@@ -544,10 +544,9 @@ def create_figure7_swing_states_bias_correlation():
     plt.close()
 
 
-########################################################################
-# national summary - all four implementations × three time windows
-########################################################################
-
+######################################################################## 
+# # national summary - all four implementations × three time windows 
+# ########################################################################
 def create_table1_national_summary():
     """
     comprehensive comparison table: 4 implementations x 3 time windows.
@@ -561,6 +560,15 @@ def create_table1_national_summary():
     
     for window, window_label in zip(windows, window_labels):
         for impl in implementations:
+            # ----- NEW: nicer implementation labels -----
+            if impl.startswith('EM'):
+                base_label = 'Pollster-Adjusted'
+            else:
+                base_label = 'Daily-Aggregated'
+            anchor_label = 'Anchored' if 'anchored' in impl else 'Unanchored'
+            implementation_label = f"{base_label} ({anchor_label})"
+            # -------------------------------------------
+
             if impl.startswith('EM'):
                 mode = 'anchored' if 'anchored' in impl else 'unanchored'
                 try:
@@ -568,7 +576,7 @@ def create_table1_national_summary():
                     
                     row = {
                         'Window': window_label,
-                        'Implementation': impl.replace('_', ' ').title(),
+                        'Implementation': implementation_label,
                         'N_obs': len(df),
                         'True_margin': df['true_margin'].iloc[0],
                         'Mean_poll_margin': df['poll_margin'].mean(),
@@ -578,7 +586,10 @@ def create_table1_national_summary():
                         'Mean_residual_bias': df['residual_systematic_bias'].mean(),
                         'Sigma2_u': df['sigma2_u'].iloc[0],
                         'Final_smoothed': df['smoothed'].iloc[-1],
-                        'Final_forecast_error': df['smoothed'].iloc[-1] - df['true_margin'].iloc[0] if 'unanchored' in mode else np.nan,
+                        'Final_forecast_error': (
+                            df['smoothed'].iloc[-1] - df['true_margin'].iloc[0]
+                            if 'unanchored' in mode else np.nan
+                        ),
                         'Var_systematic_pct': 100 * df['residual_systematic_bias'].var() / df['total_error'].var()
                     }
                     results.append(row)
@@ -592,7 +603,7 @@ def create_table1_national_summary():
                     
                     row = {
                         'Window': window_label,
-                        'Implementation': impl.replace('_', ' ').title(),
+                        'Implementation': implementation_label,
                         'N_obs': len(df),
                         'True_margin': df['true_margin'].iloc[0],
                         'Mean_poll_margin': df['poll_margin'].mean(),
@@ -602,7 +613,10 @@ def create_table1_national_summary():
                         'Mean_residual_bias': df['systematic_bias'].mean(),
                         'Sigma2_u': df['sigma2_u'].iloc[0],
                         'Final_smoothed': df['smoothed'].iloc[-1],
-                        'Final_forecast_error': df['smoothed'].iloc[-1] - df['true_margin'].iloc[0] if 'unanchored' in mode else np.nan,
+                        'Final_forecast_error': (
+                            df['smoothed'].iloc[-1] - df['true_margin'].iloc[0]
+                            if 'unanchored' in mode else np.nan
+                        ),
                         'Var_systematic_pct': 100 * df['systematic_bias'].var() / df['total_error'].var()
                     }
                     results.append(row)
@@ -629,9 +643,12 @@ def create_table1_national_summary():
     table1_formatted.to_csv('output/kalman/national_summary_all_implementations.csv', index=False)
     
     # save as latex
-    latex_str = table1_formatted.to_latex(index=False, escape=False, 
-                                          caption='National Summary: All Implementations and Time Windows',
-                                          label='tab:national_summary')
+    latex_str = table1_formatted.to_latex(
+        index=False,
+        escape=False, 
+        caption='National Summary: All Implementations and Time Windows',
+        label='tab:national_summary'
+    )
     with open('output/kalman/national_summary_all_implementations.tex', 'w') as f:
         f.write(latex_str)
     
