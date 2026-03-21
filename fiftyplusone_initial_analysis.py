@@ -323,7 +323,9 @@ harris_trump_full_df.to_csv('data/fiftyplusone_cleaned_harris_trump_questions.cs
 # check what happens when switch end date to start date
 print(f"  cutoff (start_date >= dropout_cutoff): "
       f"{harris_trump_full_df.loc[harris_trump_full_df['start_date'] >= dropout_cutoff, 'poll_id'].nunique()} polls, "
-      f"{harris_trump_full_df.loc[harris_trump_full_df['start_date'] >= dropout_cutoff, 'question_id'].nunique()} questions")
+      f"{harris_trump_full_df.loc[harris_trump_full_df['start_date'] >= dropout_cutoff, 'question_id'].nunique()} questions,"
+      f"{len(harris_trump_full_df.loc[harris_trump_full_df['start_date'] >= dropout_cutoff])} rows,")
+
 
 print(f"  cutoff (end_date   >= dropout_cutoff): "
       f"{harris_trump_full_df.loc[harris_trump_full_df['end_date'] >= dropout_cutoff, 'poll_id'].nunique()} polls, "
