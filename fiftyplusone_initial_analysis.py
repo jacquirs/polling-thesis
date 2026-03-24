@@ -44,6 +44,9 @@ print(f"Rows after loading: {len(df)}")
 print(f"Unique polls: {df['poll_id'].nunique()}")
 print(f"Unique questions: {df['question_id'].nunique()}")
 
+dropout_cutoff = pd.Timestamp('2024-07-21')
+df = df[df['start_date'] >= dropout_cutoff]
+
 ########################################################################################
 ##################################### Unique Answer Sets ###############################
 ########################################################################################
@@ -61,8 +64,6 @@ question_answer_sets = (
 print('here')
 print(df['start_date'].min())# define cutoff date (Biden dropout)
 print(df['end_date'].min())# define cutoff date (Biden dropout)
-
-dropout_cutoff = pd.Timestamp('2024-07-21')
 
 ######## count of each unique answer set, split before/after dropout
 
@@ -255,20 +256,28 @@ harris_trump_questions = question_answer_sets[
     question_answer_sets['biden_harris_trump_classification'] == 'Harris + Trump'
 ][['question_id', 'poll_id']].drop_duplicates()
 
+# after only
+harris_trump_questions_after = after_dropout[
+    after_dropout['biden_harris_trump_classification'] == 'Harris + Trump'
+][['question_id', 'poll_id']].drop_duplicates()
+
 # count how many Harris + Trump questions each poll has
 questions_per_poll = (
-    harris_trump_questions.groupby('poll_id')['question_id']
+    harris_trump_questions_after.groupby('poll_id')['question_id']
     .nunique()
     .reset_index()
     .rename(columns={'question_id': 'num_harris_trump_questions'})
     .sort_values('num_harris_trump_questions', ascending=False)
 )
 
-multi_question_polls = questions_per_poll[questions_per_poll['num_harris_trump_questions'] > 1]
+multi_question_polls = questions_per_poll[
+    questions_per_poll['num_harris_trump_questions'] > 1
+]
 
 print(f"\nPolls with multiple Harris + Trump questions:")
 print(f"  {len(multi_question_polls)} polls had more than one Harris + Trump question")
 print(f"  {len(questions_per_poll) - len(multi_question_polls)} polls had exactly one Harris + Trump question")
+
 print(f"\nDistribution of Harris + Trump question counts per poll:")
 print(questions_per_poll['num_harris_trump_questions'].value_counts().sort_index().to_string())
 

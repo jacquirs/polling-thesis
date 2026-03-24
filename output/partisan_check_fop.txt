@@ -1,4 +1,7 @@
-partisan flag consistency by pollster
+
+============================================================
+partisan flag consistency by pollster -- full sample
+============================================================
 
 total pollsters: 247
 always flagged (all polls have partisan value): 34
@@ -125,3 +128,83 @@ OnMessage Public Strategies                                                     
                co/efficient                                                                              American Unity Fund          1
                co/efficient                                                                                       NH Journal          1
                co/efficient                                                                               Spirit of Virginia          1
+
+============================================================
+partisan flag consistency by pollster -- start_date >= 2024-07-21
+============================================================
+
+total pollsters: 188
+always flagged (all polls have partisan value): 25
+never flagged (no polls have partisan value): 153
+sometimes flagged (inconsistent): 10
+
+pollsters with inconsistent partisan flagging:
+
+10 pollsters have some polls flagged and some not:
+
+              pollster  total_polls  polls_with_partisan_flag  all_polls_flagged  no_polls_flagged
+             SurveyUSA           18                         1              False             False
+                Cygnal           18                         2              False             False
+        OnMessage Inc.           11                         7              False             False
+       Change Research            9                         5              False             False
+Quantus Polls and News            7                         6              False             False
+             Remington            7                         5              False             False
+            McLaughlin            4                         1              False             False
+        SoCal Research            3                         1              False             False
+         Lake Research            3                         2              False             False
+              Tarrance            2                         1              False             False
+
+pollsters always flagged as partisan:
+
+pollster summary:
+                        pollster  total_polls partisan
+                 Trafalgar Group           31      REP
+                SoCal Strategies           14      REP
+                             PPP           12      DEM
+             Fabrizio/McLaughlin            7      REP
+                Quantus Insights            7      REP
+     OnMessage Public Strategies            6      REP
+                 Spry Strategies            5      REP
+                    co/efficient            4      REP
+                   RG Strategies            3      DEM
+                 Z to A Research            3      DEM
+                   Axis Research            3      REP
+                             GQR            2      DEM
+           Cherry Communications            2      REP
+                    CWS Research            2      REP
+           Global Strategy Group            1      IND
+                        Fabrizio            1      REP
+                    Arc Insights            1      REP
+                          Civiqs            1      DEM
+                 Impact Research            1      IND
+                      Iron Light            1      REP
+                   Peak Insights            1      REP
+               National Research            1      REP
+           Torchlight Strategies            1      REP
+Trafalgar Group/InsiderAdvantage            1      REP
+                     YouGov Blue            1      DEM
+
+sponsor breakdown:
+                   pollster                                          sponsors  num_polls
+               Arc Insights                                 Fields of Freedom          1
+              Axis Research                                              NRCC          3
+               CWS Research                  Texans for Fiscal Responsibility          1
+               CWS Research                                  Texas Gun Rights          1
+      Cherry Communications                       Florida Chamber of Commerce          2
+                     Civiqs                                         Daily Kos          1
+                   Fabrizio                     Early Vote Action (super PAC)          1
+      Global Strategy Group             Retire Career Politicians (super PAC)          1
+                 Iron Light                        League of American Workers          1
+          National Research Democracy Defense Project, Echo Canyon Consulting          1
+OnMessage Public Strategies                               Article III Project          6
+                        PPP                Clean and Prosperous America (PAC)          4
+                        PPP                   Northwest Progressive Institute          3
+                        PPP                              Progress Action Fund          3
+              Peak Insights                                              NRSC          1
+           Quantus Insights                                  TrendingPolitics          7
+              RG Strategies                            Focus on Rural America          3
+           SoCal Strategies             On Point Politics, Red Eagle Politics         14
+            Spry Strategies           American Principles Project (super PAC)          5
+                YouGov Blue                                  Carolina Forward          1
+            Z to A Research                                  Rust Belt Rising          3
+               co/efficient                                 Americans for IVF          4
