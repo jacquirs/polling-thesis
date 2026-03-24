@@ -1,7 +1,7 @@
 WITH PARTISAN CONTROL
 WITH LV CONTROL
 WITH MODE INDICATORS (NO EXPLOSION)
-Questions with both Trump and Harris pct: 2613
+Questions with both Trump and Harris pct: 2337
 Questions dropped due to missing pct:     0
 
 Derived national true vote shares (confirmed against results yay!!):
@@ -91,6 +91,28 @@ SAMPLE SIZES (MODE INDICATORS - NO EXPLOSION)
   All state polls: 1628
   Swing states only: 1182
   National polls: 671
+
+==============================================================================================================
+MODE INDICATOR COUNTS BY SAMPLE
+==============================================================================================================
+
+Variable                                  N       %         N       %         N       %  
+                                   national (n=671) all states (n=1628)swing states (n=1182)
+--------------------------------------------------------------------------------------------------------------
+mode_App_Panel                           19    2.8%        66    4.1%        16    1.4%  
+mode_Email                                0    0.0%        79    4.9%        69    5.8%  
+mode_IVR                                 22    3.3%       158    9.7%       119   10.1%  
+mode_Live_Phone                          74   11.0%       468   28.7%       342   28.9%  
+mode_Mail_to_Phone                        0    0.0%        11    0.7%        11    0.9%  
+mode_Mail_to_Web                          0    0.0%        28    1.7%        25    2.1%  
+mode_Online_Ad                           19    2.8%       110    6.8%        93    7.9%  
+mode_Online_Matched_Sample               57    8.5%       107    6.6%        74    6.3%  
+mode_Online_Opt_In_Panel                418   62.3%       646   39.7%       485   41.0%  
+mode_Probability_Panel                   86   12.8%        35    2.1%        16    1.4%  
+mode_Text_only                            4    0.6%        90    5.5%        78    6.6%  
+mode_Text_to_Web                         58    8.6%       421   25.9%       287   24.3%  
+==============================================================================================================
+
 
 ==============================================================================================================
 MODE COMBINATION ANALYSIS

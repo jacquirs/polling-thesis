@@ -569,6 +569,55 @@ print(f"  All state polls: {len(reg_state_original)}")
 print(f"  Swing states only: {len(reg_state_swing_original)}")
 print(f"  National polls: {len(reg_national_original)}")
 
+########################################################################################
+#################### MODE INDICATOR COUNTS BY SAMPLE ###################################
+########################################################################################
+
+print("\n" + "="*110)
+print("MODE INDICATOR COUNTS BY SAMPLE")
+print("="*110)
+
+# split into samples after mode indicators are created
+reg_state_original_mode_check = reg_df_original[reg_df_original['poll_level'] == 'state'].copy()
+reg_national_original_mode_check = reg_df_original[reg_df_original['poll_level'] == 'national'].copy()
+reg_state_swing_original_mode_check = reg_state_original_mode_check[
+    reg_state_original_mode_check['state'].isin(swing_states)
+].copy()
+
+samples = {
+    'national':     reg_national_original_mode_check,
+    'all states':   reg_state_original_mode_check,
+    'swing states': reg_state_swing_original_mode_check,
+}
+
+all_mode_vars = sorted([col for col in reg_df_original.columns if col.startswith('mode_')])
+
+print(f"\n{'Variable':<35}", end='')
+for label, df_s in samples.items():
+    print(f"{'N':>8} {'%':>7}  ", end='')
+print()
+
+print(f"{'':35}", end='')
+for label, df_s in samples.items():
+    col_header = f"{label} (n={len(df_s)})"
+    print(f"{col_header:<17}", end='')
+print()
+
+print("-" * 110)
+
+for var in all_mode_vars:
+    print(f"{var:<35}", end='')
+    for label, df_s in samples.items():
+        if var in df_s.columns:
+            n = df_s[var].sum()
+            pct = 100 * n / len(df_s)
+            print(f"{int(n):>8} {pct:>6.1f}%  ", end='')
+        else:
+            print(f"{'--':>8} {'--':>7}  ", end='')
+    print()
+
+print("=" * 110 + "\n")
+
 # Understand mode combinations
 print(f"\n" + "="*110)
 print("MODE COMBINATION ANALYSIS")
