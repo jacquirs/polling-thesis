@@ -582,38 +582,54 @@ def summarize_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
 def plot_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
                  anchored: bool = True, save_path: str = None) -> None:
     """
-    four-panel figure:
-      panel 1: raw polls, corrected polls, smoothed estimate, true margin
-      panel 2: standard errors — conventional vs smoothed
-      panel 3: residual systematic bias over time (after house effects removed)
-      panel 4: top 20 house effects by absolute size (bar chart)
+    two separate figures:
+      figure 1 (three panels): raw polls, corrected polls, smoothed + filtered estimates,
+                               standard errors, residual systematic bias
+      figure 2 (one panel):   top 20 house effects by absolute size (bar chart)
+
+    changes from prior version:
+      - filtered line added to panels 1 and 2 as a dotted line
+      - raw polls colored pale yellow, house-effect corrected polls colored pale purple
+      - x-axis labels show every month, horizontal (not rotated)
+      - house effects panel saved as a separate figure
     """
     results = df[df['pollster_id'] != -1].copy()
     true_margin = results['true_margin'].iloc[0]
 
-    fig, axes = plt.subplots(4, 1, figsize=(14, 18), sharex=False)
     mode_label = "anchored" if anchored else "unanchored"
+
+    colors = {
+        'raw':      '#f5e642',   # pale yellow for raw polls
+        'corrected':'#c9b3e8',   # pale purple for corrected polls
+        'filtered': '#888888',   # medium gray for filtered line
+        'smoothed': '#DD8452',   # orange for smoothed
+        'true':     '#2ca02c',   # green for true margin
+        'bias':     '#d62728',   # red for bias
+    }
+
+    dates = results['end_date']
+
+    ########################################################################
+    # figure 1: three-panel main figure
+    ########################################################################
+    fig, axes = plt.subplots(3, 1, figsize=(14, 15), sharex=False)
     fig.suptitle(
         f'kalman filter with house effects: national polling 2024 ({mode_label})\n(trump margin, pp)',
         fontsize=14, fontweight='bold', y=0.99
     )
 
-    dates  = results['end_date']
-    colors = {
-        'raw':      '#cccccc',
-        'corrected':'#aec6e8',
-        'smoothed': '#DD8452',
-        'true':     '#2ca02c',
-        'bias':     '#d62728',
-    }
-
-    # panel 1: raw polls, corrected polls, smoothed, true
+    # panel 1: raw polls, corrected polls, filtered (dotted), smoothed, true
     ax1 = axes[0]
     ax1.scatter(dates, results['poll_margin'],
-                color=colors['raw'], alpha=0.2, s=8, label='raw polls', zorder=1)
+                color=colors['raw'], alpha=0.6, s=8, label='raw polls',
+                edgecolors='none', zorder=1)
     ax1.scatter(dates, results['corrected_margin'],
-                color=colors['corrected'], alpha=0.3, s=8,
-                label='house-effect corrected polls', zorder=2)
+                color=colors['corrected'], alpha=0.6, s=8,
+                label='house-effect corrected polls',
+                edgecolors='none', zorder=2)
+    ax1.plot(dates, results['filtered'],
+             color=colors['filtered'], linewidth=1.5, linestyle='-',
+             label='filtered estimate', zorder=3)
     ax1.plot(dates, results['smoothed'],
              color=colors['smoothed'], linewidth=2.5,
              label='smoothed estimate', zorder=4)
@@ -629,26 +645,28 @@ def plot_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
     ax1.set_title('raw polls vs house-effect corrected polls vs smoothed estimate', fontsize=10)
     ax1.grid(True, alpha=0.3)
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
-    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=0, ha='center')
 
-    # panel 2: standard errors
+    # panel 2: standard errors — conventional, filtered, smoothed
     ax2 = axes[1]
     conv_se = results['sampling_var'].apply(np.sqrt)
-    ax2.plot(dates, conv_se, color=colors['raw'], linewidth=1, alpha=0.6,
+    ax2.plot(dates, conv_se, color=colors['raw'], linewidth=1, alpha=0.8,
              label='conventional se (per-poll)')
+    ax2.plot(dates, results['filtered_se'],
+             color=colors['filtered'], linewidth=1.5, linestyle='-',
+             label='filtered se')
     ax2.plot(dates, results['smoothed_se'], color=colors['smoothed'], linewidth=2,
              label='smoothed se')
     ax2.set_ylabel('standard error (pp)', fontsize=10)
     ax2.legend(fontsize=8)
-    ax2.set_title('uncertainty: conventional vs kalman smoothed', fontsize=10)
+    ax2.set_title('uncertainty: conventional vs filtered vs smoothed', fontsize=10)
     ax2.grid(True, alpha=0.3)
     ax2.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    ax2.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
-    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    ax2.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=0, ha='center')
 
-    # panel 3: residual systematic bias (the industry-wide component after house effects removed)
-    # this is the bias that no individual pollster correction can fix — it's shared by all
+    # panel 3: residual systematic bias
     ax3 = axes[2]
     ax3.plot(dates, results['residual_systematic_bias'],
              color=colors['bias'], linewidth=2,
@@ -676,20 +694,32 @@ def plot_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
         )
     ax3.grid(True, alpha=0.3)
     ax3.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    ax3.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
-    plt.setp(ax3.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    ax3.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax3.xaxis.get_majorticklabels(), rotation=0, ha='center')
 
-    # panel 4: house effects bar chart (top 20 by absolute size, min 5 polls)
-    # positive = pollster systematically overstates trump relative to industry average
-    # negative = pollster systematically overstates harris relative to industry average
-    ax4 = axes[3]
-    ax4.sharex = None  # this panel has its own x-axis (pollster names, not dates)
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches='tight')
+        print(f"\nmain figure saved to: {save_path}")
+
+    plt.close()
+
+    ########################################################################
+    # figure 2: house effects bar chart (separate file)
+    ########################################################################
     he_plot = (house_effects_df[house_effects_df['n_polls'] >= 5]
                .copy()
                .assign(abs_he=lambda x: x['house_effect'].abs())
                .nlargest(20, 'abs_he')
                .sort_values('house_effect', ascending=True))
     bar_colors = [colors['bias'] if v > 0 else '#4C72B0' for v in he_plot['house_effect']]
+
+    fig2, ax4 = plt.subplots(figsize=(10, 8))
+    fig2.suptitle(
+        f'pollster house effects: national polling 2024 ({mode_label})',
+        fontsize=13, fontweight='bold'
+    )
     ax4.barh(he_plot['pollster'], he_plot['house_effect'], color=bar_colors, alpha=0.8)
     ax4.axvline(0, color='black', linewidth=1.0)
     ax4.set_xlabel('house effect (pp, relative to industry average)', fontsize=10)
@@ -703,12 +733,79 @@ def plot_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
     plt.tight_layout()
 
     if save_path:
-        plt.savefig(save_path, dpi=150, bbox_inches='tight')
-        print(f"\nfigure saved to: {save_path}")
+        he_save_path = save_path.replace('.png', '_house_effects.png')
+        plt.savefig(he_save_path, dpi=150, bbox_inches='tight')
+        print(f"house effects figure saved to: {he_save_path}")
 
-    #plt.show()
     plt.close()
 
+########################################################################################
+######################### Single-panel plot (107-day window only) ######################
+########################################################################################
+########################################################################################
+######################### Single-panel plot (107-day window only) ######################
+########################################################################################
+def plot_panel1_only(df: pd.DataFrame, anchored: bool = True, save_path: str = None) -> None:
+    """
+    standalone version of panel 1 only: raw polls, corrected polls,
+    filtered estimate (dotted), smoothed estimate, and true margin.
+    produced only for the 107-day window.
+    """
+    results = df[df['pollster_id'] != -1].copy()
+    true_margin = results['true_margin'].iloc[0]
+    mode_label = "anchored" if anchored else "unanchored"
+
+    colors = {
+        'raw':      '#f5e642',   # pale yellow for raw polls
+        'corrected':'#c9b3e8',   # pale purple for corrected polls
+        'filtered': '#888888',   # medium gray for filtered line
+        'smoothed': '#DD8452',   # orange for smoothed
+        'true':     '#2ca02c',   # green for true margin
+    }
+
+    dates = results['end_date']
+
+    fig, ax = plt.subplots(figsize=(14, 6))
+    fig.suptitle(
+        f'National Pollster-Adjusted Anchored Trump Margin Trajectory',
+        fontsize=14, fontweight='bold'
+    )
+
+    ax.scatter(dates, results['poll_margin'],
+               color=colors['raw'], alpha=0.6, s=8, label='RAW POLLS',
+               edgecolors='none', zorder=1)
+    ax.scatter(dates, results['corrected_margin'],
+               color=colors['corrected'], alpha=0.6, s=8,
+               label='HOUSE-EFFECT CORRECTED POLLS',
+               edgecolors='none', zorder=2)
+    ax.plot(dates, results['filtered'],
+            color=colors['filtered'], linewidth=1.0, linestyle='-',
+            label='FILTERED ESTIMATE', zorder=3)
+    ax.plot(dates, results['smoothed'],
+            color=colors['smoothed'], linewidth=2.5,
+            label='SMOOTHED ESTIMATE', zorder=4)
+    ax.axhline(true_margin, color=colors['true'], linewidth=2,
+               label=f'TRUE MARGIN ({true_margin:.2f} PP)', zorder=5)
+    ax.fill_between(dates,
+                    results['smoothed'] - 1.96 * results['smoothed_se'],
+                    results['smoothed'] + 1.96 * results['smoothed_se'],
+                    color=colors['smoothed'], alpha=0.15, label='SMOOTHED 95% CI')
+    ax.axhline(0, color='black', linewidth=0.5, linestyle=':')
+    ax.set_ylabel('trump margin (pp)', fontsize=10)
+    ax.set_ylim(-8, 6)
+    ax.legend(loc='upper right', fontsize=8)
+    ax.grid(True, alpha=0.3)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation=0, ha='center')
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches='tight')
+        print(f"\npanel 1 figure saved to: {save_path}")
+
+    plt.close()
 
 ########################################################################################
 ######################### Export results ###############################################
@@ -795,6 +892,12 @@ if __name__ == '__main__':
             plot_results(
                 df, house_effects_df, anchored=anchor,
                 save_path=f'figures/kalman_he_{mode_label}_{window_label}.png'
+            )
+
+            if days_before == 107:
+                plot_panel1_only(
+                df, anchored=anchor,
+                save_path=f'figures/kalman_he_{mode_label}_last_107_days_panel1a.png'
             )
 
             export_results(

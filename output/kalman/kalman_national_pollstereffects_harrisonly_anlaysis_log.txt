@@ -1,5 +1,5 @@
 kalman filter with house effects analysis
-started: 2026-03-09 22:21:26
+started: 2026-03-24 19:21:21
 log file: output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt
 time windows: [107, 60, 30]
 
@@ -107,7 +107,10 @@ interpretation: true opinion can move ~0.407 pp/day (1 sd)
                      HarrisX         0.963       41
 Redfield & Wilton Strategies         0.923       10
 
-figure saved to: figures/kalman_he_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_anchored_last_107_days_house_effects.png
+
+panel 1 figure saved to: figures/kalman_he_anchored_last_107_days_panel1a.png
 poll results exported to: data/kalman_he_polls_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_anchored_last_107_days.csv
 
@@ -197,7 +200,10 @@ Marquette Law School        -1.912        8
              HarrisX         0.992       41
                 TIPP         0.867       36
 
-figure saved to: figures/kalman_he_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_unanchored_last_107_days_house_effects.png
+
+panel 1 figure saved to: figures/kalman_he_unanchored_last_107_days_panel1a.png
 poll results exported to: data/kalman_he_polls_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_unanchored_last_107_days.csv
 
@@ -302,7 +308,8 @@ Redfield & Wilton Strategies         1.531        5
                        Ipsos        -0.483       25
                       YouGov        -0.284       34
 
-figure saved to: figures/kalman_he_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_anchored_last_60_days.csv
 
@@ -388,7 +395,8 @@ Redfield & Wilton Strategies         1.361        5
    Noble Predictive Insights         0.386        5
                       YouGov        -0.326       34
 
-figure saved to: figures/kalman_he_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_unanchored_last_60_days.csv
 
@@ -488,7 +496,8 @@ Morning Consult        -2.114       26
  ABC News/Ipsos        -0.510       12
           Ipsos        -0.335       20
 
-figure saved to: figures/kalman_he_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_anchored_last_30_days.csv
 
@@ -561,10 +570,11 @@ Morning Consult        -2.266       26
  ABC News/Ipsos        -0.523       12
           Ipsos        -0.519       20
 
-figure saved to: figures/kalman_he_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_unanchored_last_30_days.csv
 
 ======================================================================
-analysis completed: 2026-03-09 22:22:30
+analysis completed: 2026-03-24 19:24:18
 log saved to: output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt
