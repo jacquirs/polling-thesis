@@ -1698,6 +1698,14 @@ print(
         .to_string(index=False)
 )
 
+print("National rho trump:", rho_trump_total)
+print("National rho harris:", rho_harris_total)
+print("State rho trump mean:", val_mergedtruth_TH["rho_hat_trump"].mean())
+print("State rho trump max abs:", val_mergedtruth_TH["rho_hat_trump"].abs().max())
+print("N_total:", N_total)
+print("Mean N_state:", val_mergedtruth_TH["N_state"].mean())
+print("N_total / mean N_state:", N_total / val_mergedtruth_TH["N_state"].mean())
+
 # close log and restore terminal
 log_file.close()
 sys.stdout = sys.__stdout__
