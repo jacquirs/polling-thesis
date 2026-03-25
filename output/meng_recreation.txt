@@ -1,0 +1,317 @@
+Trump: COVERED states (|Z_n| <= 2).  Count = 10/51
+          state_name  Z_n_s_trump
+District Of Columbia     0.159157
+               Maine    -0.178268
+             Wyoming    -1.029947
+         Mississippi    -1.111433
+      South Carolina    -1.141479
+             Arizona    -1.274622
+            Virginia    -1.402272
+             Montana    -1.791936
+        Rhode Island    -1.836734
+            Delaware    -1.862700
+Trump: NOT covered states (|Z_n| > 2), with exceed amount (|Z_n|-2).  Count = 41/51
+    state_name  Z_n_s_trump    abs_Z  exceed_by
+          Ohio    -9.826395 9.826395   7.826395
+       Florida    -8.553098 8.553098   6.553098
+    California    -7.379549 7.379549   5.379549
+      Michigan    -7.110027 7.110027   5.110027
+      New York    -7.106061 7.106061   5.106061
+         Texas    -7.035976 7.035976   5.035976
+       Indiana    -6.963177 6.963177   4.963177
+        Kansas    -6.561823 6.561823   4.561823
+     Minnesota    -6.183834 6.183834   4.183834
+          Iowa    -5.971775 5.971775   3.971775
+      Missouri    -5.867393 5.867393   3.867393
+      Kentucky    -5.561733 5.561733   3.561733
+     Wisconsin    -5.401166 5.401166   3.401166
+     Tennessee    -5.365444 5.365444   3.365444
+       Georgia    -5.329419 5.329419   3.329419
+        Oregon    -5.260864 5.260864   3.260864
+      Illinois    -5.215711 5.215711   3.215711
+      Oklahoma    -4.945713 4.945713   2.945713
+  Pennsylvania    -4.927461 4.927461   2.927461
+        Nevada    -4.715112 4.715112   2.715112
+      Arkansas    -4.583981 4.583981   2.583981
+North Carolina    -4.130825 4.130825   2.130825
+  North Dakota    -3.887973 3.887973   1.887973
+      Nebraska    -3.749185 3.749185   1.749185
+ West Virginia    -3.709545 3.709545   1.709545
+      Colorado    -3.674811 3.674811   1.674811
+       Alabama    -3.388942 3.388942   1.388942
+   Connecticut    -3.324833 3.324833   1.324833
+     Louisiana    -3.319892 3.319892   1.319892
+        Hawaii    -3.156361 3.156361   1.156361
+  South Dakota    -3.134495 3.134495   1.134495
+ New Hampshire    -3.050895 3.050895   1.050895
+    New Jersey    -2.933695 2.933695   0.933695
+       Vermont    -2.839414 2.839414   0.839414
+    Washington    -2.795807 2.795807   0.795807
+         Idaho    -2.452748 2.452748   0.452748
+          Utah    -2.451915 2.451915   0.451915
+ Massachusetts    -2.428703 2.428703   0.428703
+    New Mexico    -2.295215 2.295215   0.295215
+      Maryland    -2.270016 2.270016   0.270016
+        Alaska    -2.087910 2.087910   0.087910
+Harris: COVERED states (|Z_n| <= 2).  Count = 10/51
+          state_name  Z_n_s_harris
+               Maine      0.163733
+District Of Columbia      0.426617
+             Wyoming      0.851218
+         Mississippi      0.862033
+      South Carolina      0.913847
+             Arizona      1.084253
+            Virginia      1.211513
+            Delaware      1.435721
+             Montana      1.478465
+              Alaska      1.585712
+Harris: NOT covered states (|Z_n| > 2), with exceed amount (|Z_n|-2).  Count = 41/51
+    state_name  Z_n_s_harris    abs_Z  exceed_by
+          Ohio      9.725642 9.725642   7.725642
+       Florida      8.077283 8.077283   6.077283
+    California      6.941482 6.941482   4.941482
+      Michigan      6.914370 6.914370   4.914370
+         Texas      6.515460 6.515460   4.515460
+       Indiana      6.437627 6.437627   4.437627
+      New York      6.418834 6.418834   4.418834
+          Iowa      6.374299 6.374299   4.374299
+        Kansas      6.321854 6.321854   4.321854
+     Minnesota      6.063423 6.063423   4.063423
+      Kentucky      6.028966 6.028966   4.028966
+      Missouri      5.627568 5.627568   3.627568
+     Tennessee      5.605760 5.605760   3.605760
+     Wisconsin      5.429252 5.429252   3.429252
+        Oregon      5.405826 5.405826   3.405826
+      Illinois      4.987428 4.987428   2.987428
+      Arkansas      4.504186 4.504186   2.504186
+        Nevada      4.404015 4.404015   2.404015
+      Oklahoma      4.299018 4.299018   2.299018
+  Pennsylvania      4.252954 4.252954   2.252954
+       Georgia      4.199029 4.199029   2.199029
+North Carolina      3.913229 3.913229   1.913229
+  North Dakota      3.518394 3.518394   1.518394
+      Colorado      3.422064 3.422064   1.422064
+      Nebraska      3.305936 3.305936   1.305936
+ West Virginia      3.300214 3.300214   1.300214
+       Alabama      3.274742 3.274742   1.274742
+    Washington      3.271948 3.271948   1.271948
+     Louisiana      3.216895 3.216895   1.216895
+  South Dakota      3.214607 3.214607   1.214607
+ New Hampshire      3.130971 3.130971   1.130971
+   Connecticut      2.792838 2.792838   0.792838
+    New Jersey      2.761119 2.761119   0.761119
+         Idaho      2.745190 2.745190   0.745190
+      Maryland      2.715935 2.715935   0.715935
+ Massachusetts      2.355393 2.355393   0.355393
+    New Mexico      2.292569 2.292569   0.292569
+          Utah      2.262184 2.262184   0.262184
+        Hawaii      2.054492 2.054492   0.054492
+       Vermont      2.050245 2.050245   0.050245
+  Rhode Island      2.042259 2.042259   0.042259
+Overlap diagnostics
+Covered by both: ['Arizona', 'Delaware', 'District Of Columbia', 'Maine', 'Mississippi', 'Montana', 'South Carolina', 'Virginia', 'Wyoming']
+Covered only Trump: ['Rhode Island']
+Covered only Harris: ['Alaska']
+Not covered by both: ['Alabama', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Missouri', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Washington', 'West Virginia', 'Wisconsin']
+Not covered only Trump: ['Alaska']
+Not covered only Harris: ['Rhode Island']
+TRUMP:
+Mean DI (data defect index):   0.00000941
+Mean DO (dropout odds):        4823.89
+Mean DU (degree uncertainty):  0.235939
+Mean MSE:                      0.01030574
+Mean RMSE:                     0.0913 (9.13 pp)
+Mean Var_SRS (benchmark):      0.00093101
+Mean SE_SRS (benchmark):       0.0273 (2.73 pp)
+Mean Design Effect (Deff):     20.32
+
+HARRIS:
+Mean DI (data defect index):   0.00000859
+Mean DO (dropout odds):        4823.89
+Mean DU (degree uncertainty):  0.235570
+Mean MSE:                      0.00924686
+Mean RMSE:                     0.0863 (8.63 pp)
+Mean Var_SRS (benchmark):      0.00092876
+Mean SE_SRS (benchmark):       0.0273 (2.73 pp)
+Mean Design Effect (Deff):     18.94
+
+Top five by design effect, worst precision loss
+
+TRUMP:
+state_name  N_state  rho_hat_trump  Deff_trump  RMSE_pct
+      Ohio  5767788      -0.004061   95.102623 13.150505
+   Florida 10893752      -0.002608   74.077373  8.655078
+     Texas 11388674      -0.002100   50.240798  7.402698
+California 15865475      -0.001770   49.701740  6.850681
+   Indiana  2936677      -0.004110   49.613330 12.804850
+
+HARRIS:
+state_name  N_state  rho_hat_harris  Deff_harris  RMSE_pct
+      Ohio  5767788        0.004040    94.152158 13.056859
+   Florida 10893752        0.002471    66.529677  8.182138
+  Michigan  5664186        0.002867    46.545291 10.013235
+California 15865475        0.001686    45.100533  6.614197
+     Texas 11388674        0.001953    43.440364  6.856593
+Trump states with largest MSE
+       State  $\mathrm{MSE}$    $\rho$      $f$        DO_s  sigma_trump  p_hat_trump  p_trump_true  bias_trump  $\sigma^2$
+North Dakota        0.057025 -0.006746 0.000177 5662.923077     0.470368     0.430769      0.669569   -0.238799    0.221247
+      Kansas        0.033637 -0.005609 0.000229 4366.075658     0.494852     0.388158      0.571563   -0.183405    0.244879
+South Dakota        0.023583 -0.004966 0.000242 4123.250000     0.481616     0.480769      0.634337   -0.153568    0.231954
+    Arkansas        0.021977 -0.004396 0.000202 4947.435146     0.479421     0.493724      0.641969   -0.148245    0.229845
+        Iowa        0.021171 -0.004588 0.000245 4076.220588     0.496710     0.411765      0.557268   -0.145503    0.246720
+      Hawaii        0.018172 -0.003874 0.000194 5166.010000     0.484072     0.240000      0.374803   -0.134803    0.234326
+    Kentucky        0.018018 -0.004034 0.000207 4834.734266     0.478598     0.510490      0.644721   -0.134232    0.229056
+    Oklahoma        0.017614 -0.004170 0.000221 4525.511561     0.473158     0.528902      0.661621   -0.132719    0.223879
+        Ohio        0.017294 -0.004061 0.000236 4240.020588     0.497355     0.419853      0.551358   -0.131505    0.247362
+    Nebraska        0.016570 -0.003901 0.000222 4511.710900     0.491241     0.464455      0.593181   -0.128726    0.241317
+
+Interpretation guide:
+High $|\rho| \;\to\;$ strong selection bias
+Low $f \;\to\;$ low response rate
+High $\sigma^2 \;\to\;$ close race ($p \approx 0.5$)
+
+Harris states with largest MSE
+       State  $\mathrm{MSE}$   $\rho$      $f$  sigma_harris  p_hat_harris  p_harris_true  bias_harris  $\sigma^2$
+North Dakota        0.047510 0.006291 0.000177      0.460453      0.523077       0.305108     0.217969    0.212017
+      Kansas        0.031830 0.005489 0.000229      0.491908      0.588816       0.410407     0.178409    0.241973
+South Dakota        0.024841 0.005173 0.000242      0.474510      0.500000       0.342391     0.157609    0.225159
+        Iowa        0.024245 0.004933 0.000245      0.494369      0.580882       0.425173     0.155709    0.244401
+    Arkansas        0.021191 0.004383 0.000202      0.472199      0.481172       0.335599     0.145572    0.222972
+    Kentucky        0.021163 0.004419 0.000207      0.473497      0.484848       0.339375     0.145474    0.224200
+        Ohio        0.017048 0.004040 0.000236      0.496300      0.569853       0.439284     0.130569    0.246314
+     Indiana        0.014103 0.003839 0.000250      0.489114      0.514986       0.396231     0.118755    0.239232
+   Minnesota        0.013227 0.003257 0.000200      0.499915      0.624233       0.509225     0.115008    0.249915
+    Oklahoma        0.013118 0.003653 0.000221      0.466087      0.433526       0.318993     0.114533    0.217237
+
+Bottom 10 states by n*_eff (Trump):
+  state_name  n_star_eff_trump  Me95_star_trump
+North Dakota          3.879809         0.477599
+      Kansas          7.279941         0.366810
+South Dakota          9.835632         0.307135
+    Arkansas         10.458646         0.296490
+        Iowa         11.653546         0.291007
+    Oklahoma         12.709969         0.265439
+    Kentucky         12.712452         0.268464
+      Hawaii         12.895014         0.269606
+     Vermont         13.313573         0.256309
+        Ohio         14.303712         0.263010
+
+Bottom 10 states by n*_eff (Harris):
+  state_name  n_star_eff_harris  Me95_star_harris
+North Dakota           4.462531          0.435938
+      Kansas           7.602142          0.356817
+South Dakota           9.064161          0.315218
+        Iowa          10.080313          0.311419
+    Arkansas          10.521862          0.291145
+    Kentucky          10.594128          0.290948
+        Ohio          14.448108          0.261137
+    Oklahoma          16.560578          0.229065
+     Indiana          16.963447          0.237510
+    Nebraska          18.347701          0.227587
+
+                                Metric                 Trump                Harris
+   === population and sample value ===                                            
+                      Population ($N$)           155,193,358           155,193,358
+                     Sample size ($n$)                32,533                32,533
+                   Sampling rate ($f$)              0.000210              0.000210
+                   Dropout odds ($DO$)             4769.3365             4769.3365
+                                                                                  
+            === estimates vs truth ===                                            
+         Sample proportion ($\hat{p}$)              0.420988              0.557526
+                 True proportion ($p$)              0.498105              0.483382
+                  Bias ($\hat{p} - p$)             -0.077117             +0.074145
+       Absolute bias ($|\hat{p} - p|$)              0.077117              0.074145
+       Standard deviation ($\sigma_G$)              0.499996              0.499724
+          Variance ($\sigma^2_G = DU$)            0.24999641            0.24972383
+                                                                                  
+                  === data quality ===                                            
+Data defect correlation ($\rho_{R,G}$)           -0.00223334           +0.00214843
+     Data defect index ($DI = \rho^2$)          0.0000049878          0.0000046157
+                                                                                  
+                 === SRS benchmark ===                                            
+   Finite-corrected variance ($S^2_G$)            0.24999641            0.24972383
+            SRS variance ($Var_{SRS}$)          0.0000076828          0.0000076744
+       SRS standard error ($SE_{SRS}$)              0.002772              0.002770
+          SRS margin of error (95% CI)              0.005544              0.005541
+                                                                                  
+                    === actual MSE ===                                            
+              Mean Squared Error (MSE)          0.0059470365          0.0054974230
+                       Root MSE (RMSE)              0.077117              0.074145
+              RMSE (percentage points)                7.7117                7.4145
+                                                                                  
+                 === design effect ===                                            
+                  Design Effect (Deff)              774.0731              716.3320
+                   Deff interpretation 774.1x worse than SRS 716.3x worse than srs
+                                                                                  
+         === effective sample size ===                                            
+             $n^*_{eff}$ (upper bound)                    42                    45
+          $n_{eff}$ (finite-corrected)                    42                    45
+                  Sample reduction (%)              99.8708%              99.8604%
+              Sample reduction (count)                32,491                32,488
+                                                                                  
+               === margin of error ===                                            
+                  Margin of error (Me)              0.154234              0.148289
+                Me (percentage points)               15.4234               14.8289
+                        Me upper bound              0.154235              0.148371
+                   Me upper bound (pp)               15.4235               14.8371
+                   Me inflation vs SRS              27.8222x              26.7644x
+                                                                                  
+Microdata: validated (all)                         = 36448
+Microdata: validated & X_trump notna               = 32533
+Microdata: validated & X_harris notna              = 32533
+Microdata: validated & state in truth              = 36448
+Microdata: validated & state in truth & trump notna= 32533
+Microdata: validated & state in truth & harris notna= 32533
+Table: sum eff_samplesize_df['n']                  = 32533
+          state_name  n_cces_validated  n_eff_table  difference
+          California              2934         2503         431
+               Texas              2617         2257         360
+             Florida              2751         2435         316
+            New York              1964         1732         232
+        Pennsylvania              2021         1851         170
+            Illinois              1371         1218         153
+             Georgia              1157         1011         146
+                Ohio              1499         1360         139
+            Virginia              1089          952         137
+      North Carolina              1175         1049         126
+          New Jersey              1027          904         123
+          Washington               966          864         102
+             Arizona               954          861          93
+            Colorado               699          611          88
+            Michigan              1247         1159          88
+           Tennessee               848          763          85
+            Maryland               639          559          80
+       Massachusetts               721          643          78
+      South Carolina               597          522          75
+           Minnesota               719          652          67
+              Oregon               738          675          63
+            Missouri               876          815          61
+           Wisconsin               828          769          59
+              Nevada               434          378          56
+             Indiana               789          734          55
+             Alabama               475          427          48
+                Iowa               448          408          40
+              Kansas               343          304          39
+           Louisiana               358          320          38
+          New Mexico               262          224          38
+         Mississippi               236          200          36
+         Connecticut               335          301          34
+            Oklahoma               377          346          31
+            Kentucky               459          429          30
+               Idaho               198          175          23
+            Arkansas               262          239          23
+District Of Columbia                91           72          19
+       New Hampshire               197          179          18
+       West Virginia               251          236          15
+                Utah               151          137          14
+            Nebraska               225          211          14
+              Alaska                83           73          10
+        Rhode Island               131          121          10
+               Maine               192          183           9
+             Montana               166          158           8
+             Vermont                84           77           7
+            Delaware               123          116           7
+              Hawaii               106          100           6
+        South Dakota               110          104           6
+        North Dakota                70           65           5
+             Wyoming                55           51           4

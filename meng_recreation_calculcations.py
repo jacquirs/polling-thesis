@@ -1,6 +1,12 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
+
+
+# redirect all print output to a log file
+log_file = open('output/meng_recreation.txt', 'w')
+sys.stdout = log_file
 
 # data from pipeline
 cces = pd.read_csv("data/cces2024_cleaned_mengrep.csv")
@@ -1691,3 +1697,7 @@ print(
         .sort_values("difference", ascending=False)
         .to_string(index=False)
 )
+
+# close log and restore terminal
+log_file.close()
+sys.stdout = sys.__stdout__
