@@ -12,3 +12,18 @@ cces2024_meng_replication_set.csv
 .Rproj.user
 .Rhistory
 .RData
+data/1976-2020-president.csv
+
+# incomplete meng 2016 replication
+2016_ces_check.py
+ces_2016_processing.py
+data/mengrep_all_vals_state_level_2016.csv
+data/mengrep_ddc_state_level_validated_vs_truth_2016.csv
+data/mengrep_ddc_state_validated_combined_vs_truth_2016.csv
+data/mengrep_national_long_2016.csv
+data/mengrep_national_wide_2016.csv
+data/true_votes_by_state_mengrep_2016.csv
+figures/mengrep_fig5_ddc_histograms_2016.png
+output/meng_recreation_2016.txt
+true_2016_clean.py
+data/CCES16_Common_OUTPUT_Feb2018_VV.tab 

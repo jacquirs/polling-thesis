@@ -315,3 +315,12 @@ District Of Columbia                91           72          19
         South Dakota               110          104           6
         North Dakota                70           65           5
              Wyoming                55           51           4
+National rho trump: -0.0022333378860760525
+National rho harris: 0.0021484269993934297
+State rho trump mean: -0.0027322505312150974
+State rho trump max abs: 0.006746437265286543
+State rho harris mean: 0.0026094045757078504
+State rho harris max abs: 0.006290555900079737
+N_total: 155193358
+Mean N_state: 3043007.0196078434
+N_total / mean N_state: 50.99999999999999
