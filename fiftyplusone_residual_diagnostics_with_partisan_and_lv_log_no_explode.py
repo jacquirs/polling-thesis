@@ -366,5 +366,40 @@ plt.tight_layout()
 plt.savefig("figures/residual_diagnostics_main_with_partisan_and_lv_no_explode.png", dpi=300, bbox_inches='tight')
 plt.close()
 
+# second figure: with mode indicators
+fig2, axes2 = plt.subplots(3, 3, figsize=(18, 15))
+fig2.suptitle('Residual Diagnostics (Mode Indicator Strategy, With Mode Indicators)', fontsize=14, y=1.01)
+
+specs_mode = [
+    (result_swing_mode,    'swing states (with mode)'),
+    (result_all_mode,      'all states (with mode)'),
+    (result_national_mode, 'national (with mode)'),
+]
+
+for row, (result, label) in enumerate(specs_mode):
+    residuals = result.resid
+    fitted    = result.fittedvalues
+
+    # residuals vs fitted
+    axes2[row, 0].scatter(fitted, residuals, alpha=0.3, s=10)
+    axes2[row, 0].axhline(0, color='red', linestyle='--')
+    axes2[row, 0].set_xlabel('fitted values')
+    axes2[row, 0].set_ylabel('residuals')
+    axes2[row, 0].set_title(f'{label}: residuals vs fitted')
+
+    # histogram
+    axes2[row, 1].hist(residuals, bins=30, edgecolor='black')
+    axes2[row, 1].axvline(0, color='red', linestyle='--')
+    axes2[row, 1].set_xlabel('residuals')
+    axes2[row, 1].set_title(f'{label}: residual distribution')
+
+    # q-q plot
+    stats.probplot(residuals, dist="norm", plot=axes2[row, 2])
+    axes2[row, 2].set_title(f'{label}: q-q plot')
+
+plt.tight_layout()
+plt.savefig("figures/residual_diagnostics_mode_indicators_with_partisan_and_lv_no_explode.png", dpi=300, bbox_inches='tight')
+plt.close()
+
 print("visual diagnostics saved to: figures/residual_diagnostics_main_with_partisan_and_lv_no_explode.png")
 print("numerical diagnostics saved to: output/fiftyplusone_residual_diagnostics_with_partisan_and_lv_log_no_explode.txt")
