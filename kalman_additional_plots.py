@@ -5,6 +5,14 @@ import matplotlib.dates as mdates
 from pathlib import Path
 
 ########################################################################
+# Plot style constants
+########################################################################
+TITLE_FS  = 18
+LABEL_FS  = 16
+TICK_FS   = 15
+LEGEND_FS = 15
+
+########################################################################
 # figure 2: national - residual systematic bias comparison (all four implementations)
 ########################################################################
 # USED
@@ -42,16 +50,20 @@ def create_figure2_national_bias_comparison():
     ax.axhline(0, color='black', linewidth=1, linestyle=':')
     
     # formatting
-    ax.set_xlabel(r'$\bf{Date}$', fontsize=12)
-    ax.set_ylabel(r'$\bf{Systematic\ Bias\ (pp)}$', fontsize=12)
-    ax.set_title(r'$\bf{National\ Systematic\ Bias\ Trajectories\ Across\ Four\ Implementations}$' + '\n Last 107 Days', 
-                 fontsize=14)
-    ax.legend(loc='lower left', fontsize=11, framealpha=0.95)
+    ax.set_xlabel(r'$\bf{Date}$', fontsize=LABEL_FS)
+    ax.set_ylabel(r'$\bf{Systematic\ Bias\ (pp)}$', fontsize=LABEL_FS)
+    ax.set_title(
+        r'$\bf{National\ Systematic\ Bias\ Trajectories\ Across\ Four\ Implementations}$' + '\n Last 107 Days',
+        fontsize=TITLE_FS
+    )
+    ax.legend(loc='lower left', fontsize=LEGEND_FS, framealpha=0.95)
     ax.grid(True, alpha=0.3)
+    ax.tick_params(axis='both', labelsize=TICK_FS)
     
     # format x-axis
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
     ax.xaxis.set_major_locator(mdates.MonthLocator())
+    plt.setp(ax.xaxis.get_majorticklabels(), fontsize=TICK_FS, fontweight='bold')
     
     plt.tight_layout()
     plt.savefig('figures/kalman_national_bias_comparison_four_implementations.png', dpi=300, bbox_inches='tight')
@@ -69,8 +81,9 @@ def create_figure3_swing_states_bias_trajectories():
         'NV': 'Nevada', 'NC': 'North Carolina', 
         'PA': 'Pennsylvania', 'WI': 'Wisconsin'
     }
-    
-    fig, axes = plt.subplots(2, 4, figsize=(18, 9), sharex=True, sharey=True)
+
+    # taller figure gives subplots and header text room to breathe
+    fig, axes = plt.subplots(2, 4, figsize=(22, 12), sharex=True, sharey=True)
     axes = axes.flatten()
     
     legend_handles = None
@@ -106,11 +119,13 @@ def create_figure3_swing_states_bias_trajectories():
         ax.axhline(0, color='black', linewidth=0.8, linestyle=':')
         
         true_margin = df['true_margin'].iloc[0]
-        ax.set_title(f"{state_names[state]}\n(True: Trump{true_margin:+.1f})", 
-                    fontsize=11, fontweight='bold')
+        ax.set_title(f"{state_names[state]}\n(True: Trump{true_margin:+.1f})",
+                    fontsize=TITLE_FS, fontweight='bold')
         ax.grid(True, alpha=0.2)
+        ax.tick_params(axis='both', labelsize=TICK_FS)
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%b\n%Y'))
         ax.xaxis.set_major_locator(mdates.MonthLocator())
+        plt.setp(ax.xaxis.get_majorticklabels(), fontsize=TICK_FS, fontweight='bold')
     
         if legend_handles is None:
             legend_handles = [line_1, line_2]
@@ -131,32 +146,38 @@ def create_figure3_swing_states_bias_trajectories():
                color='#2ca02c', linewidth=1.5, linestyle='--')
 
     ax.axhline(0, color='black', linewidth=0.8, linestyle=':')
-    ax.set_title('National\n(True: Trump+1.5)', fontsize=11, fontweight='bold')
+    ax.set_title('National\n(True: Trump+1.5)', fontsize=TITLE_FS, fontweight='bold')
     ax.grid(True, alpha=0.2)
+    ax.tick_params(axis='both', labelsize=TICK_FS)
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b\n%Y'))
     ax.xaxis.set_major_locator(mdates.MonthLocator())
+    plt.setp(ax.xaxis.get_majorticklabels(), fontsize=TICK_FS, fontweight='bold')
 
-    fig.legend(
-        legend_handles,
-        ['Pollster-Adjusted Residual Bias',
-        'Daily Aggregated Systematic Bias'],
-        loc='upper center',
-        bbox_to_anchor=(0.5, 0.91),
-        ncol=2,
-        frameon=False,
-        fontsize=11
-    )
-
-    fig.text(0.5, 0.02, r'$\bf{Date}$', ha='center', fontsize=13)
-    fig.text(0.02, 0.5, r'$\bf{Smoothed\ Bias\ (pp)}$', va='center', rotation='vertical', fontsize=13)
+    # suptitle sits at the very top; legend placed below it with a clear gap
     fig.suptitle(
         r'$\bf{Swing\ State\ and\ National\ Polling\ Bias\ Trajectories}$' + '\n'
         'Pollster-Adjusted and Daily-Aggregated Models\n'
         'Anchored, Last 107 Days',
-        fontsize=14,
-        y=0.98
-    )        
-    plt.tight_layout(rect=[0.03, 0.03, 1, 0.96])
+        fontsize=TITLE_FS,
+        y=1.0          # flush to figure top; tight_layout + rect push subplots down
+    )
+
+    # legend anchored below the suptitle with enough vertical space so they don't overlap
+    fig.legend(
+        legend_handles,
+        ['Pollster-Adjusted Residual Bias', 'Daily Aggregated Systematic Bias'],
+        loc='upper center',
+        bbox_to_anchor=(0.5, 0.93),   # lower than suptitle (y=1.0) → clear gap
+        ncol=2,
+        frameon=False,
+        fontsize=LEGEND_FS
+    )
+
+    fig.text(0.5, 0.01, r'$\bf{Date}$', ha='center', fontsize=LABEL_FS)
+    fig.text(0.02, 0.5, r'$\bf{Smoothed\ Bias\ (pp)}$', va='center', rotation='vertical', fontsize=LABEL_FS)
+
+    # rect leaves room at top for suptitle + legend, left for y-axis label, bottom for x-axis label
+    plt.tight_layout(rect=[0.04, 0.04, 1.0, 0.91])
     plt.savefig('figures/kalman_swing_states_bias_trajectories_over_time.png', dpi=300, bbox_inches='tight')
     plt.close()
 
@@ -219,14 +240,13 @@ def create_figure4_variance_decomposition():
         left=np.array(house_pcts) + np.array(noise_pcts),
         color=color_resid, alpha=0.85, label=r'Latent Opinion Trajectory $\xi_t$', height=0.6)
 
-
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(state_labels, fontsize=11)
-    ax.set_xlabel('Scaled Share of Total Poll Variance (%)', fontweight="bold", fontsize=11)
+    ax.set_yticklabels(state_labels, fontsize=TICK_FS)
+    ax.set_xlabel('Scaled Share of Total Poll Variance (%)', fontweight='bold', fontsize=LABEL_FS)
     ax.set_title(
         r'$\bf{Error\ Variance\ Decomposition\ by\ Geography}$' + '\n'
         'Pollster-Adjusted Anchored\nLast 107 Days',
-        fontsize=13,
+        fontsize=TITLE_FS,
         pad=30
     )
     ax.legend(
@@ -234,9 +254,10 @@ def create_figure4_variance_decomposition():
         bbox_to_anchor=(0.5, 1.08),
         ncol=3,
         frameon=False,
-        fontsize=10
+        fontsize=LEGEND_FS
     )
     ax.set_xlim([0, 100])
+    ax.tick_params(axis='x', labelsize=TICK_FS)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
 
@@ -252,8 +273,6 @@ def create_figure4_variance_decomposition():
         dpi=300, bbox_inches='tight'
     )
     plt.close()
-
-
 
 
 ########################################################################
@@ -302,15 +321,16 @@ def create_figure5_national_stability_temporal():
 
     ax.axhline(0, color='gray', linewidth=0.5, linestyle=':')
     ax.axvline(0, color='gray', linewidth=0.5, linestyle=':')
-    ax.set_xlabel('House Effect — Last 107 Days (pp)', fontsize=12)
-    ax.set_ylabel('House Effect — Last 30 Days (pp)', fontsize=12)
+    ax.set_xlabel('House Effect — Last 107 Days (pp)', fontsize=LABEL_FS, fontweight='bold')
+    ax.set_ylabel('House Effect — Last 30 Days (pp)', fontsize=LABEL_FS, fontweight='bold')
     ax.set_title(
         'House Effect Stability Across Time Windows\n'
         '(EM Anchored | Point size = number of polls in 30-day window)',
-        fontsize=12, fontweight='bold'
+        fontsize=TITLE_FS, fontweight='bold'
     )
-    ax.legend(fontsize=10)
+    ax.legend(fontsize=LEGEND_FS)
     ax.grid(True, alpha=0.3)
+    ax.tick_params(axis='both', labelsize=TICK_FS)
     ax.set_aspect('equal', adjustable='box')
 
     plt.tight_layout()
@@ -329,12 +349,6 @@ def create_figure6_swing_states_bias_overlay():
     """
     overlay residual systematic bias trajectories from all seven swing states
     on a single plot, with national em anchored trajectory as reference.
-    
-    shows:
-    - whether swing state polls were biased in the same direction as national polls
-    - whether bias was uniform across battlegrounds or geographically heterogeneous
-    - whether individual states were outliers in magnitude or direction
-    - how state-level bias evolved relative to the national trajectory
     """
     states = ['AZ', 'GA', 'MI', 'NV', 'NC', 'PA', 'WI']
     state_names = {
@@ -407,24 +421,20 @@ def create_figure6_swing_states_bias_overlay():
     )
 
     # formatting
-    ax.set_xlabel(r'$\bf{Date}$', fontsize=12)
-    ax.set_ylabel(
-        r'$\bf{Residual\ Systematic\ Bias\ (pp)}$',
-        fontsize=11
-    )
+    ax.set_xlabel(r'$\bf{Date}$', fontsize=LABEL_FS)
+    ax.set_ylabel(r'$\bf{Residual\ Systematic\ Bias\ (pp)}$', fontsize=LABEL_FS)
     ax.set_title(
-        r'$\bf{Swing\ State\ and\ National\ Residual\ Systematic\ Bias\ Trajectories}$' +' \n' +
+        r'$\bf{Swing\ State\ and\ National\ Residual\ Systematic\ Bias\ Trajectories}$' + ' \n' +
         'Pollster Adjusted, Anchored\n'
         'Last 107 Days)',
-        fontsize=14,
+        fontsize=TITLE_FS,
     )
-    ax.legend(
-        loc='upper left', fontsize=10, framealpha=0.95,
-        ncol=2
-    )
+    ax.legend(loc='upper left', fontsize=LEGEND_FS, framealpha=0.95, ncol=2)
     ax.grid(True, alpha=0.3)
+    ax.tick_params(axis='both', labelsize=TICK_FS)
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
     ax.xaxis.set_major_locator(mdates.MonthLocator())
+    plt.setp(ax.xaxis.get_majorticklabels(), fontsize=TICK_FS, fontweight='bold')
 
     plt.tight_layout()
     plt.savefig(
@@ -443,13 +453,6 @@ def create_figure7_swing_states_bias_correlation():
     two-panel correlation matrix of residual systematic bias trajectories
     across all seven swing states, for the final 60 days (left) and
     final 30 days (right).
-
-    shows:
-    - whether bias accelerated at the same time across states
-    - whether the industry failure was uniform (high correlations) or
-      state-specific (low or heterogeneous correlations)
-    - whether the correlation structure tightened closer to election day,
-      consistent with industry-wide herding in the final weeks
     """
     states = ['AZ', 'GA', 'MI', 'NV', 'NC', 'PA', 'WI']
     state_names = {
@@ -484,12 +487,10 @@ def create_figure7_swing_states_bias_correlation():
             ].mean()
             bias_dict[state_names[state]] = df
 
-          
         # align all series to a common date index via outer join
         bias_df = pd.DataFrame(bias_dict)
 
         # interpolate any missing dates linearly
-        # (states may not have polls on every single day)
         bias_df = bias_df.interpolate(method='linear', limit_direction='both')
 
         # compute correlation matrix
@@ -506,8 +507,9 @@ def create_figure7_swing_states_bias_correlation():
         # axis labels
         ax.set_xticks(range(len(corr.columns)))
         ax.set_yticks(range(len(corr.index)))
-        ax.set_xticklabels(corr.columns, rotation=45, ha='right', fontsize=10)
-        ax.set_yticklabels(corr.index, fontsize=10)
+        ax.set_xticklabels(corr.columns, rotation=45, ha='right', fontsize=TICK_FS,
+                           fontweight='bold')
+        ax.set_yticklabels(corr.index, fontsize=TICK_FS, fontweight='bold')
 
         # annotate cells with correlation values
         for i in range(len(corr.index)):
@@ -523,7 +525,7 @@ def create_figure7_swing_states_bias_correlation():
 
         ax.set_title(
             f'Bias Trajectory Correlations\n{window_label}',
-            fontsize=12, fontweight='bold'
+            fontsize=TITLE_FS, fontweight='bold'
         )
 
         # colorbar
@@ -533,7 +535,7 @@ def create_figure7_swing_states_bias_correlation():
     fig.suptitle(
         'Cross-State Correlation of Residual Systematic Bias Trajectories\n'
         '(EM Anchored — do high correlations indicate industry-wide failure?)',
-        fontsize=13, fontweight='bold', y=1.02
+        fontsize=TITLE_FS, fontweight='bold', y=1.02
     )
 
     plt.tight_layout()
@@ -560,14 +562,12 @@ def create_table1_national_summary():
     
     for window, window_label in zip(windows, window_labels):
         for impl in implementations:
-            # ----- NEW: nicer implementation labels -----
             if impl.startswith('EM'):
                 base_label = 'Pollster-Adjusted'
             else:
                 base_label = 'Daily-Aggregated'
             anchor_label = 'Anchored' if 'anchored' in impl else 'Unanchored'
             implementation_label = f"{base_label} ({anchor_label})"
-            # -------------------------------------------
 
             if impl.startswith('EM'):
                 mode = 'anchored' if 'anchored' in impl else 'unanchored'
@@ -609,7 +609,7 @@ def create_table1_national_summary():
                         'Mean_poll_margin': df['poll_margin'].mean(),
                         'Mean_total_error': df['total_error'].mean(),
                         'SD_total_error': df['total_error'].std(),
-                        'Mean_abs_house_effect': np.nan,  # not applicable for aggregated
+                        'Mean_abs_house_effect': np.nan,
                         'Mean_residual_bias': df['systematic_bias'].mean(),
                         'Sigma2_u': df['sigma2_u'].iloc[0],
                         'Final_smoothed': df['smoothed'].iloc[-1],
@@ -662,12 +662,11 @@ def create_table1_national_summary():
 def create_table2_house_effects_variance():
     """
     two sub-tables: (1) top 20 pollster house effects, (2) variance decomposition across time windows.
-    the two most-cited results in one table.
     """
     # part a: top 20 house effects (all data)
     he_107 = pd.read_csv('data/kalman_he_effects_anchored_last_107_days.csv')
-    he_107 = he_107[he_107['n_polls'] >= 5]  # min 5 polls
-    he_107 = he_107.reindex(he_107['house_effect'].abs().nlargest(20).index)  # top 20 by |house effect|
+    he_107 = he_107[he_107['n_polls'] >= 5]
+    he_107 = he_107.reindex(he_107['house_effect'].abs().nlargest(20).index)
     
     house_effects_table = he_107[['pollster', 'house_effect', 'n_polls']].copy()
     house_effects_table.columns = ['Pollster', 'House Effect (pp)', 'N Polls']
@@ -790,15 +789,6 @@ def create_figureA1_national_rolling_dispersion():
     """
     plots the rolling standard deviation of total errors across pollsters
     over time, within the last 107 days.
-
-    answers: as the election approaches, do pollsters spread apart or
-    converge in their individual bias levels? declining rolling SD suggests
-    herding/convergence; increasing rolling SD suggests methodological
-    divergence.
-
-    computed as: for each day, take the standard deviation of total_error
-    across all polls on that day, then smooth with a rolling window to
-    reduce day-to-day noise from uneven pollster coverage.
     """
     election_date = pd.Timestamp('2024-11-05')
     cutoff = election_date - pd.Timedelta(days=107)
@@ -808,7 +798,6 @@ def create_figureA1_national_rolling_dispersion():
     df = df[df['end_date'] >= cutoff].copy()
 
     # compute daily cross-pollster SD of total error
-    # only meaningful on days with multiple pollsters
     daily_sd = (
         df.groupby('end_date')['total_error']
         .std()
@@ -862,14 +851,15 @@ def create_figureA1_national_rolling_dispersion():
             label=f'Linear trend (slope={z[0]:.4f} pp/day)', zorder=4
         )
 
-    ax1.set_ylabel('Cross-Pollster SD of Total Error (pp)', fontsize=11)
+    ax1.set_ylabel('Cross-Pollster SD of Total Error (pp)', fontsize=LABEL_FS, fontweight='bold')
     ax1.set_title(
         'National Pollster Bias Dispersion Over Time\n'
         '(Does pollster spread narrow or widen as Election Day approaches?)',
-        fontsize=13, fontweight='bold'
+        fontsize=TITLE_FS, fontweight='bold'
     )
-    ax1.legend(fontsize=10)
+    ax1.legend(fontsize=LEGEND_FS)
     ax1.grid(True, alpha=0.3)
+    ax1.tick_params(axis='both', labelsize=TICK_FS)
     ax1.axhline(
         daily_sd['rolling_sd'].mean(), color='gray',
         linewidth=1, linestyle=':', label='Mean SD'
@@ -880,13 +870,15 @@ def create_figureA1_national_rolling_dispersion():
         daily_n['end_date'], daily_n['n_polls'],
         color='#aaaaaa', alpha=0.6, width=1
     )
-    ax2.set_ylabel('N Polls', fontsize=10)
-    ax2.set_xlabel('Date', fontsize=11)
+    ax2.set_ylabel('N Polls', fontsize=LABEL_FS, fontweight='bold')
+    ax2.set_xlabel('Date', fontsize=LABEL_FS, fontweight='bold')
     ax2.grid(True, alpha=0.3)
+    ax2.tick_params(axis='both', labelsize=TICK_FS)
 
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
     ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right',
+             fontsize=TICK_FS, fontweight='bold')
 
     plt.tight_layout()
     plt.savefig(
@@ -905,19 +897,6 @@ def create_figureA2_national_pollster_industry_correlation():
     for each pollster with sufficient polls, computes the rolling
     correlation between that pollster's daily total error and the
     smoothed residual systematic bias (industry-wide trajectory).
-    then plots the mean and distribution of these correlations over time.
-
-    answers: do individual pollsters' errors start moving in sync with
-    the industry average as the election approaches? increasing mean
-    correlation over time is consistent with herding — pollsters
-    increasingly tracking the same biased consensus rather than making
-    independent methodological choices.
-
-    note: this is distinct from dispersion (figure a1). high correlation
-    with low dispersion means pollsters are close together and moving
-    together (strong herding). high correlation with high dispersion means
-    pollsters are spread apart but all drifting in the same direction
-    simultaneously.
     """
     election_date = pd.Timestamp('2024-11-05')
     cutoff = election_date - pd.Timedelta(days=107)
@@ -926,10 +905,8 @@ def create_figureA2_national_pollster_industry_correlation():
     df = pd.read_csv('data/kalman_he_polls_anchored_last_107_days.csv')
     df['end_date'] = pd.to_datetime(df['end_date'])
     df = df[df['end_date'] >= cutoff].copy()
-   
 
     # get industry residual systematic bias — one value per day
-    # (same for all pollsters on a given day, take first)
     industry_bias = (
         df.groupby('end_date')['residual_systematic_bias']
         .first()
@@ -950,8 +927,6 @@ def create_figureA2_national_pollster_industry_correlation():
         f"(min {min_polls} polls each)"
     )
 
-    # for each eligible pollster, compute daily mean error
-    # then rolling correlation with industry bias
     all_rolling_corrs = []
 
     for pollster in eligible_pollsters:
@@ -1020,22 +995,20 @@ def create_figureA2_national_pollster_industry_correlation():
         label='Median rolling correlation', zorder=3
     )
     ax1.axhline(0, color='black', linewidth=0.8, linestyle=':')
-    ax1.axhline(
-        0.5, color='gray', linewidth=0.8, linestyle=':',
-        alpha=0.5
-    )
+    ax1.axhline(0.5, color='gray', linewidth=0.8, linestyle=':', alpha=0.5)
     ax1.set_ylabel(
         f'{window_days}-Day Rolling Correlation\n'
         'Pollster Error vs Industry Bias',
-        fontsize=11
+        fontsize=LABEL_FS, fontweight='bold'
     )
     ax1.set_title(
         'Do Individual Pollsters Track the Industry Bias Trajectory?\n'
         '(Increasing correlation over time = consistent with herding)',
-        fontsize=13, fontweight='bold'
+        fontsize=TITLE_FS, fontweight='bold'
     )
-    ax1.legend(fontsize=10)
+    ax1.legend(fontsize=LEGEND_FS)
     ax1.grid(True, alpha=0.3)
+    ax1.tick_params(axis='both', labelsize=TICK_FS)
     ax1.set_ylim([-1.05, 1.05])
 
     # panel 2: individual pollster traces (faint) to show heterogeneity
@@ -1052,18 +1025,17 @@ def create_figureA2_national_pollster_industry_correlation():
         label='Mean across pollsters', zorder=3
     )
     ax2.axhline(0, color='black', linewidth=0.8, linestyle=':')
-    ax2.set_ylabel(
-        'Individual Pollster\nRolling Correlations',
-        fontsize=10
-    )
-    ax2.set_xlabel('Date', fontsize=11)
-    ax2.legend(fontsize=10)
+    ax2.set_ylabel('Individual Pollster\nRolling Correlations', fontsize=LABEL_FS, fontweight='bold')
+    ax2.set_xlabel('Date', fontsize=LABEL_FS, fontweight='bold')
+    ax2.legend(fontsize=LEGEND_FS)
     ax2.grid(True, alpha=0.3)
+    ax2.tick_params(axis='both', labelsize=TICK_FS)
     ax2.set_ylim([-1.05, 1.05])
 
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
     ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right',
+             fontsize=TICK_FS, fontweight='bold')
 
     plt.tight_layout()
     plt.savefig(

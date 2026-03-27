@@ -530,6 +530,66 @@ plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig5_ddc_histograms.png", dpi=300)
 #plt.show()
 
+# figure 5 with color
+val_mergedtruth_TH["color"] = val_mergedtruth_TH["state_name"].apply(assign_color)
+fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+
+color_order = ["blue", "purple", "red"]
+color_map_mpl = {"blue": "#4a90d9", "purple": "#9b59b6", "red": "#e25454"}
+
+# shared bin edges for both panels
+bins_H = np.linspace(rhoH.min(), rhoH.max(), 16)
+bins_T = np.linspace(rhoT.min(), rhoT.max(), 16)
+
+for ax, rho_vals, rho_col, mean_val, se_val, n_used, title, bins in [
+    (axes[0], rhoH, "rho_hat_harris", mean_value_of_rhoH, SE_plusminus2_H, number_of_states_used_H,
+     "Harris: distribution of state-level $\\hat\\rho_N$ (validated voters)", bins_H),
+    (axes[1], rho_vals_T := rhoT, "rho_hat_trump", mean_value_of_rhoT, SE_plusminus2_T, number_of_states_used_T,
+     "Trump: distribution of state-level $\\hat\\rho_N$ (validated voters)", bins_T),
+]:
+    bin_indices = np.digitize(rho_vals, bins) - 1
+    bin_indices = np.clip(bin_indices, 0, len(bins) - 2)
+
+    color_col = val_mergedtruth_TH["color"].values
+    n_bins = len(bins) - 1
+    counts = {c: np.zeros(n_bins) for c in color_order}
+
+    for i, (bi, col) in enumerate(zip(bin_indices, color_col)):
+        if col in counts:
+            counts[col][bi] += 1
+
+    bin_centers = 0.5 * (bins[:-1] + bins[1:])
+    bar_width = bins[1] - bins[0]
+    bottoms = np.zeros(n_bins)
+
+    for col in color_order:
+        ax.bar(
+            bin_centers,
+            counts[col],
+            width=bar_width * 0.95,
+            bottom=bottoms,
+            color=color_map_mpl[col],
+            edgecolor="none",
+        )
+        bottoms += counts[col]
+
+    ax.axvline(0, linestyle="--", linewidth=1, color="red")
+    ax.axvline(mean_val, linestyle="--", linewidth=1, color="black")
+    ax.set_title(title)
+    ax.set_xlabel("$\\hat\\rho_N$")
+    ax.set_ylabel("Number of states")
+    ax.text(
+        0.98, 0.95,
+        f"mean +/- 2 s.e.\n{mean_val:.4f} ± {se_val:.4f}\n(S={n_used})",
+        transform=ax.transAxes,
+        ha="right", va="top",
+        bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
+    )
+
+plt.suptitle("Figure 5 Replication (2024): Histograms of state-level data defect correlation $\\hat\\rho_N$")
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.savefig("figures/mengrep_fig5_ddc_histograms_colors.png", dpi=300)
+
 ###### Figure 8
 # goal of Figure 8 is to show the state level data defect correlations and overlay the theoretical feasible bounds implied by Meng’s inequality (2.9)
 

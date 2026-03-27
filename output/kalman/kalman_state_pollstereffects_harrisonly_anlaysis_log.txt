@@ -1,5 +1,5 @@
 kalman filter with house effects analysis — swing states
-started: 2026-03-09 22:22:42
+started: 2026-03-27 00:59:55
 log file: output/kalman/kalman_state_pollstereffects_harrisonly_anlaysis_log.txt
 states: ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
 time windows: [107, 60, 30]
@@ -87,7 +87,8 @@ interpretation: true opinion can move ~0.555 pp/day (1 sd)
 Redfield & Wilton Strategies         0.341       12
              Trafalgar Group         0.222        5
 
-figure saved to: figures/kalman_he_AZ_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_AZ_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_AZ_anchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_AZ_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_AZ_anchored_last_107_days.csv
 
@@ -171,7 +172,8 @@ interpretation: true opinion can move ~0.047 pp/day (1 sd)
                       YouGov        -0.129        5
 Redfield & Wilton Strategies         0.126       12
 
-figure saved to: figures/kalman_he_AZ_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_AZ_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_AZ_unanchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_AZ_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_AZ_unanchored_last_107_days.csv
 
@@ -253,7 +255,8 @@ interpretation: true opinion can move ~0.561 pp/day (1 sd)
                       YouGov        -1.155        5
 Redfield & Wilton Strategies         0.167        8
 
-figure saved to: figures/kalman_he_AZ_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_AZ_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_AZ_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_AZ_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_AZ_anchored_last_60_days.csv
 
@@ -330,7 +333,8 @@ interpretation: true opinion can move ~0.076 pp/day (1 sd)
                       YouGov        -0.452        5
 Redfield & Wilton Strategies        -0.023        8
 
-figure saved to: figures/kalman_he_AZ_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_AZ_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_AZ_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_AZ_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_AZ_unanchored_last_60_days.csv
 
@@ -412,7 +416,8 @@ interpretation: true opinion can move ~0.700 pp/day (1 sd)
                       YouGov        -0.845        5
 Redfield & Wilton Strategies         0.504        5
 
-figure saved to: figures/kalman_he_AZ_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_AZ_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_AZ_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_AZ_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_AZ_anchored_last_30_days.csv
 
@@ -471,7 +476,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
                       YouGov        -0.822        5
 Redfield & Wilton Strategies        -0.022        5
 
-figure saved to: figures/kalman_he_AZ_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_AZ_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_AZ_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_AZ_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_AZ_unanchored_last_30_days.csv
 
@@ -555,7 +561,8 @@ Redfield & Wilton Strategies         0.536       13
                   AtlasIntel         0.525       12
                      Emerson         0.045        6
 
-figure saved to: figures/kalman_he_GA_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_GA_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_GA_anchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_GA_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_GA_anchored_last_107_days.csv
 
@@ -619,7 +626,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
 Redfield & Wilton Strategies         0.557       13
                      Emerson         0.204        6
 
-figure saved to: figures/kalman_he_GA_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_GA_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_GA_unanchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_GA_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_GA_unanchored_last_107_days.csv
 
@@ -696,7 +704,8 @@ interpretation: true opinion can move ~0.206 pp/day (1 sd)
              Morning Consult        -0.308       12
 Redfield & Wilton Strategies         0.285        9
 
-figure saved to: figures/kalman_he_GA_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_GA_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_GA_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_GA_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_GA_anchored_last_60_days.csv
 
@@ -759,7 +768,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
              Morning Consult        -0.461       12
 Redfield & Wilton Strategies         0.233        9
 
-figure saved to: figures/kalman_he_GA_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_GA_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_GA_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_GA_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_GA_unanchored_last_60_days.csv
 
@@ -834,7 +844,8 @@ interpretation: true opinion can move ~0.252 pp/day (1 sd)
              Morning Consult         0.202        6
 Redfield & Wilton Strategies         0.064        6
 
-figure saved to: figures/kalman_he_GA_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_GA_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_GA_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_GA_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_GA_anchored_last_30_days.csv
 
@@ -891,7 +902,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
 Redfield & Wilton Strategies        -0.104        6
              Morning Consult        -0.004        6
 
-figure saved to: figures/kalman_he_GA_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_GA_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_GA_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_GA_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_GA_unanchored_last_30_days.csv
 
@@ -980,7 +992,8 @@ Redfield & Wilton Strategies         1.142       12
                       YouGov        -0.731        7
                   Quinnipiac        -0.527        6
 
-figure saved to: figures/kalman_he_MI_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_MI_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_MI_anchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_MI_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_MI_anchored_last_107_days.csv
 
@@ -1045,7 +1058,8 @@ Redfield & Wilton Strategies         0.991       12
                  Beacon/Shaw         0.409        6
                   Quinnipiac        -0.260        6
 
-figure saved to: figures/kalman_he_MI_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_MI_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_MI_unanchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_MI_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_MI_unanchored_last_107_days.csv
 
@@ -1132,7 +1146,8 @@ interpretation: true opinion can move ~0.629 pp/day (1 sd)
                   Quinnipiac        -0.522        6
 Redfield & Wilton Strategies         0.503        8
 
-figure saved to: figures/kalman_he_MI_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_MI_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_MI_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_MI_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_MI_anchored_last_60_days.csv
 
@@ -1198,7 +1213,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
 Redfield & Wilton Strategies         0.429        8
                   Quinnipiac        -0.364        6
 
-figure saved to: figures/kalman_he_MI_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_MI_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_MI_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_MI_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_MI_unanchored_last_60_days.csv
 
@@ -1285,7 +1301,8 @@ interpretation: true opinion can move ~0.629 pp/day (1 sd)
 Redfield & Wilton Strategies         1.292        5
              Morning Consult        -0.716        6
 
-figure saved to: figures/kalman_he_MI_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_MI_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_MI_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_MI_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_MI_anchored_last_30_days.csv
 
@@ -1346,7 +1363,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
              Morning Consult        -1.165        6
 Redfield & Wilton Strategies         0.968        5
 
-figure saved to: figures/kalman_he_MI_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_MI_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_MI_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_MI_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_MI_unanchored_last_30_days.csv
 
@@ -1430,7 +1448,8 @@ Redfield & Wilton Strategies         1.156       12
                    Siena/NYT        -0.798        8
                      Emerson         0.163        5
 
-figure saved to: figures/kalman_he_NV_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_NV_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_NV_anchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NV_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_NV_anchored_last_107_days.csv
 
@@ -1493,7 +1512,8 @@ Redfield & Wilton Strategies         1.205       12
                    Siena/NYT         0.454        8
                      Emerson         0.365        5
 
-figure saved to: figures/kalman_he_NV_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_NV_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_NV_unanchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NV_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_NV_unanchored_last_107_days.csv
 
@@ -1574,7 +1594,8 @@ interpretation: true opinion can move ~0.548 pp/day (1 sd)
 Redfield & Wilton Strategies         1.149        8
    Noble Predictive Insights        -0.765        5
 
-figure saved to: figures/kalman_he_NV_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_NV_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_NV_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NV_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_NV_anchored_last_60_days.csv
 
@@ -1680,7 +1701,8 @@ interpretation: true opinion can move ~0.024 pp/day (1 sd)
 Redfield & Wilton Strategies         1.026        8
    Noble Predictive Insights        -0.940        5
 
-figure saved to: figures/kalman_he_NV_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_NV_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_NV_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NV_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_NV_unanchored_last_60_days.csv
 
@@ -1762,7 +1784,8 @@ interpretation: true opinion can move ~0.619 pp/day (1 sd)
 Redfield & Wilton Strategies         1.108        5
              Morning Consult        -0.383        5
 
-figure saved to: figures/kalman_he_NV_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_NV_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_NV_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NV_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_NV_anchored_last_30_days.csv
 
@@ -1819,7 +1842,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
              Morning Consult        -1.502        5
 Redfield & Wilton Strategies         0.498        5
 
-figure saved to: figures/kalman_he_NV_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_NV_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_NV_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NV_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_NV_unanchored_last_30_days.csv
 
@@ -1903,7 +1927,8 @@ Redfield & Wilton Strategies         1.264       12
                   AtlasIntel        -0.248       12
                  Beacon/Shaw        -0.023       10
 
-figure saved to: figures/kalman_he_NC_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_NC_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_NC_anchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NC_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_NC_anchored_last_107_days.csv
 
@@ -1967,7 +1992,8 @@ Redfield & Wilton Strategies         1.255       12
                  Beacon/Shaw        -0.194       10
                       YouGov        -0.162        6
 
-figure saved to: figures/kalman_he_NC_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_NC_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_NC_unanchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NC_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_NC_unanchored_last_107_days.csv
 
@@ -2050,7 +2076,8 @@ Redfield & Wilton Strategies         0.824        8
                   AtlasIntel        -0.153       12
                      Emerson         0.078        5
 
-figure saved to: figures/kalman_he_NC_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_NC_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_NC_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NC_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_NC_anchored_last_60_days.csv
 
@@ -2113,7 +2140,8 @@ Redfield & Wilton Strategies         0.812        8
                       YouGov        -0.230        6
                      Emerson         0.177        5
 
-figure saved to: figures/kalman_he_NC_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_NC_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_NC_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NC_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_NC_unanchored_last_60_days.csv
 
@@ -2193,7 +2221,8 @@ Redfield & Wilton Strategies         1.427        5
                       YouGov        -0.514        5
                   AtlasIntel         0.250       10
 
-figure saved to: figures/kalman_he_NC_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_NC_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_NC_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NC_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_NC_anchored_last_30_days.csv
 
@@ -2251,7 +2280,8 @@ Redfield & Wilton Strategies         1.054        5
                   AtlasIntel         0.854       10
                       YouGov        -0.146        5
 
-figure saved to: figures/kalman_he_NC_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_NC_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_NC_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_NC_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_NC_unanchored_last_30_days.csv
 
@@ -2338,7 +2368,8 @@ Franklin and Marshall College        -1.832        5
  Redfield & Wilton Strategies         1.027       13
                   Beacon/Shaw        -0.213       10
 
-figure saved to: figures/kalman_he_PA_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_PA_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_PA_anchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_PA_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_PA_anchored_last_107_days.csv
 
@@ -2409,7 +2440,8 @@ Franklin and Marshall College        -1.833        5
                        YouGov        -0.985       10
                   Beacon/Shaw        -0.033       10
 
-figure saved to: figures/kalman_he_PA_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_PA_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_PA_unanchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_PA_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_PA_unanchored_last_107_days.csv
 
@@ -2492,7 +2524,8 @@ interpretation: true opinion can move ~0.353 pp/day (1 sd)
 Redfield & Wilton Strategies         0.911        9
                  Beacon/Shaw         0.129        8
 
-figure saved to: figures/kalman_he_PA_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_PA_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_PA_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_PA_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_PA_anchored_last_60_days.csv
 
@@ -2564,7 +2597,8 @@ interpretation: true opinion can move ~0.090 pp/day (1 sd)
 Redfield & Wilton Strategies         0.828        9
                  Beacon/Shaw         0.084        8
 
-figure saved to: figures/kalman_he_PA_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_PA_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_PA_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_PA_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_PA_unanchored_last_60_days.csv
 
@@ -2646,7 +2680,8 @@ interpretation: true opinion can move ~0.396 pp/day (1 sd)
 Redfield & Wilton Strategies         0.798        6
              Morning Consult        -0.283        6
 
-figure saved to: figures/kalman_he_PA_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_PA_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_PA_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_PA_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_PA_anchored_last_30_days.csv
 
@@ -2705,7 +2740,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
 Redfield & Wilton Strategies         0.539        6
              Morning Consult        -0.461        6
 
-figure saved to: figures/kalman_he_PA_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_PA_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_PA_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_PA_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_PA_unanchored_last_30_days.csv
 
@@ -2793,7 +2829,8 @@ interpretation: true opinion can move ~0.349 pp/day (1 sd)
              Morning Consult        -0.555       18
 Redfield & Wilton Strategies         0.483       12
 
-figure saved to: figures/kalman_he_WI_anchored_last_107_days.png
+main figure saved to: figures/kalman_he_WI_anchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_WI_anchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_WI_anchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_WI_anchored_last_107_days.csv
 
@@ -2870,7 +2907,8 @@ interpretation: true opinion can move ~0.094 pp/day (1 sd)
         Marquette Law School        -0.752       16
 Redfield & Wilton Strategies         0.413       12
 
-figure saved to: figures/kalman_he_WI_unanchored_last_107_days.png
+main figure saved to: figures/kalman_he_WI_unanchored_last_107_days.png
+house effects figure saved to: figures/kalman_he_WI_unanchored_last_107_days_house_effects.png
 poll results exported to: data/kalman_he_polls_WI_unanchored_last_107_days.csv
 house effects exported to: data/kalman_he_effects_WI_unanchored_last_107_days.csv
 
@@ -2954,7 +2992,8 @@ interpretation: true opinion can move ~0.361 pp/day (1 sd)
              Morning Consult         0.345       12
 Redfield & Wilton Strategies         0.272        8
 
-figure saved to: figures/kalman_he_WI_anchored_last_60_days.png
+main figure saved to: figures/kalman_he_WI_anchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_WI_anchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_WI_anchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_WI_anchored_last_60_days.csv
 
@@ -3020,7 +3059,8 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
 Redfield & Wilton Strategies         0.131        8
              Morning Consult         0.039       12
 
-figure saved to: figures/kalman_he_WI_unanchored_last_60_days.png
+main figure saved to: figures/kalman_he_WI_unanchored_last_60_days.png
+house effects figure saved to: figures/kalman_he_WI_unanchored_last_60_days_house_effects.png
 poll results exported to: data/kalman_he_polls_WI_unanchored_last_60_days.csv
 house effects exported to: data/kalman_he_effects_WI_unanchored_last_60_days.csv
 
@@ -3101,7 +3141,8 @@ interpretation: true opinion can move ~0.383 pp/day (1 sd)
                   AtlasIntel         1.057       10
 Redfield & Wilton Strategies        -0.196        5
 
-figure saved to: figures/kalman_he_WI_anchored_last_30_days.png
+main figure saved to: figures/kalman_he_WI_anchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_WI_anchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_WI_anchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_WI_anchored_last_30_days.csv
 
@@ -3160,10 +3201,11 @@ interpretation: true opinion can move ~0.010 pp/day (1 sd)
              Morning Consult         1.212        6
 Redfield & Wilton Strategies        -0.455        5
 
-figure saved to: figures/kalman_he_WI_unanchored_last_30_days.png
+main figure saved to: figures/kalman_he_WI_unanchored_last_30_days.png
+house effects figure saved to: figures/kalman_he_WI_unanchored_last_30_days_house_effects.png
 poll results exported to: data/kalman_he_polls_WI_unanchored_last_30_days.csv
 house effects exported to: data/kalman_he_effects_WI_unanchored_last_30_days.csv
 
 ======================================================================
-analysis completed: 2026-03-09 22:24:37
+analysis completed: 2026-03-27 01:02:32
 log saved to: output/kalman/kalman_state_pollstereffects_harrisonly_anlaysis_log.txt

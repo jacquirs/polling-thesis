@@ -1,0 +1,871 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import warnings
+import sys
+from datetime import datetime
+from scipy.optimize import minimize
+warnings.filterwarnings('ignore')
+
+# THIS FILE ANALYZES POLLS USING KALMAN FILTERING/SMOOTHING WITH POLLSTER-LEVEL HOUSE EFFECTS
+# national level
+# harris v trump only
+# includes pollster level effects
+
+
+########## HOW THIS DIFFERS FROM GREEN, GERBER, AND DE BOEF (1999)
+# green et al. (1999) specify a simple two-component model:
+#
+#   observation eq:  X_t = xi_t + e_t       (poll = true opinion + sampling error)
+#   state eq:        xi_t = xi_{t-1} + u_t  (true opinion follows a random walk)
+#
+# their model has one observation per time point and one source of observation noise (e_t),
+# which they assume is pure random sampling error with known variance p*(1-p)/N.
+# they do not model any systematic, persistent differences between pollsters.
+# in their context (tracking % republican using aggregated cbs/nyt data from a single
+# survey house) this is appropriate. with our data (many pollsters, each with their own
+# methodology, likely voter screens, and question wording), it is not.
+#
+# this file adds a third component: a pollster-specific fixed offset called a "house effect"
+# (also called a "house bias" or "pollster effect" in the literature). the model becomes:
+#
+#   observation eq:  poll_margin[i,t] = true_margin[t] + house_effect[i] + e[i,t]
+#   state eq:        true_margin[t]   = true_margin[t-1] + u[t]
+#
+# where i indexes pollsters. house_effect[i] is the average signed error that pollster i
+# makes relative to the true margin, net of sampling noise. a positive house_effect means
+# the pollster systematically overstates trump; negative means it overstates harris.
+# in english: if pollster A always shows trump +3 when truth is +1, its house effect is +2.
+#
+# this is a fundamentally different model structure from green et al., not just a parameter
+# extension. the original paper cannot accommodate it without modification because it has
+# no pollster index — every observation is treated as an equally valid draw from the same
+# data generating process.
+
+########## HOW THIS DIFFERS FROM kalman_national_harrisonly_analysis.py 
+# our initial implementation follows green et al. directly,
+# with two extensions: (1) correct multinomial sampling variance for a margin rather
+# than a single share, and (2) an optional election-result anchor. it does NOT model
+# house effects.
+#
+# the key problem this creates: with 10-15 polls per day from different pollsters,
+# our initial implementation treats all same-day polls as sequential independent
+# observations of the same latent state. this means:
+#   - pollsters with consistent pro-trump bias pull the smoothed trajectory upward
+#   - pollsters with consistent pro-harris bias pull it downward
+#   - the smoother cannot distinguish "true opinion shifted" from "today happened to
+#     have more pro-trump pollsters in the field"
+# in other words, house effects contaminate the estimated latent trajectory. the
+# systematic_bias we measure in kalman_polling_bias.py is actually a mixture of
+# aggregate industry bias AND the weighted average house effect of whichever pollsters
+# happened to be active at each point in time.
+#
+# this file fixes that by jointly estimating:
+#   (1) the latent true margin trajectory (kalman filter/smoother, same as before)
+#   (2) a fixed offset for each pollster (house effect, estimated via em algorithm)
+#   (3) sigma2_u (opinion volatility per day, re-estimated each iteration)
+#
+# the em (expectation-maximization) algorithm works as follows:
+#   e-step: given current house effect estimates, subtract them from each poll to get
+#           "house-effect-corrected" margins, then run the kalman smoother on those
+#   m-step: given the smoothed latent trajectory, estimate each pollster's house effect
+#           as the average residual (poll margin - smoothed margin) across all their polls
+#   repeat until convergence (changes in house effects fall below a threshold)
+#
+# in plain english: we alternate between (a) "assuming we know the house effects, what
+# was true opinion?" and (b) "assuming we know true opinion, what are the house effects?"
+# iterating back and forth until the two estimates stop changing.
+#
+# other differences from kalman_polling_bias.py:
+#   - sigma2_u and house effects are estimated jointly via em + grid search
+#   - multiple polls per day are handled correctly: same-day polls from different
+#     pollsters are now informative about house effects, not just the latent state
+#   - the bias decomposition gains a third component:
+#       total_error = sampling_noise + house_effect + residual_systematic_bias
+#   - anchoring (election result as terminal observation) is retained
+#   - time windows and logging infrastructure are retained
+
+########################################################################################
+##################################### Logging Setup ####################################
+########################################################################################
+class Logger:
+    # utility class to write terminal output to both console and a log file simultaneously
+    def __init__(self, filename):
+        self.terminal = sys.stdout
+        self.log = open(filename, 'w')
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+
+    def close(self):
+        self.log.close()
+
+
+########################################################################################
+##################################### Plot Style Constants #############################
+########################################################################################
+TITLE_FS  = 16
+LABEL_FS  = 14
+TICK_FS   = 13
+LEGEND_FS = 13
+
+# color scheme (red / blue / purple palette)
+COLORS = {
+    'raw':      '#c9b3e8',   # purple for raw polls
+    'corrected':'#4C72B0',   # blue for house-effect corrected polls
+    'filtered': '#888888',   # medium gray for filtered line
+    'smoothed': '#DD8452',   # orange for smoothed (kept for contrast)
+    'true':     '#2ca02c',   # green for true margin
+    'bias':     '#d62728',   # red for bias / pro-trump
+    'pro_dem':  '#4C72B0',   # blue for pro-harris regions
+}
+
+
+########################################################################################
+##################################### Load Data ########################################
+########################################################################################
+def load_and_prepare(filepath: str, election_date: str = '2024-11-05', days_before: int = None) -> pd.DataFrame:
+    """
+    load and prepare polling data, identical to kalman_polling_bias.py except:
+    - retains the pollster column (needed for house effects)
+    - encodes pollsters as integer indices for efficient array operations
+    """
+    df = pd.read_csv(filepath)
+
+    # filter to national polls only
+    df = df[df['state'] == 'national'].copy()
+
+    # using end_date as the poll date throughout
+    df['end_date'] = pd.to_datetime(df['end_date'])
+
+    # filter by date window if specified
+    if days_before is not None:
+        election_dt = pd.to_datetime(election_date)
+        cutoff_date = election_dt - pd.Timedelta(days=days_before)
+        n_before = len(df)
+        df = df[df['end_date'] >= cutoff_date].copy()
+        n_after = len(df)
+        print(f"date filter applied: keeping polls from {cutoff_date.date()} onward")
+        print(f"  polls before filter: {n_before}")
+        print(f"  polls after filter:  {n_after}")
+        print(f"  polls dropped:       {n_before - n_after}")
+
+    # construct poll margin in percentage points (raw difference)
+    df['poll_margin'] = df['pct_trump_poll'] - df['pct_harris_poll']
+
+    # construct true margin in percentage points
+    df['true_margin'] = (df['p_trump_true'] - df['p_harris_true']) * 100
+
+    # multinomial sampling variance for a margin
+    pT = df['pct_trump_poll']  / 100.0
+    pH = df['pct_harris_poll'] / 100.0
+    df['sampling_var'] = (pT + pH - (pT - pH) ** 2) / df['sample_size'] * 10000
+
+    # drop missing values
+    df = df.dropna(subset=['end_date', 'poll_margin', 'sampling_var', 'sample_size', 'pollster'])
+    df = df[df['sample_size'] > 0]
+
+    # encode pollsters as integer indices 0, 1, 2, ...
+    pollster_categories = pd.Categorical(df['pollster'])
+    df['pollster_id'] = pollster_categories.codes
+    pollster_names = list(pollster_categories.categories)
+
+    # sort chronologically
+    df = df.sort_values('end_date').reset_index(drop=True)
+
+    n_pollsters = df['pollster_id'].nunique()
+    n_polls = df['poll_id'].nunique()
+    n_questions = len(df)
+    print(f"national polls loaded: {n_questions} questions from {n_polls} polls, {n_pollsters} pollsters")
+    print(f"date range: {df['end_date'].min().date()} to {df['end_date'].max().date()}")
+    print(f"true margin (constant across rows): {df['true_margin'].iloc[0]:.3f} pp")
+    print(f"poll margin range: {df['poll_margin'].min():.1f} to {df['poll_margin'].max():.1f} pp")
+    print(f"mean poll margin: {df['poll_margin'].mean():.3f} pp")
+
+    return df, pollster_names
+
+
+########################################################################################
+######################### Anchor to true result ########################################
+########################################################################################
+def append_election_result(df: pd.DataFrame, pollster_names: list,
+                           election_date: str = '2024-11-05', anchor: bool = True) -> tuple:
+    """
+    same logic as kalman_polling_bias.py — optionally append the certified result
+    as a terminal observation with near-zero variance.
+
+    the election result is assigned a special pollster_id of -1 so the em algorithm
+    knows not to estimate a house effect for it (the "true result" has no house bias
+    by definition — it is the thing we are measuring bias relative to).
+    """
+    true_margin = df['true_margin'].iloc[0]
+
+    if not anchor:
+        print(f"\nskipping election result anchor (unanchored mode)")
+        print(f"true margin: {true_margin:.3f} pp (not used as constraint)")
+        return df, pollster_names
+
+    anchor_row = {
+        'question_id':  -1,
+        'poll_id':       -1,
+        'pollster':      'ELECTION_RESULT',
+        'pollster_id':   -1,           # special value: excluded from house effect estimation
+        'state':         'national',
+        'end_date':       pd.to_datetime(election_date),
+        'poll_margin':    true_margin,
+        'true_margin':    true_margin,
+        'sampling_var':   1e-6,
+        'sample_size':    1_000_000_000,
+    }
+
+    df = pd.concat([df, pd.DataFrame([anchor_row])], ignore_index=True)
+    df = df.sort_values('end_date').reset_index(drop=True)
+
+    print(f"\nelection result appended: margin = {true_margin:.3f} pp on {election_date}")
+    return df, pollster_names
+
+
+########################################################################################
+######################### Kalman filter/smoother (inner loop) ##########################
+########################################################################################
+def kalman_filter_smoother(y: np.ndarray, obs_var: np.ndarray,
+                           days: np.ndarray, sigma2_u: float) -> tuple:
+    """
+    core kalman filter and rts smoother, identical in structure to kalman_polling_bias.py.
+
+    takes house-effect-corrected margins as input (y), so the model it fits is:
+        corrected_margin[t] = true_margin[t] + e[t]
+    where corrected_margin = poll_margin - house_effect[pollster].
+
+    this function is called inside the em loop on each iteration after house effects
+    have been subtracted. it returns filtered and smoothed estimates plus uncertainties.
+    """
+    n = len(y)
+
+    # forward pass: kalman filter
+    F  = np.zeros(n)
+    P  = np.zeros(n)
+    W  = np.zeros(n)
+
+    F[0] = y[0]
+    P[0] = obs_var[0] + sigma2_u
+
+    for t in range(1, n):
+        days_elapsed = days[t] - days[t - 1]
+        P_pred = P[t - 1] + sigma2_u * days_elapsed
+        W[t]   = P_pred / (P_pred + obs_var[t])
+        F[t]   = W[t] * y[t] + (1 - W[t]) * F[t - 1]
+        P[t]   = P_pred * (1 - W[t])
+
+    # backward pass: rts smoother
+    S  = np.zeros(n)
+    PS = np.zeros(n)
+
+    S[n - 1]  = F[n - 1]
+    PS[n - 1] = P[n - 1]
+
+    for t in range(n - 2, -1, -1):
+        days_elapsed = days[t + 1] - days[t]
+        P_pred = P[t] + sigma2_u * days_elapsed
+        G      = P[t] / P_pred
+        S[t]   = F[t] + G * (S[t + 1] - F[t])
+        PS[t]  = P[t] + G ** 2 * (PS[t + 1] - P_pred)
+
+    return F, P, S, PS, W
+
+
+########################################################################################
+######################### Grid search MLE for sigma2_u #################################
+########################################################################################
+def estimate_sigma2u(y: np.ndarray, obs_var: np.ndarray, days: np.ndarray,
+                     n_coarse: int = 500, n_fine: int = 200) -> float:
+    """
+    two-stage grid search mle for sigma2_u, identical to kalman_polling_bias.py.
+    called inside the em loop after house effects have been subtracted from y.
+    """
+    def innovations_loglik(s2):
+        n = len(y)
+        ll  = 0.0
+        F_t = y[0]
+        P_t = obs_var[0] + s2
+
+        for t in range(1, n):
+            days_elapsed = days[t] - days[t - 1]
+            P_pred   = P_t + s2 * days_elapsed
+            innov    = y[t] - F_t
+            innov_var = P_pred + obs_var[t]
+            if innov_var <= 0:
+                return -np.inf
+            ll  += -0.5 * (np.log(2 * np.pi * innov_var) + innov ** 2 / innov_var)
+            W_t  = P_pred / innov_var
+            F_t  = W_t * y[t] + (1 - W_t) * F_t
+            P_t  = P_pred * (1 - W_t)
+
+        return ll
+
+    coarse_grid = np.logspace(-4, 1, n_coarse)
+    ll_coarse   = np.array([innovations_loglik(s2) for s2 in coarse_grid])
+    best_idx    = np.argmax(ll_coarse)
+
+    lo        = coarse_grid[max(0, best_idx - 1)]
+    hi        = coarse_grid[min(len(coarse_grid) - 1, best_idx + 1)]
+    fine_grid = np.linspace(lo, hi, n_fine)
+    ll_fine   = np.array([innovations_loglik(s2) for s2 in fine_grid])
+
+    return fine_grid[np.argmax(ll_fine)]
+
+
+########################################################################################
+######################### EM Algorithm: joint estimation ###############################
+########################################################################################
+def em_kalman_house_effects(df: pd.DataFrame, pollster_names: list,
+                             sigma2_u_init: float = None,
+                             max_iter: int = 50,
+                             tol: float = 1e-4) -> tuple:
+    """
+    em (expectation-maximization) algorithm to jointly estimate:
+        (1) the latent true margin trajectory (via kalman filter/smoother)
+        (2) a house effect for each pollster (average signed deviation from truth)
+        (3) sigma2_u (opinion volatility per day, re-estimated each iteration)
+
+    --- what em means in plain english ---
+    we have two unknowns that depend on each other in a circle:
+      - to estimate house effects, we need to know what true opinion was
+        (so we can compute each pollster's deviation from it)
+      - to estimate true opinion, we need to know house effects
+        (so we can correct each poll before running the smoother)
+    em breaks this circle by alternating between the two:
+      e-step ("expectation"): assume house effects are known, subtract them
+                              from each poll, run the kalman smoother to get
+                              the best estimate of the true opinion trajectory
+      m-step ("maximization"): assume the smoothed trajectory is truth, compute
+                               each pollster's average residual as their house effect
+    we repeat until the house effect estimates stop changing (converge).
+
+    --- identification constraint ---
+    house effects are only identified up to an additive constant: if we add 1pp
+    to every house effect and subtract 1pp from the latent state, the model fits
+    identically. to pin down a unique solution we constrain house effects to sum
+    to zero (mean zero across pollsters weighted by number of observations). this
+    means house effects are interpreted as deviations from the industry average,
+    not deviations from absolute truth.
+
+    parameters:
+        df:             dataframe with poll_margin, sampling_var, pollster_id, end_date
+        pollster_names: list mapping pollster_id integers to names
+        sigma2_u_init:  starting value for sigma2_u (if None, estimated from raw data)
+        max_iter:       maximum em iterations before stopping
+        tol:            convergence threshold (max absolute change in any house effect)
+
+    returns:
+        df with added columns: house_effect_assigned, corrected_margin,
+                               filtered, filtered_se, smoothed, smoothed_se, weight
+        house_effects_df: dataframe of pollster name and estimated house effect
+        sigma2_u: final estimated opinion volatility
+        history: list of dicts recording house effects and sigma2_u at each iteration
+    """
+    # exclude election result row from em (it has pollster_id = -1)
+    is_poll = df['pollster_id'] >= 0
+    poll_idx = df[is_poll].index.tolist()
+
+    df = df.copy()
+    day_0 = df['end_date'].min()
+    df['day'] = (df['end_date'] - day_0).dt.days
+
+    y_raw   = df.loc[poll_idx, 'poll_margin'].values
+    obs_var = df['sampling_var'].values
+    days    = df['day'].values
+    pollster_ids = df.loc[poll_idx, 'pollster_id'].values.astype(int)
+    n_pollsters  = len(pollster_names)
+
+    # --- initialization ---
+    house_effects = np.zeros(n_pollsters)
+
+    y_full = df['poll_margin'].values.copy()
+    if sigma2_u_init is None:
+        print("\ninitializing sigma2_u from raw (uncorrected) margins...")
+        sigma2_u = estimate_sigma2u(y_full, obs_var, days)
+        print(f"  initial sigma2_u: {sigma2_u:.6f}")
+    else:
+        sigma2_u = sigma2_u_init
+
+    history = []
+
+    print(f"\nstarting em algorithm (max_iter={max_iter}, tol={tol})")
+    print(f"{'iter':>5}  {'max_he_change':>14}  {'sigma2_u':>10}  {'mean_|he|':>10}")
+    print("-" * 50)
+
+    for iteration in range(max_iter):
+
+        # -----------------------------------------------------------------------
+        # e-step: subtract current house effects from each poll,
+        #         run kalman smoother on corrected margins
+        # -----------------------------------------------------------------------
+        y_corrected = y_full.copy()
+        for idx, pid in zip(poll_idx, pollster_ids):
+            y_corrected[idx] -= house_effects[pid]
+
+        F, P, S, PS, W = kalman_filter_smoother(y_corrected, obs_var, days, sigma2_u)
+
+        # -----------------------------------------------------------------------
+        # m-step: given smoothed trajectory, re-estimate house effects
+        # -----------------------------------------------------------------------
+        new_house_effects = np.zeros(n_pollsters)
+        counts = np.zeros(n_pollsters)
+
+        for idx, pid in zip(poll_idx, pollster_ids):
+            new_house_effects[pid] += (df.loc[idx, 'poll_margin'] - S[idx])
+            counts[pid] += 1
+
+        mask = counts > 0
+        new_house_effects[mask] /= counts[mask]
+
+        # apply mean-zero constraint
+        weighted_mean = np.average(new_house_effects[mask],
+                                   weights=counts[mask])
+        new_house_effects -= weighted_mean
+
+        # re-estimate sigma2_u on corrected margins
+        sigma2_u = estimate_sigma2u(y_corrected, obs_var, days)
+
+        max_change = np.max(np.abs(new_house_effects - house_effects))
+        mean_abs_he = np.mean(np.abs(new_house_effects[mask]))
+        print(f"{iteration+1:>5}  {max_change:>14.6f}  {sigma2_u:>10.6f}  {mean_abs_he:>10.4f}")
+
+        house_effects = new_house_effects.copy()
+        history.append({
+            'iteration': iteration + 1,
+            'house_effects': house_effects.copy(),
+            'sigma2_u': sigma2_u,
+            'max_change': max_change,
+        })
+
+        if max_change < tol:
+            print(f"\nem converged at iteration {iteration + 1} (max change {max_change:.2e} < tol {tol:.2e})")
+            break
+    else:
+        print(f"\nem did not converge after {max_iter} iterations (max change {max_change:.2e})")
+
+    # --- final pass: store results on dataframe ---
+    y_corrected_final = y_full.copy()
+    for idx, pid in zip(poll_idx, pollster_ids):
+        y_corrected_final[idx] -= house_effects[pid]
+
+    F, P, S, PS, W = kalman_filter_smoother(y_corrected_final, obs_var, days, sigma2_u)
+
+    df['corrected_margin']  = y_corrected_final
+    df['filtered']          = F
+    df['filtered_se']       = np.sqrt(np.maximum(P,  0))
+    df['smoothed']          = S
+    df['smoothed_se']       = np.sqrt(np.maximum(PS, 0))
+    df['weight']            = W
+
+    df['house_effect_assigned'] = 0.0
+    for idx, pid in zip(poll_idx, pollster_ids):
+        df.loc[idx, 'house_effect_assigned'] = house_effects[pid]
+
+    df['sigma2_u'] = sigma2_u
+
+    # bias decomposition — three components:
+    #   total_error          = poll_margin - true_margin
+    #   house_effect_assigned = pollster's estimated systematic offset
+    #   sampling_noise        = corrected_margin - smoothed
+    #   residual_systematic_bias = smoothed - true_margin
+    true_margin = df['true_margin'].iloc[0]
+    df['total_error']              = df['poll_margin']    - true_margin
+    df['sampling_noise']           = df['corrected_margin'] - df['smoothed']
+    df['residual_systematic_bias'] = df['smoothed']       - true_margin
+
+    he_records = []
+    for pid, name in enumerate(pollster_names):
+        he_records.append({
+            'pollster':      name,
+            'house_effect':  house_effects[pid],
+            'n_polls':       int(counts[pid]) if mask[pid] else 0,
+        })
+    house_effects_df = pd.DataFrame(he_records).sort_values('house_effect', ascending=False)
+
+    return df, house_effects_df, sigma2_u, history
+
+
+########################################################################################
+######################### Summary stats ################################################
+########################################################################################
+def summarize_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
+                      sigma2_u: float, anchored: bool = True,
+                      top_n_pollsters: int = 20) -> None:
+    """
+    print full decomposition including house effects
+    """
+    results = df[df['pollster_id'] != -1].copy()
+    true_margin = results['true_margin'].iloc[0]
+
+    print("\n" + "=" * 70)
+    if anchored:
+        print("polling bias decomposition with house effects — national (trump margin, anchored)")
+    else:
+        print("polling opinion trajectory with house effects — national (trump margin, unanchored)")
+    print("=" * 70)
+    print(f"\ntrue margin (certified result): {true_margin:.3f} pp")
+    print(f"estimated sigma2_u:             {sigma2_u:.6f} per day")
+    print(f"interpretation: true opinion can move ~{np.sqrt(sigma2_u):.3f} pp/day (1 sd)")
+
+    print(f"\n--- overall poll error ---")
+    print(f"  mean poll margin:              {results['poll_margin'].mean():.3f} pp")
+    print(f"  mean total error:              {results['total_error'].mean():.3f} pp")
+    print(f"  sd of total error:             {results['total_error'].std():.3f} pp")
+
+    print(f"\n--- three-component decomposition ---")
+    print(f"  mean |house effect|:           {results['house_effect_assigned'].abs().mean():.3f} pp")
+    print(f"  mean |sampling noise|:         {results['sampling_noise'].abs().mean():.3f} pp")
+    if anchored:
+        print(f"  mean residual systematic bias: {results['residual_systematic_bias'].mean():.3f} pp")
+
+    if anchored:
+        var_total    = results['total_error'].var()
+        var_he       = results['house_effect_assigned'].var()
+        var_noise    = results['sampling_noise'].var()
+        var_residual = results['residual_systematic_bias'].var()
+        print(f"\n--- variance decomposition ---")
+        print(f"  var(total error):              {var_total:.4f}")
+        print(f"  var(house effects):            {var_he:.4f}  ({100 * var_he / var_total:.1f}%)")
+        print(f"  var(sampling noise):           {var_noise:.4f}  ({100 * var_noise / var_total:.1f}%)")
+        print(f"  var(residual systematic bias): {var_residual:.4f}  ({100 * var_residual / var_total:.1f}%)")
+
+    print(f"\n--- house effects (top {top_n_pollsters} by absolute effect, min 5 polls) ---")
+    he_display = house_effects_df[house_effects_df['n_polls'] >= 5].copy()
+    he_display['abs_he'] = he_display['house_effect'].abs()
+    he_display = he_display.nlargest(top_n_pollsters, 'abs_he').drop(columns='abs_he')
+    he_display['house_effect'] = he_display['house_effect'].round(3)
+    print(he_display.to_string(index=False))
+
+
+########################################################################################
+######################### Visualization ################################################
+########################################################################################
+def plot_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
+                 anchored: bool = True, save_path: str = None) -> None:
+    """
+    two separate figures:
+      figure 1 (three panels): raw polls, corrected polls, smoothed + filtered estimates,
+                               standard errors, residual systematic bias
+      figure 2 (one panel):   top 20 house effects by absolute size (bar chart)
+    """
+    results = df[df['pollster_id'] != -1].copy()
+    true_margin = results['true_margin'].iloc[0]
+
+    mode_label = "anchored" if anchored else "unanchored"
+    colors = COLORS
+    dates = results['end_date']
+
+    ########################################################################
+    # figure 1: three-panel main figure
+    ########################################################################
+    fig, axes = plt.subplots(3, 1, figsize=(14, 15), sharex=False)
+    fig.suptitle(
+        f'Kalman Filter with House Effects: National Polling 2024 ({mode_label.title()})\n(Trump Margin, pp)',
+        fontsize=TITLE_FS, fontweight='bold', y=0.99
+    )
+
+    # panel 1: raw polls, corrected polls, filtered, smoothed, true
+    ax1 = axes[0]
+    ax1.scatter(dates, results['poll_margin'],
+                color=colors['raw'], alpha=0.6, s=8, label='Raw Polls',
+                edgecolors='none', zorder=1)
+    ax1.scatter(dates, results['corrected_margin'],
+                color=colors['corrected'], alpha=0.6, s=8,
+                label='House-Effect Corrected Polls',
+                edgecolors='none', zorder=2)
+    ax1.plot(dates, results['filtered'],
+             color=colors['filtered'], linewidth=1.5, linestyle='-',
+             label='Filtered Estimate', zorder=3)
+    ax1.plot(dates, results['smoothed'],
+             color=colors['smoothed'], linewidth=2.5,
+             label='Smoothed Estimate', zorder=4)
+    ax1.axhline(true_margin, color=colors['true'], linewidth=2,
+                label=f'True Margin ({true_margin:.2f} pp)', zorder=5)
+    ax1.fill_between(dates,
+                     results['smoothed'] - 1.96 * results['smoothed_se'],
+                     results['smoothed'] + 1.96 * results['smoothed_se'],
+                     color=colors['smoothed'], alpha=0.15, label='Smoothed 95% CI')
+    ax1.axhline(0, color='black', linewidth=0.5, linestyle=':')
+    ax1.set_ylabel('Trump Margin (pp)', fontsize=LABEL_FS, fontweight='bold')
+    ax1.legend(loc='upper left', fontsize=LEGEND_FS)
+    ax1.set_title('Raw Polls vs House-Effect Corrected Polls vs Smoothed Estimate',
+                  fontsize=TITLE_FS, fontweight='bold')
+    ax1.tick_params(axis='both', labelsize=TICK_FS)
+    ax1.grid(True, alpha=0.3)
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=0, ha='center',
+             fontsize=TICK_FS)
+
+    # panel 2: standard errors
+    ax2 = axes[1]
+    conv_se = results['sampling_var'].apply(np.sqrt)
+    ax2.plot(dates, conv_se, color=colors['raw'], linewidth=1, alpha=0.8,
+             label='Conventional SE (per-poll)')
+    ax2.plot(dates, results['filtered_se'],
+             color=colors['filtered'], linewidth=1.5, linestyle='-',
+             label='Filtered SE')
+    ax2.plot(dates, results['smoothed_se'], color=colors['smoothed'], linewidth=2,
+             label='Smoothed SE')
+    ax2.set_ylabel('Standard Error (pp)', fontsize=LABEL_FS, fontweight='bold')
+    ax2.legend(fontsize=LEGEND_FS)
+    ax2.set_title('Uncertainty: Conventional vs Filtered vs Smoothed',
+                  fontsize=TITLE_FS, fontweight='bold')
+    ax2.tick_params(axis='both', labelsize=TICK_FS)
+    ax2.grid(True, alpha=0.3)
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax2.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=0, ha='center',
+             fontsize=TICK_FS)
+
+    # panel 3: residual systematic bias
+    ax3 = axes[2]
+    ax3.plot(dates, results['residual_systematic_bias'],
+             color=colors['bias'], linewidth=2,
+             label='Residual Systematic Bias (Smoothed − True)')
+    ax3.fill_between(dates, 0, results['residual_systematic_bias'],
+                     where=results['residual_systematic_bias'] >  0,
+                     color=colors['bias'], alpha=0.15, label='Pro-Trump Region')
+    ax3.fill_between(dates, 0, results['residual_systematic_bias'],
+                     where=results['residual_systematic_bias'] <= 0,
+                     color=colors['pro_dem'], alpha=0.15, label='Pro-Harris Region')
+    ax3.axhline(0, color='black', linewidth=1.0)
+    ax3.set_ylabel('Residual Bias (pp)', fontsize=LABEL_FS, fontweight='bold')
+    ax3.legend(fontsize=LEGEND_FS)
+    if anchored:
+        ax3.set_title(
+            'Residual Industry Bias After Removing House Effects\n'
+            '(Positive = Aggregate Industry Overstated Trump Even After Correcting Individual Pollsters)',
+            fontsize=TITLE_FS, fontweight='bold'
+        )
+    else:
+        ax3.set_title(
+            'Residual Trajectory vs Certified Result After Removing House Effects\n'
+            '(Positive = Smoothed Trajectory Overstated Trump; Final Value = Corrected Forecast Error)',
+            fontsize=TITLE_FS, fontweight='bold'
+        )
+    ax3.tick_params(axis='both', labelsize=TICK_FS)
+    ax3.grid(True, alpha=0.3)
+    ax3.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax3.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax3.xaxis.get_majorticklabels(), rotation=0, ha='center',
+             fontsize=TICK_FS)
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches='tight')
+        print(f"\nmain figure saved to: {save_path}")
+
+    plt.close()
+
+    ########################################################################
+    # figure 2: house effects bar chart (separate file)
+    ########################################################################
+    he_plot = (house_effects_df[house_effects_df['n_polls'] >= 5]
+               .copy()
+               .assign(abs_he=lambda x: x['house_effect'].abs())
+               .nlargest(20, 'abs_he')
+               .sort_values('house_effect', ascending=True))
+    bar_colors = [colors['bias'] if v > 0 else colors['pro_dem']
+                  for v in he_plot['house_effect']]
+
+    fig2, ax4 = plt.subplots(figsize=(10, 8))
+    fig2.suptitle(
+        f'Pollster House Effects: National Polling 2024 ({mode_label.title()})',
+        fontsize=TITLE_FS, fontweight='bold'
+    )
+    ax4.barh(he_plot['pollster'], he_plot['house_effect'], color=bar_colors, alpha=0.8)
+    ax4.axvline(0, color='black', linewidth=1.0)
+    ax4.set_xlabel('House Effect (pp, Relative to Industry Average)',
+                   fontsize=LABEL_FS, fontweight='bold')
+    ax4.set_title(
+        'Top 20 Pollster House Effects (Min 5 Polls)\n'
+        '(Positive = More Pro-Trump than Industry Average; Negative = More Pro-Harris)',
+        fontsize=TITLE_FS, fontweight='bold'
+    )
+    ax4.tick_params(axis='both', labelsize=TICK_FS)
+    ax4.grid(True, alpha=0.3, axis='x')
+
+    plt.tight_layout()
+
+    if save_path:
+        he_save_path = save_path.replace('.png', '_house_effects.png')
+        plt.savefig(he_save_path, dpi=150, bbox_inches='tight')
+        print(f"house effects figure saved to: {he_save_path}")
+
+    plt.close()
+
+
+########################################################################################
+######################### Single-panel plot (107-day window only) ######################
+########################################################################################
+def plot_panel1_only(df: pd.DataFrame, anchored: bool = True, save_path: str = None) -> None:
+    """
+    standalone version of panel 1 only: raw polls, corrected polls,
+    filtered estimate, smoothed estimate, and true margin.
+    produced only for the 107-day window.
+    """
+    results = df[df['pollster_id'] != -1].copy()
+    true_margin = results['true_margin'].iloc[0]
+    mode_label = "anchored" if anchored else "unanchored"
+    colors = COLORS
+    dates = results['end_date']
+
+    fig, ax = plt.subplots(figsize=(14, 6))
+    fig.suptitle(
+        'National Pollster-Adjusted Anchored Trump Margin Trajectory',
+        fontsize=TITLE_FS, fontweight='bold'
+    )
+
+    ax.scatter(dates, results['poll_margin'],
+               color=colors['raw'], alpha=0.6, s=8, label='Raw Polls',
+               edgecolors='none', zorder=1)
+    ax.scatter(dates, results['corrected_margin'],
+               color=colors['corrected'], alpha=0.6, s=8,
+               label='House-Effect Corrected Polls',
+               edgecolors='none', zorder=2)
+    ax.plot(dates, results['filtered'],
+            color=colors['filtered'], linewidth=1.0, linestyle='-',
+            label='Filtered Estimate', zorder=3)
+    ax.plot(dates, results['smoothed'],
+            color=colors['smoothed'], linewidth=2.5,
+            label='Smoothed Estimate', zorder=4)
+    ax.axhline(true_margin, color=colors['true'], linewidth=2,
+               label=f'True Margin ({true_margin:.2f} PP)', zorder=5)
+    ax.fill_between(dates,
+                    results['smoothed'] - 1.96 * results['smoothed_se'],
+                    results['smoothed'] + 1.96 * results['smoothed_se'],
+                    color=colors['smoothed'], alpha=0.15, label='Smoothed 95% CI')
+    ax.axhline(0, color='black', linewidth=0.5, linestyle=':')
+    ax.set_ylabel('Trump Margin (pp)', fontsize=LABEL_FS, fontweight='bold')
+    ax.set_ylim(-8, 6)
+    ax.legend(loc='upper right', fontsize=LEGEND_FS)
+    ax.tick_params(axis='both', labelsize=TICK_FS)
+    ax.grid(True, alpha=0.3)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation=0, ha='center',
+             fontsize=TICK_FS)
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches='tight')
+        print(f"\npanel 1 figure saved to: {save_path}")
+
+    plt.close()
+
+########################################################################################
+######################### Export results ###############################################
+########################################################################################
+def export_results(df: pd.DataFrame, house_effects_df: pd.DataFrame,
+                   out_path_polls: str, out_path_house_effects: str) -> None:
+    """
+    export two csv files:
+    (1) poll-level results with all decomposition columns
+    (2) pollster-level house effects summary
+    """
+    poll_cols = [
+        'question_id', 'poll_id', 'pollster', 'end_date', 'sample_size',
+        'poll_margin', 'corrected_margin', 'true_margin',
+        'filtered', 'filtered_se', 'smoothed', 'smoothed_se',
+        'house_effect_assigned', 'total_error', 'sampling_noise',
+        'residual_systematic_bias', 'weight', 'sigma2_u',
+    ]
+    if 'period' in df.columns:
+        poll_cols.append('period')
+
+    out = df[df['pollster_id'] != -1][poll_cols].copy()
+    out.to_csv(out_path_polls, index=False)
+    print(f"poll results exported to: {out_path_polls}")
+
+    house_effects_df.to_csv(out_path_house_effects, index=False)
+    print(f"house effects exported to: {out_path_house_effects}")
+
+
+########################################################################################
+######################### Actually run all these functions from here ###################
+########################################################################################
+if __name__ == '__main__':
+
+    # important values
+    DATA_PATH     = 'data/harris_trump_datelimted_accuracy_no_explode.csv'
+    ELECTION_DATE = '2024-11-05'
+    TIME_WINDOWS  = [107, 60, 30]
+
+    # set up logging
+    log_filename = f'output/kalman/kalman_national_pollstereffects_harrisonly_anlaysis_log.txt'
+    logger       = Logger(log_filename)
+    sys.stdout   = logger
+
+    print(f"kalman filter with house effects analysis")
+    print(f"started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"log file: {log_filename}")
+    print(f"time windows: {TIME_WINDOWS}")
+
+    for days_before in TIME_WINDOWS:
+
+        if days_before is None:
+            window_label = "all_data"
+            window_desc  = "ALL DATA"
+        else:
+            window_label = f"last_{days_before}_days"
+            window_desc  = f"LAST {days_before} DAYS"
+
+        print("\n" + "="*70)
+        print("="*70)
+        print(f"ANALYZING TIME WINDOW: {window_desc}")
+        print("="*70)
+        print("="*70)
+
+        for anchor in [True, False]:
+            mode_label = "anchored" if anchor else "unanchored"
+            mode_desc  = "ANCHORED" if anchor else "UNANCHORED"
+
+            print("\n" + "="*70)
+            print(f"{mode_desc} MODE ({window_desc})")
+            print("="*70)
+
+            df, pollster_names = load_and_prepare(DATA_PATH, ELECTION_DATE, days_before=days_before)
+            print(f"\nsanity check — unique true_margin values: {df['true_margin'].unique()}")
+
+            df, pollster_names = append_election_result(df, pollster_names, ELECTION_DATE, anchor=anchor)
+
+            df, house_effects_df, sigma2u, history = em_kalman_house_effects(
+                df, pollster_names, max_iter=50, tol=1e-4
+            )
+
+            summarize_results(df, house_effects_df, sigma2u, anchored=anchor)
+
+            plot_results(
+                df, house_effects_df, anchored=anchor,
+                save_path=f'figures/kalman_he_{mode_label}_{window_label}.png'
+            )
+
+            if days_before == 107:
+                plot_panel1_only(
+                df, anchored=anchor,
+                save_path=f'figures/kalman_he_{mode_label}_last_107_days_panel1a.png'
+            )
+
+            export_results(
+                df, house_effects_df,
+                out_path_polls=f'data/kalman_he_polls_{mode_label}_{window_label}.csv',
+                out_path_house_effects=f'data/kalman_he_effects_{mode_label}_{window_label}.csv'
+            )
+
+    print(f"\n{'='*70}")
+    print(f"analysis completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"log saved to: {log_filename}")
+    logger.close()
+    sys.stdout = logger.terminal

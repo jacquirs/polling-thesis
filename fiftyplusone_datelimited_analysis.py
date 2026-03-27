@@ -388,10 +388,195 @@ plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_nationa
 #plt.show()
 
 
+
 print(f"\nNational Polls (N={len(national_polls)}):")
 print(f"Trump - True: {true_trump_national:.2f}%, Poll Mean: {national_polls['pct_trump_poll'].mean():.2f}%, Error: {national_polls['pct_trump_poll'].mean() - true_trump_national:.2f}")
 print(f"Harris - True: {true_harris_national:.2f}%, Poll Mean: {national_polls['pct_harris_poll'].mean():.2f}%, Error: {national_polls['pct_harris_poll'].mean() - true_harris_national:.2f}")
 
+### graphs of parts for NATIONAL polls only
+national_polls = harris_trump_pivot[harris_trump_pivot['state'] == 'national'].copy()
+fig, axes = plt.subplots(2, 3, figsize=(14, 10))
+
+# common font sizes
+title_fs = 16
+label_fs = 14
+tick_fs = 12
+legend_fs = 12
+
+# histograms of components vs method A
+axes[0, 0].hist(
+    national_polls['trump_part_A'].dropna(),
+    bins=30,
+    edgecolor='black',
+    alpha=0.7,
+    color='red'
+)
+axes[0, 0].axvline(
+    national_polls['trump_part_A'].mean(),
+    color='darkred',
+    linestyle='--',
+    linewidth=2,
+    label=f'Mean: {national_polls["trump_part_A"].mean():.4f}'
+)
+axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 0].set_xlabel('Trump Component', fontsize=label_fs, fontweight='bold')
+axes[0, 0].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 0].set_title(
+    'Trump Component: ln(poll_trump) - ln(true_trump)',
+    fontsize=title_fs,
+    fontweight='bold'
+)
+axes[0, 0].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 0].legend(fontsize=legend_fs, loc='upper left')
+
+
+axes[0, 1].hist(
+    national_polls['harris_part_A'].dropna(),
+    bins=30,
+    edgecolor='black',
+    alpha=0.7,
+    color='blue'
+)
+axes[0, 1].axvline(
+    national_polls['harris_part_A'].mean(),
+    color='navy',
+    linestyle='--',
+    linewidth=2,
+    label=f'Mean: {national_polls["harris_part_A"].mean():.4f}'
+)
+axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 1].set_xlabel('Harris Component', fontsize=label_fs, fontweight='bold')
+axes[0, 1].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 1].set_title(
+    'Harris Component: ln(poll_harris) - ln(true_harris)',
+    fontsize=title_fs,
+    fontweight='bold'
+)
+axes[0, 1].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 1].legend(fontsize=legend_fs, loc='upper left')
+
+axes[0, 2].hist(
+    national_polls['A'].dropna(),
+    bins=50,
+    edgecolor='black',
+    alpha=0.7,
+    color='green'
+)
+axes[0, 2].axvline(
+    national_polls['A'].mean(),
+    color='darkgreen',
+    linestyle='--',
+    linewidth=2,
+    label=f'Mean: {national_polls["A"].mean():.4f}'
+)
+axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 2].set_xlabel('Method A', fontsize=label_fs, fontweight='bold')
+axes[0, 2].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 2].set_title(
+    'Method A: trump_part - harris_part',
+    fontsize=title_fs,
+    fontweight='bold'
+)
+axes[0, 2].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 2].legend(fontsize=legend_fs, loc='upper left')
+
+# Rpoll value histograms with true value line
+true_trump_national = national_polls['p_trump_true'].iloc[0] * 100
+true_harris_national = national_polls['p_harris_true'].iloc[0] * 100
+
+axes[1, 0].hist(
+    national_polls['pct_trump_poll'].dropna(),
+    bins=30,
+    edgecolor='black',
+    alpha=0.7,
+    color='red'
+)
+axes[1, 0].axvline(
+    true_trump_national,
+    color='darkred',
+    linestyle='--',
+    linewidth=2,
+    label=f'True: {true_trump_national:.2f}%'
+)
+axes[1, 0].axvline(
+    national_polls['pct_trump_poll'].mean(),
+    color='black',
+    linestyle='--',
+    linewidth=2,
+    label=f'Poll Mean: {national_polls["pct_trump_poll"].mean():.2f}%'
+)
+axes[1, 0].set_xlabel('Trump Poll %', fontsize=label_fs, fontweight='bold')
+axes[1, 0].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 0].set_title(
+    'Distribution of Trump Poll Values',
+    fontsize=title_fs,
+    fontweight='bold'
+)
+axes[1, 0].tick_params(axis='both', labelsize=tick_fs)
+axes[1, 0].legend(fontsize=legend_fs, loc='upper left')
+
+axes[1, 1].hist(
+    national_polls['pct_harris_poll'].dropna(),
+    bins=30,
+    edgecolor='black',
+    alpha=0.7,
+    color='blue'
+)
+axes[1, 1].axvline(
+    true_harris_national,
+    color='navy',
+    linestyle='--',
+    linewidth=2,
+    label=f'True: {true_harris_national:.2f}%'
+)
+axes[1, 1].axvline(
+    national_polls['pct_harris_poll'].mean(),
+    color='black',
+    linestyle='--',
+    linewidth=2,
+    label=f'Poll Mean: {national_polls["pct_harris_poll"].mean():.2f}%'
+)
+axes[1, 1].set_xlabel('Harris Poll %', fontsize=label_fs, fontweight='bold')
+axes[1, 1].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 1].set_title(
+    'Distribution of Harris Poll Values',
+    fontsize=title_fs,
+    fontweight='bold'
+)
+axes[1, 1].tick_params(axis='both', labelsize=tick_fs)
+axes[1, 1].legend(fontsize=legend_fs, loc='upper left')
+
+axes[1, 2].hist(
+    national_polls['pct_trump_poll'] - national_polls['p_trump_true'] * 100,
+    bins=50,
+    alpha=0.5,
+    label='Trump Error',
+    edgecolor='black',
+    color='red'
+)
+axes[1, 2].hist(
+    national_polls['pct_harris_poll'] - national_polls['p_harris_true'] * 100,
+    bins=50,
+    alpha=0.5,
+    label='Harris Error',
+    edgecolor='black',
+    color='blue'
+)
+axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[1, 2].set_xlabel('Simple Error (Poll - True)', fontsize=label_fs, fontweight='bold')
+axes[1, 2].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 2].set_title(
+    'Simple Errors',
+    fontsize=title_fs,
+    fontweight='bold'
+)
+axes[1, 2].tick_params(axis='both', labelsize=tick_fs)
+axes[1, 2].legend(fontsize=legend_fs, loc='upper left')
+
+plt.suptitle('National Polls Only', fontsize=18, fontweight='bold', y=1.02)
+plt.tight_layout()
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_national_methoda_errors1.png", dpi=300)
+#plt.show()
 
 ### battleground states combined treating all as one group
 battleground_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
@@ -471,6 +656,191 @@ plt.tight_layout()
 plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundcombined_methoda_errors.png", dpi=300)
 #plt.show()
 
+### graphs of parts for NATIONAL polls only
+national_polls = harris_trump_pivot[harris_trump_pivot['state'] == 'national'].copy()
+fig, axes = plt.subplots(2, 3, figsize=(14, 10))
+
+# common font sizes
+title_fs = 16
+label_fs = 14
+tick_fs = 12
+legend_fs = 12
+
+# histograms of components vs method A
+axes[0, 0].hist(national_polls['trump_part_A'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='red')
+axes[0, 0].axvline(national_polls['trump_part_A'].mean(), color='darkred',
+                   linestyle='--', linewidth=2,
+                   label=f'Mean: {national_polls["trump_part_A"].mean():.4f}')
+axes[0, 0].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 0].set_xlabel('Trump Component', fontsize=label_fs, fontweight='bold')
+axes[0, 0].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 0].set_title('Trump Component',
+                    fontsize=title_fs, fontweight='bold')
+axes[0, 0].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 0].legend(fontsize=legend_fs, loc='upper left')
+
+
+axes[0, 1].hist(national_polls['harris_part_A'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='blue')
+axes[0, 1].axvline(national_polls['harris_part_A'].mean(), color='navy',
+                   linestyle='--', linewidth=2,
+                   label=f'Mean: {national_polls["harris_part_A"].mean():.4f}')
+axes[0, 1].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 1].set_xlabel('Harris Component', fontsize=label_fs, fontweight='bold')
+axes[0, 1].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 1].set_title('Harris Component',
+                    fontsize=title_fs, fontweight='bold')
+axes[0, 1].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 1].legend(fontsize=legend_fs, loc='upper left')
+
+axes[0, 2].hist(national_polls['A'].dropna(), bins=50,
+                edgecolor='black', alpha=0.7, color='green')
+axes[0, 2].axvline(national_polls['A'].mean(), color='darkgreen',
+                   linestyle='--', linewidth=2,
+                   label=f'Mean: {national_polls["A"].mean():.4f}')
+axes[0, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[0, 2].set_xlabel('Method A', fontsize=label_fs, fontweight='bold')
+axes[0, 2].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 2].set_title('Method A',
+                    fontsize=title_fs, fontweight='bold')
+axes[0, 2].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 2].legend(fontsize=legend_fs, loc='upper left')
+
+# Rpoll value histograms with true value line
+true_trump_national = national_polls['p_trump_true'].iloc[0] * 100
+true_harris_national = national_polls['p_harris_true'].iloc[0] * 100
+
+axes[1, 0].hist(national_polls['pct_trump_poll'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='red')
+axes[1, 0].axvline(true_trump_national, color='darkred',
+                   linestyle='--', linewidth=2,
+                   label=f'True: {true_trump_national:.2f}%')
+axes[1, 0].axvline(national_polls['pct_trump_poll'].mean(), color='black',
+                   linestyle='--', linewidth=2,
+                   label=f'Poll Mean: {national_polls["pct_trump_poll"].mean():.2f}%')
+axes[1, 0].set_xlabel('Trump Poll %', fontsize=label_fs, fontweight='bold')
+axes[1, 0].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 0].set_title('Distribution of Trump Poll Values',
+                    fontsize=title_fs, fontweight='bold')
+axes[1, 0].tick_params(axis='both', labelsize=tick_fs)
+axes[1, 0].legend(fontsize=legend_fs, loc='upper left')
+
+axes[1, 1].hist(national_polls['pct_harris_poll'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='blue')
+axes[1, 1].axvline(true_harris_national, color='navy',
+                   linestyle='--', linewidth=2,
+                   label=f'True: {true_harris_national:.2f}%')
+axes[1, 1].axvline(national_polls['pct_harris_poll'].mean(), color='black',
+                   linestyle='--', linewidth=2,
+                   label=f'Poll Mean: {national_polls["pct_harris_poll"].mean():.2f}%')
+axes[1, 1].set_xlabel('Harris Poll %', fontsize=label_fs, fontweight='bold')
+axes[1, 1].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 1].set_title('Distribution of Harris Poll Values',
+                    fontsize=title_fs, fontweight='bold')
+axes[1, 1].tick_params(axis='both', labelsize=tick_fs)
+axes[1, 1].legend(fontsize=legend_fs, loc='upper left')
+
+axes[1, 2].hist(national_polls['pct_trump_poll'] - national_polls['p_trump_true']*100,
+                bins=50, alpha=0.5, label='Trump Error',
+                edgecolor='black', color='red')
+axes[1, 2].hist(national_polls['pct_harris_poll'] - national_polls['p_harris_true']*100,
+                bins=50, alpha=0.5, label='Harris Error',
+                edgecolor='black', color='blue')
+axes[1, 2].axvline(0, color='black', linestyle='-', linewidth=1)
+axes[1, 2].set_xlabel('Simple Error', fontsize=label_fs, fontweight='bold')
+axes[1, 2].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 2].set_title('Simple Errors',
+                    fontsize=title_fs, fontweight='bold')
+axes[1, 2].tick_params(axis='both', labelsize=tick_fs)
+axes[1, 2].legend(fontsize=legend_fs, loc='upper left')
+
+plt.suptitle('National Polls Only', fontsize=18, fontweight='bold', y=1.02)
+plt.tight_layout()
+
+
+### battleground states combined treating all as one group
+battleground_states = ['arizona', 'georgia', 'michigan', 'nevada', 'north carolina', 'pennsylvania', 'wisconsin']
+bg_polls = harris_trump_pivot[harris_trump_pivot['state'].isin(battleground_states)].copy()
+fig, axes = plt.subplots(2, 3, figsize=(20, 12))
+
+# trump component
+axes[0, 0].hist(bg_polls['trump_part_A'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='red')
+axes[0, 0].axvline(0, color='black', linewidth=2)
+axes[0, 0].axvline(bg_polls['trump_part_A'].mean(), color='darkred',
+                   linestyle='--', linewidth=2,
+                   label=f'Mean: {bg_polls["trump_part_A"].mean():.4f}')
+axes[0, 0].set_xlabel('Trump Component', fontsize=label_fs, fontweight='bold')
+axes[0, 0].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 0].set_title('Trump Component', fontsize=title_fs, fontweight='bold')
+axes[0, 0].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 0].legend(fontsize=legend_fs, loc='upper left')
+
+# harris component
+axes[0, 1].hist(bg_polls['harris_part_A'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='blue')
+axes[0, 1].axvline(0, color='black', linewidth=2)
+axes[0, 1].axvline(bg_polls['harris_part_A'].mean(), color='navy',
+                   linestyle='--', linewidth=2,
+                   label=f'Mean: {bg_polls["harris_part_A"].mean():.4f}')
+axes[0, 1].set_xlabel('Harris Component', fontsize=label_fs, fontweight='bold')
+axes[0, 1].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 1].set_title('Harris Component', fontsize=title_fs, fontweight='bold')
+axes[0, 1].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 1].legend(fontsize=legend_fs, loc='upper left')
+
+# method A
+axes[0, 2].hist(bg_polls['A'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='green')
+axes[0, 2].axvline(0, color='black', linewidth=2)
+axes[0, 2].axvline(bg_polls['A'].mean(), color='darkgreen',
+                   linestyle='--', linewidth=2,
+                   label=f'Mean: {bg_polls["A"].mean():.4f}')
+axes[0, 2].set_xlabel('Method A', fontsize=label_fs, fontweight='bold')
+axes[0, 2].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[0, 2].set_title('Method A', fontsize=title_fs, fontweight='bold')
+axes[0, 2].tick_params(axis='both', labelsize=tick_fs)
+axes[0, 2].legend(fontsize=legend_fs, loc='upper left')
+
+# remaining plots
+mean_true_harris = (bg_polls['p_harris_true'] * 100).mean()
+axes[1, 0].hist(bg_polls['pct_harris_poll'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='blue')
+axes[1, 0].axvline(mean_true_harris, color='navy', linestyle='--', linewidth=2)
+axes[1, 0].axvline(bg_polls['pct_harris_poll'].mean(), color='black', linestyle='--', linewidth=2)
+axes[1, 0].set_xlabel('Harris Poll %', fontsize=label_fs, fontweight='bold')
+axes[1, 0].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 0].tick_params(axis='both', labelsize=tick_fs)
+
+mean_true_trump = (bg_polls['p_trump_true'] * 100).mean()
+axes[1, 1].hist(bg_polls['pct_trump_poll'].dropna(), bins=30,
+                edgecolor='black', alpha=0.7, color='red')
+axes[1, 1].axvline(mean_true_trump, color='darkred', linestyle='--', linewidth=2)
+axes[1, 1].axvline(bg_polls['pct_trump_poll'].mean(), color='black', linestyle='--', linewidth=2)
+axes[1, 1].set_xlabel('Trump Poll %', fontsize=label_fs, fontweight='bold')
+axes[1, 1].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 1].tick_params(axis='both', labelsize=tick_fs)
+
+trump_error_all = bg_polls['pct_trump_poll'] - bg_polls['p_trump_true'] * 100
+harris_error_all = bg_polls['pct_harris_poll'] - bg_polls['p_harris_true'] * 100
+
+axes[1, 2].hist(trump_error_all.dropna(), bins=30, alpha=0.5,
+                label=f'Trump (mean={trump_error_all.mean():.2f})',
+                color='red', edgecolor='black')
+axes[1, 2].hist(harris_error_all.dropna(), bins=30, alpha=0.5,
+                label=f'Harris (mean={harris_error_all.mean():.2f})',
+                color='blue', edgecolor='black')
+axes[1, 2].axvline(0, color='black', linewidth=2)
+axes[1, 2].set_xlabel('Simple Error (Poll - True %)', fontsize=label_fs, fontweight='bold')
+axes[1, 2].set_ylabel('Frequency', fontsize=label_fs, fontweight='bold')
+axes[1, 2].tick_params(axis='both', labelsize=tick_fs)
+axes[1, 2].legend(fontsize=legend_fs, loc='upper left')
+
+plt.suptitle('All Battleground States Combined', fontsize=18, fontweight='bold')
+plt.tight_layout()
+plt.savefig("figures/fiftyplusonePY/datelimited/fiftyplusone_datelimited_battlegroundcombined_methoda_errors1.png", dpi=300)
+#plt.show()
 
 ### trump component, seven panels for each individual state
 fig, axes = plt.subplots(2, 4, figsize=(20, 10))
