@@ -4,11 +4,19 @@ import pandas as pd
 from scipy.stats import linregress
 
 ########################################################################################
-############ State level visualizations for MSE and design effect from CCES ###########################
+############ State level visualizations for MSE and design effect from CCES ############
 ########################################################################################
 
 # this file is made by running meng_mse_deff_calculations.py
 df = pd.read_csv("data/mengrep_all_vals_state_level.csv")
+
+########################################################################
+# Plot style constants
+########################################################################
+TITLE_FS  = 16
+LABEL_FS  = 14
+TICK_FS   = 13
+LEGEND_FS = 13
 
 # assign colors to states
 purple_states = ["Arizona", "Georgia", "Michigan", "Nevada", "North Carolina", "Pennsylvania", "Wisconsin"]
@@ -38,193 +46,186 @@ df["color"] = df["state_name"].apply(assign_color)
 
 # FIGURE 1
 # actual MSE vs SRS variance benchmark
-# visualizes Meng's big data paradox, bias dominates variance for large datasets
-# under unbiased SRS MSE = Var_SRS; with bias and/or variance inflation: MSE > Var_SRS
-# # distance above diagonal,  bias-induced error inflation
-# larger inflation is consistent with worse data quality (larger |rho_{R,G}|) holding other factors fixed
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-# Trump panel: actual MSE vs SRS benchmark
+# Trump panel
 ax = axes[0]
-ax.scatter(df["Var_SRS_trump"], df["MSE_trump"], 
+ax.scatter(df["Var_SRS_trump"], df["MSE_trump"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
 ax.axline((0, 0), slope=1, linestyle='--', color='k',
-          linewidth=1, label='MSE = Var_SRS (unbiased SRS benchmark)') # diagonal line represents unbiased SRS
-ax.set_xlabel(r"SRS variance ($Var_{SRS}$, benchmark)")
-ax.set_ylabel(r"actual MSE")
-ax.set_title(r"Trump: actual MSE vs SRS benchmark" + "\n" + 
-             r"(points above line = bias-inflated error)")
-ax.legend()
+          linewidth=1, label='MSE = Var_SRS (Unbiased SRS Benchmark)')
+ax.set_xlabel(r"SRS Variance ($Var_{SRS}$, Benchmark)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"Actual MSE", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title("Trump: Actual MSE vs SRS Benchmark",
+             fontsize=TITLE_FS, fontweight='bold')
+ax.legend(fontsize=LEGEND_FS, loc='upper left')
+ax.tick_params(axis='both', labelsize=TICK_FS)
+ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))
 ax.grid(alpha=0.3)
 
-# Harris panel: actual MSE vs SRS benchmark
+# Harris panel
 ax = axes[1]
-ax.scatter(df["Var_SRS_harris"], df["MSE_harris"], 
+ax.scatter(df["Var_SRS_harris"], df["MSE_harris"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
 ax.axline((0, 0), slope=1, linestyle='--', color='k',
-          linewidth=1, label='MSE = Var_SRS (unbiased SRS benchmark)') # diagonal line represents unbiased SRS
-ax.set_xlabel(r"SRS variance ($Var_{SRS}$, benchmark)")
-ax.set_ylabel(r"actual MSE")
-ax.set_title(r"Harris: actual MSE vs SRS benchmark" + "\n" + 
-             r"(points above line = bias-inflated error)")
-ax.legend()
+          linewidth=1, label='MSE = Var_SRS (Unbiased SRS Benchmark)')
+ax.set_xlabel(r"SRS Variance ($Var_{SRS}$, Benchmark)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"Actual MSE", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title("Harris: Actual MSE vs SRS Benchmark",
+             fontsize=TITLE_FS, fontweight='bold')
+ax.legend(fontsize=LEGEND_FS, loc='upper left')
+ax.tick_params(axis='both', labelsize=TICK_FS)
+ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))
 ax.grid(alpha=0.3)
 
-plt.tight_layout()
+plt.tight_layout(pad=3.0)
 plt.savefig("figures/mengrep_mse_vs_srs_comparison.png", dpi=300, bbox_inches='tight')
 plt.show()
 
 
-
 # FIGURE 2
 # design effect vs population size LLP
-# under data defect (nonzero rho_{R,G}), error can grow with N (law of large populations)
-# Deff summarizes variance inflation vs SRS, it does not measure bias
-# steeper increase with N is consistent with stronger defect effects (e.g., larger |rho_{R,G}|), holding other factors fixed
-# Deff = 1 = SRS equivalent variance (no variance inflation relative to SRS)
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
-# Trump panel: design effect vs population size
+# Trump panel
 ax = axes[0]
-ax.scatter(df["N_state"], df["Deff_trump"], 
+ax.scatter(df["N_state"], df["Deff_trump"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"population size ($N$)")
-ax.set_ylabel(r"design effect ($Deff$)")
-ax.set_title(r"Trump: design effect vs population size" + "\n" + 
-             r"(law of large populations: larger $N$ -> larger $Deff$)")
+ax.set_xlabel(r"Population Size ($N$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"Design Effect ($Deff$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title("Trump: Design Effect vs Population Size",
+             fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.grid(alpha=0.3, which='both')
+ax.axhline(1, color='green', linestyle='--', linewidth=1,
+           label=r'$Deff = 1$ (SRS Equivalent Variance)', alpha=0.5)
+ax.legend(fontsize=LEGEND_FS)
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
-# Deff = 1 for perfect SRS (horizontal, independent of N)
-ax.axhline(1, color='green', linestyle='--', linewidth=1, 
-           label=r'$Deff = 1$ (SRS equivalent variance)', alpha=0.5)
-
-ax.legend(fontsize=8)
-
-# Harris panel: design effect vs population size
+# Harris panel
 ax = axes[1]
-ax.scatter(df["N_state"], df["Deff_harris"], 
+ax.scatter(df["N_state"], df["Deff_harris"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"population size ($N$)")
-ax.set_ylabel(r"design effect ($Deff$)")
-ax.set_title(r"Harris: design effect vs population size" + "\n" + 
-             r"(law of large populations: larger $N$ -> larger $Deff$)")
+ax.set_xlabel(r"Population Size ($N$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"Design Effect ($Deff$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title("Harris: Design Effect vs Population Size",
+             fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.grid(alpha=0.3, which='both')
-ax.axhline(1, color='green', linestyle='--', linewidth=1, 
-           label=r'$Deff = 1$ (SRS equivalent variance)', alpha=0.5)
+ax.axhline(1, color='green', linestyle='--', linewidth=1,
+           label=r'$Deff = 1$ (SRS Equivalent Variance)', alpha=0.5)
+ax.legend(fontsize=LEGEND_FS)
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
-
-ax.legend(fontsize=8)
-
-plt.tight_layout()
+plt.tight_layout(pad=3.0)
 plt.savefig("figures/mengrep_deff_vs_population_size.png", dpi=300, bbox_inches='tight')
 plt.show()
 
 
 # FIGURE 4
 # MSE decomposition
-# relates MSE to DI x DO x DU in Meng's decomposition
-# steeper slope suggests stronger relationship (not causal by itself)
 fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 
 # Trump: DI vs MSE
 ax = axes[0, 0]
-ax.scatter(df["DI_trump"], df["MSE_trump"], 
+ax.scatter(df["DI_trump"], df["MSE_trump"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"$DI$ (data defect index = $\rho^2$)")
-ax.set_ylabel(r"$MSE$")
-ax.set_title(r"Trump: MSE vs data quality ($DI$)")
+ax.set_xlabel(r"$DI$ (Data Defect Index = $\rho^2$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"$MSE$", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title(r"Trump: MSE vs Data Quality ($DI$)", fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.grid(alpha=0.3, which='both')
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
 # Trump: DO vs MSE
 ax = axes[0, 1]
-ax.scatter(df["DO_s"], df["MSE_trump"], 
+ax.scatter(df["DO_s"], df["MSE_trump"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"$DO$ (dropout odds = $(1-f)/f$)")
-ax.set_ylabel(r"$MSE$")
-ax.set_title(r"Trump: MSE vs data quantity ($DO$)")
+ax.set_xlabel(r"$DO$ (Dropout Odds = $(1-f)/f$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"$MSE$", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title(r"Trump: MSE vs Data Quantity ($DO$)", fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.grid(alpha=0.3, which='both')
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
-# Harris: DI vs MSE 
+# Harris: DI vs MSE
 ax = axes[1, 0]
-ax.scatter(df["DI_harris"], df["MSE_harris"], 
+ax.scatter(df["DI_harris"], df["MSE_harris"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"$DI$ (data defect index = $\rho^2$)")
-ax.set_ylabel(r"$MSE$")
-ax.set_title(r"Harris: MSE vs data quality ($DI$)")
+ax.set_xlabel(r"$DI$ (Data Defect Index = $\rho^2$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"$MSE$", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title(r"Harris: MSE vs Data Quality ($DI$)", fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.grid(alpha=0.3, which='both')
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
 # Harris: DO vs MSE
 ax = axes[1, 1]
-ax.scatter(df["DO_s"], df["MSE_harris"], 
+ax.scatter(df["DO_s"], df["MSE_harris"],
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"$DO$ (dropout odds = $(1-f)/f$)")
-ax.set_ylabel(r"$MSE$")
-ax.set_title(r"Harris: MSE vs data quantity ($DO$)")
+ax.set_xlabel(r"$DO$ (Dropout Odds = $(1-f)/f$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"$MSE$", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title(r"Harris: MSE vs Data Quantity ($DO$)", fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.set_yscale('log')
 ax.grid(alpha=0.3, which='both')
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
-plt.tight_layout()
+plt.tight_layout(pad=3.0)
 plt.savefig("figures/mengrep_mse_decomposition.png", dpi=300, bbox_inches='tight')
 plt.show()
 
 
 # FIGURE 5
 # RMSE vs state population size
-# tests whether larger states have larger error (RMSE)
-# in log-log slope b means RMSE prop to N^b
-# b > 0 indicates larger states tend to have larger typical error, b approx 0 indicates weak dependence on N
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+log_N = np.log10(df["N_state"])
+N_fit = np.logspace(np.log10(df["N_state"].min()), np.log10(df["N_state"].max()), 100)
 
 # Trump panel
 ax = axes[0]
-ax.scatter(df["N_state"], df["RMSE_trump"]*100,  # convert to percentage points
+ax.scatter(df["N_state"], df["RMSE_trump"] * 100,
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"state turnout ($N$)")
-ax.set_ylabel(r"root MSE (percentage points)")
-ax.set_title(r"Trump: typical error vs state size" + "\n" + 
-             r"(does larger population -> larger error?)")
+ax.set_xlabel(r"State Turnout ($N$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel("Root MSE (Percentage Points)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title("Trump: Typical Error vs State Size",
+             fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.grid(alpha=0.3)
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
-# log log, log(RMSE) = intercept + slope x log(N)
-log_N = np.log10(df["N_state"])
-log_RMSE_trump = np.log10(df["RMSE_trump"]*100)
+log_RMSE_trump = np.log10(df["RMSE_trump"] * 100)
 slope_t, intercept_t, r_t, p_t, se_t = linregress(log_N, log_RMSE_trump)
-N_fit = np.logspace(np.log10(df["N_state"].min()), np.log10(df["N_state"].max()), 100)
-RMSE_fit_trump = 10**(intercept_t + slope_t * np.log10(N_fit))
+RMSE_fit_trump = 10 ** (intercept_t + slope_t * np.log10(N_fit))
 ax.plot(N_fit, RMSE_fit_trump, 'k--', linewidth=1, alpha=0.5,
-        label=rf'trend: slope={slope_t:.3f}, $R^2$={r_t**2:.3f}')
-ax.legend()
+        label=rf'Trend: slope={slope_t:.3f}, $R^2$={r_t**2:.3f}')
+ax.legend(fontsize=LEGEND_FS)
 
 # Harris panel
 ax = axes[1]
-ax.scatter(df["N_state"], df["RMSE_harris"]*100,
+ax.scatter(df["N_state"], df["RMSE_harris"] * 100,
            c=df["color"], alpha=0.7, edgecolors="black", linewidths=0.5, s=60)
-ax.set_xlabel(r"state turnout ($N$)")
-ax.set_ylabel(r"root MSE (percentage points)")
-ax.set_title(r"Harris: typical error vs state size" + "\n" + 
-             r"(does larger population -> larger error?)")
+ax.set_xlabel(r"State Turnout ($N$)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel("Root MSE (Percentage Points)", fontsize=LABEL_FS, fontweight='bold')
+ax.set_title("Harris: Typical Error vs State Size",
+             fontsize=TITLE_FS, fontweight='bold')
 ax.set_xscale('log')
 ax.grid(alpha=0.3)
+ax.tick_params(axis='both', labelsize=TICK_FS)
 
-log_RMSE_harris = np.log10(df["RMSE_harris"]*100)
+log_RMSE_harris = np.log10(df["RMSE_harris"] * 100)
 slope_h, intercept_h, r_h, p_h, se_h = linregress(log_N, log_RMSE_harris)
-RMSE_fit_harris = 10**(intercept_h + slope_h * np.log10(N_fit))
+RMSE_fit_harris = 10 ** (intercept_h + slope_h * np.log10(N_fit))
 ax.plot(N_fit, RMSE_fit_harris, 'k--', linewidth=1, alpha=0.5,
-        label=rf'trend: slope={slope_h:.3f}, $R^2$={r_h**2:.3f}')
-ax.legend()
+        label=rf'Trend: slope={slope_h:.3f}, $R^2$={r_h**2:.3f}')
+ax.legend(fontsize=LEGEND_FS)
 
-plt.tight_layout()
+plt.tight_layout(pad=3.0)
 plt.savefig("figures/mengrep_rmse_vs_population.png", dpi=300, bbox_inches='tight')
 plt.show()

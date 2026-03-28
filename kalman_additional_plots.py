@@ -7,10 +7,10 @@ from pathlib import Path
 ########################################################################
 # Plot style constants
 ########################################################################
-TITLE_FS  = 18
-LABEL_FS  = 16
-TICK_FS   = 15
-LEGEND_FS = 15
+TITLE_FS  = 16
+LABEL_FS  = 14
+TICK_FS   = 13
+LEGEND_FS = 13
 
 ########################################################################
 # figure 2: national - residual systematic bias comparison (all four implementations)
@@ -242,22 +242,26 @@ def create_figure4_variance_decomposition():
 
     ax.set_yticks(y_pos)
     ax.set_yticklabels(state_labels, fontsize=TICK_FS)
-    ax.set_xlabel('Scaled Share of Total Poll Variance (%)', fontweight='bold', fontsize=LABEL_FS)
+    ax.set_xlabel('Scaled Share of Total Poll Variance (%)', fontweight='bold', fontsize=LABEL_FS,
+                  labelpad=12)   # extra breathing room between tick labels and axis title
     ax.set_title(
         r'$\bf{Error\ Variance\ Decomposition\ by\ Geography}$' + '\n'
         'Pollster-Adjusted Anchored\nLast 107 Days',
         fontsize=TITLE_FS,
-        pad=30
+        pad=55          # pushes title up so legend sits between title and bars
     )
     ax.legend(
         loc='upper center',
-        bbox_to_anchor=(0.5, 1.08),
+        bbox_to_anchor=(0.5, 1.16),   # raised relative to axes so it clears the bars
         ncol=3,
         frameon=False,
-        fontsize=LEGEND_FS
+        fontsize=LEGEND_FS,
+        columnspacing=1.5,
+        handlelength=1.5,
     )
     ax.set_xlim([0, 100])
-    ax.tick_params(axis='x', labelsize=TICK_FS)
+    ax.tick_params(axis='x', labelsize=TICK_FS, pad=6)   # pad separates ticks from labels
+    ax.tick_params(axis='y', labelsize=TICK_FS)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
 
@@ -267,7 +271,7 @@ def create_figure4_variance_decomposition():
     
     ax.grid(True, alpha=0.3, axis='x')
 
-    plt.tight_layout(rect=[0, 0, 1, 0.92])
+    plt.tight_layout(rect=[0, 0.04, 1, 0.92])   # bottom margin keeps x-axis label from clipping
     plt.savefig(
         'figures/kalman_variance_decomposition_by_geography.png',
         dpi=300, bbox_inches='tight'

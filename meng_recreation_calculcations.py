@@ -9,7 +9,7 @@ log_file = open('output/meng_recreation.txt', 'w')
 sys.stdout = log_file
 
 # data from pipeline
-cces = pd.read_csv("data/cces2024_cleaned_mengrep.csv")
+CES = pd.read_csv("data/cces2024_cleaned_mengrep.csv")
 truth_raw = pd.read_csv("data/true_votes_by_state_mengrep.csv")
 
 # build truth table
@@ -78,9 +78,9 @@ def state_estimates(df, mask=None, value_col="X_trump"):
 # Validated: those with validated_voter == 1 
 
 ##### Trump estimates
-raw_est_T = state_estimates(cces, mask=None, value_col="X_trump")
-likely_est_T = state_estimates(cces, mask=(cces["likely_voter"] == 1), value_col="X_trump")
-validated_est_T = state_estimates(cces, mask=(cces["validated_voter"] == 1), value_col="X_trump")
+raw_est_T = state_estimates(CES, mask=None, value_col="X_trump")
+likely_est_T = state_estimates(CES, mask=(CES["likely_voter"] == 1), value_col="X_trump")
+validated_est_T = state_estimates(CES, mask=(CES["validated_voter"] == 1), value_col="X_trump")
 
 # merge each estimator with truth for comparison
 raw_mergedtruth_T = raw_est_T.merge(truth, on="state_name", how="left")
@@ -99,9 +99,9 @@ val_mergedtruth_T["f_s"] = val_mergedtruth_T["n"] / val_mergedtruth_T["N_state"]
 
 
 ##### Harris estimates
-raw_est_H = state_estimates(cces, mask=None, value_col="X_harris")
-likely_est_H = state_estimates(cces, mask=(cces["likely_voter"] == 1), value_col="X_harris")
-validated_est_H = state_estimates(cces, mask=(cces["validated_voter"] == 1), value_col="X_harris")
+raw_est_H = state_estimates(CES, mask=None, value_col="X_harris")
+likely_est_H = state_estimates(CES, mask=(CES["likely_voter"] == 1), value_col="X_harris")
+validated_est_H = state_estimates(CES, mask=(CES["validated_voter"] == 1), value_col="X_harris")
 
 raw_mergedtruth_H = raw_est_H.merge(truth, on="state_name", how="left")
 likely_mergedtruth_H = likely_est_H.merge(truth, on="state_name", how="left")
@@ -156,7 +156,7 @@ for df_ in [raw_mergedtruth_T, likely_mergedtruth_T, val_mergedtruth_T, raw_merg
     df_["color"] = df_["state_name"].apply(assign_color)
 
 ###### plot Figure 4 three panels for trump
-fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))   # no sharex/sharey — set limits manually
 
 panels_T = [
     ("Raw (All Respondents)", raw_mergedtruth_T),
@@ -167,37 +167,31 @@ panels_T = [
 for ax, (title, dfm) in zip(axes, panels_T):
     plot_df = dfm.dropna(subset=["p_trump_true", "p_hat"]).copy()
 
-    # errorbars are the 95% CIs
-    yerr_lower = plot_df["p_hat"] - plot_df["ci_lo"]
-    yerr_upper = plot_df["ci_hi"] - plot_df["p_hat"]
-
-    # loop through each color group to apply the specific color to the markers
     for color_val, group in plot_df.groupby("color"):
         yerr_low = group["p_hat"] - group["ci_lo"]
         yerr_high = group["ci_hi"] - group["p_hat"]
-        
         ax.errorbar(group["p_trump_true"], group["p_hat"],
                 yerr=[yerr_low, yerr_high],
-                fmt="o", ms=6, alpha=0.85, 
-                color=color_val,
-                capsize=3)
-        
-    # add 45 degree line
-    ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+                fmt="o", ms=6, alpha=0.85, color=color_val, capsize=3)
 
+    ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
     ax.set_title(title, fontsize=TITLE_FS, fontweight='bold')
     ax.set_xlabel("True Trump Share (State)", fontsize=LABEL_FS, fontweight='bold')
+    ax.set_ylabel("Estimated Trump Share (CES)", fontsize=LABEL_FS, fontweight='bold')
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontsize(TICK_FS)
+        label.set_visible(True)
     ax.tick_params(axis='both', labelsize=TICK_FS)
-    if ax is axes[0]:
-        ax.set_ylabel("Estimated Trump Share (CCES)", fontsize=LABEL_FS, fontweight='bold')
 
-plt.suptitle("Figure 4 Replication: State-Level CCES Estimates vs Official 2024 Results\n(Trump, Binary Likely)",
+plt.suptitle("CES vs Official 2024 Results (Trump, Binary Likely)",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig4_trump_likely_binary.png", dpi=300)
 
 ###### plot Figure 4 three panels for harris
-fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))
 
 panels_H = [
     ("Raw (All Respondents)", raw_mergedtruth_H),
@@ -211,22 +205,22 @@ for ax, (title, dfm) in zip(axes, panels_H):
     for color_val, group in plot_df.groupby("color"):
         yerr_low = group["p_hat"] - group["ci_lo"]
         yerr_high = group["ci_hi"] - group["p_hat"]
-
-        ax.errorbar(
-            group["p_harris_true"], group["p_hat"],
+        ax.errorbar(group["p_harris_true"], group["p_hat"],
             yerr=[yerr_low, yerr_high],
-            fmt="o", ms=6, alpha=0.85,
-            color=color_val, capsize=3
-        )
+            fmt="o", ms=6, alpha=0.85, color=color_val, capsize=3)
 
     ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
     ax.set_title(title, fontsize=TITLE_FS, fontweight='bold')
     ax.set_xlabel("True Harris Share (State)", fontsize=LABEL_FS, fontweight='bold')
+    ax.set_ylabel("Estimated Harris Share (CES)", fontsize=LABEL_FS, fontweight='bold')
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontsize(TICK_FS)
+        label.set_visible(True)
     ax.tick_params(axis='both', labelsize=TICK_FS)
-    if ax is axes[0]:
-        ax.set_ylabel("Estimated Harris Share (CCES)", fontsize=LABEL_FS, fontweight='bold')
 
-plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results\n(Harris, Binary Likely)",
+plt.suptitle("CES vs Official 2024 Results (Harris, Binary Likely)",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig4_harris_likely_binary.png", dpi=300)
@@ -241,7 +235,7 @@ plt.savefig("figures/mengrep_fig4_harris_likely_binary.png", dpi=300)
 # above previous middle panel used a hard subset (likely_voter == 1) and unweighted Wald SEs, counter to Meng's note
 
 # now will use the ratio estimator weighted mean within each state: \hat p^{LV}_s =  ( sum_i w_i X_i ) / ( sum_i w_i )
-# where w_i depends on turnout intent (CCES question CC24_363, how likely are you to vote, cleaned to likely_voter and mapped to a turnout propensity)
+# where w_i depends on turnout intent (CES question CC24_363, how likely are you to vote, cleaned to likely_voter and mapped to a turnout propensity)
 
 # Delta-method / linearization variance for the ratio/weighted mean:
 # Var( \hat p^{LV}_s ) ≈  [ sum_i w_i^2 (X_i - \hat p^{LV}_s)^2 ] / (sum_i w_i)^2
@@ -258,10 +252,10 @@ turnout_prop_map = {
 }
 
 # normalization of voter intent text
-cces["turnout_propensity"] = cces["CC24_363_names"].map(turnout_prop_map)
+CES["turnout_propensity"] = CES["CC24_363_names"].map(turnout_prop_map)
 
 # turnout weight used in the ratio estimator
-cces["lv_weight"] = cces["turnout_propensity"].astype(float)
+CES["lv_weight"] = CES["turnout_propensity"].astype(float)
 
 # state-level turnout weighted ratio estimator with delta method SE
 def state_turnout_weighted(df, weight_col="lv_weight", value_col="X_trump"):
@@ -304,13 +298,13 @@ def state_turnout_weighted(df, weight_col="lv_weight", value_col="X_trump"):
     return agg
 
 # Weighted likely panel for Trump 
-likely_est_weighted_T = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_trump")
+likely_est_weighted_T = state_turnout_weighted(CES, weight_col="lv_weight", value_col="X_trump")
 likely_mergedtruth_weighted_T = likely_est_weighted_T.merge(truth, on="state_name", how="left")
 likely_mergedtruth_weighted_T["color"] = likely_mergedtruth_weighted_T["state_name"].apply(assign_color)
 likely_mergedtruth_weighted_T.to_csv("data/mengrep_fig4_state_estimates_likely_weighted_trump_vs_truth.csv", index=False)
 
 # Weighted likely panel for Harris
-likely_est_weighted_H = state_turnout_weighted(cces, weight_col="lv_weight", value_col="X_harris")
+likely_est_weighted_H = state_turnout_weighted(CES, weight_col="lv_weight", value_col="X_harris")
 likely_mergedtruth_weighted_H = likely_est_weighted_H.merge(truth, on="state_name", how="left")
 likely_mergedtruth_weighted_H["color"] = likely_mergedtruth_weighted_H["state_name"].apply(assign_color)
 likely_mergedtruth_weighted_H.to_csv("data/mengrep_fig4_state_estimates_likely_weighted_harris_vs_truth.csv", index=False)
@@ -322,7 +316,7 @@ likely_mergedtruth_weighted_H.to_csv("data/mengrep_fig4_state_estimates_likely_w
 for df in [likely_mergedtruth_weighted_T, likely_mergedtruth_weighted_H]:
     df["color"] = df["state_name"].apply(assign_color)
 
-fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))
 
 panels_wieghted_T = [
     ("Raw (All Respondents)", raw_mergedtruth_T),
@@ -336,27 +330,28 @@ for ax, (title, dfm) in zip(axes, panels_wieghted_T):
     for color_val, group in plot_df.groupby("color"):
         yerr_low = group["p_hat"] - group["ci_lo"]
         yerr_high = group["ci_hi"] - group["p_hat"]
-        
         ax.errorbar(group["p_trump_true"], group["p_hat"],
                 yerr=[yerr_low, yerr_high],
-                fmt="o", ms=6, alpha=0.85, 
-                color=color_val,
-                capsize=3)
+                fmt="o", ms=6, alpha=0.85, color=color_val, capsize=3)
 
     ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
     ax.set_title(title, fontsize=TITLE_FS, fontweight='bold')
     ax.set_xlabel("True Trump Share (State)", fontsize=LABEL_FS, fontweight='bold')
+    ax.set_ylabel("Estimated Trump Share (CES)", fontsize=LABEL_FS, fontweight='bold')
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontsize(TICK_FS)
+        label.set_visible(True)
     ax.tick_params(axis='both', labelsize=TICK_FS)
-    if ax is axes[0]:
-        ax.set_ylabel("Estimated Trump Share (CCES)", fontsize=LABEL_FS, fontweight='bold')
 
-plt.suptitle("Figure 4 Replication: State-Level CCES Estimates vs Official 2024 Results\n(Trump, Weighted Likely)",
+plt.suptitle("CES vs Official 2024 Results (Trump, Weighted Likely)",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig4_trump_likely_weighted.png", dpi=300)
 
 # HARRIS
-fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharex=True, sharey=True)
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))
 
 panels_weighted_H = [
     ("Raw (All Respondents)", raw_mergedtruth_H),
@@ -370,7 +365,6 @@ for ax, (title, dfm) in zip(axes, panels_weighted_H):
     for color_val, group in plot_df.groupby("color"):
         yerr_low = group["p_hat"] - group["ci_lo"]
         yerr_high = group["ci_hi"] - group["p_hat"]
-
         ax.errorbar(
             group["p_harris_true"], group["p_hat"],
             yerr=[yerr_low, yerr_high],
@@ -379,13 +373,17 @@ for ax, (title, dfm) in zip(axes, panels_weighted_H):
         )
 
     ax.plot([0, 1], [0, 1], linestyle="--", color="black", linewidth=1)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
     ax.set_title(title, fontsize=TITLE_FS, fontweight='bold')
     ax.set_xlabel("True Harris Share (State)", fontsize=LABEL_FS, fontweight='bold')
+    ax.set_ylabel("Estimated Harris Share (CES)", fontsize=LABEL_FS, fontweight='bold')
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontsize(TICK_FS)
+        label.set_visible(True)
     ax.tick_params(axis='both', labelsize=TICK_FS)
-    if ax is axes[0]:
-        ax.set_ylabel("Estimated Harris Share (CCES)", fontsize=LABEL_FS, fontweight='bold')
 
-plt.suptitle("Figure 4 Replication: CCES vs Official 2024 Results\n(Harris, Weighted Likely)",
+plt.suptitle("CES vs Official 2024 Results (Harris, Weighted Likely)",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig4_harris_likely_weighted.png", dpi=300)
@@ -443,23 +441,25 @@ rhoT = val_mergedtruth_TH["rho_hat_trump"].values
 mean_value_of_rhoH, SE_plusminus2_H, number_of_states_used_H = histogram_maker_for_figure5(rhoH)
 mean_value_of_rhoT, SE_plusminus2_T, number_of_states_used_T = histogram_maker_for_figure5(rhoT)
 
-fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Harris panel (left)
 axes[0].hist(rhoH, bins=15, edgecolor="black")
 axes[0].axvline(0, linestyle="--", linewidth=1, color="red")
 axes[0].axvline(mean_value_of_rhoH, linestyle="--", linewidth=1)
-axes[0].set_title("Harris: Distribution of State-Level $\\hat\\rho_N$ (Validated Voters)",
+axes[0].set_title("Harris",
                   fontsize=TITLE_FS, fontweight='bold')
 axes[0].set_xlabel("$\\hat\\rho_N$", fontsize=LABEL_FS, fontweight='bold')
-axes[0].set_ylabel("Number of States / Jurisdictions", fontsize=LABEL_FS, fontweight='bold')
+axes[0].set_ylabel("Number of States", fontsize=LABEL_FS, fontweight='bold')
 axes[0].tick_params(axis='both', labelsize=TICK_FS)
+for label in axes[0].get_xticklabels() + axes[0].get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
 axes[0].text(
     0.98, 0.95,
     f"mean +/- 2 s.e.\n{mean_value_of_rhoH:.4f} ± {SE_plusminus2_H:.4f}\n(S={number_of_states_used_H})",
     transform=axes[0].transAxes,
-    ha="right", va="top",
-    fontsize=LEGEND_FS,
+    ha="right", va="top", fontsize=LEGEND_FS,
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
 )
 
@@ -467,27 +467,30 @@ axes[0].text(
 axes[1].hist(rhoT, bins=15, edgecolor="black")
 axes[1].axvline(0, linestyle="--", linewidth=1, color="red")
 axes[1].axvline(mean_value_of_rhoT, linestyle="--", linewidth=1)
-axes[1].set_title("Trump: Distribution of State-Level $\\hat\\rho_N$ (Validated Voters)",
+axes[1].set_title("Trump",
                   fontsize=TITLE_FS, fontweight='bold')
 axes[1].set_xlabel("$\\hat\\rho_N$", fontsize=LABEL_FS, fontweight='bold')
+axes[1].set_ylabel("Number of States", fontsize=LABEL_FS, fontweight='bold')
 axes[1].tick_params(axis='both', labelsize=TICK_FS)
+for label in axes[1].get_xticklabels() + axes[1].get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
 axes[1].text(
     0.98, 0.95,
     f"mean +/- 2 s.e.\n{mean_value_of_rhoT:.4f} ± {SE_plusminus2_T:.4f}\n(S={number_of_states_used_T})",
     transform=axes[1].transAxes,
-    ha="right", va="top",
-    fontsize=LEGEND_FS,
+    ha="right", va="top", fontsize=LEGEND_FS,
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
 )
 
-plt.suptitle("Figure 5 Replication (2024): Histograms of State-Level Data Defect Correlation $\\hat\\rho_N$",
+plt.suptitle("Distribution of State Data Defect Correlation By Candidate",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig5_ddc_histograms.png", dpi=300)
 
 # figure 5 with color
 val_mergedtruth_TH["color"] = val_mergedtruth_TH["state_name"].apply(assign_color)
-fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 color_order = ["blue", "purple", "red"]
 color_map_mpl = {"blue": "#4a90d9", "purple": "#9b59b6", "red": "#e25454"}
@@ -497,9 +500,9 @@ bins_T = np.linspace(rhoT.min(), rhoT.max(), 16)
 
 for ax, rho_vals, rho_col, mean_val, se_val, n_used, title, bins in [
     (axes[0], rhoH, "rho_hat_harris", mean_value_of_rhoH, SE_plusminus2_H, number_of_states_used_H,
-     "Harris: Distribution of State-Level $\\hat\\rho_N$ (Validated Voters)", bins_H),
+     "Harris", bins_H),
     (axes[1], rho_vals_T := rhoT, "rho_hat_trump", mean_value_of_rhoT, SE_plusminus2_T, number_of_states_used_T,
-     "Trump: Distribution of State-Level $\\hat\\rho_N$ (Validated Voters)", bins_T),
+     "Trump", bins_T),
 ]:
     bin_indices = np.digitize(rho_vals, bins) - 1
     bin_indices = np.clip(bin_indices, 0, len(bins) - 2)
@@ -517,14 +520,8 @@ for ax, rho_vals, rho_col, mean_val, se_val, n_used, title, bins in [
     bottoms = np.zeros(n_bins)
 
     for col in color_order:
-        ax.bar(
-            bin_centers,
-            counts[col],
-            width=bar_width * 0.95,
-            bottom=bottoms,
-            color=color_map_mpl[col],
-            edgecolor="none",
-        )
+        ax.bar(bin_centers, counts[col], width=bar_width * 0.95,
+               bottom=bottoms, color=color_map_mpl[col], edgecolor="none")
         bottoms += counts[col]
 
     ax.axvline(0, linestyle="--", linewidth=1, color="red")
@@ -533,16 +530,18 @@ for ax, rho_vals, rho_col, mean_val, se_val, n_used, title, bins in [
     ax.set_xlabel("$\\hat\\rho_N$", fontsize=LABEL_FS, fontweight='bold')
     ax.set_ylabel("Number of States", fontsize=LABEL_FS, fontweight='bold')
     ax.tick_params(axis='both', labelsize=TICK_FS)
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontsize(TICK_FS)
+        label.set_visible(True)
     ax.text(
         0.98, 0.95,
         f"mean +/- 2 s.e.\n{mean_val:.4f} ± {se_val:.4f}\n(S={n_used})",
         transform=ax.transAxes,
-        ha="right", va="top",
-        fontsize=LEGEND_FS,
+        ha="right", va="top", fontsize=LEGEND_FS,
         bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
     )
 
-plt.suptitle("Figure 5 Replication (2024): Histograms of State-Level Data Defect Correlation $\\hat\\rho_N$",
+plt.suptitle("Distribution of State Data Defect Correlation By Candidate",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig5_ddc_histograms_colors.png", dpi=300)
@@ -569,21 +568,18 @@ plot_df["x_order"] = np.arange(len(plot_df))
 mean_rho_trump = np.nanmean(plot_df["rho_hat_trump"])
 mean_rho_harris = np.nanmean(plot_df["rho_hat_harris"])
 
-fig, axes = plt.subplots(1, 2, figsize=(16, 5), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(16, 5))
 
-line_alpha = 0.6 
-point_alpha = 0.9 
+line_alpha = 0.6
+point_alpha = 0.9
 small_point_size = 30
 big_point_size = 90
 
 # Harris panel
 ax = axes[0]
 for _, row in plot_df.iterrows():
-    x = row["log10_N"]
-    lb = row["rho_lb_harris"]
-    ub = row["rho_ub_harris"]
-    ax.vlines(x, ymin=lb, ymax=ub, colors='gray', linestyles='dashed',
-              linewidth=0.9, alpha=line_alpha, zorder=1)
+    ax.vlines(row["log10_N"], ymin=row["rho_lb_harris"], ymax=row["rho_ub_harris"],
+              colors='gray', linestyles='dashed', linewidth=0.9, alpha=line_alpha, zorder=1)
 
 ax.scatter(plot_df["log10_N"], plot_df["rho_hat_harris"],
            s=small_point_size, c=plot_df["color"], alpha=point_alpha,
@@ -591,27 +587,25 @@ ax.scatter(plot_df["log10_N"], plot_df["rho_hat_harris"],
 ax.scatter(plot_df["log10_N"], plot_df["rho_hat_harris"],
            s=big_point_size, facecolors=plot_df["color"], edgecolors='black',
            linewidths=0.6, alpha=0.95, zorder=4)
-
 ax.axhline(0.0, color='red', linestyle='--', linewidth=1.0, label=r'$\rho=0$ (no bias)')
 ax.axhline(mean_rho_harris, color='black', linestyle='--', linewidth=1.0,
            label=f'mean(ρ̂)={mean_rho_harris:.4f}')
-
-ax.set_title("Harris: $\\hat\\rho_N$ with Theoretical Bounds (Meng eq. (2.9))",
+ax.set_title("Harris: $\\hat\\rho_N$ with Theoretical Bounds",
              fontsize=TITLE_FS, fontweight='bold')
 ax.set_xlabel("$\\log_{10}(N_s)$ — Total Voters", fontsize=LABEL_FS, fontweight='bold')
 ax.set_ylabel(r"$\hat\rho_N$", fontsize=LABEL_FS, fontweight='bold')
 ax.tick_params(axis='both', labelsize=TICK_FS)
+for label in ax.get_xticklabels() + ax.get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
 ax.grid(axis='y', linestyle=':', linewidth=0.6, alpha=0.6)
 ax.legend(loc='lower left', fontsize=LEGEND_FS)
 
 # Trump panel
 ax = axes[1]
 for _, row in plot_df.iterrows():
-    x = row["log10_N"]
-    lb = row["rho_lb_trump"]
-    ub = row["rho_ub_trump"]
-    ax.vlines(x, ymin=lb, ymax=ub, colors='gray', linestyles='dashed',
-              linewidth=0.9, alpha=line_alpha, zorder=1)
+    ax.vlines(row["log10_N"], ymin=row["rho_lb_trump"], ymax=row["rho_ub_trump"],
+              colors='gray', linestyles='dashed', linewidth=0.9, alpha=line_alpha, zorder=1)
 
 ax.scatter(plot_df["log10_N"], plot_df["rho_hat_trump"],
            s=small_point_size, c=plot_df["color"], alpha=point_alpha,
@@ -619,19 +613,21 @@ ax.scatter(plot_df["log10_N"], plot_df["rho_hat_trump"],
 ax.scatter(plot_df["log10_N"], plot_df["rho_hat_trump"],
            s=big_point_size, facecolors=plot_df["color"], edgecolors='black',
            linewidths=0.6, alpha=0.95, zorder=4)
-
 ax.axhline(0.0, color='red', linestyle='--', linewidth=1.0, label=r'$\rho=0$ (no bias)')
 ax.axhline(mean_rho_trump, color='black', linestyle='--', linewidth=1.0,
            label=f'mean(ρ̂)={mean_rho_trump:.4f}')
-
-ax.set_title("Trump: $\\hat\\rho_N$ with Theoretical Bounds (Meng eq. (2.9))",
+ax.set_title("Trump: $\\hat\\rho_N$ with Theoretical Bounds",
              fontsize=TITLE_FS, fontweight='bold')
 ax.set_xlabel("$\\log_{10}(N_s)$ — Total Voters", fontsize=LABEL_FS, fontweight='bold')
+ax.set_ylabel(r"$\hat\rho_N$", fontsize=LABEL_FS, fontweight='bold')
 ax.tick_params(axis='both', labelsize=TICK_FS)
+for label in ax.get_xticklabels() + ax.get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
 ax.grid(axis='y', linestyle=':', linewidth=0.6, alpha=0.6)
 ax.legend(loc='lower left', fontsize=LEGEND_FS)
 
-plt.suptitle("Figure 8 Style: State-Level $\\hat\\rho_N$ with Meng Feasible Bounds (2.9)",
+plt.suptitle("DDC Feasible Bounds",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig8_ddc_bounds.png", dpi=300)
@@ -681,40 +677,48 @@ yhat_line_H = alpha_H + beta_H * x_line
 
 llp_df["color"] = llp_df["state_name"].apply(assign_color)
 
-fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Harris panel
 axes[0].scatter(llp_df["log10_N"], llp_df["log10_absZ_nN_harris"],
                 c=llp_df["color"], alpha=0.85, edgecolors="black", linewidths=0.3)
 axes[0].plot(x_line, yhat_line_H, linestyle="--", linewidth=1)
-axes[0].set_title("Harris (Validated Voters)", fontsize=TITLE_FS, fontweight='bold')
+axes[0].set_title("Harris", fontsize=TITLE_FS, fontweight='bold')
 axes[0].set_xlabel(r"$\log_{10}(N_s)$  (State Turnout)", fontsize=LABEL_FS, fontweight='bold')
 axes[0].set_ylabel(r"$\log_{10}(|Z_{n,N,s}|)$", fontsize=LABEL_FS, fontweight='bold')
 axes[0].tick_params(axis='both', labelsize=TICK_FS)
-axes[0].text(
-    0.02, 0.95,
-    f"OLS slope beta = {beta_H:.3f} (SE {se_beta_H:.3f})",
-    transform=axes[0].transAxes,
-    ha="left", va="top", fontsize=LEGEND_FS,
+for label in axes[0].get_xticklabels() + axes[0].get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
+axes[1].text(
+    0.98, 0.05,
+    f"OLS slope beta = {beta_T:.3f} (SE {se_beta_T:.3f})",
+    transform=axes[1].transAxes,
+    ha="right", va="bottom", fontsize=LEGEND_FS,
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
 )
+
 
 # Trump panel
 axes[1].scatter(llp_df["log10_N"], llp_df["log10_absZ_nN_trump"],
                 c=llp_df["color"], alpha=0.85, edgecolors="black", linewidths=0.3)
 axes[1].plot(x_line, yhat_line_T, linestyle="--", linewidth=1)
-axes[1].set_title("Trump (Validated Voters)", fontsize=TITLE_FS, fontweight='bold')
+axes[1].set_title("Trump", fontsize=TITLE_FS, fontweight='bold')
 axes[1].set_xlabel(r"$\log_{10}(N_s)$  (State Turnout)", fontsize=LABEL_FS, fontweight='bold')
+axes[1].set_ylabel(r"$\log_{10}(|Z_{n,N,s}|)$", fontsize=LABEL_FS, fontweight='bold')
 axes[1].tick_params(axis='both', labelsize=TICK_FS)
+for label in axes[1].get_xticklabels() + axes[1].get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
 axes[1].text(
-    0.02, 0.95,
+    0.98, 0.05,
     f"OLS slope beta = {beta_T:.3f} (SE {se_beta_T:.3f})",
     transform=axes[1].transAxes,
-    ha="left", va="top", fontsize=LEGEND_FS,
+    ha="right", va="bottom", fontsize=LEGEND_FS,
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
 )
 
-plt.suptitle("Law of Large Populations (Figure 6 Replication): $\\log |Z_{n,N}|$ vs $\\log N$",
+plt.suptitle("The Law of Large Populations Through Nominal Z-Score vs Population",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig6_llp_loglog_regression.png", dpi=300)
@@ -734,23 +738,26 @@ llp_df["Z_n_s_harris"] = regular_zscore_3_9(p_hat=llp_df["p_hat_harris"], p_true
 llp_df["cover_rate_H"] = (np.abs(llp_df["Z_n_s_harris"]) <= 2.0)
 llp_df["cover_rate_T"] = (np.abs(llp_df["Z_n_s_trump"]) <= 2.0)
 
-fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Harris panel
 axes[0].scatter(llp_df["log10_N"], llp_df["Z_n_s_harris"],
                 c=llp_df["color"], alpha=0.85, edgecolors="black", linewidths=0.3)
 axes[0].axhspan(-2, 2, alpha=0.15)
 axes[0].axhline(0, linestyle="--", linewidth=1)
-axes[0].set_title("Harris (Validated Voters)", fontsize=TITLE_FS, fontweight='bold')
+axes[0].set_title("Harris", fontsize=TITLE_FS, fontweight='bold')
 axes[0].set_xlabel(r"$\log_{10}(N_s)$  (State Turnout)", fontsize=LABEL_FS, fontweight='bold')
 axes[0].set_ylabel(r"Regular Z Score $Z_{n,s}$", fontsize=LABEL_FS, fontweight='bold')
 axes[0].tick_params(axis='both', labelsize=TICK_FS)
+for label in axes[0].get_xticklabels() + axes[0].get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
 cover_rate_mean_H = llp_df["cover_rate_H"].mean()
-axes[0].text(
-    0.02, 0.95,
-    f"Share with |Z_n|<=2: {cover_rate_mean_H:.2%}",
-    transform=axes[0].transAxes,
-    ha="left", va="top", fontsize=LEGEND_FS,
+axes[1].text(
+    0.98, 0.05,
+    f"OLS slope beta = {beta_T:.3f} (SE {se_beta_T:.3f})",
+    transform=axes[1].transAxes,
+    ha="right", va="bottom", fontsize=LEGEND_FS,
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
 )
 
@@ -759,9 +766,13 @@ axes[1].scatter(llp_df["log10_N"], llp_df["Z_n_s_trump"],
                 c=llp_df["color"], alpha=0.85, edgecolors="black", linewidths=0.3)
 axes[1].axhspan(-2, 2, alpha=0.15)
 axes[1].axhline(0, linestyle="--", linewidth=1)
-axes[1].set_title("Trump (Validated Voters)", fontsize=TITLE_FS, fontweight='bold')
+axes[1].set_title("Trump", fontsize=TITLE_FS, fontweight='bold')
 axes[1].set_xlabel(r"$\log_{10}(N_s)$  (State Turnout)", fontsize=LABEL_FS, fontweight='bold')
+axes[1].set_ylabel(r"Regular Z Score $Z_{n,s}$", fontsize=LABEL_FS, fontweight='bold')
 axes[1].tick_params(axis='both', labelsize=TICK_FS)
+for label in axes[1].get_xticklabels() + axes[1].get_yticklabels():
+    label.set_fontsize(TICK_FS)
+    label.set_visible(True)
 cover_rate_mean_T = llp_df["cover_rate_T"].mean()
 axes[1].text(
     0.02, 0.95,
@@ -771,7 +782,7 @@ axes[1].text(
     bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9)
 )
 
-plt.suptitle("Law of Large Populations (Figure 7 Replication): Conventional $Z_n$ vs $\\log N$",
+plt.suptitle("Conventional Z Score vs Population, Log-Log",
              fontsize=TITLE_FS, fontweight='bold')
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.savefig("figures/mengrep_fig7_llp_zscore_coverage.png", dpi=300)
@@ -1138,16 +1149,16 @@ print("\n" + national_long_table.to_string(index=False))
 national_wide_table.to_csv("data/mengrep_national_wide.csv", index=False)
 
 ##### handling NAs
-mask = (cces["validated_voter"] == 1)
+mask = (CES["validated_voter"] == 1)
 
 n_validated_all = mask.sum()
-n_validated_trump_nonmissing = (mask & cces["X_trump"].notna()).sum()
-n_validated_harris_nonmissing = (mask & cces["X_harris"].notna()).sum()
+n_validated_trump_nonmissing = (mask & CES["X_trump"].notna()).sum()
+n_validated_harris_nonmissing = (mask & CES["X_harris"].notna()).sum()
 
 truth_states = set(truth["state_name"])
-n_validated_in_truth_states = (mask & cces["state_name"].isin(truth_states)).sum()
-n_validated_trump_nonmissing_in_truth_states = (mask & cces["state_name"].isin(truth_states) & cces["X_trump"].notna()).sum()
-n_validated_harris_nonmissing_in_truth_states = (mask & cces["state_name"].isin(truth_states) & cces["X_harris"].notna()).sum()
+n_validated_in_truth_states = (mask & CES["state_name"].isin(truth_states)).sum()
+n_validated_trump_nonmissing_in_truth_states = (mask & CES["state_name"].isin(truth_states) & CES["X_trump"].notna()).sum()
+n_validated_harris_nonmissing_in_truth_states = (mask & CES["state_name"].isin(truth_states) & CES["X_harris"].notna()).sum()
 
 n_table_total = eff_samplesize_df["n"].sum()
 
@@ -1160,7 +1171,7 @@ print("Microdata: validated & state in truth & harris notna=", n_validated_harri
 print("Table: sum eff_samplesize_df['n']                  =", n_table_total)
 
 cces_state_counts = (
-    cces.loc[cces["validated_voter"] == 1]
+    CES.loc[CES["validated_voter"] == 1]
         .groupby("state_name")
         .size()
         .reset_index(name="n_cces_validated")
